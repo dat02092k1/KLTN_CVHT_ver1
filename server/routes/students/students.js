@@ -4,6 +4,8 @@ var studentController = require('../../controllers/students/studentsController')
 const router = express.Router();
 
 
-router.get('/students/getAll/:class', studentController.getDataStudentControllerfn);
+router.get('/student/getAll/:class', studentController.getDataStudentControllerfn);
+
+router.post('/student/create', studentController.createStudentControllerfn);
 
 module.exports = router;       

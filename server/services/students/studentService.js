@@ -9,4 +9,38 @@ var studentServiceGetAll = async (_class) => {
     } 
 };         
 
-module.exports = { studentServiceGetAll } ; 
+var createStudentService = async (studentDetail) => {
+    try {
+        // Destructure student detail
+        const {
+            studentId,
+            name,
+            birthdate,
+            address,
+            emailAddress,
+            phone,
+            gender,
+            total_creadits,
+            status,
+            _class,
+            gpa,
+            paidFee
+          } = studentDetail;
+
+          // check for existing
+          var checkExisting = await studentModel.findOne( {studentId: studentDetail.studentId} );
+
+          if (checkExisting) throw new Error("Student already exists");
+           
+          // create student
+        const student = new studentModel(studentDetail); 
+
+
+        await student.save();
+        return student;
+    } catch (error) {
+        throw error;
+    }
+}
+
+module.exports = { studentServiceGetAll, createStudentService} ; 

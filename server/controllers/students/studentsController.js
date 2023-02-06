@@ -11,4 +11,13 @@ var getDataStudentControllerfn = async (req, res) => {
     }
 }
 
-module.exports = { getDataStudentControllerfn } ; 
+var createStudentControllerfn = async (req, res) => {
+    try {
+        var student = await studentService.createStudentService(req.body);
+        res.status(200).send(student);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal server error" });
+    }
+}
+module.exports = { getDataStudentControllerfn, createStudentControllerfn } ; 

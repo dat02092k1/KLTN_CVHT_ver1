@@ -46,7 +46,7 @@ const studentSchema = new Schema({
           ],
         default: "Không"
     },
-    class: {
+    _class: {
         type: String,
         required: true,
     },
