@@ -58,11 +58,17 @@ var updateStudentService = async (id, studentDetail) => {
 
 var getStudentDetailService = async (id) => {
     try {
-         console.log(id);
-        const student = await studentsModel.findById(id, (err, student) => {
-            if (err) throw new Error(err);
-            else return student;
-        });
+        if (!id) {
+            throw new Error('ID is required');
+          }
+        
+        const student = await studentsModel.findById(id);
+
+        if (!student) {
+            return 'Student not found';
+          }
+          
+        return student;
 
     } catch (error) {
         throw error;
