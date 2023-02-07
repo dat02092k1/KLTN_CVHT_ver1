@@ -35,10 +35,29 @@ var getDetailStudentfn = async (req, res) => {
     try {
         var details = await studentService.getStudentDetailService(req.params.id);
 
-        res.status(200).json({ success: true, details });
+         res.status(200).json({ success: true, details });
+    } catch (error) {
+        console.log(error.message);
+        if (error.message === 'ID is required') {
+            res.status(400).send({ message: error.message });
+        } else if (error.message === 'Student not found') {
+            res.status(404).send({ message: error.message });
+        } else {
+            res.status(500).send({ message: " server error" });
+        }
+    }
+}
+
+var deleteStudentControllerfn = async (req, res) => {
+    try {
+        const deleteStudent = await studentService.deleteStudentService(req.params.id);
+        res.status(200).json({ success: true });
+
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: "Internal server error" });
     }
 }
-module.exports = { getDataStudentControllerfn, createStudentControllerfn, updateStudentControllerfn, getDetailStudentfn } ;         
+module.exports = { getDataStudentControllerfn, createStudentControllerfn, 
+    updateStudentControllerfn, getDetailStudentfn,
+    deleteStudentControllerfn } ;         

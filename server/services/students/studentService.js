@@ -67,11 +67,26 @@ var getStudentDetailService = async (id) => {
         if (!student) {
             return 'Student not found';
           }
-          
+
         return student;
 
     } catch (error) {
         throw error;
     }
 }
-module.exports = { studentServiceGetAll, createStudentService, updateStudentService, getStudentDetailService} ; 
+
+var deleteStudentService = async (id) => {
+    try {
+        if (!id) {
+            throw new Error('ID is required');
+          }
+        
+        const deleteStudent = await studentsModel.findByIdAndDelete(id);
+
+        return deleteStudent;
+    } catch (error) {
+        throw error;
+    }
+}
+module.exports = { studentServiceGetAll, createStudentService, 
+    updateStudentService, getStudentDetailService, deleteStudentService} ; 
