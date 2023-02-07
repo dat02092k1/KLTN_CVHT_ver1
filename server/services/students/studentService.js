@@ -1,3 +1,4 @@
+const studentsModel = require('../../models/students/studentsModel');
 var studentModel = require('../../models/students/studentsModel');
 
 var studentServiceGetAll = async (_class) => {
@@ -55,4 +56,16 @@ var updateStudentService = async (id, studentDetail) => {
     }
 }
 
-module.exports = { studentServiceGetAll, createStudentService, updateStudentService} ; 
+var getStudentDetailService = async (id) => {
+    try {
+         console.log(id);
+        const student = await studentsModel.findById(id, (err, student) => {
+            if (err) throw new Error(err);
+            else return student;
+        });
+
+    } catch (error) {
+        throw error;
+    }
+}
+module.exports = { studentServiceGetAll, createStudentService, updateStudentService, getStudentDetailService} ; 

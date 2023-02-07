@@ -30,4 +30,15 @@ var updateStudentControllerfn = async (req, res) => {
         res.status(500).send({ message: "Internal server error" });
     }
 }
-module.exports = { getDataStudentControllerfn, createStudentControllerfn, updateStudentControllerfn } ;         
+
+var getDetailStudentfn = async (req, res) => {
+    try {
+        var details = await studentService.getStudentDetailService(req.params.id);
+
+        res.status(200).json({ success: true, details });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal server error" });
+    }
+}
+module.exports = { getDataStudentControllerfn, createStudentControllerfn, updateStudentControllerfn, getDetailStudentfn } ;         

@@ -10,4 +10,7 @@ router.post('/student/create', studentController.createStudentControllerfn);
 
 router.patch('/student/update/:id', studentController.updateStudentControllerfn);
 
+router.get('/student/details/:id', studentController.getDetailStudentfn);
+
+
 module.exports = router;       
