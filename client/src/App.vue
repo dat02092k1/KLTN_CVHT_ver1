@@ -1,15 +1,28 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import TheHeader from './components/layout/TheHeader.vue'
+import TheSidebar from './components/layout/TheSidebar.vue'
+import TheMain from './components/layout/TheMain.vue'
 </script>
 
 <template>
-  <div>
-    <h1 class="text-red-600 font-bold underline">
-    Hello world!
-  </h1>
+  <div class="container">
+    <TheSidebar /> 
+      <TheHeader/>
+      <TheMain />   
   </div>
   
 </template>
 
 <style scoped>
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100vh;
+    background-color: #f4f7ff;
+}
 </style>
