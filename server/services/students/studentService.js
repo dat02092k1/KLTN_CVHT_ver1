@@ -77,13 +77,13 @@ var getStudentDetailService = async (id) => {
 
 var deleteStudentService = async (id) => {
     try {
-        if (!id) {
-            throw new Error('ID is required');
-          }
-        
         const deleteStudent = await studentsModel.findByIdAndDelete(id);
 
-        return deleteStudent;
+        if (deleteStudent) {
+            return "Deleted successfully!";
+        } else {
+            throw new Error('student is not found');
+          }
     } catch (error) {
         throw error;
     }
