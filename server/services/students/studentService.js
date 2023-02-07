@@ -45,7 +45,10 @@ var createStudentService = async (studentDetail) => {
 
 var updateStudentService = async (id, studentDetail) => {
     try {
-        const student = await studentModel.findByIdAndUpdate(id, studentDetail); 
+        const student = await studentModel.findByIdAndUpdate(id, studentDetail, { new: true }); 
+        if (!student) {
+            throw new Error(`No student found with id: ${id}`);
+        }
         return student;
     } catch (error) {
         throw error;
