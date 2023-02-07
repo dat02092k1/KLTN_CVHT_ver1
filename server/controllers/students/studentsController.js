@@ -14,10 +14,20 @@ var getDataStudentControllerfn = async (req, res) => {
 var createStudentControllerfn = async (req, res) => {
     try {
         var student = await studentService.createStudentService(req.body);
-        res.status(200).send(student);
+        res.status(200).json({ success: true, student });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal server error" });
+    }   
+}
+
+var updateStudentControllerfn = async (req, res) => {
+    try {
+        var update = await studentService.updateStudentService(req.params.id, req.body);
+        res.status(200).json({ success: true, update });
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: "Internal server error" });
     }
 }
-module.exports = { getDataStudentControllerfn, createStudentControllerfn } ; 
+module.exports = { getDataStudentControllerfn, createStudentControllerfn, updateStudentControllerfn } ;         

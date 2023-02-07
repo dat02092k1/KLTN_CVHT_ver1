@@ -8,4 +8,6 @@ router.get('/student/getAll/:class', studentController.getDataStudentControllerf
 
 router.post('/student/create', studentController.createStudentControllerfn);
 
+router.patch('/student/update/:id', studentController.updateStudentControllerfn);
+
 module.exports = router;       

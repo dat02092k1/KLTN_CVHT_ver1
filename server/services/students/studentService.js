@@ -43,4 +43,13 @@ var createStudentService = async (studentDetail) => {
     }
 }
 
-module.exports = { studentServiceGetAll, createStudentService} ; 
+var updateStudentService = async (id, studentDetail) => {
+    try {
+        const student = await studentModel.findByIdAndUpdate(id, studentDetail); 
+        return student;
+    } catch (error) {
+        throw error;
+    }
+}
+
+module.exports = { studentServiceGetAll, createStudentService, updateStudentService} ; 
