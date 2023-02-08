@@ -74,7 +74,7 @@
               <tbody>
                 <tr
                   class="course-list"
-                  v-for="(item, index) in this.data"
+                  v-for="(item, index) in this.useStudent.data"
                   :key="index"
                 >
                   <td>{{ index + 1 }}</td>
@@ -194,15 +194,17 @@
 <script>
 import axios from "axios";
 import { RouterLink, RouterView } from 'vue-router'
-
+import { useStudentStore } from "../../stores/student.js";
 export default {
   data() {
     return {
       data: [],
+      useStudent: useStudentStore(), 
     };
   },
   mounted() {
-    this.getData();
+      
+     this.useStudent.getData(); 
   },
   methods: {
     async getData() {
@@ -211,10 +213,11 @@ export default {
           "http://localhost:8000/student/getAll/K64-C-CLC"
         );
         this.data = response.data.student;
-        console.log(this.data);
+        // console.log(this.data);
       } catch (error) {
         console.log(error);
       }
+
     },
     formatDate(dateString) {
       const date = new Date(dateString);

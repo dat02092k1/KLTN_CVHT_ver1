@@ -1,15 +1,18 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRoute} from 'vue-router'
 import TheHeader from './components/layout/TheHeader.vue'
 import TheSidebar from './components/layout/TheSidebar.vue'
 import TheMain from './components/layout/TheMain.vue'
 import StudentDetails from './views/student/StudentDetails.vue'
+
+const route = useRoute();
+
 </script>
 
 <template>
   <div class="container">
-    <TheSidebar /> 
-      <TheHeader/>
+    <TheSidebar v-if="route.name !== 'login'"/> 
+      <TheHeader v-if="route.name !== 'login'"/>
       <!-- <TheMain />    -->
       
         

@@ -4,6 +4,7 @@ import AboutView from '../views/AboutView.vue'
 
 import TheMain from '../components/layout/TheMain.vue'
 import StudentDetails from '../views/student/StudentDetails.vue'
+import Login from '../views/login/Login.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/student/form',
       name: 'student form',
       component: StudentDetails
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ]
 })

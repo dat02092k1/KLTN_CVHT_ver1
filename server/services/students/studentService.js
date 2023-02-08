@@ -12,6 +12,8 @@ var studentServiceGetAll = async (_class) => {
 
 var createStudentService = async (studentDetail) => {
     try {
+        console.log(studentDetail)
+        console.log(studentDetail.studentID);
         // Destructure student detail
         const {
             studentId,
