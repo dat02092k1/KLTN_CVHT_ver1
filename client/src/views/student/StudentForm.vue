@@ -64,7 +64,10 @@
       </RouterLink>
         <RouterView />
   
-        <button class="bg-[#324f90] text-[#fff] p-3 px-4 rounded mx-2">Lưu</button>
+        <button @click="useStudent.updateStudent(useStudent.studentDetails._id, useStudent.studentDetails)" class="bg-[#324f90] text-[#fff] p-3 px-4 rounded mx-2">Lưu</button>
+        <!--
+          @click="useStudent.updateStudent(useStudent.studentDetails._id, useStudent.studentDetails)"
+        -->
      </div>
     </div>
     
@@ -104,6 +107,12 @@
         year: "numeric",
       });
     },
+    updateData(id) {
+      this.useStudent.updateStudent(id);
+    },
+    checkFn(a) {
+      console.log(a);
+    }
   }
 }
   </script>

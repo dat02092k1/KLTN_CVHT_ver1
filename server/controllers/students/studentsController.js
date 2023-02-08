@@ -59,5 +59,6 @@ var deleteStudentControllerfn = async (req, res) => {
     }
 }
 module.exports = { getDataStudentControllerfn, createStudentControllerfn, 
-    updateStudentControllerfn, getDetailStudentfn,
+     getDetailStudentfn, updateStudentControllerfn,
     deleteStudentControllerfn } ;         
+

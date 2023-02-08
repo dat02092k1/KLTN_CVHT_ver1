@@ -44,6 +44,18 @@ export const useStudentStore = defineStore({
           console.error(error);
         }
     },
+    async updateStudent(id, details) {
+      try {
+        console.log(id);
+        console.log(details);
+        const response = await axios.patch(`http://localhost:8000/student/update/${id}`, details
+        ); 
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    ,
     async getStudentDetails(id) {
       try {
         const response = await axios.get(`http://localhost:8000/student/details/${id}`);   
@@ -52,6 +64,9 @@ export const useStudentStore = defineStore({
       } catch (error) {
         console.error(error);
       }
+    },
+    async deleteStudent(id) {
+      
     }
   },
 });

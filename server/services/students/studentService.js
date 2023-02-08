@@ -1,5 +1,6 @@
 const studentsModel = require('../../models/students/studentsModel');
 var studentModel = require('../../models/students/studentsModel');
+const mongoose = require('mongoose');
 
 var studentServiceGetAll = async (_class) => {
     try {
@@ -48,7 +49,8 @@ var createStudentService = async (studentDetail) => {
 
 var updateStudentService = async (id, studentDetail) => {
     try {
-        const student = await studentModel.findByIdAndUpdate(id, studentDetail, { new: true }); 
+        const objectId = mongoose.Types.ObjectId(id);
+        const student = await studentModel.findByIdAndUpdate(objectId, studentDetail, { new: true }); 
         if (!student) {
             throw new Error(`No student found with id: ${id}`);
         }
@@ -57,6 +59,20 @@ var updateStudentService = async (id, studentDetail) => {
         throw error;
     }
 }
+
+// var updateStudentService = async (req, res) => {
+//     try {
+//         console.log(req.body);
+//         const student = await studentModel.findByIdAndUpdate(req.params.id, req.body, { new: true }); 
+//         if (!student) {
+//             res.json({ message: "Update fail" });
+//         }
+        
+//         res.status(200).json(student);
+//     } catch (error) {
+//         res.status(500).json({ message: "Server error ~ updateStudent" });
+//     }
+// }
 
 var getStudentDetailService = async (id) => {
     try {
