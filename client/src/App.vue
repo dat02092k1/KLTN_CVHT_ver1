@@ -3,13 +3,18 @@ import { RouterLink, RouterView } from 'vue-router'
 import TheHeader from './components/layout/TheHeader.vue'
 import TheSidebar from './components/layout/TheSidebar.vue'
 import TheMain from './components/layout/TheMain.vue'
+import StudentDetails from './views/student/StudentDetails.vue'
 </script>
 
 <template>
   <div class="container">
     <TheSidebar /> 
       <TheHeader/>
-      <TheMain />   
+      <!-- <TheMain />    -->
+      
+        
+        <RouterLink to="/student/list"></RouterLink>
+      <RouterView />
   </div>
   
 </template>

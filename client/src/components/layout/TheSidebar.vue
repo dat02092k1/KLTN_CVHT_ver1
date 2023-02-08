@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar">
+    <div class="sidebar" :style="{ width: sidebarWidth }">
         <div class="sidebar-logo-container bg-black leading-[50px]">
             <a href="" class="flex justify-center items-center">
                 <img class="w-8 h-8 align-middle mr-3 " src="../../assets/images/logo_small.png" alt="">
@@ -48,6 +48,24 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            sidebarWidth: '250px',
+            isOpen: false
+        }
+    },
+    methods: {
+        toggleSidebar() {
+      this.isOpen = !this.isOpen;
+      this.sidebarWidth = this.isOpen ? '250px' : '50px'
+    }
+
+    }
+}
+</script>
 
 <style scoped>
 :root {
