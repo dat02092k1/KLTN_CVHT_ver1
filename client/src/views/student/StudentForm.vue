@@ -11,48 +11,48 @@
       <div class="form-column mx-3">
         <div class="form-group">
           <label>ID</label>
-          <input type="text" />
+          <input type="text" v-model="useStudent.studentDetails.studentId" />
         </div>
         <div class="form-group">
           <label>Ngày sinh</label>
-          <input type="text" />
+          <input type="text" v-model="formatBirthDate"/>
         </div>
   
         <div class="form-group">
           <label>Giới tính</label>
-          <input type="text" />
+          <input type="text" v-model="useStudent.studentDetails.gender"/>
         </div>
         <!-- Thêm các ô nhập liệu khác -->
       </div>
       <div class="form-column">
         <div class="form-group">
           <label> Họ và Tên</label>
-          <input type="text" />
+          <input type="text" v-model="useStudent.studentDetails.name" />
         </div>
         <div class="form-group">
           <label>Số điện thoại</label>
-          <input type="text" />
+          <input type="text" v-model="useStudent.studentDetails.phone"  />
         </div>
   
         <div class="form-group">
           <label>Địa chỉ</label>
-          <input type="text" />
+          <input type="text" v-model="useStudent.studentDetails.address"  />
         </div>
         <!-- Thêm các ô nhập liệu khác -->
       </div>
       <div class="form-column">
         <div class="form-group">
           <label>Lớp</label>
-          <input type="text" />
+          <input type="text" v-model="useStudent.studentDetails._class"  />
         </div>
         <div class="form-group">
           <label>Tổng tín chỉ tích lũy</label>
-          <input type="text" />
+          <input type="text" v-model="useStudent.studentDetails.total_creadits" />
         </div>
   
         <div class="form-group">
           <label>Điểm trung bình tích lũy hệ 4</label>
-          <input type="text" />
+          <input type="text" v-model="useStudent.studentDetails.gpa" />
         </div>
       </div>
     </form>
@@ -71,8 +71,41 @@
   </template>
   
   <script>
-  import { RouterLink, RouterView } from 'vue-router'
-  
+  import { RouterLink, RouterView, useRoute } from 'vue-router'
+  import { useStudentStore } from "../../stores/student.js";
+
+  export default {
+  data() {
+    return {
+      student: {
+        studentId: '',
+        name: '',
+        phone: ''
+      },
+      useStudent: useStudentStore(),
+      id: useRoute().params.id
+    }
+  }, 
+  computed: {
+    formatBirthDate() {
+      return this.formatDate(this.useStudent.studentDetails.birthdate)
+    }
+  }
+  ,
+  mounted() {
+    this.useStudent.getStudentDetails(this.id); 
+  },
+  methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("default", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+    },
+  }
+}
   </script>
   <style scoped>
     form {

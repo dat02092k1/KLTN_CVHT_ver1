@@ -8,12 +8,12 @@
       </div>
       <div class="table-content bg-[#ffffff]">
         <div class="filter-container p-6">
-          <div class="row grid grid-rows-2 font-bold">
+          <div class="row  font-bold">
             <label class="text-[14px] text-[#606266] leading-10" for=""
-              >Chương trình đào tạo</label
+              >Lớp học:</label
             >
             <label class="text-[14px] text-[#606266] leading-10" for=""
-              >Khoa học Máy tính chương trình chất lượng cao</label
+              >K64-C-CLC</label
             >
           </div>
         </div>
@@ -21,7 +21,7 @@
             <!--py-0 px-6 bg-[#fff]-->
             <div>
                 <div>
-                  <RouterLink class="bg-[#324f90] text-[#fff] p-2 rounded mx-2" to="/student/form">
+                  <RouterLink class="bg-[#324f90] text-[#fff] p-2 rounded m-2" to="/student/form">
                     Thêm sinh viên
                   </RouterLink>
       <RouterView />
@@ -86,13 +86,18 @@
                   </td>
                   <td>{{ item.gpa }}</td>
                   <td>{{ item.status }}</td>
-                  <td class="flex">
+                  <td class="grid grid-cols-2">
                     <div>
-                        <button>Xoa</button>
+                      <RouterLink :to="{ path: '/student/details/' + item._id }" >
+                        <button>
+                          <i class="fa-solid fa-circle-info text-yellow-400"></i>
+                        </button>                  
+                      </RouterLink>
+                      
                     </div>
                     <div>
                         <button>
-                            Edit
+                          <i class="fa-sharp fa-solid fa-delete-left text-red-500"></i>
                         </button>
                     </div>
                   </td>

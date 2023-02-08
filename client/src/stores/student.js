@@ -5,6 +5,7 @@ export const useStudentStore = defineStore({
   id: "student",
   state: () => ({
     data: [],
+    studentDetails:[],
     student: {
       studentId: '',
       name: '',
@@ -42,6 +43,15 @@ export const useStudentStore = defineStore({
         } catch (error) {
           console.error(error);
         }
+    },
+    async getStudentDetails(id) {
+      try {
+        const response = await axios.get(`http://localhost:8000/student/details/${id}`);   
+        this.studentDetails = response.data.details;
+        console.log(this.studentDetails.studentId);
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
 });

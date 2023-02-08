@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView, useRoute } from "vue-router";
 import { useStudentStore } from "../../stores/student.js";
 
 export default {

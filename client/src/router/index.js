@@ -4,6 +4,8 @@ import AboutView from '../views/AboutView.vue'
 
 import TheMain from '../components/layout/TheMain.vue'
 import StudentDetails from '../views/student/StudentDetails.vue'
+import StudentForm from '../views/student/StudentForm.vue'
+
 import Login from '../views/login/Login.vue'
 
 const router = createRouter({
@@ -28,6 +30,11 @@ const router = createRouter({
       path: '/student/form',
       name: 'student form',
       component: StudentDetails
+    },
+    {
+      path: '/student/details/:id',
+      name: 'student details',
+      component: StudentForm
     },
     {
       path: '/login',
