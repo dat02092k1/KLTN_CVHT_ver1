@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var student = require('./routes/students/students');
+var register = require('./routes/auth/register.js');
 var cors = require('cors');
 
 
@@ -21,7 +22,7 @@ mongoose
 app.use(express.json());
 app.use(cors());
 app.use("/", student);
-
+app.use("/", register);
 app.listen(PORT, (err) => {
     if (err) console.log('error');
     else console.log(`server listening on ${PORT}`);

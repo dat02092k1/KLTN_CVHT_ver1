@@ -18,16 +18,18 @@ var createStudentService = async (studentDetail) => {
         // Destructure student detail
         const {
             studentId,
+            password,
             name,
+            role,
             birthdate,
             address,
             emailAddress,
             phone,
-            gender,
+            gender,                    
             total_creadits,
             status,
             _class,
-            gpa,
+            gpa,      
             paidFee
           } = studentDetail;
 
@@ -50,6 +52,8 @@ var createStudentService = async (studentDetail) => {
 var updateStudentService = async (id, studentDetail) => {
     try {
         const objectId = mongoose.Types.ObjectId(id);
+        console.log(objectId);
+        console.log(studentDetail)
         const student = await studentModel.findByIdAndUpdate(objectId, studentDetail, { new: true }); 
         if (!student) {
             throw new Error(`No student found with id: ${id}`);

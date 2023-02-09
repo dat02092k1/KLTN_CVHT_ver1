@@ -8,7 +8,9 @@ export const useStudentStore = defineStore({
     studentDetails:[],
     student: {
       studentId: '',
+      password: '',
       name: '',
+      role: '',
       birthdate: '',
       address: '',
       emailAddress: '',
@@ -66,7 +68,15 @@ export const useStudentStore = defineStore({
       }
     },
     async deleteStudent(id) {
-      
+      try {
+        console.log(id);
+        const response = await axios.delete(`http://localhost:8000/student/remove/${id}`);   
+
+        console.log(response);
+        this.getData();
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 });

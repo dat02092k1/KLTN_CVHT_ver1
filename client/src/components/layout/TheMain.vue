@@ -96,7 +96,7 @@
                       
                     </div>
                     <div>
-                        <button>
+                        <button @click="useStudent.deleteStudent(item._id)">
                           <i class="fa-sharp fa-solid fa-delete-left text-red-500"></i>
                         </button>
                     </div>

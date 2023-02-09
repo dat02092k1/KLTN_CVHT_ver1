@@ -8,29 +8,35 @@ const studentSchema = new Schema({
         required: true,
         unique: true
     },
+    password: {
+        type: String,
+        required: true,
+    },
     name: {
         type: String,
-        required: true
     },
+    role: {
+        type: String,
+        enum: ["student", "manager"],
+        default: "student",
+        required: true,
+    },
+    // diem: { type: array, required: true}
     birthdate: {
         type: Date,
-        required: true
     },
     address: {
         type: String,
-        required: true
     },
     emailAddress: {
         type: String,
     },
     phone: {
         type: String,
-        required: true
     },
     gender: {
         type: String,
         enum: ['Nam', 'Nữ'],
-        required: true
     },
     total_creadits: {
         type: Number,
@@ -48,7 +54,6 @@ const studentSchema = new Schema({
     },
     _class: {
         type: String,
-        required: true,
     },
     gpa: {
         type: Number

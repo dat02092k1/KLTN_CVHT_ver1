@@ -2,7 +2,7 @@
   <div class="form-warpper pt-0 px-7 pb-7 flex-column">
     <div class="nav-content bg-[#324f90] p-[1.5rem]">
       <div class="nav-title text-[#fbfbff] font-bold text-[15px]">
-        <div>THÔNG TIN CHI TIẾT</div>
+        <div>THÊM SINH VIÊN</div>
       </div>
     </div>
 
@@ -33,7 +33,22 @@
               <option value="false">Chưa</option>
             </select>
           </div>
-          <!-- Thêm các ô nhập liệu khác -->
+           
+        </div>
+
+        <div class="form-column mx-3">
+          <div class="form-group">
+            <label>Mật khẩu</label>
+            <input type="text" v-model="this.useStudent.student.password"/>
+          </div>
+          <div class="form-group">
+            <label>Vai trò</label>
+            <select name="gender" id="gender" v-model="this.useStudent.student.role">
+              <option value="student">Sinh viên</option>
+              <option value="manager">Cố vấn học tập</option>
+            </select>
+          </div>
+           
         </div>
         <div class="form-column">
           <div class="form-group">
@@ -54,7 +69,7 @@
             <label>Email</label>
             <input type="text" v-model="this.useStudent.student.emailAddress"/>
           </div>
-          <!-- Thêm các ô nhập liệu khác -->
+
         </div>
         <div class="form-column">
           <div class="form-group">
@@ -81,7 +96,14 @@
               <option value="Khen thưởng">Khen thưởng</option>
             </select>
           </div>
+
+          
         </div>
+
+        
+        
+
+        
       </form>
     </div>
 
@@ -144,7 +166,7 @@ label {
 }
 
 input[type="text"] {
-  width: 70%;
+  width: 50%;
   height: 40px;
   padding: 10px;
   border: 1px solid #ddd;
