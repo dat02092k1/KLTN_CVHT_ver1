@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+require('dotenv').config();
 var student = require('./routes/students/students');
 var register = require('./routes/auth/register.js');
 var login = require('./routes/auth/login.js');

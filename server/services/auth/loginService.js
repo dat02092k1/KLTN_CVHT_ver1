@@ -1,15 +1,34 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+
 var userModel = require('../../models/students/studentsModel');
 
 var loginService = async (req, res, next) => {
     const { studentId, password } = req.body;
-    console.log(studentId);
+    
 
     try {
         var user = await userModel.findOne( {studentId});
 
-        if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+        if (!user) return res.status(400).json({ message: 'Email or password is incorrect' });
 
-        return res.status(200).json(user);
+        // check for password
+        console.log(user.password);
+
+        const isMatch = await bcrypt.compareSync(password, user.password);
+
+        if (!isMatch) 
+        {
+            return res.status(400).json({ message: 'Invalid credentials'});
+        }
+        // create token
+        
+            
+        const token = jwt.sign({ id: user.studentId}, process.env.JWT_SECRET, { expiresIn: '1d' }); 
+
+        return res.status(200).json({ token });   
+        
     } catch (error) {
         console.log(error);  
     }
