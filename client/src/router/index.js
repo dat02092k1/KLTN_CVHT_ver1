@@ -5,6 +5,8 @@ import AboutView from '../views/AboutView.vue'
 import TheMain from '../components/layout/TheMain.vue'
 import StudentDetails from '../views/student/StudentDetails.vue'
 import StudentForm from '../views/student/StudentForm.vue'
+import FormTest from '../views/student/FormTest.vue'
+import ChartGpa from '../views/chart/ChartGpa.vue'
 
 import Login from '../views/login/Login.vue'
 
@@ -40,6 +42,16 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/test/form',
+      name: 'test form',
+      component: FormTest
+    },
+    {
+      path: '/student/chart',
+      name: 'chart gpa',
+      component: ChartGpa
     }
   ]
 })

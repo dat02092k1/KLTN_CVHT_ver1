@@ -12,22 +12,17 @@
             <label class="text-[14px] text-[#606266] leading-10" for=""
               >Lớp học:</label
             >
-            <label class="text-[14px] text-[#606266] leading-10" for=""
+            <label class="text-[14px] text-[#606266] ml-2 leading-10" for=""
               >K64-C-CLC</label
             >
           </div>
-        </div>
-        <div class="content-container">
-            <!--py-0 px-6 bg-[#fff]-->
-            <div>
-                <div>
-                  <RouterLink class="bg-[#324f90] text-[#fff] p-2 rounded m-2" to="/student/form">
+          <RouterLink class="bg-[#324f90] text-[#fff] p-2 rounded " to="/student/form">
                     Thêm sinh viên
                   </RouterLink>
       <RouterView />
-                   
-                </div>
-            </div>
+        </div>
+        <div class="content-container">
+           
             <table id="table-course">
               <thead>
                 <tr>
@@ -77,7 +72,7 @@
                   v-for="(item, index) in this.useStudent.data"
                   :key="index"
                 >
-                  <td>{{ index + 1 }}</td>
+                  <td class="text-center">{{ index + 1 }}</td>
                   <td>{{ item.studentId }}</td>
                   <td>{{ item.name }}</td>
                   <td>{{ item.phone }}</td>
@@ -105,90 +100,7 @@
               </tbody>
             </table>
            
-            <!-- <table id="table-course" class="text-[14px]">
-              <thead>
-                <tr class="head-course">
-                  <th class="p-[1.5rem]">STT</th>
-                  <th class="">MSSV</th>
-                  <th class="">Họ tên</th>
-                  <th class="text-align--left">Số điện thoại</th>
-                  <th class="text-align--left">Ngày sinh</th>
-                  <th>GPA</th>
-                  <th class="text-align--left">Trạng thái</th>
-                  <th class="text-align--left"></th>
-                </tr>
-                <tr class="filter-course">
-                  <th></th>
-                  <th>
-                    <div>
-                      <input
-                        class="filter-input h-8 text-[14px] leading-1 font-normal"
-                        type="text"
-                        placeholder="MSSV"
-                      />
-                    </div>
-                  </th>
-                  <th>
-                    <div>
-                      <input
-                        class="filter-input h-8 text-[14px] leading-1 font-normal"
-                        type="text"
-                        placeholder="Họ tên"
-                      />
-                    </div>
-                  </th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th>
-                    <div>
-                      <input
-                        class="filter-input h-8 text-[14px] leading-1 font-normal"
-                        type="text"
-                        placeholder="Kỳ học"
-                      />
-                    </div>
-                  </th>
-                  <th>
-                    <div>
-                      <select name="cars">
-                        <option value="all">Tất cả</option>
-                        <option value="yes">Có</option>
-                        <option value="no">Không</option>
-                      </select>
-                    </div>
-                  </th>
-                  <th>
-                    <div>
-                      <select name="cars">
-                        <option value="all">Tất cả</option>
-                        <option value="yes">Có</option>
-                        <option value="no">Không</option>
-                      </select>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  class="course-list"
-                  v-for="(item, index) in this.data"
-                  :key="index"
-                >
-                  <td class="p-[1.5rem] text-center">{{ index + 1 }}</td>
-                  <td class="text-center">{{ item.studentId }}</td>
-                  <td>{{ item.name }}</td>
-                  <td class="text-center">{{ item.phone }}</td>
-                  <td class="text-center">
-                    {{ formatDate(item.birthdate) }}
-                  </td>
-                  <td class="text-center">{{ item.gpa }}</td>
-                  <td>{{ item.studentId }}</td>
-                  <td class="text-center">{{ item.studentId }}</td>
-                </tr>
-              </tbody>
-            </table> -->
+           
           </div>
         </div>
       </div>
@@ -253,9 +165,11 @@ export default {
 }
 /* TABLE CSS */
 .content-container {
-  height: 500px;
+  height: 330px;
   overflow-y: scroll;
 }
+
+
 
 #table-course {
   width: 100%;
@@ -267,7 +181,7 @@ export default {
 #table-course td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 
@@ -291,6 +205,14 @@ export default {
   width: 100%;
 }
 
+input:hover {
+  border: 1px solid #324f90;
+}
+
+input:focus {
+  border: 1px solid #324f90;
+  outline: none;
+}
 /* #table-course {
   border: 1px solid #dcdfe6;
   border-collapse: collapse;

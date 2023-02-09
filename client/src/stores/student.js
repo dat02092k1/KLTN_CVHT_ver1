@@ -4,6 +4,7 @@ import axios from "axios";
 export const useStudentStore = defineStore({
   id: "student",
   state: () => ({
+    error: true,
     data: [],
     studentDetails:[],
     student: {

@@ -11,7 +11,8 @@
         <div class="form-column mx-3">
           <div class="form-group">
             <label>ID</label>
-            <input type="text" v-model="this.useStudent.student.studentId"/>
+            <input required type="text" v-model="this.useStudent.student.studentId"/>
+            <!-- <p v-if="this.useStudent.error" class="error">{{ usernameError  }}</p> -->
           </div>
           <div class="form-group">
             <label>Ngày sinh</label>
@@ -67,7 +68,7 @@
 
           <div class="form-group">
             <label>Email</label>
-            <input type="text" v-model="this.useStudent.student.emailAddress"/>
+            <input type="email" v-model="this.useStudent.student.emailAddress"/>
           </div>
 
         </div>
@@ -136,12 +137,118 @@ export default {
         phone: ''
       },
       useStudent: useStudentStore(),
+      usernameError: 'Không được để trống',
+      errors: [],
     }
   }, 
   methods: {
     saveData() {
+      
+      this.errors = [];
+      var isValid = this.isValidData();  
+      // validate data
+      if (isValid) {
       this.useStudent.postData(); 
+      }
+      else {
+        alert('error');
+        console.log('error');   
+      }
     }
+    ,
+    isValidData() { 
+      try {
+        if (!this.validateRequired(this.useStudent.student.studentId)) {
+          this.errors.push("Mã sinh viên không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.password)) {
+          this.errors.push("MK không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.name)) {
+          this.errors.push("Tên không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.role)) {
+          this.errors.push("Vai trò không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.birthdate)) {
+          this.errors.push("Ngày sinh không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.address)) {
+          this.errors.push("Địa chỉ không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.role)) {
+          this.errors.push("Vai trò không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.birthdate)) {
+          this.errors.push("Ngày sinh không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.address)) {
+          this.errors.push("Địa chỉ không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.emailAddress)) {
+          this.errors.push("Vai trò không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.phone)) {
+          this.errors.push("Ngày sinh không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.gender)) {
+          this.errors.push("Địa chỉ không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student.status)) {
+          this.errors.push("Ngày sinh không được phép trống");
+          console.log(this.errors);
+        }
+
+        if (!this.validateRequired(this.useStudent.student._class)) {
+          this.errors.push("Địa chỉ không được phép trống");
+          console.log(this.errors);
+        }
+
+
+        if (this.errors.length > 0) {
+          alert('loi')
+          return false;
+        }
+        return true;
+
+      } catch (error) {
+        console.log(error); 
+      }
+    },
+    validateRequired(value) {
+      try {
+        if (value == "" || value == null || value == undefined) {
+        return false;
+      }
+      return true;
+      } catch (error) {
+        console.log(error);
+      }
+    }, 
   }
 }
 </script>
