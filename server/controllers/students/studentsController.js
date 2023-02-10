@@ -2,8 +2,8 @@ var studentService = require('../../services/students/studentService');
 
 var getDataStudentControllerfn = async (req, res) => { 
     try {
-        var student = await studentService.studentServiceGetAll(req.params.class);
-        res.status(200).json({ success: true, student });
+        var allStudent = await studentService.studentServiceGetAll(req.params.class);
+        res.status(200).json({ success: true, allStudent });
     } catch (error) {
         console.log(error);
         res.status(500)
