@@ -6,13 +6,13 @@ const router = express.Router();
 
 router.get('/student/getAll/:class', userAuthenticate.verifyToken, studentController.getDataStudentControllerfn);
 
-router.post('/student/create', studentController.createStudentControllerfn);
+router.post('/student/create', userAuthenticate.roleAuthentication ,studentController.createStudentControllerfn);
 
-router.patch('/student/update/:id', studentController.updateStudentControllerfn);
+router.patch('/student/update/:id', userAuthenticate.roleAuthentication, studentController.updateStudentControllerfn);
 
-router.get('/student/details/:id', studentController.getDetailStudentfn);
+router.get('/student/details/:id', userAuthenticate.roleAuthentication ,studentController.getDetailStudentfn);
 
-router.delete('/student/remove/:id', studentController.deleteStudentControllerfn);
+router.delete('/student/remove/:id', userAuthenticate.roleAuthentication ,studentController.deleteStudentControllerfn);
 
 
 module.exports = router;       

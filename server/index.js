@@ -5,6 +5,9 @@ require('dotenv').config();
 var student = require('./routes/students/students');
 var register = require('./routes/auth/register.js');
 var login = require('./routes/auth/login.js');
+var token = require('./routes/auth/token.js');
+var cookieParser = require('cookie-parser');
+
 var cors = require('cors');
 
 
@@ -23,9 +26,11 @@ mongoose
 
 app.use(express.json());
 app.use(cors());
-app.use("/", student);
+app.use(cookieParser());
+app.use("/", student);  
 app.use("/", register);
 app.use("/", login);         
+
 app.listen(PORT, (err) => {
     if (err) console.log('error');
     else console.log(`server listening on ${PORT}`);

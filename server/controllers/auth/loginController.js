@@ -4,6 +4,10 @@ var service = require('../../services/auth/loginService');
     service.loginService(req, res, next); 
 }
 
+  var refreshToken = async (req, res) => {
+    service.refreshTokenService(req, res);
+}
+
   module.exports = {
-    loginController
+    loginController, refreshToken
   }

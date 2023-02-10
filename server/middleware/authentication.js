@@ -22,8 +22,17 @@ const verifyToken = (req, res, next) => {
     }
 }
 
-
+const roleAuthentication = (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.user.id == req.params.id || req.user.role === "manager") {
+            next(); 
+        }
+        else {
+            res.status(403).json("You are not allowed to do this")
+        }
+    })
+}
 
 module.exports = {
-    verifyToken
+    verifyToken, roleAuthentication 
   }
