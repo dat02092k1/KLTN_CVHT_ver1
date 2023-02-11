@@ -36,7 +36,7 @@ var loginService = async (req, res, next) => {
         const acessToken = createAccessToken(user);
         const refreshToken = createRefreshToken(user);
         refreshTokens.push(refreshToken);
-        console.log(refreshTokens);
+        
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             path: '/',

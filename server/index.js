@@ -6,6 +6,8 @@ var student = require('./routes/students/students');
 var register = require('./routes/auth/register.js');
 var login = require('./routes/auth/login.js');
 var token = require('./routes/auth/token.js');
+var post = require('./routes/posts/post.js');
+
 var cookieParser = require('cookie-parser');
 
 var cors = require('cors');
@@ -29,7 +31,8 @@ app.use(cors());
 app.use(cookieParser());
 app.use("/", student);  
 app.use("/", register);
-app.use("/", login);         
+app.use("/", login);       
+app.use("/", post); 
 
 app.listen(PORT, (err) => {
     if (err) console.log('error');
