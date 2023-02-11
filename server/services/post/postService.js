@@ -38,9 +38,10 @@ var createPostService = async (postDetails) => {
 
 var updatePostService = async (id, postDetails) => {
     try {
-        const objectId = mongoose.Types.ObjectId(id);
-        console.log(objectId);
-        const updatePost = await postModel.findByIdAndUpdate(objectId, postDetails, { new: true }); 
+        console.log(postDetails.username);
+        const username = postDetails.username;
+        // const objectId = mongoose.Types.ObjectId(username);
+        const updatePost = await postModel.findOneAndUpdate(username, postDetails, { new: true }); 
         if (!updatePost) {
             throw new Error(`No post found with id: ${id}`);
         }
@@ -50,4 +51,19 @@ var updatePostService = async (id, postDetails) => {
     }
 }
 
-module.exports = { getPostListService, createPostService, updatePostService } ;  
+var deletePostService = async (id) => {
+    try {
+        console.log(id);
+        const deletePost = await postModel.findByIdAndDelete(id);
+
+        if (deletePost) {
+            return "Deleted successfully!";
+        } else {
+            throw new Error('Post is not found');
+          }
+    } catch (error) {
+        throw error;
+    }
+}
+
+module.exports = { getPostListService, createPostService, updatePostService, deletePostService } ;  
