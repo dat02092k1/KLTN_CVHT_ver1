@@ -11,6 +11,8 @@ router.post('/post/create/:id', userAuthenticate.verifyToken, postController.cre
 router.put('/post/edit/:id', userAuthenticate.verifyToken, postController.updatePostController);
 // edit post on forum
 router.delete('/post/delete/:id', userAuthenticate.verifyToken, postController.deletePostController);
+// delete post on forum
+router.get('post/list/:id', userAuthenticate.verifyToken, postController.listUserPostController);
 
 
 

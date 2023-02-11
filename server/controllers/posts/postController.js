@@ -13,7 +13,8 @@ var getPostListController = async (req, res) => {
 
 var createPostController = async (req, res) => {
     try {
-        var newPost = await postService.createPostService(req.params.id);
+        
+        var newPost = await postService.createPostService(req.body); 
         res.status(200).json({ success: true, newPost });
     } catch (error) {
         console.log(error);
@@ -41,4 +42,15 @@ var deletePostController = async (req, res) => {
     }
 }
 
-module.exports = { getPostListController, createPostController, updatePostController, deletePostController } ;  
+var listUserPostController = async (req, res) => {
+    try {
+        var list = await postService.getListPostUserService(req.params.id);
+        res.status(200).json({ success: true, list})
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal server error" });
+    }
+}
+
+module.exports = { getPostListController, createPostController, 
+    updatePostController, deletePostController, listUserPostController } ;  

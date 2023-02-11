@@ -21,6 +21,7 @@ var createPostService = async (postDetails) => {
             _class       
         } = postDetails;
 
+        console.log(postDetails);
         const newPost = new postModel({
             username,
             title,
@@ -66,4 +67,17 @@ var deletePostService = async (id) => {
     }
 }
 
-module.exports = { getPostListService, createPostService, updatePostService, deletePostService } ;  
+var getListPostUserService = async (id) => {
+    try {
+        const listPost = await postModel.findById(id); 
+
+        if (!listPost) throw new Error("There're no posts"); 
+
+        else return listPost;
+    } catch (error) {
+        throw error;
+    }
+}
+
+module.exports = { getPostListService, createPostService, 
+    updatePostService, deletePostService, getListPostUserService } ;  
