@@ -72,4 +72,49 @@ var getPostAndCommentService = async () => {
             throw error;
         }
 }
-module.exports = { createCommentService, getComments, getPostAndCommentService } ;  
+
+var getPostAndCommentOfUserService = async (username) => {
+    try {
+        const posts = await postModel.find({ username });
+            const postIds = posts.map(post => post._id);
+            const comments = await commentModel
+                        .find({ postId: { $in: postIds } })
+                        .populate('postId');
+        return { posts, comments };
+    } catch (error) {
+        throw error;
+    }
+}
+
+var deleteCommentService = async (id) => {
+    try {
+        const deleteComment = await commentModel.findByIdAndDelete(id);
+
+        if (deleteComment) {
+            return "Deleted successfully!";
+        } else {
+            throw new Error('Comment is not found');
+          }
+    } catch (error) {
+        throw error;
+    }
+}
+
+var editCommentService = async (id, commentDetails) => {
+    try {
+        console.log(commentDetails);
+        // const objectId = mongoose.Types.ObjectId(username);
+        const updateComment = await commentModel.findOneAndUpdate(id, commentDetails, { new: true }); 
+
+        if (!updateComment) {
+            throw new Error(`No post found with id: ${id}`);  
+        } 
+
+        return updateComment;
+    } catch (error) {
+        throw error;
+    }
+}
+module.exports = { createCommentService, getComments, 
+                    getPostAndCommentService, getPostAndCommentOfUserService,
+                    deleteCommentService, editCommentService } ;  

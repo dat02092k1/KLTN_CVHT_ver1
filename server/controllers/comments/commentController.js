@@ -33,4 +33,41 @@ var getPostAndCommentController = async (req, res) => {
             .json({ success: false, message: `server error` });
     }
 }
-module.exports = { createCommentController, getSpecifiedCommentController, getPostAndCommentController } ;  
+
+var getPostAndCommentOfUser = async (req, res) => {
+    try {
+        var postAndComment = await commentService.getPostAndCommentOfUserService(req.params.username);  
+        res.status(200).json({ success: true, postAndComment });  
+    } catch (error) {
+        console.log(error);
+        res.status(500)
+            .json({ success: false, message: `server error` });
+    }
+}
+
+var deleteCommentController = async (req, res) => {
+    try {
+        console.log(req.params.username); 
+        console.log(req.params.id);
+        var deleteComment = await commentService.deleteCommentService(req.params.id);  
+        res.status(200).json({ success: true, deleteComment });  
+    } catch (error) {
+        console.log(error);
+        res.status(500)
+            .json({ success: false, message: `server error` });
+    }
+}
+
+var editCommentController = async (req, res) => {
+    try {
+        var editComment = await commentService.editCommentService(req.params.id, req.body);  
+        res.status(200).json({ success: true, editComment });  
+    } catch (error) {
+        console.log(error);
+        res.status(500)
+            .json({ success: false, message: `server error` });
+    }
+}
+module.exports = { createCommentController, getSpecifiedCommentController, 
+                    getPostAndCommentController, getPostAndCommentOfUser,
+                    deleteCommentController, editCommentController } ;  
