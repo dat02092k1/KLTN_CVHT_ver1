@@ -87,5 +87,6 @@ var refreshTokenService = async (req, res) => {
 }
 
 module.exports = {
-    loginService, createAccessToken, createRefreshToken, refreshTokenService
+    loginService, createAccessToken,
+    createRefreshToken, refreshTokenService
 }

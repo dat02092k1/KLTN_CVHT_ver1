@@ -33,6 +33,28 @@ const roleAuthentication = (req, res, next) => {
     })
 }
 
+const roleAuthenticationGetUsername = (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.user.username == req.params.username || req.user.role === "manager") {
+            next(); 
+        }
+        else {
+            res.status(403).json("You are not allowed to do this")
+        }
+    })
+}
+
+const isAdminAuthentication = (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.user.role === "manager") {
+            next(); 
+        }
+        else {
+            res.status(403).json("You are not allowed to do this")
+        }
+    })
+}
 module.exports = {
-    verifyToken, roleAuthentication 
+    verifyToken, roleAuthentication, 
+    roleAuthenticationGetUsername, isAdminAuthentication
   }

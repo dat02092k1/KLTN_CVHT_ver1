@@ -67,17 +67,18 @@ var deletePostService = async (id) => {
     }
 }
 
-var getListPostUserService = async (id) => {
+var listPostOfUser = async (username) => {
     try {
-        const listPost = await postModel.findById(id); 
+        console.log('service');
+        const listPost = await postModel.find({ username: username}); 
 
         if (!listPost) throw new Error("There're no posts"); 
 
-        else return listPost;
+        else return listPost;  
     } catch (error) {
         throw error;
     }
 }
 
 module.exports = { getPostListService, createPostService, 
-    updatePostService, deletePostService, getListPostUserService } ;  
+    updatePostService, deletePostService, listPostOfUser } ;  

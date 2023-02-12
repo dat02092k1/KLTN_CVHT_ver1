@@ -2,6 +2,7 @@ var postService = require('../../services/post/postService');
 
 var getPostListController = async (req, res) => { 
     try {
+        console.log(req.params.class); 
         var postList = await postService.getPostListService(req.params.class);
         res.status(200).json({ success: true, postList });
     } catch (error) {
@@ -44,7 +45,9 @@ var deletePostController = async (req, res) => {
 
 var listUserPostController = async (req, res) => {
     try {
-        var list = await postService.getListPostUserService(req.params.id);
+        console.log(req.params.username)
+        var list = await postService.listPostOfUser(req.params.username);
+        
         res.status(200).json({ success: true, list})
     } catch (error) {
         console.log(error);
