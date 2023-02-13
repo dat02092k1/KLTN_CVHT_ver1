@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+ import axios from "axios";
 
 export const useStudentStore = defineStore({
   id: "student",
@@ -22,17 +22,26 @@ export const useStudentStore = defineStore({
       _class: '',
       gpa: 0,
       paidFee: false,
-    }
+    },
+    accessToken: '',
   }),
   getters: {
   },
   actions: {
     async getData() {
         try {
+          const accessToken = window.sessionStorage.getItem("token");
+          console.log(accessToken);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+  
           const response = await axios.get(
-            "http://localhost:8000/student/getAll/K64-C-CLC"
+            "http://localhost:8000/student/getAll/K64-C-CLC", config
           );
-          this.data = response.data.student;
+          this.data = response.data.allStudent;
           console.log(this.data);
         } catch (error) {
           console.log(error);
@@ -40,8 +49,14 @@ export const useStudentStore = defineStore({
       },
     async postData() {
         try {
-          console.log(this.student);
-          const response = await axios.post('http://localhost:8000/student/create', this.student);
+          const accessToken = window.sessionStorage.getItem("token");
+          console.log(accessToken);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+          const response = await axios.post('http://localhost:8000/student/create', this.student, config);
           console.log(response.data);  
         } catch (error) {
           console.error(error);
@@ -49,9 +64,14 @@ export const useStudentStore = defineStore({
     },
     async updateStudent(id, details) {
       try {
-        console.log(id);
-        console.log(details);
-        const response = await axios.patch(`http://localhost:8000/student/update/${id}`, details
+        const accessToken = window.sessionStorage.getItem("token");
+          console.log(accessToken);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+        const response = await axios.patch(`http://localhost:8000/student/update/${id}`, details, config
         ); 
         console.log(response);
       } catch (error) {
@@ -61,7 +81,15 @@ export const useStudentStore = defineStore({
     ,
     async getStudentDetails(id) {
       try {
-        const response = await axios.get(`http://localhost:8000/student/details/${id}`);   
+        const accessToken = window.sessionStorage.getItem("token");
+          console.log(accessToken);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+  
+        const response = await axios.get(`http://localhost:8000/student/details/${id}`, config);   
         this.studentDetails = response.data.details;
         console.log(this.studentDetails.studentId);
       } catch (error) {
@@ -70,8 +98,14 @@ export const useStudentStore = defineStore({
     },
     async deleteStudent(id) {
       try {
-        console.log(id);
-        const response = await axios.delete(`http://localhost:8000/student/remove/${id}`);   
+        const accessToken = window.sessionStorage.getItem("token");
+          console.log(accessToken);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+        const response = await axios.delete(`http://localhost:8000/student/remove/${id}`, config);   
 
         console.log(response);
         this.getData();

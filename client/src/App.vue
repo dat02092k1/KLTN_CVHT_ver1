@@ -7,6 +7,7 @@ import StudentDetails from './views/student/StudentDetails.vue'
 
 const route = useRoute();
 
+
 </script>
 
 <template>
@@ -15,8 +16,8 @@ const route = useRoute();
       <TheHeader v-if="route.name !== 'login'"/>
       <!-- <TheMain />    -->
       
-        
-        <RouterLink to="/student/list"></RouterLink>
+<!--         
+        <RouterLink to="/student/list"></RouterLink> -->
       <RouterView />
   </div>
   

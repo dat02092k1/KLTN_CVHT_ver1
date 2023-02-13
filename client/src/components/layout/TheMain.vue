@@ -112,6 +112,7 @@
 import axios from "axios";
 import { RouterLink, RouterView } from 'vue-router'
 import { useStudentStore } from "../../stores/student.js";
+
 export default {
   data() {
     return {

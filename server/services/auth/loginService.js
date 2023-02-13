@@ -14,8 +14,9 @@ var createRefreshToken = (user) => {
 }
 
 var loginService = async (req, res, next) => {
+     
     const { studentId, password } = req.body;
-
+     
     try {
         var user = await userModel.findOne( {studentId});
 
