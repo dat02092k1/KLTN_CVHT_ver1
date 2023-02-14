@@ -84,7 +84,14 @@
     }),
       async mounted () {    
        try {
-        const userlist  = await axios.get('http://localhost:8000/student/getAll/K64-C-CLC')
+        const accessToken = window.sessionStorage.getItem("token");
+          console.log(accessToken);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+        const userlist  = await axios.get('http://localhost:8000/student/getAll/K64-C-CLC', config); 
         const fetchData = userlist.data.student;
          
         const gpa = fetchData.map(number => number.gpa);

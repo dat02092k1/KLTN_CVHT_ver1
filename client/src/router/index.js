@@ -7,6 +7,8 @@ import StudentDetails from '../views/student/StudentDetails.vue'
 import StudentForm from '../views/student/StudentForm.vue'
 import FormTest from '../views/student/FormTest.vue'
 import ChartGpa from '../views/chart/ChartGpa.vue'
+import Forum from '../views/base/Forum.vue'
+import PostDetails from '../views/base/PostDetails.vue'
 
 import Login from '../views/login/Login.vue'
 
@@ -51,6 +53,16 @@ const router = createRouter({
       path: '/student/chart',
       name: 'chart gpa',
       component: ChartGpa
+    },
+    {
+      path: '/student/forum',
+      name: 'forum',
+      component: Forum
+    },
+    {
+      path: '/student/forum/post',
+      name: 'post details',
+      component: PostDetails
     }
   ]
 })

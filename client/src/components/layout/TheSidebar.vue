@@ -50,12 +50,14 @@
 
                 <div class="h-12 hover:bg-[#2d3c50]" :class="{ active: color === activeColor }"
   @click="changeColor('active4')">
-                    <a class="item__list" >
+                    
+                <router-link class="h-12 hover:bg-[#2d3c50]" :class="{ active: color === activeColor }"
+  @click="changeColor('active4')" to="/student/forum">
                     <li class="flex items-center py-0 px-5">
                         <i class="fa-solid fa-graduation-cap mr-4"></i>
-                        <div>Khả năng tốt nghiệp</div>
+                        <div>Diễn đàn</div>
                     </li>
-                </a> 
+                </router-link>
                 </div>
             </ul>
         </div>
@@ -63,6 +65,8 @@
 </template>
 
 <script>
+import { RouterLink, RouterView } from 'vue-router'
+
 export default {
     data() {
         return {
