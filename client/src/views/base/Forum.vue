@@ -4,7 +4,7 @@
       <NavTitle/>
       <div  class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded">
       
-        <div v-for="(item, index) in useForum.listPost" :key="index" class="forum-item my-3 w-[60%] rounded-md cursor-pointer">
+        <div v-for="(item, index) in useForum.listPost" :key="index" class="forum-item bg-[#ecf2f7] my-3 w-[60%] rounded-md cursor-pointer">
           <div class="flex justify-between relative">
             <div class="font-bold">
              {{ item.title }}
@@ -14,7 +14,11 @@
               <i class="fa-solid fa-ellipsis"></i>
             </div>
             <div v-if="showOptions[index]" class="absolute right-[-8px] top-6 bg-[#f0f2f5] text-xs p-1">
-              <div @click="handleOptionClick('view')">Xem</div>
+              <div @click="handleOptionClick('view')">
+              <router-link :to="{ path: '/student/forum/post/' + item._id }">
+                Xem
+              </router-link>
+            </div>
               <div @click="handleOptionClick('edit')">Sửa</div>
               <div @click="handleOptionClick('delete')">Xóa</div>
             </div>
@@ -30,11 +34,14 @@
         <hr style="border-top: 1px solid #ddd" /> 
       </div>
     </div>
+    <Loading v-if="showLoading"/>
   </div>
 </template>
 
 <script>
 import NavTitle from './NavTitle.vue';
+import Loading from './Loading.vue';
+
 import { RouterLink, RouterView } from "vue-router";
 import { useForumStore } from '../../stores/forum'; 
 
@@ -44,6 +51,7 @@ export default {
           useForum: useForumStore(),
           _class: 'K64-C-CLC',
           showOptions: [],
+          showLoading: false
         };
     },
     mounted() {
@@ -59,7 +67,7 @@ export default {
       // ẩn các option sau khi người dùng click
     }
     },
-    components: { NavTitle }
+    components: { NavTitle, Loading }
 };
 </script>
 

@@ -7,6 +7,8 @@ const router = express.Router();
 router.post('/post/comment/create/:id', userAuthenticate.verifyToken, commentController.createCommentController);
 // get comments of specified user
 router.get('/post/comment-list/:username', userAuthenticate.roleAuthenticationGetUsername, commentController.getSpecifiedCommentController);
+// get comments mapping post-id
+router.get('/comment/post/:id', userAuthenticate.roleAuthenticationGetUsername, commentController.getCommentsMapPostId);
 // get all posts and related comments
 router.get('/post/comment-list', userAuthenticate.isAdminAuthentication, commentController.getPostAndCommentController);
 // get all posts and related comments of username

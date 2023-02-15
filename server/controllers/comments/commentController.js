@@ -68,6 +68,16 @@ var editCommentController = async (req, res) => {
             .json({ success: false, message: `server error` });
     }
 }
+
+var getCommentsMapPostId = async (req, res) => {
+    try {
+        var commentAndPost = await commentService.getCommentsMapPostIdService(req.params.id);
+        res.status(200).json({ success: true, commentAndPost }); 
+    } catch (error) {
+        console.log(error);
+    }
+}
 module.exports = { createCommentController, getSpecifiedCommentController, 
                     getPostAndCommentController, getPostAndCommentOfUser,
-                    deleteCommentController, editCommentController } ;  
+                    deleteCommentController, editCommentController,
+                    getCommentsMapPostId } ;  

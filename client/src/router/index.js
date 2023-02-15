@@ -9,6 +9,7 @@ import FormTest from '../views/student/FormTest.vue'
 import ChartGpa from '../views/chart/ChartGpa.vue'
 import Forum from '../views/base/Forum.vue'
 import PostDetails from '../views/base/PostDetails.vue'
+import Loading from '../views/base/Loading.vue'
 
 import Login from '../views/login/Login.vue'
 
@@ -60,9 +61,14 @@ const router = createRouter({
       component: Forum
     },
     {
-      path: '/student/forum/post',
+      path: '/student/forum/post/:id',
       name: 'post details',
       component: PostDetails
+    },
+    {
+      path: '/loading',
+      name: 'loading',
+      component: Loading
     }
   ]
 })

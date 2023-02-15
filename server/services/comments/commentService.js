@@ -115,6 +115,21 @@ var editCommentService = async (id, commentDetails) => {
         throw error;
     }
 }
+
+var getCommentsMapPostIdService = async (id) => {
+    try {
+        const post = await postModel.findById(id); 
+
+        if (!post) throw new Error("Post not found"); 
+
+        const comments = await commentModel.find({ postId: id });
+
+        return ({ post, comments });
+    } catch (error) {
+        throw error;
+    }
+}
 module.exports = { createCommentService, getComments, 
                     getPostAndCommentService, getPostAndCommentOfUserService,
-                    deleteCommentService, editCommentService } ;  
+                    deleteCommentService, editCommentService,
+                    getCommentsMapPostIdService } ;  
