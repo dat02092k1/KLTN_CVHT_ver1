@@ -50,8 +50,19 @@
           <div>
             {{ item.content }}
           </div>
-      </div>
+      </div>  
     </div>
+    <form @submit.prevent="addComment">
+          <div>
+            <label for="author">Author:</label>
+            <input id="author" type="text" >
+          </div>
+          <div>
+            <label for="content">Content:</label>
+            <textarea id="content"></textarea>
+          </div>
+          <button type="submit">Add Comment</button>
+        </form>
         </div>
     </div>
     <div v-else>

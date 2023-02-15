@@ -3,11 +3,11 @@ const postModel = require('../../models/posts/post.js');
 
 const mongoose = require('mongoose');
 
-var createCommentService = async (id, commentDetails) => {
+var createCommentService = async (id, user, commentDetails) => {
     try {
         const postId = id;
+        const username = user;
         const {
-            username,
             content
             } = commentDetails;
         console.log(username); 
@@ -102,9 +102,9 @@ var deleteCommentService = async (id) => {
 
 var editCommentService = async (id, commentDetails) => {
     try {
-        console.log(commentDetails);
+        console.log(id, commentDetails);
         // const objectId = mongoose.Types.ObjectId(username);
-        const updateComment = await commentModel.findOneAndUpdate(id, commentDetails, { new: true }); 
+        const updateComment = await commentModel.findByIdAndUpdate(id, commentDetails, { new: true }); 
 
         if (!updateComment) {
             throw new Error(`No post found with id: ${id}`);  

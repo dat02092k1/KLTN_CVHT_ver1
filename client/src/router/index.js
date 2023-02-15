@@ -10,6 +10,7 @@ import ChartGpa from '../views/chart/ChartGpa.vue'
 import Forum from '../views/base/Forum.vue'
 import PostDetails from '../views/base/PostDetails.vue'
 import Loading from '../views/base/Loading.vue'
+import Test from '../views/base/Test.vue'
 
 import Login from '../views/login/Login.vue'
 
@@ -69,6 +70,11 @@ const router = createRouter({
       path: '/loading',
       name: 'loading',
       component: Loading
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
     }
   ]
 })

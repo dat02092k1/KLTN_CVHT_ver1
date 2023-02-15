@@ -2,8 +2,9 @@ const studentsModel = require('../../models/students/studentsModel');
 var studentModel = require('../../models/students/studentsModel');
 const mongoose = require('mongoose');
 
-var studentServiceGetAll = async (_class) => {
+var studentServiceGetAll = async (username, _class) => {
     try {
+        console.log(username)
         const data = await studentModel.find({ class: _class });
         return data;
         
