@@ -42,7 +42,7 @@ var updatePostService = async (id, postDetails) => {
         console.log(postDetails.username);
         const username = postDetails.username;
         // const objectId = mongoose.Types.ObjectId(username);
-        const updatePost = await postModel.findOneAndUpdate(username, postDetails, { new: true }); 
+        const updatePost = await postModel.findByIdAndUpdate(id, postDetails, { new: true }); 
         if (!updatePost) {
             throw new Error(`No post found with id: ${id}`);
         }

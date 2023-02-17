@@ -26,7 +26,9 @@
               Xem
             </router-link>
           </div>
-            <div @click="handleOptionClick('edit')">Sửa</div>
+            <div @click="handleOptionClick('edit')">
+            <router-link :to="{ path: '/student/forum/edit/' + item._id }">Sửa</router-link>
+            </div>
             <div @click="deletePost(item._id)">Xóa</div>
           </div>
         </div>

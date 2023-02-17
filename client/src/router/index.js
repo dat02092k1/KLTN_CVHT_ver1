@@ -12,6 +12,7 @@ import PostDetails from '../views/base/PostDetails.vue'
 import Loading from '../views/base/Loading.vue'
 import Test from '../views/base/Test.vue'
 import AddPost from '../views/base/forum/AddPost.vue'
+import UpdatePost from '../views/base/forum/UpdatePost.vue'
 
 import Login from '../views/login/Login.vue'
 
@@ -81,6 +82,11 @@ const router = createRouter({
       path: '/student/forum/create',
       name: 'add post',
       component: AddPost
+    },
+    {
+      path: '/student/forum/edit/:id',
+      name: 'edit post',
+      component: UpdatePost
     }
   ]
 })

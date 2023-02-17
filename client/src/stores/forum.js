@@ -63,6 +63,23 @@ export const useForumStore = defineStore({
         console.log(error);
       }
     },
+    async updatePost(id, postDetails) {
+      try {
+        const accessToken = window.sessionStorage.getItem("token");
+          console.log(accessToken);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+
+        const updatePost = await axios.put(`http://localhost:8000/post/edit/${id}`, postDetails, config);
+
+        console.log(updatePost);  
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getPostAndComment(id)  { 
         try {
             const accessToken = window.sessionStorage.getItem("token");
