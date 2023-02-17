@@ -10,7 +10,7 @@ var createCommentService = async (id, user, commentDetails) => {
         const {
             content
             } = commentDetails;
-        console.log(username); 
+        console.log(id); 
 
         const newComment = new commentModel({
             postId,

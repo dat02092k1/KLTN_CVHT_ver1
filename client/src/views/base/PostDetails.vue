@@ -1,110 +1,115 @@
 <template>
-   <div>
-    <NavTitle/>
+  <div>
+    <NavTitle />
     <div>
-      <div class="post flex" v-if="useForum.post">        
-        <div class="forum-item  w-[80%] rounded-md   mx-auto">
+      <div class="post flex" v-if="useForum.post">
+        <div class="forum-item w-[80%] rounded-md mx-auto">
           <div>
-              <h2 class="font-bold text-2xl text-center">
-                 {{ useForum.post.title }}
-              </h2>
-            </div>
+            <h2 class="font-bold text-2xl text-center">
+              {{ useForum.post.title }}
+            </h2>
+          </div>
 
-        <div class="flex justify-between">
+          <div class="flex justify-between">
             <div>
               <div class="font-medium text-base">
-              {{ useForum.post.username }}
-            </div>
+                {{ useForum.post.username }}
+              </div>
 
-            <div>
-             Class: <span class="font-medium">
-              {{ useForum.post._class }}
-             </span>
-            </div>
+              <div>
+                Class:
+                <span class="font-medium">
+                  {{ useForum.post._class }}
+                </span>
+              </div>
             </div>
 
             <div>
               {{ useForum.post.createdAt }}
-              
             </div>
-        </div>
-        <div>
-
-          <div>
-          Nội dung:
           </div>
           <div>
-            {{ useForum.post.content }}
-          </div>
-        </div>
-          <hr>
+            <div>Nội dung:</div>
             <div>
-              <i class="fa-regular fa-comment"></i>
-              <b> Bình luận</b>
+              {{ useForum.post.content }}
             </div>
+          </div>
+          <hr />
+          <div>
+            <i class="fa-regular fa-comment"></i>
+            <b> Bình luận</b>
+          </div>
           <div class="comment-list mx-auto">
-      <div class="comment-item w-[50%]    my-2" v-for="(item, index) in useForum.comments" :key="index">
-          <div class="font-medium text-base">
-            {{ item.username }}
-          </div> 
-          <div>
-            {{ item.content }}
+            <div
+              class="comment-item w-[50%] my-2"
+              v-for="(item, index) in useForum.comments"
+              :key="index"
+            >
+              <div class="font-medium text-base">
+                {{ item.username }}
+              </div>
+              <div>
+                {{ item.content }}
+              </div>
+            </div>
           </div>
-      </div>  
-    </div>
-    <form @submit.prevent="addComment">
           <div>
-            <label for="author">Author:</label>
-            <input id="author" type="text" >
+            <div class="flex">
+              <label class="mr-3" for="content">Comment:</label>
+              <textarea
+                class="p-3 w-[60%]"
+                v-model="this.content"
+                id="content"
+              ></textarea>
+            </div>
+            <button
+              @keyup.enter="postComment(useForum.post._id, this.content)"
+              @click="postComment(useForum.post._id, this.content)"
+              class="bg-[#324f90] text-[#fff] rounded m-2 p-2"
+              type="submit"
+            >
+              Add Comment
+            </button>
           </div>
-          <div>
-            <label for="content">Content:</label>
-            <textarea id="content"></textarea>
-          </div>
-          <button type="submit">Add Comment</button>
-        </form>
         </div>
+      </div>
+      <div v-else>error</div>
     </div>
-    <div v-else>
-      error
-    </div>
-    </div>
-     
-    
-   </div>
-  </template>
-  
-  <script>
-  import NavTitle from './NavTitle.vue';
-  import { useForumStore } from '../../stores/forum'; 
-  import { RouterLink, RouterView, useRoute } from 'vue-router'
-  export default {
-      data() {
-          return {
-            useForum: useForumStore(),
-            id: useRoute().params.id,
-            post: null,
-            comments: []
-          };
-      },
-      mounted() {
-        this.useForum.getPostAndComment(this.id);
-         
-      }
-      ,
-      methods: {
-        formattedDate(date) {
-          const dat = new Date(dateStr);
-          return dat.toLocaleDateString('en-GB');
-        }
-      },
-      components: { NavTitle }
-  };
-  </script>
-  
-  <style scoped>
+  </div>
+</template>
 
+<script>
+import NavTitle from "./NavTitle.vue";
+import { useForumStore } from "../../stores/forum";
+import { RouterLink, RouterView, useRoute } from "vue-router";
+export default {
+  data() {
+    return {
+      useForum: useForumStore(),
+      id: useRoute().params.id,
+      post: null,
+      comments: [],
+      content: "",
+    };
+  },
+  mounted() {
+    this.useForum.getPostAndComment(this.id);
+  },
+  methods: {
+    formattedDate(date) {
+      const dat = new Date(dateStr);
+      return dat.toLocaleDateString("en-GB");
+    },
+    postComment(id, content) {
+      this.useForum.addComment(id, content);
+      this.content = "";
+    },
+  },
+  components: { NavTitle },
+};
+</script>
 
+<style scoped>
 .post-title {
   margin-top: 0;
 }
@@ -165,6 +170,8 @@
 .forum-item {
   border: 1px solid #85bde5;
   padding: 5px 20px;
+  height: 400px;
+  overflow-y: scroll;
 }
 
 .comment-item {
@@ -172,5 +179,4 @@
   padding: 5px 20px;
   border-radius: 10px;
 }
-  </style>
-  
+</style>
