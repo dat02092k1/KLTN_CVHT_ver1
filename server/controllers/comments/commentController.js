@@ -60,6 +60,7 @@ var deleteCommentController = async (req, res) => {
 
 var editCommentController = async (req, res) => {
     try {
+        console.log(req.body);
         var editComment = await commentService.editCommentService(req.params.id, req.body);  
         res.status(200).json({ success: true, editComment });  
     } catch (error) {

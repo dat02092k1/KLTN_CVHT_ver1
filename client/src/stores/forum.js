@@ -123,5 +123,45 @@ export const useForumStore = defineStore({
         console.log(error);
       }
     },
+    async deleteComment(id, postId) {
+      try {
+        const accessToken = window.sessionStorage.getItem("token");
+          console.log(accessToken);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+
+          const deleteComment = await axios.delete(`http://localhost:8000/post/comment/delete/${id}`, config);
+
+          console.log(deleteComment);
+
+          this.getPostAndComment(postId);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async editComment(id, comment, username) {
+      try {
+        const accessToken = window.sessionStorage.getItem("token");
+          console.log(comment);
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+
+        const edit = await axios.put(`http://localhost:8000/post/comment/edit/${username}/${id}`, 
+        {
+          content: comment
+         }
+        , config);
+
+        console.log(edit);  
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
 });

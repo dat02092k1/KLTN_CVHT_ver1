@@ -14,7 +14,7 @@ router.get('/post/comment-list', userAuthenticate.isAdminAuthentication, comment
 // get all posts and related comments of username
 router.get('/post-comment-list/:username', userAuthenticate.roleAuthenticationGetUsername, commentController.getPostAndCommentOfUser);
 // delete comments of username
-router.delete('/post/comment/delete/:username/:id', userAuthenticate.roleAuthenticationGetUsername, commentController.deleteCommentController);
+router.delete('/post/comment/delete/:id', userAuthenticate.roleAuthenticationGetUsername, commentController.deleteCommentController);
 // edit comments of username 
 router.put('/post/comment/edit/:username/:id', userAuthenticate.roleAuthenticationGetUsername, commentController.editCommentController);
 
