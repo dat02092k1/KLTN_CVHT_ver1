@@ -12,6 +12,7 @@
     "chart.js": "^4.2.0",
     "element-plus": "^2.2.31",
     "pinia": "^2.0.28",
+    "socket.io-client": "^4.6.1",
     "vue": "^3.2.45",
     "vue-axios": "^3.5.2",
     "vue-chartjs": "^5.2.0",
