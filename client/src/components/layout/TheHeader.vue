@@ -9,7 +9,7 @@
             </div>
             <span class="text-[#97a8be]">/</span>
             <div class="ml-4 text-[#97a8be]">
-                Khung chương trình ĐT
+                UET Study Consultant
             </div>
         </div>
         <div class="flex">

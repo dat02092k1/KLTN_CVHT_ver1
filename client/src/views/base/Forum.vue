@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-forum">
-      <NavTitle/>
+      <NavTitle :title="pageTitle"/>
       
       
       <div  class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded">
@@ -62,7 +62,8 @@ export default {
           useForum: useForumStore(),
           _class: 'K64-C-CLC',
           showOptions: [],
-          showLoading: false
+          showLoading: false,
+          pageTitle: "Diễn đàn FAQ"
         };
     },
     mounted() {

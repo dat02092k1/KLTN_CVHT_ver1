@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavTitle />
+    <NavTitle :title="pageTitle"/>
     <div>
       <div class="post flex" v-if="useForum.post">
         <div class="forum-item w-[80%] rounded-md mx-auto">
@@ -111,7 +111,8 @@ export default {
       comments: [],
       content: "",
       showOptions: [],
-      showEdit: false
+      showEdit: false,
+      pageTitle: "Thông tin bài đăng"
     };
   },
   mounted() {

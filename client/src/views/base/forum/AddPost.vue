@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavTitle/>
+        <NavTitle :title="pageTitle"/>
 
         <div class="form-post--wrapper m-5">
             <div>
@@ -54,7 +54,8 @@
             content: '',
             _class: ''
         },
-        useForum: useForumStore(),      
+        useForum: useForumStore(),   
+        pageTitle: "Thêm bài đăng"   
       }
     },
     methods: {

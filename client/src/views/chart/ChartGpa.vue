@@ -92,7 +92,8 @@
             }
           };
         const userlist  = await axios.get('http://localhost:8000/student/getAll/K64-C-CLC', config); 
-        const fetchData = userlist.data.student;
+        console.log(userlist);
+        const fetchData = userlist.data.allStudent;
          
         const gpa = fetchData.map(number => number.gpa);
         const student = fetchData.map(number => number.studentId);

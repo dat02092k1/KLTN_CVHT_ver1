@@ -1,6 +1,6 @@
 <template>
     <div>
-      <NavTitle />
+      <NavTitle :title="pageTitle"/>
       <div>
         <div class="post" v-if="useForum.post">
           <div class="forum-item w-[80%] rounded-md mx-auto bg-[#fff]">
@@ -61,7 +61,8 @@
          username: "", 
          content: "",
          _class: ""
-        }
+        },
+        pageTitle: "Edit bài đăng"
       };
     },
     async mounted() {

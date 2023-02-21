@@ -31,20 +31,27 @@
         ]"
         @click="changeColor('active2')">
                     <a class="item__list">
-                    <li class="flex items-center py-0 px-5">
+                    <!-- <li class="flex items-center py-0 px-5">
                         <i class="fa-solid fa-graduation-cap mr-4"></i>
                         <div>Thời gian học tập</div>
-                    </li>
+                    </li> -->
+
+                    <router-link class="flex items-center py-0 px-5" to="/student/list">
+                        <i class="fa-solid fa-list mr-4"></i>
+                        <div>Danh sách sinh viên</div>
+                    </router-link>
                 </a> 
                 </div>
 
                 <div class="h-12 hover:bg-[#2d3c50]" :class="{ active: color === activeColor }"
   @click="changeColor('active3')">
                     <a class="item__list">
-                    <li class="flex items-center py-0 px-5">
-                        <i class="fa-solid fa-graduation-cap mr-4"></i>
-                        <div>Tư vấn học vụ</div>
-                    </li>
+                     
+
+                    <router-link class="flex items-center py-0 px-5" to="/student/chart">
+                        <i class="fa-solid fa-chart-simple mr-4"></i>
+                        <div>Điểm sinh viên</div>
+                    </router-link>
                 </a> 
                 </div>
 
@@ -54,7 +61,7 @@
                 <router-link class="h-12 hover:bg-[#2d3c50]" :class="{ active: color === activeColor }"
   @click="changeColor('active4')" to="/student/forum">
                     <li class="flex items-center py-0 px-5">
-                        <i class="fa-solid fa-graduation-cap mr-4"></i>
+                        <i class="fa-regular fa-circle-question mr-4"></i>
                         <div>Diễn đàn</div>
                     </li>
                 </router-link>
