@@ -44,7 +44,7 @@ var loginService = async (req, res, next) => {
             samesite: "strict"
         })
 
-        return res.status(200).json({ acessToken });   
+        return res.status(200).json({ acessToken, user });   
         
     } catch (error) {
         console.log(error);  

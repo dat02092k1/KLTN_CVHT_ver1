@@ -14,7 +14,8 @@ import Test from '../views/base/Test.vue'
 import AddPost from '../views/base/forum/AddPost.vue'
 import UpdatePost from '../views/base/forum/UpdatePost.vue'
 import EditComment from '../views/base/forum/EditComment.vue'
-
+import Chat from '../views/base/chat/Chat.vue'
+import Conversation from '../views/base/chat/Conversation.vue'
 import Login from '../views/login/Login.vue'
 
 const router = createRouter({
@@ -93,6 +94,16 @@ const router = createRouter({
       path: '/student/comment/edit/:postid/:id',
       name: 'edit comment',
       component: EditComment
+    },
+    {
+      path: '/student/chat',
+      name: 'chat',
+      component: Chat
+    },
+    {
+      path: '/student/conversation',
+      name: 'Conversation',
+      component: Conversation
     }
   ]
 })

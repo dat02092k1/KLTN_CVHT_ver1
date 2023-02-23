@@ -8,8 +8,16 @@ var login = require('./routes/auth/login.js');
 var token = require('./routes/auth/token.js');
 var post = require('./routes/posts/post.js');
 var comment = require('./routes/comments/comment.js');
-var cookieParser = require('cookie-parser');
+var conversation = require('./routes/chat/conversation.js');
+var message = require('./routes/chat/message.js');
 
+var cookieParser = require('cookie-parser');
+var io = require('socket.io')(9000, {
+    cors: {
+      origin: "http://127.0.0.1:5173",
+    },
+  });
+const { joinUser, removeUser } = require('./utils/users.js');
 var cors = require('cors');
 
 
@@ -26,6 +34,44 @@ mongoose
         else console.log('db connected');
     })
 
+let thisRoom = "";
+
+io.on('connection', (socket) => {
+    console.log('new connection');
+
+    socket.on("join room", (data) => { 
+
+        let newUser = joinUser(socket.id, data.username, data.roomName);
+
+        socket.emit("send data", {
+            id: socket.id,
+            username: newUser.username,
+            roomname: newUser.roomname
+        }); 
+
+        thisRoom = newUser.roomname;
+        console.log(thisRoom);
+
+        socket.join(newUser.roomname);  
+         
+        socket.on("chat message", (data) => {
+            console.log(data);
+    
+            io.to(thisRoom).emit("chat message", {
+                data: data,
+                id: socket.id,
+                room: thisRoom
+            })
+        })
+    });
+
+    socket.on("message", (data) => {
+        console.log('someon say: ' + data)
+    })
+
+});
+
+
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
@@ -34,7 +80,8 @@ app.use("/", register);
 app.use("/", login);       
 app.use("/", post); 
 app.use("/", comment);
-
+app.use("/api", conversation);
+app.use("/api", message); 
 app.listen(PORT, (err) => {
     if (err) console.log('error');
     else console.log(`server listening on ${PORT}`);

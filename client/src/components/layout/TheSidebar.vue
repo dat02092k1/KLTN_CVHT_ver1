@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar" :style="{ width: sidebarWidth }">
+    <div class="sidebar hidden md:flex" :style="{ width: sidebarWidth }">
         <div class="sidebar-logo-container bg-black leading-[50px]">
             <a href="" class="flex justify-center items-center">
                 <img class="w-8 h-8 align-middle mr-3 " src="../../assets/images/logo_small.png" alt="">
@@ -8,7 +8,7 @@
         </div>
 
         <div class="sidebar-scrollbar mt-3">
-            <ul>
+            <ul class="hidden md:block ">
                 <div class="h-12 hover:bg-[#2d3c50]" 
                 :class="[
           { active: activeColor === 'active1' },
@@ -104,7 +104,7 @@ export default {
     height: 100vh;
     background-color: #304156;
     box-sizing: border-box;
-    display: flex;
+    
     flex-direction: column;
     flex-wrap: nowrap;
     color: #fff;
