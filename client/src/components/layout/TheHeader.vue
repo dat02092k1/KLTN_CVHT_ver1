@@ -4,7 +4,7 @@
             <div class="nav-menu mr-4">
                 <i class="fa-solid fa-bars"></i>
             </div>
-            <div class="mr-2">
+            <div class="mr-2 hidden md:block">
                 Bảng điều khiển
             </div>
             <span class="text-[#97a8be]">/</span>

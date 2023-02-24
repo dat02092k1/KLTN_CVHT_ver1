@@ -17,7 +17,7 @@ var io = require('socket.io')(9000, {
       origin: "http://127.0.0.1:5173",
     },
   });
-const { joinUser, removeUser } = require('./utils/users.js');
+
 var cors = require('cors');
 
 
@@ -34,41 +34,53 @@ mongoose
         else console.log('db connected');
     })
 
-let thisRoom = "";
+
+    let users = [];
+
+    const addUser = (username, socketId) => {
+        !users.some(user => user.username === username) &&
+            users.push({ username, socketId}); 
+    }
+
+    const removeUser = (socketId) => {
+        users = users.filter(user => user.socketId !== socketId); 
+    }
+
+    const getUser = (username) => {
+        return users.find(user => user.username === username);
+    }   
 
 io.on('connection', (socket) => {
-    console.log('new connection');
+    //connect
+    console.log('new connection ' + socket.id); 
 
-    socket.on("join room", (data) => { 
+    // get username and socket from users
+    socket.on("addUser", username => {
+        addUser(username, socket.id);
+        io.emit("getUsers", users);
+    }) 
 
-        let newUser = joinUser(socket.id, data.username, data.roomName);
-
-        socket.emit("send data", {
-            id: socket.id,
-            username: newUser.username,
-            roomname: newUser.roomname
-        }); 
-
-        thisRoom = newUser.roomname;
-        console.log(thisRoom);
-
-        socket.join(newUser.roomname);  
-         
-        socket.on("chat message", (data) => {
-            console.log(data);
-    
-            io.to(thisRoom).emit("chat message", {
-                data: data,
-                id: socket.id,
-                room: thisRoom
-            })
+    // send and get message
+    socket.on("sendMessage", ({username, receiverName, content}) => {
+        console.log(receiverName)
+        const user = getUser(receiverName); 
+        console.log(user);
+        if (user) {
+        io.to(user.socketId).emit("getMessage", {
+            username,
+            content
         })
-    });
-
-    socket.on("message", (data) => {
-        console.log('someon say: ' + data)
+        }
+        else {
+            socket.emit("offlineUser", "this user is offline")
+        }
     })
-
+    // disconnect
+    socket.on("disconnect", () => {
+        console.log(socket.id + " disconnected");
+        removeUser(socket.id);
+        io.emit("getUsers", users);
+    })
 });
 
 

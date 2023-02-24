@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-
+import { getAccessToken } from '../utils/config.js'
 export const useChatStore = defineStore({
   id: "chat",
   state: () => ({
     accessToken: "",
     friends: [],
     conversation: [], 
+    messages: [],
+    getToken: getAccessToken
   }),
   getters: {},
   actions: {
@@ -32,5 +34,26 @@ export const useChatStore = defineStore({
       this.friends = friends;
        
     },
+    async getMessages(conversationId) {
+        try {
+            const config = getAccessToken();
+            
+            const messages = await axios.get(`http://localhost:8000/api/message/${conversationId}`, config);
+            this.messages = messages.data.messages;
+            console.log(this.messages); 
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    async sendMessage(message) {
+        try {
+            const config = getAccessToken();
+
+        const msg = await axios.post("http://localhost:8000/api/message/create", message, config);
+        console.log(msg);  
+        } catch (error) {
+            console.log(error);
+        }
+    }
   },
 });
