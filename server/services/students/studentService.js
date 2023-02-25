@@ -6,6 +6,9 @@ var studentServiceGetAll = async (username, _class) => {
     try {
         console.log(username)
         const data = await studentModel.find({ class: _class });
+
+        if (!data) return false; 
+        
         return data;
         
     } catch (error) {

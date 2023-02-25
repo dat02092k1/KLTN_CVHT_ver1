@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 require('dotenv').config();
+
 var student = require('./routes/students/students');
 var register = require('./routes/auth/register.js');
 var login = require('./routes/auth/login.js');
@@ -10,7 +11,9 @@ var post = require('./routes/posts/post.js');
 var comment = require('./routes/comments/comment.js');
 var conversation = require('./routes/chat/conversation.js');
 var message = require('./routes/chat/message.js');
+var search = require('./routes/search/search.js');
 
+var logger = require('./logger/logger.js'); 
 var cookieParser = require('cookie-parser');
 var io = require('socket.io')(9000, {
     cors: {
@@ -94,6 +97,8 @@ app.use("/", post);
 app.use("/", comment);
 app.use("/api", conversation);
 app.use("/api", message); 
+app.use("/api", search);  
+
 app.listen(PORT, (err) => {
     if (err) console.log('error');
     else console.log(`server listening on ${PORT}`);

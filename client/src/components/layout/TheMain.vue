@@ -42,7 +42,9 @@
                       <input
                       class="filter-input h-8 text-[14px] leading-1 font-normal"
                         type="text"
-                        placeholder="MSSV"
+                        placeholder="MSSV" 
+                        v-model="this.filters.studentId"
+                         
                       />
                     </div>
                   </th>
@@ -52,6 +54,8 @@
                       class="filter-input h-8 text-[14px] leading-1 font-normal"
                         type="text"
                         placeholder="Họ tên"
+                        v-model="this.searchName"
+                         
                       />
                     </div>
                   </th>
@@ -66,10 +70,11 @@
                  
                 </tr>
               </thead>
+              
               <tbody>
                 <tr
-                  class="course-list"
-                  v-for="(item, index) in this.useStudent.data"
+                  class="course-list" 
+                  v-for="(item, index) in this.filteredStudents"
                   :key="index"
                 >
                   <td class="text-center">{{ index + 1 }}</td>
@@ -81,7 +86,7 @@
                   </td>
                   <td>{{ item.gpa }}</td>
                   <td>{{ item.status }}</td>
-                  <td class="grid grid-cols-2">
+                  <td class="flex flex-col md:grid grid-cols-2">
                     <div>
                       <RouterLink :to="{ path: '/student/details/' + item._id }" >
                         <button>
@@ -98,6 +103,8 @@
                   </td>
                 </tr>
               </tbody>
+
+              
             </table>
            
            
@@ -112,19 +119,56 @@
 import axios from "axios";
 import { RouterLink, RouterView } from 'vue-router'
 import { useStudentStore } from "../../stores/student.js";
+import { useChatStore } from '../../stores/conversation.js';
 
 export default {
   data() {
     return {
       data: [],
       useStudent: useStudentStore(), 
+      filters: {
+        studentId: '',
+        name: '', 
+      },
+      filterText: '',
+      students: [],
+      showFilter: false,
+      searchName: ''
     };
   },
-  mounted() {
+  computed: {
+    filteredStudents() {
       
-     this.useStudent.getData(); 
+        return this.students.filter((student) => {
+        const isMatchById = student.studentId.toString().includes(this.filters.studentId);
+         
+        const isMatchByName = student.name && student.name.includes(this.searchName);
+        
+        if (this.filters.studentId && this.searchName) {
+          return isMatchById && isMatchByName;
+        }
+        else if (this.filters.studentId) {
+          return isMatchById;
+        }
+        else if (this.searchName) {
+          return isMatchByName;
+        } 
+        else return true;
+
+      });
+      
+       
+    },
+
+  },
+  async mounted() {
+      
+    await this.useStudent.getData(); 
+      this.students = this.useStudent.data;
+     console.log(this.students);
   },
   methods: {
+    
     async getData() {
       try {
         const response = await axios.get(
@@ -145,6 +189,7 @@ export default {
         year: "numeric",
       });
     },
+    
   },
 };
 </script>
