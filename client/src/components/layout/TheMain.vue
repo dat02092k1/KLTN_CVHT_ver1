@@ -111,6 +111,8 @@
           </div>
         </div>
       </div>
+    
+      <Spinner v-if="isShowSpinner"/>
     </div>
   
 </template>
@@ -119,7 +121,7 @@
 import axios from "axios";
 import { RouterLink, RouterView } from 'vue-router'
 import { useStudentStore } from "../../stores/student.js";
-import { useChatStore } from '../../stores/conversation.js';
+import Spinner from '../../views/base/Spinner/Spinner.vue';
 
 export default {
   data() {
@@ -133,7 +135,8 @@ export default {
       filterText: '',
       students: [],
       showFilter: false,
-      searchName: ''
+      searchName: '',
+      isShowSpinner: true
     };
   },
   computed: {
@@ -165,6 +168,7 @@ export default {
       
     await this.useStudent.getData(); 
       this.students = this.useStudent.data;
+      this.isShowSpinner = false;
      console.log(this.students);
   },
   methods: {
@@ -191,6 +195,9 @@ export default {
     },
     
   },
+  components: {
+    Spinner
+  }
 };
 </script>
 

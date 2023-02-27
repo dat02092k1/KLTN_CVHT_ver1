@@ -44,6 +44,9 @@ var loginService = async (req, res, next) => {
             samesite: "strict"
         })
 
+        console.log('flag');
+        console.log(refreshToken);
+
         return res.status(200).json({ acessToken, user });   
         
     } catch (error) {
@@ -53,7 +56,7 @@ var loginService = async (req, res, next) => {
 
 var refreshTokenService = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
-         
+    console.log(refreshToken);
     if (!refreshToken) return res.status(401).json("You're not authenticated");
     
     if (!refreshTokens.includes(refreshToken)) {

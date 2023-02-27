@@ -14,5 +14,7 @@ router.get('/student/details/:id', userAuthenticate.verifyToken, userAuthenticat
 
 router.delete('/student/remove/:id', userAuthenticate.verifyToken, userAuthenticate.roleAuthentication ,studentController.deleteStudentControllerfn);
 
+router.get('/student/names/:class', userAuthenticate.verifyToken, studentController.getNameStudentController);
+
 
 module.exports = router;       

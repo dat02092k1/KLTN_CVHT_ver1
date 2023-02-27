@@ -115,5 +115,18 @@ var deleteStudentService = async (id) => {
         throw error;
     }
 }
+
+var getNameStudentService = async (_class) => {
+    try {
+        const getName = await studentModel.find( { class: _class}, 'studentId' );
+
+        if (!getName) throw new Error('Cant find students of class ' + _class); 
+
+        return getName;
+    } catch (error) {
+        throw error;
+    }
+}
 module.exports = { studentServiceGetAll, createStudentService, 
-    updateStudentService, getStudentDetailService, deleteStudentService} ; 
+    updateStudentService, getStudentDetailService, 
+    deleteStudentService, getNameStudentService} ; 

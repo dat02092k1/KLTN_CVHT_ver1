@@ -60,7 +60,17 @@ var deleteStudentControllerfn = async (req, res) => {
         res.status(500).send({ message: "Internal server error" });
     }
 }
+
+var getNameStudentController = async (req, res) => {
+    try {
+        const names = await studentService.getNameStudentService(req.params.class);
+        res.status(200).json( { success: true, names})
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal server error" });
+    }
+}
 module.exports = { getDataStudentControllerfn, createStudentControllerfn, 
      getDetailStudentfn, updateStudentControllerfn,
-    deleteStudentControllerfn } ;         
+    deleteStudentControllerfn, getNameStudentController } ;         
 

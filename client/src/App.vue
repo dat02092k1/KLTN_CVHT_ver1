@@ -4,10 +4,32 @@ import TheHeader from './components/layout/TheHeader.vue'
 import TheSidebar from './components/layout/TheSidebar.vue'
 import TheMain from './components/layout/TheMain.vue'
 import StudentDetails from './views/student/StudentDetails.vue'
+import { onMounted, onUpdated } from 'vue'
+import axios from "axios";
 
 const route = useRoute();
 
+async function refreshToken() {
+  try {
+    const token = await axios.post('http://localhost:8000/token/refresh');
+    console.log(token); 
+    
+  } catch (error) {
+    console.log(error); 
+  }
+}
 
+// onMounted(() => {
+//       setInterval(() => {
+//         refreshToken();
+//       }, 5 * 1000);  
+//     });
+
+// onUpdated(() => {
+//       setInterval(() => {
+//         refreshToken();
+//       }, 5 * 1000); 
+//     });
 </script>
 
 <template>

@@ -54,6 +54,7 @@ const isAdminAuthentication = (req, res, next) => {
         }
     })
 }
+
 module.exports = {
     verifyToken, roleAuthentication, 
     roleAuthenticationGetUsername, isAdminAuthentication

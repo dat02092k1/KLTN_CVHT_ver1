@@ -14,8 +14,8 @@
         </div>
         <div class="flex">
             <div class="mr-3">Xin chào</div>
-            <span class="text-[#576e9f] font-bold">Ngô Quốc Đạt</span>
-            <div class="ml-3">
+            <span class="text-[#576e9f] font-bold cursor-pointer"> {{ this.username }} </span>
+            <div class="ml-3 cursor-pointer">
                 <i class="fa-solid fa-caret-down"></i>
             </div>
         </div>
@@ -23,7 +23,19 @@
 </template>
 
 <script>
+import { getUsername } from '../../utils/getInfoUser.js'
 
+export default {
+    data() {
+        return {
+          username: ''
+        }
+    },
+    mounted() {
+        this.username = getUsername();
+          
+    }
+ }
 </script>
 
 <style scoped>

@@ -30,6 +30,7 @@ export const useAuthStore = defineStore({
         sessionStorage.setItem("_id", this.user._id);
         sessionStorage.setItem("username", this.user.studentId);
         sessionStorage.setItem("role", this.user.role);
+        sessionStorage.setItem("class", this.user._class);
 
         this.accessToken = user.data;
         window.sessionStorage.setItem("token", this.accessToken.acessToken);

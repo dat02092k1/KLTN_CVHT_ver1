@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { getAccessToken } from '../utils/config.js'
+import { getClass } from '../utils/getInfoUser.js'
+
 export const useChatStore = defineStore({
   id: "chat",
   state: () => ({
@@ -8,7 +10,12 @@ export const useChatStore = defineStore({
     friends: [],
     conversation: [], 
     messages: [],
-    getToken: getAccessToken
+    getToken: getAccessToken,
+    chats: [],
+    newConversation: {
+      _id: '',
+      members: [],
+    }
   }),
   getters: {},
   actions: {
@@ -28,16 +35,18 @@ export const useChatStore = defineStore({
       console.log(this.conversation) 
       const membersArr = this.conversation.map((obj) => obj.members);
        
+      
       const friends = membersArr
         .flatMap((friend) => friend)
         .filter((friend) => friend !== username);
       this.friends = friends;
+      console.log(this.friends);
        
     },
     async getMessages(conversationId) {
         try {
             const config = getAccessToken();
-            
+            console.log(conversationId);
             const messages = await axios.get(`http://localhost:8000/api/message/${conversationId}`, config);
             this.messages = messages.data.messages;
             console.log(this.messages); 
@@ -54,6 +63,39 @@ export const useChatStore = defineStore({
         } catch (error) {
             console.log(error);
         }
+    },
+    async getListUser() {
+      try {
+        const config = getAccessToken();
+        const _class = getClass();
+         
+        const users = await axios.get(`http://localhost:8000/student/names/${_class}`, config)
+
+         
+        return users.data.names;
+        
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async createConversation(sender, receiver) {
+      try {
+        const config = getAccessToken(); 
+        const mems = {
+          senderId: sender,
+          receiverId: receiver
+        }
+        const conversation = await axios.post("http://localhost:8000/api/conversation/create", mems, config)
+
+            
+        this.newConversation._id = conversation.data.conversation._id;
+        this.newConversation.members = conversation.data.conversation.members;        
+        
+        console.log(this.newConversation);
+         return this.newConversation;
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 });

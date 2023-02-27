@@ -45,13 +45,13 @@
       
      </div>
     </div>
-    <Loading v-if="showLoading"/>
+    <Spinner v-if="showLoading"/>
   </div>
 </template>
 
 <script>
 import NavTitle from './NavTitle.vue';
-import Loading from './Loading.vue';
+import Spinner from '../base/Spinner/Spinner.vue';
 
 import { RouterLink, RouterView } from "vue-router";
 import { useForumStore } from '../../stores/forum'; 
@@ -62,12 +62,13 @@ export default {
           useForum: useForumStore(),
           _class: 'K64-C-CLC',
           showOptions: [],
-          showLoading: false,
+          showLoading: true,
           pageTitle: "Diễn đàn FAQ"
-        };
+        } 
     },
     mounted() {
       this.useForum.getListPosts(this._class); 
+      this.showLoading = false;
     }
     ,
     methods: {
@@ -82,7 +83,7 @@ export default {
       this.useForum.deletePost(id);
     }
     },
-    components: { NavTitle, Loading }
+    components: { NavTitle, Spinner }
 };
 </script>
 
