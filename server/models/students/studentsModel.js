@@ -38,25 +38,25 @@ const studentSchema = new Schema({
         type: String,
         enum: ['Nam', 'Nữ'],
     },
-    total_creadits: {
-        type: Number,
-    },
-    status: {
-        type: String,
-        enum: [
-            "Không",
-            "Cảnh báo học vụ",
-            "Thiếu tín chỉ",
-            "Thiếu học phí",
-            "Khen thưởng"
-          ],
-        default: "Không"
-    },
+    // total_creadits: {
+    //     type: Number,
+    // },
+    // status: {
+    //     type: String,
+    //     enum: [
+    //         "Không",
+    //         "Cảnh báo học vụ",
+    //         "Thiếu tín chỉ",
+    //         "Thiếu học phí",
+    //         "Khen thưởng"
+    //       ],
+    //     default: "Không"
+    // },
+    // gpa: {
+    //     type: Number
+    // },
     _class: {
         type: String,
-    },
-    gpa: {
-        type: Number
     },
     paidFee: {
         type: Boolean
