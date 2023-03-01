@@ -50,21 +50,24 @@
           <td>{{ student.name }}</td>
           <td class="text-center">{{ student.gpa }}</td>
           <td class="flex flex-col items-center justify-center">
-            <div>
+            <div class="m-2">
               <router-link :to="{ path: '/student/course/' + student._id }" >
-                <i class="fa-solid fa-info"></i>
+                <button class="flex items-center bg-[#409eff]  text-[#ffffff] rounded py-1 px-2">
+                  <i class="fa-regular fa-eye"></i>
+                 
+                </button>
               </router-link>
                
             </div>
             <div>
               <router-link :to="{ path: '/student/course/add/' + student._id }" >
-                <i class="fa-solid fa-plus"></i>
+                <button class="flex items-center bg-[#ff733f] text-[#ffffff] rounded py-1 px-2">
+                  <i class="fa-regular fa-square-plus"></i>    
+                </button>
               </router-link>
                
             </div>
-            <div>
-              <i class="fa-regular fa-pen-to-square"></i>
-            </div>
+             
           </td>
         </tr>
       </tbody>
