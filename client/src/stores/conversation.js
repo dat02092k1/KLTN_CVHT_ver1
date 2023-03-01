@@ -51,7 +51,7 @@ export const useChatStore = defineStore({
             this.messages = messages.data.messages;
             console.log(this.messages); 
         } catch (error) {
-            console.log(error);
+            console.log(error);   
         }
     },
     async sendMessage(message) {

@@ -13,3 +13,9 @@ export const getClass = () => {
     const _class = window.sessionStorage.getItem("class");
     return _class; 
   } 
+
+export const getId = () => {
+    const id = window.sessionStorage.getItem("_id");
+    return id; 
+  } 
+

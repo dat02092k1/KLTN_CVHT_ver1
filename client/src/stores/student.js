@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
  import axios from "axios";
-
+ import { getAccessToken } from '../utils/config.js';
+ import { getClass } from '../utils/getInfoUser';
 export const useStudentStore = defineStore({
   id: "student",
   state: () => ({
@@ -23,6 +24,7 @@ export const useStudentStore = defineStore({
       gpa: 0,
       paidFee: false,
     },
+    _class: getClass(), 
     accessToken: '',
   }),
   getters: {
@@ -37,12 +39,14 @@ export const useStudentStore = defineStore({
               'token': `Bearer ${accessToken}`
             }
           };
+
+           
   
           const response = await axios.get(
-            "http://localhost:8000/student/getAll/K64-C-CLC", config
+            `http://localhost:8000/student/getAll/${this._class}`, config
           );
           this.data = response.data.allStudent;
-          console.log(this.data);
+           return response.data.allStudent;
         } catch (error) {
           console.log(error);
         }
@@ -91,6 +95,7 @@ export const useStudentStore = defineStore({
   
         const response = await axios.get(`http://localhost:8000/student/details/${id}`, config);   
         this.studentDetails = response.data.details;
+        return response.data.details;
         console.log(this.studentDetails.studentId);
       } catch (error) {
         console.error(error);

@@ -9,53 +9,101 @@
 
         <div class="sidebar-scrollbar mt-3">
             <ul class="hidden md:block ">
-                <div class="h-12 hover:bg-[#2d3c50]" 
-                :class="[
-          { active: activeColor === 'active1' },
-          'hover:bg-2d3c50'
-        ]"
-        @click="changeColor('active1')"
-                >
-                    <a class="item__list " >
-                    <li class="flex items-center py-0 px-5">
-                        <i class="fa-solid fa-file mr-6"></i>
-                        <div>Khung chương trình ĐT</div>
-                    </li>
-                </a> 
+                <div class="h-12 hover:bg-[#2d3c50]">
+                    <a href="">
+                        <li>
+                            <div class="px-5">
+                                <i class="fa-solid fa-house mr-4"></i>
+                            <span>Trang chủ</span>
+                            </div>
+                        </li>
+                    </a>
                 </div>
 
-                <div class="h-12 hover:bg-[#2d3c50]"
+                <div class="h-12 hover:bg-[#2d3c50]">
+                    <a href="">
+                        <li>
+                            <router-link to="/student/list" class="px-5">
+                                <i class="fa-solid fa-list mr-4"></i>
+                            <span>Danh sách sinh viên</span>
+                            </router-link>
+                        </li>
+                    </a>
+                </div>
+
+                <div class="h-12 hover:bg-[#2d3c50]">
+                    <a href="">
+                        <li>
+                            <router-link to="/student/chart" class="px-5">
+                                <i class="fa-solid fa-chart-simple mr-4"></i>
+                            <span>Điểm sinh viên</span>
+                            </router-link>
+                        </li>
+                    </a>
+                </div>
+
+                <div class="h-12 hover:bg-[#2d3c50]">
+                    <a href="">
+                        <li>
+                            <router-link to="/student/course" class="px-5">
+                                <i class="fa-solid fa-graduation-cap mr-4"></i>
+                            <span>Kết quả học tập</span>
+                            </router-link>
+                        </li>
+                    </a>
+                </div>
+
+                <div class="h-12 hover:bg-[#2d3c50]">
+                    <a href="">
+                        <li>
+                            <router-link to="/student/forum" class="px-5">
+                                <i class="fa-regular fa-circle-question mr-4"></i>
+                            <span>Diễn đàn</span>
+                            </router-link>
+                        </li>
+                    </a>
+                </div>
+
+                <div class="h-12 hover:bg-[#2d3c50]">
+                    <a href="">
+                        <li>
+                            <router-link to="/student/conversation" class="px-5">
+                                <i class="fa-regular fa-message mr-4"></i>
+                            <span>Trò chuyện</span>
+                            </router-link>
+                        </li>
+                    </a>
+                </div>
+
+                <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center"
         :class="[
           { active: activeColor === 'active2' },
           'hover:bg-2d3c50'
         ]"
         @click="changeColor('active2')">
-                    <a class="item__list">
-                    <!-- <li class="flex items-center py-0 px-5">
-                        <i class="fa-solid fa-graduation-cap mr-4"></i>
-                        <div>Thời gian học tập</div>
-                    </li> -->
-
-                    <router-link class="flex items-center py-0 px-5" to="/student/list">
+                    <router-link class="flex items-center py-0 px-5 justify-center" to="/student/list">
                         <i class="fa-solid fa-list mr-4"></i>
                         <div>Danh sách sinh viên</div>
                     </router-link>
-                </a> 
-                </div>
+                </div> -->
 
-                <div class="h-12 hover:bg-[#2d3c50]" :class="{ active: color === activeColor }"
+                <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center" :class="{ active: color === activeColor }"
   @click="changeColor('active3')">
-                    <a class="item__list">
-                     
-
-                    <router-link class="flex items-center py-0 px-5" to="/student/chart">
+                    <router-link class="flex items-center py-0 px-5 justify-center" to="/student/chart">
                         <i class="fa-solid fa-chart-simple mr-4"></i>
                         <div>Điểm sinh viên</div>
                     </router-link>
-                </a> 
-                </div>
+                </div> -->
 
-                <div class="h-12 hover:bg-[#2d3c50]" :class="{ active: color === activeColor }"
+                <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center" :class="{ active: color === activeColor }"
+  @click="changeColor('active3')">
+                    <router-link class="flex items-center py-0 px-5 justify-center" to="/student/chart">
+                        <i class="fa-solid fa-graduation-cap "></i>
+                        <div>Kết quả học tập</div>
+                    </router-link>           
+                </div> -->
+
+                <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center" :class="{ active: color === activeColor }"
   @click="changeColor('active4')">
                     
                 <router-link class="h-12 hover:bg-[#2d3c50]" :class="{ active: color === activeColor }"
@@ -65,7 +113,22 @@
                         <div>Diễn đàn</div>
                     </li>
                 </router-link>
-                </div>
+                </div> -->
+
+                
+
+                <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center" :class="{ active: color === activeColor }"
+  @click="changeColor('active3')">
+                    <a class="item__list">
+                     
+
+                    <router-link class="flex items-center py-0 px-5" to="/student/conversation">
+                        <i class="fa-regular fa-message mr-3"></i>
+                        <div>Trò chuyện</div>
+                    </router-link>
+                </a> 
+                </div> -->
+ 
             </ul>
         </div>
     </div>

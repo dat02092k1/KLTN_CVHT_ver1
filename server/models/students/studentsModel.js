@@ -38,6 +38,23 @@ const studentSchema = new Schema({
         type: String,
         enum: ['Nam', 'Nữ'],
     },
+    CPA: { 
+        type: Number,
+        default: 0
+      },
+    status: {
+        type: String,
+            enum: [
+                "Không",
+                "Cảnh báo học vụ",
+                "Khen thưởng"
+              ],
+            default: "Không"
+    },
+    total_creadits: {
+        type: Number,
+        default: 0 
+    },
     // total_creadits: {
     //     type: Number,
     // },

@@ -11,11 +11,11 @@
       <div class="form-column mx-3">
         <div class="form-group">
           <label>ID</label>
-          <input type="text" v-model="useStudent.studentDetails.studentId" />
+          <input type="text" disabled v-model="useStudent.studentDetails.studentId" />
         </div>
         <div class="form-group">
           <label>Ngày sinh</label>
-          <input type="text" v-model="formatBirthDate"/>
+          <input type="date" v-model="useStudent.studentDetails.birthdate"/>
         </div>
   
         <div class="form-group">
@@ -47,12 +47,12 @@
         </div>
         <div class="form-group">
           <label>Tổng tín chỉ tích lũy</label>
-          <input type="text" v-model="useStudent.studentDetails.total_creadits" />
+          <input type="text" disabled v-model="useStudent.studentDetails.total_creadits" />
         </div>
   
         <div class="form-group">
           <label>Điểm trung bình tích lũy hệ 4</label>
-          <input type="text" v-model="useStudent.studentDetails.gpa" />
+          <input type="text" disabled v-model="useStudent.studentDetails.gpa" />
         </div>
       </div>
     </form>

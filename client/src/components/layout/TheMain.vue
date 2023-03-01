@@ -31,7 +31,7 @@
                   <th>Họ tên</th>
                   <th>Số điện thoại</th>
                   <th>Ngày sinh</th>
-                  <th>GPA</th>
+                   
                   <th>Trạng thái</th>
                   <th></th>
                 </tr>
@@ -84,7 +84,7 @@
                   <td>
                     {{ formatDate(item.birthdate) }}
                   </td>
-                  <td>{{ item.gpa }}</td>
+                   
                   <td>{{ item.status }}</td>
                   <td class="flex flex-col md:grid grid-cols-2">
                     <div>

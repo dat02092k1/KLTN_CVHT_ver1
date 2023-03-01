@@ -36,7 +36,8 @@ var editCourseController = async (req, res) => {
 
 var deleteCourseController = async (req, res) => {
     try {
-        var course = await courseService.deleteCourseService(req.params.courseId);
+        const {studentId} = req.body;
+        var course = await courseService.deleteCourseService(req.params.courseId, studentId);
         res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -44,6 +45,18 @@ var deleteCourseController = async (req, res) => {
             .json({ success: false, message: "delete courses failed" });
     }
 }
+
+var getCourseDetailsController = async (req, res) => {
+    try {
+        var course = await courseService.getCourseDetailsService(req.params.courseId);
+        res.status(200).json({ success: true, course });
+    } catch (error) {
+        console.log(error);
+        res.status(500)
+            .json({ success: false, message: "get course failed" });
+    }
+}
 module.exports = { addCourseController, getCourseController,
-                    editCourseController, deleteCourseController } ;         
+                    editCourseController, deleteCourseController,
+                    getCourseDetailsController } ;         
 

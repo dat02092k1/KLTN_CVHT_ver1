@@ -24,13 +24,14 @@ var getScoreService = async (studentId) => {
             $project: {    
                 _id: 0,
                 CPA: { $divide: ["$totalScore", "$totalCredits"] },
+                total_credits: "$totalCredits"
               },
       
         }
     ]);
 
     const cpaValue = result[0].CPA;
-
+    const totalCredits = result[0].total_credits;
     const status =
       cpaValue < 3.0
         ? "Cảnh báo học vụ"
@@ -38,17 +39,63 @@ var getScoreService = async (studentId) => {
         ? "Khen thưởng"          
         : "Không"; 
 
-    const newScore = new scoreModel({
-            student: studentId,
-            CPA: cpaValue,
-            status: status,
-          });
-    await newScore.save();
+      student.CPA = cpaValue;
 
-    return newScore; 
+      student.status = status;
+
+      student.total_creadits = totalCredits;
+
+      await student.save();
+
+    // const newScore = new scoreModel({
+    //         student: studentId,
+    //         CPA: cpaValue,
+    //         status: status,
+    //       });
+    // await newScore.save();
+
+    return student; 
   } catch (error) {
     throw error;
   }
 };
 
-module.exports = { getScoreService };
+var getClassScoreService = async (_class) => {
+  try {
+    const students = await studentsModel.find({ _class: _class });
+
+     
+    const studentIds = students.map((student) => student._id);
+
+     console.log(studentIds);
+
+    const result = await scoreModel.aggregate([
+      {
+        $match: { student: { $in: studentIds } }, // Lọc các score có studentId nằm trong danh sách studentIds
+      },
+      {
+        $group: {
+          _id: null,
+          totalScore: { $sum: { $multiply: ["$GPA", "$total_credits"] } },
+          totalCredits: { $sum: "$total_credits" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          CPA: { $divide: ["$totalScore", "$totalCredits"] },
+        },
+      }
+    ]);
+
+    console.log(result);
+
+    const cpaArr = result.map((mark) => mark.CPA);   
+
+    return cpaArr;
+
+  } catch (error) {
+    throw error;
+  }
+}
+module.exports = { getScoreService, getClassScoreService };

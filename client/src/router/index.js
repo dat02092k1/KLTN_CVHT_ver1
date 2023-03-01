@@ -17,6 +17,10 @@ import EditComment from '../views/base/forum/EditComment.vue'
 import Chat from '../views/base/chat/Chat.vue'
 import Conversation from '../views/base/chat/Conversation.vue'
 import Login from '../views/login/Login.vue'
+import Course from '../views/base/Score/Course.vue'
+import CourseDetails from '../views/base/Score/CourseDetails.vue'
+import CourseAdd from '../views/base/Score/CourseAdd.vue'
+import CourseEdit from '../views/base/Score/CourseEdit.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -104,6 +108,26 @@ const router = createRouter({
       path: '/student/conversation',
       name: 'Conversation',
       component: Conversation
+    },
+    {
+      path: '/student/course',
+      name: 'course',
+      component: Course
+    },
+    {
+      path: '/student/course/:id',
+      name: 'course details',  
+      component: CourseDetails
+    },
+    {
+      path: '/student/course/add/:id',
+      name: 'course add',  
+      component: CourseAdd
+    },
+    {
+      path: '/student/course/edit/:id',
+      name: 'course edit',  
+      component: CourseEdit
     }
   ]
 })
