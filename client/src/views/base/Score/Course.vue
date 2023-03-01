@@ -42,7 +42,7 @@
           <th>Điểm</th>
           <th>Hành động</th>
         </tr>
-      </thead>
+      </thead>  
       <tbody>
         <tr v-for="(student, index) in students" :key="student.id">
           <td>{{ index + 1 }}</td>
