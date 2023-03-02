@@ -50,7 +50,7 @@
           </div>
         </div>
       </div>
-      <div class="message col-span-8 rounded">
+      <div ref="scrollArea" class="message-area col-span-8 rounded" @scroll="onScroll">
         <div class="text-center">
           <h2>{{ this.receiver }}</h2>
         </div>
@@ -81,12 +81,16 @@
         </div>
       </div>
     </div>
+    <Spinner v-show="this.isLoading"/>
   </div>
+  
 </template>
 
 <script>
 import { useChatStore } from "../../../stores/conversation.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
+import Spinner from "../Spinner/Spinner.vue";
+
 import io from "socket.io-client";
 
 export default {
@@ -101,6 +105,9 @@ export default {
       receiver: "Username",
       selectedOption: null,
       users: [],
+      currentPage: null,
+      pageSize: 10,
+      isLoading: true,  
     };
   },
   async mounted() {
@@ -111,7 +118,7 @@ export default {
     this.socket = io("http://localhost:9000");
     this.useChat.getConversation(username);
     this.getUsername = username;
-
+    this.isLoading = false;
     this.socket.on("welcome", (msg) => console.log(msg));
 
     this.socket.emit("addUser", this.getUsername);
@@ -134,7 +141,7 @@ export default {
       this.conversationId = id;
       this.members = mem;
 
-      console.log("flag");
+      this.currentPage = 2;
       this.receiver = this.filterDuplicate(mem, this.getUsername);
 
       console.log(this.conversationId, this.receiver);
@@ -222,7 +229,28 @@ export default {
         console.log(error);
       }
     },
+    onScroll() {
+       
+      const scrollArea = this.$refs.scrollArea;
+      // scrollArea.scrollTop = scrollArea.scrollHeight - scrollArea.clientHeight;
+      // console.log(scrollArea.scrollTop);
+      // const isAtBottom =  Math.round(scrollArea.scrollTop + scrollArea.clientHeight) === scrollArea.scrollHeight;
+        const isTop = scrollArea.scrollTop === 0;
+      if (isTop && !this.isLoading) {
+        this.isLoading = true;
+        this.loadMessages();
+      }
+    },
+    async loadMessages() {
+      console.log('load messages');
+      const response = await this.useChat.loadMessage(this.conversationId, this.currentPage, this.pageSize) ;
+      this.currentPage++;
+      this.isLoading = false;
+    }
   },
+  components: {
+    Spinner
+  }
 };
 </script>
 <style scoped>
@@ -231,7 +259,7 @@ export default {
   overflow-y: scroll;
 }
 
-.message {
+.message-area {
   height: 450px;
   overflow-y: scroll;
 }

@@ -32,7 +32,7 @@ export const useChatStore = defineStore({
         config
       );
       this.conversation = conversations.data.conversations;      
-      console.log(this.conversation) 
+      // console.log(this.conversation) 
       const membersArr = this.conversation.map((obj) => obj.members);
        
       
@@ -40,16 +40,16 @@ export const useChatStore = defineStore({
         .flatMap((friend) => friend)
         .filter((friend) => friend !== username);
       this.friends = friends;
-      console.log(this.friends);
+      // console.log(this.friends);
        
     },
     async getMessages(conversationId) {
         try {
             const config = getAccessToken();
             console.log(conversationId);
-            const messages = await axios.get(`http://localhost:8000/api/message/${conversationId}`, config);
+            const messages = await axios.get(`http://localhost:8000/api/message-limit/${conversationId}`, config);
             this.messages = messages.data.messages;
-            console.log(this.messages); 
+            // console.log(this.messages); 
         } catch (error) {
             console.log(error);   
         }
@@ -96,6 +96,39 @@ export const useChatStore = defineStore({
       } catch (error) {
         console.log(error);
       }
+    },
+    async loadMessage(conversationId, page, pageSize) {
+      try {
+        const pageNumber = parseInt(page);
+        const size = parseInt(pageSize);
+    
+        if (isNaN(pageNumber) || isNaN(size)) {
+          throw new Error('Invalid page or pageSize');
+        }
+    
+        const accessToken = window.sessionStorage.getItem("token");
+        console.log(accessToken);
+
+        const msg = await axios.get('http://localhost:8000/api/message-load',{
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            conversationId: conversationId,
+            page: pageNumber,
+            pageSize: size,
+          },
+        });
+    
+        console.log(msg.data.messages);  
+        // this.messages =  this.messages.concat(msg.data.messages);
+        this.messages.unshift(...msg.data.messages);
+        // this.messages.push(msg.data.messages);   
+        // console.log(this.messages); 
+      } catch (error) {
+        console.log(error);
+      }
     }
+    
   },
 });

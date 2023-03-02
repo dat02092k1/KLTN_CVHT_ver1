@@ -8,6 +8,11 @@ const router = express.Router();
 router.get('/message/:conversationId', userAuthenticate.verifyToken, message.getMessageController);
 // create message
 router.post('/message/create', userAuthenticate.verifyToken, message.createMessageController);
+// get message limit
+router.get('/message-limit/:conversationId', userAuthenticate.verifyToken, message.getMessageLimitController);
+// load message
+router.get('/message-load',  message.loadMessageController);
+
 
 
 
