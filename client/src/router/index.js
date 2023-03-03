@@ -5,6 +5,7 @@ import AboutView from '../views/AboutView.vue'
 import TheMain from '../components/layout/TheMain.vue'
 import StudentDetails from '../views/student/StudentDetails.vue'
 import StudentForm from '../views/student/StudentForm.vue'
+import StudentAdd from '../views/student/StudentAdd.vue'
 import FormTest from '../views/student/FormTest.vue'
 import ChartGpa from '../views/chart/ChartGpa.vue'
 import Forum from '../views/base/Forum.vue'
@@ -128,6 +129,11 @@ const router = createRouter({
       path: '/student/course/edit/:id',
       name: 'course edit',  
       component: CourseEdit
+    },
+    {
+      path: '/student/add',
+      name: 'student add',  
+      component: StudentAdd
     }
   ]
 })

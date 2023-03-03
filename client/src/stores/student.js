@@ -66,6 +66,22 @@ export const useStudentStore = defineStore({
           console.error(error);
         }
     },
+    async addStudent(student) {
+      try {
+        const accessToken = window.sessionStorage.getItem("token");
+        console.log(accessToken);
+        const config = {
+          headers: {
+            'token': `Bearer ${accessToken}`
+          }
+        };
+        
+        const response = await axios.post('http://localhost:8000/student/create', student, config);
+        console.log(response.data);  
+      } catch (error) {
+        console.error(error);
+      }
+  },
     async updateStudent(id, details) {
       try {
         const accessToken = window.sessionStorage.getItem("token");

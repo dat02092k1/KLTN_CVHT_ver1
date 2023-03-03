@@ -18,8 +18,7 @@ var studentServiceGetAll = async (username, _class) => {
 
 var createStudentService = async (studentDetail) => {
     try {
-        console.log(studentDetail)
-        console.log(studentDetail.studentID);
+         
         // Destructure student detail
         const {
             studentId,
@@ -39,8 +38,9 @@ var createStudentService = async (studentDetail) => {
           } = studentDetail;
 
           // check for existing
+          console.log('flag'); 
           var checkExisting = await studentModel.findOne( {studentId: studentDetail.studentId} );
-
+          console.log(checkExisting)
           if (checkExisting) throw new Error("Student already exists");
            
           // create student

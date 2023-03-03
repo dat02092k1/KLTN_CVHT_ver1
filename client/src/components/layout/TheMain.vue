@@ -16,7 +16,7 @@
               >K64-C-CLC</label
             >
           </div>
-          <RouterLink class="bg-[#324f90] text-[#fff] p-2 rounded " to="/student/form">
+          <RouterLink class="bg-[#324f90] text-[#fff] p-2 rounded " to="/student/add">
                     Thêm sinh viên
                   </RouterLink>
       <RouterView />
