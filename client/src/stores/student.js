@@ -111,6 +111,7 @@ export const useStudentStore = defineStore({
   
         const response = await axios.get(`http://localhost:8000/student/details/${id}`, config);   
         this.studentDetails = response.data.details;
+         
         return response.data.details;
         console.log(this.studentDetails.studentId);
       } catch (error) {

@@ -6,8 +6,10 @@ import TheMain from '../components/layout/TheMain.vue'
 import StudentDetails from '../views/student/StudentDetails.vue'
 import StudentForm from '../views/student/StudentForm.vue'
 import StudentAdd from '../views/student/StudentAdd.vue'
+import StudentEdit from '../views/student/StudentEdit.vue'
 import FormTest from '../views/student/FormTest.vue'
 import ChartGpa from '../views/chart/ChartGpa.vue'
+import ChartCredits from '../views/chart/ChartCredits.vue'
 import Forum from '../views/base/Forum.vue'
 import PostDetails from '../views/base/PostDetails.vue'
 import Loading from '../views/base/Loading.vue'
@@ -59,12 +61,17 @@ const router = createRouter({
       path: '/test/form',
       name: 'test form',
       component: FormTest
-    },
+    }, 
     {
       path: '/student/chart',
       name: 'chart gpa',
-      component: ChartGpa
+      component: ChartGpa     
     },
+    {
+      path: '/student/chart-credits',
+      name: 'chart credits',
+      component: ChartCredits
+    }, 
     {
       path: '/student/forum',
       name: 'forum',
@@ -134,6 +141,11 @@ const router = createRouter({
       path: '/student/add',
       name: 'student add',  
       component: StudentAdd
+    },
+    {
+      path: '/student/edit/:id',
+      name: 'student edit',  
+      component: StudentEdit
     }
   ]
 })

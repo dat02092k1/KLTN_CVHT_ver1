@@ -100,6 +100,14 @@
                           <i class="fa-sharp fa-solid fa-delete-left text-red-500"></i>
                         </button>
                     </div>
+                    <div>
+                      <RouterLink :to="{ path: '/student/edit/' + item._id }" >
+                        <button>
+                          <i class="fa-solid fa-pen-to-square"></i>
+                        </button>                  
+                      </RouterLink>
+                      
+                    </div>
                   </td>
                 </tr>
               </tbody>
