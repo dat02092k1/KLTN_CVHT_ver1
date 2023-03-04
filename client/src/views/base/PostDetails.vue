@@ -12,12 +12,12 @@
 
           <div class="flex justify-between">
             <div>
-              <div class="font-medium text-base">
-                {{ useForum.post.username }}
+              <div class="">
+               <span class="font-medium text-base">Người đăng: </span> {{ useForum.post.username }}
               </div>
 
               <div>
-                Class:
+               <span class="font-medium text-base">Lớp: </span>
                 <span class="font-medium">
                   {{ useForum.post._class }}
                 </span>
@@ -25,14 +25,18 @@
             </div>
 
             <div>
-              {{ useForum.post.createdAt }}
+             <span class="font-medium text-base">Date: </span> {{ formattedDate(useForum.post.createdAt) }}
             </div>
           </div>
           <div>
-            <div>Nội dung:</div>
+            <div class="font-medium text-base">Nội dung:</div>
             <div>
               {{ useForum.post.content }}
             </div>
+          </div>
+
+          <div v-if="useForum.post.imageUrl">
+            <img class="w-[100%]" :src="useForum.post.imageUrl" alt="post image">
           </div>
           <hr />
           <div>
@@ -52,6 +56,7 @@
               <div>
                 {{ item.content }}
               </div>
+
               </div>
 
               <div>
@@ -70,22 +75,24 @@
 
           </div>
           <div>
-            <div class="flex">
-              <label class="mr-3" for="content">Comment:</label>
+            <div class="flex items-center">
+              
               <textarea
                 class="p-3 w-[60%]"
                 v-model="this.content"
                 id="content"
               ></textarea>
-            </div>
-            <button
+
+              <button
               @keyup.enter="postComment(useForum.post._id, this.content)"
               @click="postComment(useForum.post._id, this.content)"
               class="bg-[#324f90] text-[#fff] rounded m-2 p-2"
               type="submit"
             >
-              Add Comment
+              Thêm bình luận
             </button>
+            </div>
+             
           </div>
         </div>
 
@@ -99,6 +106,8 @@
 <script>
 import NavTitle from "./NavTitle.vue";
 import EditComment from "../base/forum/EditComment.vue";
+import { format } from 'date-fns';
+
 
 import { useForumStore } from "../../stores/forum";
 import { RouterLink, RouterView, useRoute } from "vue-router";
@@ -119,10 +128,7 @@ export default {
     this.useForum.getPostAndComment(this.id);
   },
   methods: {
-    formattedDate(date) {
-      const dat = new Date(dateStr);
-      return dat.toLocaleDateString("en-GB");
-    },
+    
     postComment(id, content) {
       this.useForum.addComment(id, content);
       this.content = "";
@@ -132,6 +138,11 @@ export default {
     },
     deleteFn(id, postId) {
       this.useForum.deleteComment(id, postId); 
+    },
+    formattedDate(date) {
+      const dating = new Date(date);
+      return format(dating, 'dd/MM/yyyy');
+
     }
   },
   components: { NavTitle, EditComment },

@@ -16,5 +16,4 @@ router.get('/list/:username', userAuthenticate.roleAuthenticationGetUsername, po
 // get all post of a user with username
 
 
-
 module.exports = router;       

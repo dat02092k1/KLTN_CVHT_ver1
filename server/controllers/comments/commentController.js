@@ -60,7 +60,7 @@ var deleteCommentController = async (req, res) => {
 
 var editCommentController = async (req, res) => {
     try {
-        console.log(req.body);
+        
         var editComment = await commentService.editCommentService(req.params.id, req.body);  
         res.status(200).json({ success: true, editComment });  
     } catch (error) {
@@ -78,7 +78,16 @@ var getCommentsMapPostId = async (req, res) => {
         console.log(error);
     }
 }
+
+var getCommentById = async (req, res) => {
+    try {
+        var comment = await commentService.getCommentByIdService(req.params.id);
+        res.status(200).json({ success: true, comment }); 
+    } catch (error) {
+        console.log(error);
+    }
+}
 module.exports = { createCommentController, getSpecifiedCommentController, 
                     getPostAndCommentController, getPostAndCommentOfUser,
                     deleteCommentController, editCommentController,
-                    getCommentsMapPostId } ;  
+                    getCommentsMapPostId, getCommentById } ;  

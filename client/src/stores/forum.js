@@ -8,6 +8,7 @@ export const useForumStore = defineStore({
     listPost: [],
     post: null,
     comments: [],
+    getComment: []
   }),
   getters: {
   },
@@ -160,6 +161,24 @@ export const useForumStore = defineStore({
         , config);
 
         console.log(edit);  
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async viewCommentById(commentId) {
+      try {
+        const accessToken = window.sessionStorage.getItem("token");
+          
+          const config = {
+            headers: {
+              'token': `Bearer ${accessToken}`
+            }
+          };
+
+        const comment = await axios.get(`http://localhost:8000/post/comment/view/${commentId}`, config);
+
+        console.log(comment);
+        this.getComment = comment;
       } catch (error) {
         console.log(error);
       }

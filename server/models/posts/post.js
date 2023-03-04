@@ -17,6 +17,9 @@ const postSchema = new Schema(
         },  
         _class: {
             type: String 
+        },
+        imageUrl: {
+            type: String, 
         }
     },
     { 

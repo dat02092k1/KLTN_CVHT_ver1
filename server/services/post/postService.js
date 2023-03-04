@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 
 var getPostListService = async (_class) => { 
     try {
-        const post = await postModel.find( { class: _class } )
+        const post = await postModel.find( { class: _class } ); 
         if (!post) throw new Error("There're no posts in history");
-        return post;
+        return post.reverse();
     } catch (error) {
         throw error;
     }
@@ -18,7 +18,8 @@ var createPostService = async (postDetails) => {
             username,
             title,
             content,
-            _class       
+            _class,
+            imageUrl        
         } = postDetails;
 
         console.log(postDetails);
@@ -26,7 +27,8 @@ var createPostService = async (postDetails) => {
             username,
             title,
             content,
-            _class
+            _class,
+            imageUrl
           });
 
         await newPost.save();   

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-forum">
-      <NavTitle :title="pageTitle.value" />
+      <NavTitle :title="pageTitle" />
 
       <div class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded">
         <div class="flex justify-end">
@@ -37,10 +37,11 @@
               >
                 <a-input v-model:value="formState.title" />
               </a-form-item>
-              <a-form-item 
-              name="content"
-              label="Content"
-               :rules="[
+
+              <a-form-item
+                name="content"
+                label="Content"
+                :rules="[
                   {
                     required: true,
                     message: 'Please input the content of collection!',
@@ -49,6 +50,16 @@
               >
                 <a-textarea v-model:value="formState.content" />
               </a-form-item>
+
+              <a-form-item
+                name="image"
+                label="Image"
+              >
+             
+      <input type="file" @change="uploadImage">
+              </a-form-item>
+
+              
             </a-form>
           </a-modal>
         </div>
@@ -58,6 +69,7 @@
             v-for="(item, index) in useForum.listPost"
             :key="index"
             class="forum-item bg-[#ecf2f7] my-3 w-[60%] rounded-md cursor-pointer"
+              
           >
             <div class="flex justify-between relative">
               <div class="font-bold">
@@ -105,11 +117,11 @@
 import { defineComponent, onMounted, reactive, ref, toRaw } from "vue";
 import NavTitle from "../NavTitle.vue";
 import Spinner from "../Spinner/Spinner.vue";
-
 import { RouterLink, RouterView } from "vue-router";
 import { getUsername, getClass } from "../../../utils/getInfoUser";
-
+import { message } from "ant-design-vue";
 import { useForumStore } from "../../../stores/forum.js";
+import { useImgStore } from "../../../stores/upload.js";
 
 export default defineComponent({
   setup() {
@@ -121,6 +133,7 @@ export default defineComponent({
       title: "",
       content: "",
       _class: getClass(),
+      imageUrl: ""
     });
 
     const onOk = () => {
@@ -141,18 +154,15 @@ export default defineComponent({
     };
 
     const useForum = useForumStore();
-
+    const useImg = useImgStore();
     const showOptions = reactive([]);
     const _class = "K64-C-CLC";
     const showLoading = ref(true);
-    const pageTitle = ref("Diễn đàn FAQ");
+    const pageTitle = ("Diễn đàn FAQ");
 
     function handleOptionClick(option) {
       // Xử lý khi người dùng click vào một option
       console.log(option);
-      // ở đây có thể gọi các method tương ứng với option được chọn
-      // ví dụ: this.handleViewClick() nếu option là 'view'
-      // ẩn các option sau khi người dùng click
     }
 
     onMounted(async () => {
@@ -164,6 +174,16 @@ export default defineComponent({
       useForum.deletePost(id);
     }
 
+    const uploadImage = async (event) => {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append('image', file);
+      const img = await useImg.uploadImg(formData);
+      formState.imageUrl = img;
+      console.log(formState.imageUrl);
+    }
+     
+    
     return {
       formState,
       formRef,
@@ -175,6 +195,7 @@ export default defineComponent({
       showOptions,
       deletePost,
       handleOptionClick,
+      uploadImage
     };
   },
   components: { NavTitle, Spinner },
