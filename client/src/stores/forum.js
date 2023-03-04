@@ -39,7 +39,8 @@ export const useForumStore = defineStore({
             }
           };
 
-        const post = axios.post("http://localhost:8000/post/create", postContent, config)
+        const post = await axios.post("http://localhost:8000/post/create", postContent, config)
+        console.log(post);
       } catch (error) {
         console.log(error); 
       }

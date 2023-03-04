@@ -11,6 +11,7 @@ import FormTest from '../views/student/FormTest.vue'
 import ChartGpa from '../views/chart/ChartGpa.vue'
 import ChartCredits from '../views/chart/ChartCredits.vue'
 import Forum from '../views/base/Forum.vue'
+import PostList from '../views/base/forum/PostList.vue'
 import PostDetails from '../views/base/PostDetails.vue'
 import Loading from '../views/base/Loading.vue'
 import Test from '../views/base/Test.vue'
@@ -77,6 +78,11 @@ const router = createRouter({
       name: 'forum',
       component: Forum
     },
+    {
+      path: '/student/forum/posts',
+      name: 'list posts',
+      component: PostList
+    },    
     {
       path: '/student/forum/post/:id',
       name: 'post details',

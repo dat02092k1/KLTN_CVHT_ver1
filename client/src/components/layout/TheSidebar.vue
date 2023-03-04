@@ -56,7 +56,7 @@
                 <div class="h-12 hover:bg-[#2d3c50]">
                     <a href="">
                         <li>
-                            <router-link to="/student/forum" class="px-5">
+                            <router-link to="/student/forum/posts" class="px-5">
                                 <i class="fa-regular fa-circle-question mr-4"></i>
                             <span>Diễn đàn</span>
                             </router-link>
