@@ -12,18 +12,41 @@
                 UET Study Consultant
             </div>
         </div>
-        <div class="flex">
-            <div class="mr-3">Xin chào</div>
+        <div class="flex items-center">
+            <!-- <div class="mr-3">Xin chào</div>
             <span class="text-[#576e9f] font-bold cursor-pointer"> {{ this.username }} </span>
             <div class="ml-3 cursor-pointer">
                 <i class="fa-solid fa-caret-down"></i>
-            </div>
+            </div> -->
+            <div class="mr-3">Xin chào</div>
+            <a-dropdown-button>
+                {{ this.username }}
+      <template #overlay>
+        <a-menu @click="handleMenuClick">
+          <a-menu-item key="1">
+            <UserOutlined />
+            Xem thông tin cá nhân
+          </a-menu-item>
+          <a-menu-item key="2">
+            <UserOutlined />
+            Xem lại các bài đăng của mình
+          </a-menu-item>
+          <a-menu-item key="3" class="flex items-center">
+            <UserOutlined />
+            Đăng xuất
+          </a-menu-item>
+        </a-menu>
+      </template>
+      <template #icon><UserOutlined /></template>
+    </a-dropdown-button>
         </div>
     </div>
 </template>
 
 <script>
 import { getUsername } from '../../utils/getInfoUser.js'
+import { defineComponent } from 'vue';
+import { UserOutlined } from '@ant-design/icons-vue';
 
 export default {
     data() {
@@ -33,7 +56,17 @@ export default {
     },
     mounted() {
         this.username = getUsername();
-          
+    },
+    methods: {
+        handleButtonClick(e) {
+            console.log('click left button', e);
+        },
+        handleMenuClick(e) {
+      console.log('click', e);
+        } 
+    },
+    components: {
+        UserOutlined
     }
  }
 </script>
@@ -49,4 +82,9 @@ export default {
     background-color: #fff;
     padding: 14px 20px;
 } 
+
+::v-deep .ant-dropdown-menu-title-content {
+    display: flex;
+    align-items: center;
+}
 </style>

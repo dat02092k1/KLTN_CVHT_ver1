@@ -313,6 +313,6 @@ export default defineComponent({
 }
 
 .form-item ::v-deep .ant-col-4 {
-  max-width: 100% !important;
+  max-width: 100%;
 }
 </style>

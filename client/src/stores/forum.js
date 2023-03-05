@@ -118,9 +118,9 @@ export const useForumStore = defineStore({
        ,config);
        console.log(comment.data.comment); 
 
-       this.comments.unshift(comment.data.comment);
+       this.comments.push(comment.data.comment);
        console.log(this.comments);
-       this.$forceUpdate();
+      //  this.$forceUpdate();
       } catch (error) {
         console.log(error);
       }

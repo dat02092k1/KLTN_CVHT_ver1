@@ -43,7 +43,7 @@
             <i class="fa-regular fa-comment"></i>
             <b> Bình luận</b>
           </div>
-          <div class="comment-list mx-auto flex flex-col ">
+          <div class="comment-list mx-auto flex flex-col relative">
             <div
               class="comment-item w-[50%] my-2 flex justify-between relative"
               v-for="(item, index) in useForum.comments"
@@ -57,6 +57,9 @@
                 {{ item.content }}
               </div>
 
+              <div class="font-thin text-[10px] absolute right-1 bottom-1">
+                {{ formattedDate(item.createdAt) }} 
+              </div>
               </div>
 
               <div>
@@ -78,9 +81,10 @@
             <div class="flex items-center">
               
               <textarea
-                class="p-3 w-[60%]"
+                class="p-3 w-[60%] hover:border-[#85bde5] cursor-pointer"
                 v-model="this.content"
                 id="content"
+
               ></textarea>
 
               <button
@@ -179,6 +183,11 @@ export default {
   display: block;
   width: 100%;
   margin-bottom: 10px;
+}
+
+#comment-form textarea:focus{
+  border: 1px solid #85bde5;
+  outline: none;
 }
 
 #comment-form button {

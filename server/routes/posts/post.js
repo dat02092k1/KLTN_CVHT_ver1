@@ -4,7 +4,7 @@ var userAuthenticate = require('../../middleware/authentication.js')
 const router = express.Router();
 
 // FORUM FAQ FOR STUDENTS APIS
-router.get('/post/list/:class', userAuthenticate.isAdminAuthentication, postController.getPostListController);
+router.get('/post/list/:class', userAuthenticate.verifyToken, postController.getPostListController);
 // get list of posts of specified class
 router.post('/post/create', userAuthenticate.verifyToken, postController.createPostController);
 // create a post on forum
