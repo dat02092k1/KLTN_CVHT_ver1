@@ -90,7 +90,16 @@ var refreshTokenService = async (req, res) => {
 
 }
 
+var logoutService = async (req, res) => {
+    try {
+        res.clearCookie("refreshToken");
+        return "Logged out successfully";
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     loginService, createAccessToken,
-    createRefreshToken, refreshTokenService
+    createRefreshToken, refreshTokenService, logoutService
 }

@@ -31,7 +31,7 @@
             <UserOutlined />
             Xem lại các bài đăng của mình
           </a-menu-item>
-          <a-menu-item key="3" class="flex items-center">
+          <a-menu-item key="3" class="flex items-center" @click="logout">
             <UserOutlined />
             Đăng xuất
           </a-menu-item>
@@ -45,13 +45,16 @@
 
 <script>
 import { getUsername } from '../../utils/getInfoUser.js'
+import { useAuthStore } from '../../stores/auth.js'
+
 import { defineComponent } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 
 export default {
     data() {
         return {
-          username: ''
+          username: '',
+          useAuth: useAuthStore()   
         }
     },
     mounted() {
@@ -63,7 +66,10 @@ export default {
         },
         handleMenuClick(e) {
       console.log('click', e);
-        } 
+        },
+        logout() {
+            this.useAuth.logout();
+        }
     },
     components: {
         UserOutlined

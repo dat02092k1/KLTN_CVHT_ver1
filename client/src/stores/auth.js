@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-
+import { getAccessToken } from '../utils/config.js'
 import { useStudentStore } from "./student.js";
 
 import router from "../router/index.js";
@@ -45,5 +45,32 @@ export const useAuthStore = defineStore({
         throw error;
       }
     },
+    async logout() {
+      try {
+        // const accessToken = window.sessionStorage.getItem("token");
+        //   console.log(accessToken);
+        //   const config = {
+        //     headers: {
+        //       'token': `Bearer ${accessToken}`
+        //     }
+        //   };
+
+        const config = getAccessToken();
+
+          console.log(config.headers)   
+        const logout = await axios.post(`http://localhost:8000/api/user/logout`, {}, config);
+ 
+        console.log(logout);
+        sessionStorage.clear(); 
+
+        if (logout.status === 200) {
+          router.push("/login");
+        } else {
+          throw new Error("Đăng xuất thất bại");
+        }
+      } catch (error) {
+        throw error; 
+      }
+    }
   },
 });
