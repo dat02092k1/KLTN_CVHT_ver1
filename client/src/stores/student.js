@@ -33,19 +33,18 @@ export const useStudentStore = defineStore({
     async getData() {
         try {
           const accessToken = window.sessionStorage.getItem("token");
-          console.log(accessToken);
+           
           const config = {
             headers: {
               'token': `Bearer ${accessToken}`
             }
-          };
-
-           
+          }; 
   
           const response = await axios.get(
             `http://localhost:8000/student/getAll/${this._class}`, config
           );
           this.data = response.data.allStudent;
+          console.log(this.data);
            return response.data.allStudent;
         } catch (error) {
           console.log(error);
@@ -130,7 +129,9 @@ export const useStudentStore = defineStore({
         const response = await axios.delete(`http://localhost:8000/student/remove/${id}`, config);   
 
         console.log(response);
+        
         this.getData();
+        return response;
       } catch (error) {
         console.log(error);
       }

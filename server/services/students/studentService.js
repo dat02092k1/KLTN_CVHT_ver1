@@ -1,5 +1,7 @@
 const studentsModel = require('../../models/students/studentsModel');
 var studentModel = require('../../models/students/studentsModel');
+const bcrypt = require('bcryptjs');
+const SALT_ROUNDS = 10;
 const mongoose = require('mongoose');
 
 var studentServiceGetAll = async (username, _class) => {
@@ -37,10 +39,15 @@ var createStudentService = async (studentDetail) => {
             paidFee
           } = studentDetail;
 
+          const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS); 
+
+          // mã hóa password 
+          studentDetail.password = hashPassword;
+
           // check for existing
           console.log('flag'); 
           var checkExisting = await studentModel.findOne( {studentId: studentDetail.studentId} );
-          console.log(checkExisting)
+          console.log(checkExisting) 
           if (checkExisting) throw new Error("Student already exists");
            
           // create student

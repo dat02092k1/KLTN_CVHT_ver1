@@ -47,20 +47,12 @@ export const useAuthStore = defineStore({
     },
     async logout() {
       try {
-        // const accessToken = window.sessionStorage.getItem("token");
-        //   console.log(accessToken);
-        //   const config = {
-        //     headers: {
-        //       'token': `Bearer ${accessToken}`
-        //     }
-        //   };
-
         const config = getAccessToken();
 
           console.log(config.headers)   
         const logout = await axios.post(`http://localhost:8000/api/user/logout`, {}, config);
  
-        console.log(logout);
+         
         sessionStorage.clear(); 
 
         if (logout.status === 200) {

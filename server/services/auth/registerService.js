@@ -8,7 +8,7 @@ var createStudentAccount = async (req, res, next) => {
     const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
 
   const user = new userModel({ 
-    studentId: studentId, 
+    studentId: studentId,        
     password: hashPassword, 
     role: role });
   user.save(function (err) {

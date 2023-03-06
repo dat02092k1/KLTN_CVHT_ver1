@@ -8,7 +8,7 @@
       </div>
       <div class="table-content bg-[#ffffff]">
         <div class="filter-container p-6">
-          <div class="row  font-bold">
+          <div class="row font-bold">
             <label class="text-[14px] text-[#606266] leading-10" for=""
               >Lớp học:</label
             >
@@ -16,182 +16,170 @@
               >K64-C-CLC</label
             >
           </div>
-          <RouterLink class="bg-[#324f90] text-[#fff] p-2 rounded " to="/student/add">
-                    Thêm sinh viên
-                  </RouterLink>
-      <RouterView />
+          <RouterLink
+            class="bg-[#324f90] text-[#fff] p-2 rounded"
+            to="/student/add"
+          >
+            Thêm sinh viên
+          </RouterLink>
+          <RouterView />
         </div>
         <div class="content-container">
-           
-            <table id="table-course">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>MSSV</th>
-                  <th>Họ tên</th>
-                  <th>Số điện thoại</th>
-                  <th>Ngày sinh</th>
-                   
-                  <th>Trạng thái</th>
-                  <th></th>
-                </tr>
-                <tr class="filter-course">
-                  <th></th>
-                  <th>
-                    <div>
-                      <input
-                      class="filter-input h-8 text-[14px] leading-1 font-normal"
-                        type="text"
-                        placeholder="MSSV" 
-                        v-model="this.filters.studentId"
-                         
-                      />
-                    </div>
-                  </th>
-                  <th>
-                    <div>
-                      <input
-                      class="filter-input h-8 text-[14px] leading-1 font-normal"
-                        type="text"
-                        placeholder="Họ tên"
-                        v-model="this.searchName"
-                         
-                      />
-                    </div>
-                  </th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th>
-                   
-                  </th>
-                
-                 
-                </tr>
-              </thead>
-              
-              <tbody>
-                <tr
-                  class="course-list" 
-                  v-for="(item, index) in this.filteredStudents"
-                  :key="index"
-                >
-                  <td class="text-center">{{ index + 1 }}</td>
-                  <td>{{ item.studentId }}</td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.phone }}</td>
-                  <td>
-                    {{ formatDate(item.birthdate) }}
-                  </td>
-                   
-                  <td>{{ item.status }}</td>
-                  <td class="flex flex-col md:grid grid-cols-2">
-                    <div>
-                      <RouterLink :to="{ path: '/student/details/' + item._id }" >
-                        <button>
-                          <i class="fa-solid fa-circle-info text-yellow-400"></i>
-                        </button>                  
-                      </RouterLink>
-                      
-                    </div>
-                    <div>
-                        <button @click="useStudent.deleteStudent(item._id)">
-                          <i class="fa-sharp fa-solid fa-delete-left text-red-500"></i>
-                        </button>
-                    </div>
-                    <div>
-                      <RouterLink :to="{ path: '/student/edit/' + item._id }" >
-                        <button>
-                          <i class="fa-solid fa-pen-to-square"></i>
-                        </button>                  
-                      </RouterLink>
-                      
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+          <table id="table-course">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>MSSV</th>
+                <th>Họ tên</th>
+                <th>Số điện thoại</th>
+                <th>Ngày sinh</th>
 
-              
-            </table>
-           
-           
-          </div>
+                <th>Trạng thái</th>
+                <th></th>
+              </tr>
+              <tr class="filter-course">
+                <th></th>
+                <th>
+                  <div>
+                    <input
+                      class="filter-input h-8 text-[14px] leading-1 font-normal"
+                      type="text"
+                      placeholder="MSSV"
+                      v-model="this.filters.studentId"
+                    />
+                  </div>
+                </th>
+                <th>
+                  <div>
+                    <input
+                      class="filter-input h-8 text-[14px] leading-1 font-normal"
+                      type="text"
+                      placeholder="Họ tên"
+                      v-model="this.searchName"
+                    />
+                  </div>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr
+                class="course-list"
+                v-for="(item, index) in this.filteredStudents"
+                :key="index"
+              >
+                <td class="text-center">{{ index + 1 }}</td>
+                <td>{{ item.studentId }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.phone }}</td>
+                <td>
+                  {{ formatDate(item.birthdate) }}
+                </td>
+
+                <td>{{ item.status }}</td>
+                <td class="flex flex-col md:grid grid-cols-2">
+                  <div>
+                    <RouterLink :to="{ path: '/student/details/' + item._id }">
+                      <button>
+                        <i class="fa-solid fa-circle-info text-yellow-400"></i>
+                      </button>
+                    </RouterLink>
+                  </div>
+                  <div>
+                    <button @click="useStudent.deleteStudent(item._id)">
+                      <i
+                        class="fa-sharp fa-solid fa-delete-left text-red-500"
+                      ></i>
+                    </button>
+                  </div>
+                  <div>
+                    <RouterLink :to="{ path: '/student/edit/' + item._id }">
+                      <button>
+                        <i class="fa-solid fa-pen-to-square text-[#ffc107]"></i>
+                      </button>
+                    </RouterLink>
+                  </div>
+                  <div>
+                    <a-button @click="showConfirm(item._id)">
+                      <i class="fa-solid fa-delete-left text-red-500"></i>
+                    </a-button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-    
-      <Spinner v-if="isShowSpinner"/>
     </div>
-  
+
+    <Spinner v-if="isShowSpinner" />
+  </div>
 </template>
 
 <script>
 import axios from "axios";
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
 import { useStudentStore } from "../../stores/student.js";
-import Spinner from '../../views/base/Spinner/Spinner.vue';
-
+import Spinner from "../../views/base/Spinner/Spinner.vue";
+import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
+import { createVNode, defineComponent } from "vue";
+import { Modal } from "ant-design-vue";
 export default {
   data() {
     return {
       data: [],
-      useStudent: useStudentStore(), 
+      useStudent: useStudentStore(),
       filters: {
-        studentId: '',
-        name: '', 
+        studentId: "",
+        name: "",
       },
-      filterText: '',
+      filterText: "",
       students: [],
       showFilter: false,
-      searchName: '',
-      isShowSpinner: true
+      searchName: "",
+      isShowSpinner: true,
     };
   },
   computed: {
     filteredStudents() {
-      
-        return this.students.filter((student) => {
-        const isMatchById = student.studentId.toString().includes(this.filters.studentId);
-         
-        const isMatchByName = student.name && student.name.includes(this.searchName);
-        
+      return this.students.filter((student) => {
+        const isMatchById = student.studentId
+          .toString()
+          .includes(this.filters.studentId);
+
+        const isMatchByName =
+          student.name && student.name.includes(this.searchName);
+
         if (this.filters.studentId && this.searchName) {
           return isMatchById && isMatchByName;
-        }
-        else if (this.filters.studentId) {
+        } else if (this.filters.studentId) {
           return isMatchById;
-        }
-        else if (this.searchName) {
+        } else if (this.searchName) {
           return isMatchByName;
-        } 
-        else return true;
-
+        } else return true;
       });
-      
-       
     },
-
   },
   async mounted() {
-      
-    await this.useStudent.getData(); 
-      this.students = this.useStudent.data;
-      this.isShowSpinner = false;
-     console.log(this.students);
+    await this.useStudent.getData();
+    this.students = this.useStudent.data;
+    this.isShowSpinner = false;
+    console.log(this.students);
   },
   methods: {
-    
-    async getData() {
+    async getDataStudent() {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/student/getAll/K64-C-CLC"
-        );
-        this.data = response.data.student;
-        // console.log(this.data);
+        const response = await this.useStudent.getData(); 
+        this.students = this.useStudent.data;
+        console.log(this.students);
       } catch (error) {
         console.log(error);
       }
-
     },
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -201,11 +189,38 @@ export default {
         year: "numeric",
       });
     },
-    
+    showConfirm(id) {
+      Modal.confirm({
+        title: "Có chắc chắn muốn xóa sinh viên này ?",
+        icon: createVNode(ExclamationCircleOutlined),
+        content: "",
+        onOk: async () => {
+          try {
+            const result = await this.useStudent.deleteStudent(id);
+            console.log(result);
+            await this.getDataStudent(); 
+
+            await new Promise((resolve, reject) => {
+              setTimeout(() => {
+                if (Math.random() > 0.5) {
+                  resolve();
+                } else {
+                  reject(new Error("Oops errors!"));
+                }
+              }, 1000);
+            });
+          } catch (error) {
+            console.log(error.message);
+          }
+        },
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onCancel() {},
+      });
+    },
   },
   components: {
-    Spinner
-  }
+    Spinner,
+  },
 };
 </script>
 
@@ -230,8 +245,6 @@ export default {
   overflow-y: scroll;
 }
 
-
-
 #table-course {
   width: 100%;
   border-collapse: collapse;
@@ -245,8 +258,6 @@ export default {
   text-align: center;
 }
 
-
-
 .filter-course input[type="text"] {
   width: 100%;
   height: 100%;
@@ -257,7 +268,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 
 .filter-input {
   color: #606266;
@@ -306,6 +316,4 @@ table td {
 }
 
 table {  overflow: auto    } */
-
-
 </style>

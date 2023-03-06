@@ -12,7 +12,7 @@ router.post('/message/create', userAuthenticate.verifyToken, message.createMessa
 router.get('/message-limit/:conversationId', userAuthenticate.verifyToken, message.getMessageLimitController);
 // load message
 router.get('/message-load',  message.loadMessageController);
-
+// userAuthenticate.verifyToken
 
 
 
