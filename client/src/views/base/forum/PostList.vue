@@ -65,6 +65,8 @@
         </div>
 
         <div>
+          <a-alert v-show="successMsg === true" message="Thêm bài đăng thành công" type="success" show-icon />
+          <a-alert v-show="errorMsg === true" message="Thêm bài đăng thất bại" type="error" show-icon />
           <div
             v-for="(item, index) in useForum.listPost"
             :key="index"
@@ -127,7 +129,8 @@ export default defineComponent({
   setup() {
     const formRef = ref();
     const visible = ref(false);
-
+    const successMsg = ref(false);
+    const errorMsg = ref(false);
     const formState = reactive({
       username: getUsername(),
       title: "",
@@ -147,9 +150,13 @@ export default defineComponent({
           visible.value = false;
           formRef.value.resetFields();
           console.log("reset formState: ", toRaw(formState));
+          successMsg.value = true;
+          setTimeout(() => (successMsg.value = false), 3000); 
         })
         .catch((info) => {
           console.log("Validate Failed:", info);
+          errorMsg.value = true;
+          setTimeout(() => (errorMsg.value = false), 3000); 
         });
     };
 
@@ -195,7 +202,9 @@ export default defineComponent({
       showOptions,
       deletePost,
       handleOptionClick,
-      uploadImage
+      uploadImage,
+      successMsg,
+      errorMsg,
     };
   },
   components: { NavTitle, Spinner },

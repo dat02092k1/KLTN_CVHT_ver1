@@ -36,7 +36,7 @@
           </div>
 
           <div v-if="useForum.post.imageUrl">
-            <img class="w-[100%]" :src="useForum.post.imageUrl" alt="post image">
+            <img class="w-[400px]" :src="useForum.post.imageUrl" alt="post image">
           </div>
           <hr />
           <div>

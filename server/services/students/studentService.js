@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 var studentServiceGetAll = async (username, _class) => {
     try {
         console.log(username)
-        const data = await studentModel.find({ class: _class });
+        const data = await studentModel.find({ _class: _class, role: 'student' });
 
         if (!data) return false; 
         

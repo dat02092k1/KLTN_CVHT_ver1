@@ -9,7 +9,7 @@
 
         <div class="sidebar-scrollbar mt-3">
             <ul class="hidden md:block ">
-                <div class="h-12 hover:bg-[#2d3c50]">
+                <div class="h-12 hover:bg-[#2d3c50] flex items-center">
                     <a href="">
                         <li>
                             <div class="px-5">
@@ -20,7 +20,7 @@
                     </a>
                 </div>
 
-                <div class="h-12 hover:bg-[#2d3c50]">
+                <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole === 'manager'">
                     <a href="">
                         <li>
                             <router-link to="/student/list" class="px-5">
@@ -31,7 +31,7 @@
                     </a>
                 </div>
 
-                <div class="h-12 hover:bg-[#2d3c50]">
+                <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole === 'manager'">
                     <a href="">
                         <li>
                             <router-link to="/student/chart" class="px-5">
@@ -42,7 +42,7 @@
                     </a>
                 </div>
 
-                <div class="h-12 hover:bg-[#2d3c50]">
+                <div class="h-12 hover:bg-[#2d3c50] flex items-center">
                     <a href="">
                         <li>
                             <router-link to="/student/course" class="px-5">
@@ -53,7 +53,7 @@
                     </a>
                 </div>
 
-                <div class="h-12 hover:bg-[#2d3c50]">
+                <div class="h-12 hover:bg-[#2d3c50] flex items-center">
                     <a href="">
                         <li>
                             <router-link to="/student/forum/posts" class="px-5">
@@ -64,7 +64,7 @@
                     </a>
                 </div>
 
-                <div class="h-12 hover:bg-[#2d3c50]">
+                <div class="h-12 hover:bg-[#2d3c50] flex items-center">
                     <a href="">
                         <li>
                             <router-link to="/student/conversation" class="px-5">
@@ -136,13 +136,15 @@
 
 <script>
 import { RouterLink, RouterView } from 'vue-router'
+import { getRole } from "../../utils/getInfoUser.js";
 
 export default {
     data() {
         return {
             sidebarWidth: '250px',
             isOpen: false,
-            activeColor: ''
+            activeColor: '',
+            userRole: getRole()
         }
     },
     methods: {

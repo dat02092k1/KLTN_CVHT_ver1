@@ -148,7 +148,12 @@
           >
         </a-form-item>
       </a-form>
+      
     </div>
+
+    <a-alert v-show="success === true" message="Thêm sinh viên thành công" type="success" show-icon />
+    <a-alert v-show="errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
+
   </div>
 </template>
 <script>
@@ -266,15 +271,21 @@ export default defineComponent({
     };
     const useStudent = useStudentStore();
 
+    const success = ref(false);
+    const errorMsg = ref(false);
     const onSubmit = () => {
       formRef.value
         .validate()
         .then(() => {
           console.log("values", formState);
           useStudent.addStudent(formState);
+          success.value = true;
+          setTimeout(() => (success.value = false), 3000);    
         })
         .catch((error) => {
           console.log("error", error);
+          errorMsg.value = true;
+          setTimeout(() => (errorMsg.value = false), 3000);
         });
     };
 
@@ -296,6 +307,8 @@ export default defineComponent({
       onSubmit,
       resetForm,
       pageTitle,
+      success,
+      errorMsg
     };
   },
   components: { NavTitle },

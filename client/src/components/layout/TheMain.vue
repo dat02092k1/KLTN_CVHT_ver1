@@ -1,9 +1,9 @@
 <template>
-  <div class="main">
+  <div class="main" v-if="userRole === 'manager'">
     <div class="main-container pt-0 px-7 pb-7">
       <div class="nav-content bg-[#324f90] p-[1.5rem]">
         <div class="nav-title text-[#fbfbff] font-bold text-[15px]">
-          <div>KHUNG CHƯƠNG TRÌNH ĐÀO TẠO</div>
+          <div>DANH SÁCH SINH VIÊN</div>
         </div>
       </div>
       <div class="table-content bg-[#ffffff]">
@@ -129,6 +129,8 @@ import Spinner from "../../views/base/Spinner/Spinner.vue";
 import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
 import { createVNode, defineComponent } from "vue";
 import { Modal } from "ant-design-vue";
+import { getRole } from "../../utils/getInfoUser.js";
+
 export default {
   data() {
     return {
@@ -143,6 +145,7 @@ export default {
       showFilter: false,
       searchName: "",
       isShowSpinner: true,
+      userRole: getRole()
     };
   },
   computed: {
