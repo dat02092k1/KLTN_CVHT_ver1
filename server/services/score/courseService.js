@@ -1,6 +1,6 @@
 const courseModel = require("../../models/score/course.js");
 const studentsModel = require("../../models/students/studentsModel.js");
-
+const grades = require("../../utils/grade.js");
 const mongoose = require("mongoose");
 
 var addCourseService = async (req, res) => {
@@ -10,6 +10,11 @@ var addCourseService = async (req, res) => {
     const student = await studentsModel.findById(studentId);
     if (!student) throw new Error(`Student not found`);
 
+    for (const subject of subjects) {
+      subject.grade = grades.calculateGrade(subject.score);  
+      console.log(subject.grade); 
+    }
+       
     const newCourse = new courseModel({
       semester,
       student: student._id,
@@ -24,9 +29,11 @@ var addCourseService = async (req, res) => {
       total_credits += subject.credits;
     }
 
+
     const course = await newCourse.save();
 
-    const GPA = totalScore / total_credits;
+    const GPArand10 = totalScore / total_credits;
+    const GPA = grades.convertGrade(GPArand10);    
     console.log(GPA);
     await courseModel.findByIdAndUpdate(course._id, { GPA, total_credits });
 
@@ -85,9 +92,15 @@ var getCourseService = async (studentId) => {
 
 var editCourseService = async (courseId, courseDetails) => {
   try {
-    console.log('service flag')
+     
     const subjects = courseDetails.subjects;
-    console.log(subjects);
+     
+
+    for (const subject of subjects) {
+      subject.grade = grades.calculateGrade(subject.score);  
+      console.log(subject.grade); 
+    }
+     
     // const objectId = mongoose.Types.ObjectId(username);
     let totalScore = 0;
     let total_credits = 0;
@@ -97,7 +110,9 @@ var editCourseService = async (courseId, courseDetails) => {
       total_credits += subject.credits;
     }
 
-    const GPA = totalScore / total_credits;
+     
+    const GPArand10 = totalScore / total_credits;
+    const GPA = grades.convertGrade(GPArand10);   
     console.log(GPA);
     const updateCourse = await courseModel.findByIdAndUpdate(
       courseId,
@@ -108,7 +123,7 @@ var editCourseService = async (courseId, courseDetails) => {
     if (!updateCourse) {
       throw new Error(`No course found with id: ${courseId}`);
     }
-
+    console.log(updateCourse.student);
     const student = await studentsModel.findById(updateCourse.student);  
 
     if (!student) throw new Error(`Student not found`);
@@ -147,6 +162,8 @@ var editCourseService = async (courseId, courseDetails) => {
 
       student.total_creadits = credits;
 
+    console.log(student);
+    
     await student.save();
     return {
       Update: updateCourse,

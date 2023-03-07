@@ -2,33 +2,45 @@
   <div>
   <nav-title :title="pageTitle"/>
 
-  <div class="table-container" v-if="userRole === 'student'">
-    <table>
-      <thead>
-        <tr>
-          <td colspan="3" class="semester">HỌC KỲ 1 - NĂM HỌC 2022-2023</td>
-        </tr>
-        <tr>
-          <th>STT</th>
-          <div>
-            <th class="subject" colspan="2">Môn học</th>
-            <th>Số tín</th>
-          <th>Điểm</th>
-          </div>
-           
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(course, index) in courses" :key="index">
-          <td>{{ index + 1 }}</td>
-          <div v-for="(item, index) in course.subjects" :key="index">
-            <td class="subject" style="width: 50%;">{{ item.name }}</td>
-            <td style="width: 50%;">{{ item.credits }}</td>
-            <td>{{ item.score }}</td>
-          </div>
-        </tr>
-      </tbody>
-    </table>
+  <div class="" v-if="userRole === 'student'">
+    <div class="table-container mx-3 bg-[#ffffff]">
+      <table style="width: 80%;">
+        <thead>
+          <tr>
+            <td colspan="3" class="semester">HỌC KỲ 1 - NĂM HỌC 2022-2023</td>
+          </tr>
+          <tr class="bg-[#f2f2f2]"> 
+            <th>STT</th>
+            <div class="grid grid-cols-12">
+              <th class="subject col-span-3" colspan="2" >Môn học</th>
+              <th class="col-span-3">Số tín</th>
+            <th class="col-span-3">Điểm</th>
+            <th class="col-span-3">Điểm chữ</th>
+            </div>
+             
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(course, index) in courses" :key="index">
+            <td>{{ index + 1 }}</td>
+            <div class="grid grid-cols-12 " v-for="(item, index) in course.subjects" :key="index">
+              <td class="subject col-span-3 text-center" >{{ item.name }}</td>
+              <td class="text-center col-span-3" >{{ item.credits }}</td>
+              <td class="text-center col-span-3">{{ item.score }}</td>
+              <td class="text-center col-span-3">{{ item.grade }}</td>
+            </div>  
+
+            
+            
+          </tr>
+        </tbody>
+      </table>
+
+       
+    </div>
+
+    <div>Tổng trung bình tích lũy: </div>
+    <span>{{ studentCpa.CPA }}</span>
   </div>
 
   <div class="consultant-container" v-else>
@@ -48,7 +60,7 @@
           <td>{{ index + 1 }}</td>
           <td>{{ student.studentId }}</td>
           <td>{{ student.name }}</td>
-          <td class="text-center">{{ student.gpa }}</td>
+          <td class="text-center">{{ student.CPA }}</td>
           <td class="flex flex-col items-center justify-center">
             <div class="m-2">
               <router-link :to="{ path: '/student/course/' + student._id }" >
@@ -96,13 +108,15 @@ export default {
       courses: [],
       userRole: getRole(),
       userClass: getClass(),
-      students: []
+      students: [],
+      studentCpa: ''
     };
   },
   async mounted() {
     if (this.userRole === 'student') {
     this.courses = await this.useScore.getCourses(this.studentId); 
-    console.log(this.courses)
+    this.studentCpa = await this.useStudent.getStudentDetails(this.studentId);
+    console.log(this.courses, this.studentCpa.CPA)
     }
     else {
       this.students = await this.useStudent.getData();  
@@ -117,27 +131,37 @@ export default {
 </script>
 
 <style scoped>
+  .table-container {
+    height: 400px;
+    overflow-y: scroll;
+    margin: 0 26px;
+  }
+ 
+  th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+  }
+  
+   
+
   .student-table {
   border-collapse: collapse;
   border: 1px solid black;
   margin: 0 auto
 }
-
 .student-table th,
 .student-table td {
   border: 1px solid black;
   padding: 10px;
 }
-
 .student-table th {
   text-align: center;
 }
-
 .student-table th:nth-child(2),
 .student-table th:nth-child(3) {
   width: 200px;
 }
-
   .consultant-container {
     height: 400px;
     overflow-y: scroll;

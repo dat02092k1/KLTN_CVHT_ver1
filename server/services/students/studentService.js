@@ -44,8 +44,7 @@ var createStudentService = async (studentDetail) => {
           // mã hóa password 
           studentDetail.password = hashPassword;
 
-          // check for existing
-          console.log('flag'); 
+          
           var checkExisting = await studentModel.findOne( {studentId: studentDetail.studentId} );
           console.log(checkExisting) 
           if (checkExisting) throw new Error("Student already exists");
@@ -64,9 +63,16 @@ var createStudentService = async (studentDetail) => {
 var updateStudentService = async (id, studentDetail) => {
     try {
         const objectId = mongoose.Types.ObjectId(id);
-        console.log(objectId);
-        console.log(studentDetail)
+        const { password } = studentDetail;
+        console.log(password)
+
+        const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS); 
+
+          // mã hóa password 
+          studentDetail.password = hashPassword; 
+
         const student = await studentModel.findByIdAndUpdate(objectId, studentDetail, { new: true }); 
+        
         if (!student) {
             throw new Error(`No student found with id: ${id}`);
         }

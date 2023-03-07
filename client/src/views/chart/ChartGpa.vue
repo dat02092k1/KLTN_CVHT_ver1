@@ -63,7 +63,7 @@
         const fetchData = userlist.data.allStudent;
         this.isShowSpinner = false;
         
-        const gpa = fetchData.map(number => number.gpa);
+        const gpa = fetchData.map(number => number.CPA);
         const student = fetchData.map(number => number.studentId);
         console.log(gpa);
         console.log(student);

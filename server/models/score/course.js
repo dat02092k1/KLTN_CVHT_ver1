@@ -22,6 +22,9 @@ var courseSchema = new Schema({
         credits: {
             type: Number,
             required: true   
+        },
+        grade: {
+          type: String, 
         }
       }],  
     GPA: {
