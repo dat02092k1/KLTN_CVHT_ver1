@@ -1,6 +1,9 @@
 var express = require('express');
 var studentController = require('../../controllers/students/studentsController');  
-var userAuthenticate = require('../../middleware/authentication.js')
+var userAuthenticate = require('../../middleware/authentication.js');  
+var validate = require('../../middleware/validation.js');
+var upload = require('../../uploads/multer.js').upload;
+
 const router = express.Router();
 
 
@@ -16,5 +19,6 @@ router.delete('/student/remove/:id', userAuthenticate.verifyToken, userAuthentic
 
 router.get('/student/names/:class', userAuthenticate.verifyToken, studentController.getNameStudentController);
 
+router.post('/student/import-excel', userAuthenticate.isAdminAuthentication, upload.single('file'), validate.validateFieldsMiddleware, studentController.uploadStudentsController);
 
 module.exports = router;       

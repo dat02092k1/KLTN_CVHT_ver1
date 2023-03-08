@@ -317,6 +317,11 @@ export default defineComponent({
       formState._class = response._class;
       formState.address = response.address;
       formState.birthdate = dayjs(response.birthdate);
+       
+      const formattedDate = dayjs(response.birthdate).utcOffset(7).format('YYYY-MM-DD');
+
+console.log(formattedDate)
+
     });
 
     return {

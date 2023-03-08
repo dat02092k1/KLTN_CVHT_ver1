@@ -16,13 +16,21 @@
               >K64-C-CLC</label
             >
           </div>
-          <RouterLink
-            class="bg-[#324f90] text-[#fff] p-2 rounded"
-            to="/student/add"
-          >
-            Thêm sinh viên
-          </RouterLink>
-          <RouterView />
+          <div class="flex justify-between">
+            <RouterLink
+              class="bg-[#324f90] text-[#fff] p-2 rounded"
+              to="/student/add"
+            >
+              Thêm sinh viên
+            </RouterLink>
+
+            <RouterLink
+              class="bg-[#324f90] text-[#fff] p-2 rounded"
+              to="/student/import-excel"
+            >
+              Import Excel
+            </RouterLink>
+          </div>
         </div>
         <div class="content-container">
           <table id="table-course">
@@ -78,7 +86,7 @@
                 <td>{{ item.name }}</td>
                 <td>{{ item.phone }}</td>
                 <td>
-                  {{ formatDate(item.birthdate) }}
+                  {{ formatIsoDate(item.birthdate) }}
                 </td>
 
                 <td>{{ item.status }}</td>
@@ -130,7 +138,9 @@ import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
 import { createVNode, defineComponent } from "vue";
 import { Modal } from "ant-design-vue";
 import { getRole } from "../../utils/getInfoUser.js";
-
+import {
+  format, parseISO
+} from "date-fns";
 export default {
   data() {
     return {
@@ -177,20 +187,32 @@ export default {
   methods: {
     async getDataStudent() {
       try {
-        const response = await this.useStudent.getData(); 
+        const response = await this.useStudent.getData();
         this.students = this.useStudent.data;
         console.log(this.students);
       } catch (error) {
         console.log(error);
       }
     },
-    formatDate(dateString) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("default", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
+    formatIsoDate(dtStr) {
+      const dtUtc = new Date(dtStr);
+      console.log(dtUtc)
+const tzOffset = -7; // UTC+7
+const dtVn = new Date(dtUtc.getTime() + tzOffset * 60 * 60 * 1000);
+
+console.log(dtVn.toLocaleDateString('en-GB'));
+return dtVn.toLocaleDateString('en-GB');
+},
+    formatDate(dateStr) {
+      if (!dateStr) {
+    console.error("birthdate is not provided");
+    return;
+  }
+  else {
+      const dateObj = parseISO(dateStr);
+const formattedDate = format(dateObj, 'dd/MM/yyyy');
+console.log(formattedDate);
+  }
     },
     showConfirm(id) {
       Modal.confirm({
@@ -201,7 +223,7 @@ export default {
           try {
             const result = await this.useStudent.deleteStudent(id);
             console.log(result);
-            await this.getDataStudent(); 
+            await this.getDataStudent();
 
             await new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -244,7 +266,7 @@ export default {
 }
 /* TABLE CSS */
 .content-container {
-  height: 330px;
+  height: 320px;
   overflow-y: scroll;
 }
 

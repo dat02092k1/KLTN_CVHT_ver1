@@ -106,7 +106,7 @@ export default defineComponent({
         .validateFields()
         .then((values) => {
           console.log("formState: ", toRaw(formState));
-
+          console.log(formState);
           visible.value = false;
           formRef.value.resetFields();
            

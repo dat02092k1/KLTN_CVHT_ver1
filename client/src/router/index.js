@@ -7,6 +7,7 @@ import StudentDetails from '../views/student/StudentDetails.vue'
 import StudentForm from '../views/student/StudentForm.vue'
 import StudentAdd from '../views/student/StudentAdd.vue'
 import StudentEdit from '../views/student/StudentEdit.vue'
+import ImportExcel from '../views/student/ImportExcel.vue'
 import FormTest from '../views/student/FormTest.vue'
 import ChartGpa from '../views/chart/ChartGpa.vue'
 import ChartCredits from '../views/chart/ChartCredits.vue'
@@ -52,6 +53,11 @@ const router = createRouter({
       path: '/student/details/:id',
       name: 'student details',
       component: StudentForm
+    },
+    {
+      path: '/student/import-excel',
+      name: 'students import',
+      component: ImportExcel
     },
     {
       path: '/login',

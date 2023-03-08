@@ -6,7 +6,9 @@ import { defineStore } from "pinia";
 export const useImgStore = defineStore({
   id: "image",
   state: () => ({
-    imageUrl: ""
+    imageUrl: "",
+    successMsg: false,
+    errorMsg: false 
 }),
   getters: {
   },
@@ -22,6 +24,21 @@ export const useImgStore = defineStore({
         } catch (error) {
             console.log(error);         
         }
+    },
+    async uploadExcel(data) {
+      try {
+        const config = getAccessToken();
+
+        const upload = await axios.post("http://localhost:8000/student/import-excel", data, config); 
+             
+        console.log(upload);    
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000); 
+      } catch (error) {
+        console.log(error);
+        this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);  
+      }
     }
   },
 });

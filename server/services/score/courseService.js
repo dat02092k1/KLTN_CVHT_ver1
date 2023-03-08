@@ -60,7 +60,7 @@ var addCourseService = async (req, res) => {
     const credits = result[0].totalCredits;
 
     const status =
-      cpaValue < 3.0
+      cpaValue < 2.3
         ? "Cảnh báo học vụ"
         : cpaValue > 3.2
         ? "Khen thưởng"
@@ -152,7 +152,7 @@ var editCourseService = async (courseId, courseDetails) => {
     const credits = result[0].totalCredits;
 
     const status =
-      cpaValue < 3.0
+      cpaValue < 2.3
         ? "Cảnh báo học vụ"
         : cpaValue > 3.2
         ? "Khen thưởng"

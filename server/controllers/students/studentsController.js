@@ -70,7 +70,17 @@ var getNameStudentController = async (req, res) => {
         res.status(500).send({ message: "Internal server error" });
     }
 }
+
+var uploadStudentsController = async (req, res) => {
+    try {
+        const students = await studentService.uploadStudentsService(req);
+        res.status(200).json( { success: true, students})
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal server error" });
+    }
+}
 module.exports = { getDataStudentControllerfn, createStudentControllerfn, 
      getDetailStudentfn, updateStudentControllerfn,
-    deleteStudentControllerfn, getNameStudentController } ;         
+    deleteStudentControllerfn, getNameStudentController, uploadStudentsController } ;         
 
