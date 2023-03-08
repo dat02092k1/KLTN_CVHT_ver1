@@ -15,6 +15,7 @@ export const useAuthStore = defineStore({
       username: "",
       role: "",
     },
+    errorMsg: false
   }),
   getters: {},
   actions: {
@@ -39,9 +40,15 @@ export const useAuthStore = defineStore({
         if (user.status === 200) {
           router.push("/student/list");
         } else {
+          console.log(this.errorMsg);
+          this.errorMsg = true;
+          setTimeout(() => (this.errorMsg = false), 3000); 
           throw new Error("Sai thông tn đăng nhập");
         }
       } catch (error) {
+        this.errorMsg = true;
+        console.log(this.errorMsg);
+        setTimeout(() => (this.errorMsg = false), 3000); 
         throw error;
       }
     },

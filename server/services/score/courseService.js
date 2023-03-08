@@ -25,15 +25,16 @@ var addCourseService = async (req, res) => {
     let total_credits = 0;
 
     for (const subject of subjects) {
-      totalScore += subject.score * subject.credits;
+      totalScore += (grades.convertGradeByRand4(subject.score) * subject.credits);
       total_credits += subject.credits;
     }
 
 
     const course = await newCourse.save();
 
-    const GPArand10 = totalScore / total_credits;
-    const GPA = grades.convertGrade(GPArand10);    
+     
+    const gpaRaw = totalScore / total_credits;
+    const GPA = grades.roundToTwoDecimalPlaces(gpaRaw);
     console.log(GPA);
     await courseModel.findByIdAndUpdate(course._id, { GPA, total_credits });
 
@@ -106,14 +107,15 @@ var editCourseService = async (courseId, courseDetails) => {
     let total_credits = 0;
 
     for (const subject of subjects) {
-      totalScore += subject.score * subject.credits;
+      totalScore += (grades.convertGradeByRand4(subject.score) * subject.credits);      
       total_credits += subject.credits;
     }
 
      
-    const GPArand10 = totalScore / total_credits;
-    const GPA = grades.convertGrade(GPArand10);   
+    const gpaRaw = totalScore / total_credits;
+    const GPA = grades.roundToTwoDecimalPlaces(gpaRaw);
     console.log(GPA);
+
     const updateCourse = await courseModel.findByIdAndUpdate(
       courseId,
       { ...courseDetails, GPA, total_credits },

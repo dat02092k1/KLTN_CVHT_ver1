@@ -1,9 +1,9 @@
 <template>
     <div class="sidebar hidden md:flex" :style="{ width: sidebarWidth }">
         <div class="sidebar-logo-container bg-black leading-[50px]">
-            <a href="" class="flex justify-center items-center">
+            <a href="" class="flex justify-center items-center  ">
                 <img class="w-8 h-8 align-middle mr-3 " src="../../assets/images/logo_small.png" alt="">
-                <h1>UET Portal</h1>
+                <h1 class="text-[#fff] font-semibold leading-[50px] text-[14px]">UET Portal</h1>
             </a>
         </div>
 

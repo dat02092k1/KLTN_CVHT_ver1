@@ -46,7 +46,7 @@
           <input
             id="pretext-input"
             class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
-            type="number"
+            type="text"
             v-model.number="subject.score"
             placeholder="Điểm"
           />

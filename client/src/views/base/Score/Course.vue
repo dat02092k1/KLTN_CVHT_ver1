@@ -60,7 +60,7 @@
           <td>{{ index + 1 }}</td>
           <td>{{ student.studentId }}</td>
           <td>{{ student.name }}</td>
-          <td class="text-center">{{ student.CPA }}</td>
+          <td class="text-center">{{ roundToTwoDecimalPlaces(student.CPA) }}</td>
           <td class="flex flex-col items-center justify-center">
             <div class="m-2">
               <router-link :to="{ path: '/student/course/' + student._id }" >
@@ -124,7 +124,9 @@ export default {
     }
   },
   methods: {
-    
+    roundToTwoDecimalPlaces(num) {
+            return num.toFixed(2);
+        }
   },
   components: { NavTitle },
 };

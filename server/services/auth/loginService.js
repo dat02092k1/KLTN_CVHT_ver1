@@ -50,7 +50,7 @@ var loginService = async (req, res, next) => {
         return res.status(200).json({ acessToken, user });   
         
     } catch (error) {
-        console.log(error);  
+        return res.status(400).json({ msg: 'user not found' }); 
     }
 }
 
