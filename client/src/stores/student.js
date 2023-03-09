@@ -44,7 +44,7 @@ export const useStudentStore = defineStore({
             `http://localhost:8000/student/getAll/${this._class}`, config
           );
           this.data = response.data.allStudent;
-          console.log(this.data);
+           
            return response.data.allStudent;
         } catch (error) {
           console.log(error);

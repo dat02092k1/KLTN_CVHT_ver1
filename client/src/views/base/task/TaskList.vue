@@ -91,7 +91,8 @@
   <script>
   import { defineComponent, onMounted, reactive, ref, toRaw, computed  } from "vue";
   import { useStudentStore } from "../../../stores/student.js";
-  
+  import { useTaskStore } from "../../../stores/task.js";
+
   import { RouterLink, RouterView } from "vue-router";
   import { getUsername, getClass } from "../../../utils/getInfoUser.js";
   import { message } from "ant-design-vue";
@@ -111,7 +112,8 @@
       });
   
       const useStudent = useStudentStore(); 
-  
+      const useTask = useTaskStore();
+
       const onOk = () => {
         formRef.value
           .validateFields()
@@ -141,8 +143,11 @@
       
   
       const students = ref([]);
+      const tasks = ref([]);
+   
       onMounted(async () => {
-        students.value = await useStudent.getData();
+        // students.value = await useStudent.getData();
+        tasks.value = await useTask.getTasks();
       });
   
       const options = computed(() => {
@@ -166,7 +171,8 @@
         value: ref([]),
         handleChange,
         options,
-        checked
+        checked,
+        tasks
         //   value: (i + 10).toString(36) + (i + 1),
         // })),
         // options: [...Array(25)].map((_, i) => ({

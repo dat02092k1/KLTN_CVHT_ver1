@@ -7,8 +7,8 @@ var getTaskService = async (req) => {
     try { 
         const {
             createdBy
-        } = req.body;
-
+        } = req.query;
+         
         const tasks = await taskModel.find({ createdBy: createdBy })
         if (!tasks) throw new Error(`tasks not found`);
 
