@@ -9,6 +9,7 @@ export const useTaskStore = defineStore({
   id: "task",
   state: () => ({
     createdBy: getId(),
+    tasks: []
   }),
   getters: {},
   actions: {
@@ -22,7 +23,7 @@ export const useTaskStore = defineStore({
         };
  
 
-        const tasks = await axios.get('http://localhost:8000/api/student/get-task-all', {
+        const tasks = await axios.get(API_ENDPOINTS.getTasks, {
             params: {
               createdBy: this.createdBy,
             },
@@ -30,11 +31,24 @@ export const useTaskStore = defineStore({
               token: `Bearer ${accessToken}`,
             },
           });
-
-        console.log(tasks);
+          this.tasks = tasks.data.tasks;
+        console.log(this.tasks);
+        return tasks.data.tasks;
       } catch (error) {
         console.log(error);
       }
     },
+    async assignTasks(taskDetails) {
+      try {
+        const config = getAccessToken();
+
+        const task = await axios.post(API_ENDPOINTS.assignTask, taskDetails, config)
+
+        console.log(task);
+        this.getTasks();     
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
 });

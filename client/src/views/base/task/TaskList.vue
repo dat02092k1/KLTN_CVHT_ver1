@@ -1,191 +1,225 @@
 <template>
-    <div>
-      <div class="header-forum">
-        <div class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded">
-          <div class="flex justify-end">
-            <a-button
-              class="bg-[#324f90] rounded"
-              type="primary"
-              @click="visible = true"
-              >Thêm task</a-button
+  <div>
+    <div class="header-forum">
+      <div
+        class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded h-[450px] overflow-y-scroll"
+      >
+        <div class="flex justify-end">
+          <a-button
+            class="bg-[#324f90] rounded"
+            type="primary"
+            @click="visible = true"
+            >Thêm Task</a-button
+          >
+
+          <a-modal
+            v-model:visible="visible"
+            title="Thêm Task"
+            ok-text="Create"
+            cancel-text="Cancel"
+            @ok="onOk"
+          >
+            <a-form
+              ref="formRef"
+              :model="formState"
+              layout="vertical"
+              name="form_in_modal"
             >
-  
-            <a-modal
-              v-model:visible="visible"
-              title="Thêm task"
-              ok-text="Create"
-              cancel-text="Cancel"
-              @ok="onOk"
-            >
-              <a-form
-                ref="formRef"
-                :model="formState"
-                layout="vertical"
-                name="form_in_modal"
+              <a-form-item
+                name="task"
+                label="Nhiệm vụ"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'Chưa điền nhiệm vụ',
+                  },
+                ]"
               >
-                <a-form-item
-                  name="title"
-                  label="Title"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please input the title of collection!',
-                    },
-                  ]"
-                >
-                  <a-input v-model:value="formState.title" />
-                </a-form-item>
-  
-                <a-form-item
-                  name="task"
-                  label="Task"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please input the task of collection!',
-                    },
-                  ]"
-                >
-                  <a-textarea v-model:value="formState.task" />
-                </a-form-item>
-  
-                <a-form-item
-                  name="complete"
-                  label="isComplete"
-                  class="flex"
-                >
+                <a-input v-model:value="formState.task" />
+              </a-form-item>
+
+              <a-form-item name="description" label="Mô tả">
+                <a-textarea v-model:value="formState.description" />
+              </a-form-item>
+
+              <a-form-item name="complete" label="Hoàn thành" class="flex">
                 <a-checkbox v-model:checked="checked"></a-checkbox>
-                </a-form-item>
-                 
-  
-                 
-                <a-form-item
-                  name="assignedStudents"
-                  label="Select"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please select Activity zone',
-                      trigger: 'change',
-                    },
-                  ]"
+              </a-form-item>
+
+              <a-form-item
+                name="assignedStudents"
+                label="Sinh viên"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'Chưa chọn sinh viên',
+                    trigger: 'change',
+                  },
+                ]"
+              >
+                <a-select
+                  v-model:value="formState.assignedStudents"
+                  mode="tags"
+                  style="width: 100%"
+                  placeholder="Chọn sinh viên"
+                  :options="options"
+                  @change="handleChange"
                 >
-                  <a-select
-                    v-model:value="formState.assignedStudents"
-                    mode="tags"
-                    style="width: 100%"
-                    placeholder="Tags Mode"
-                    :options="options"
-                    @change="handleChange"
-                  >
-                  </a-select>
-                </a-form-item>
-              </a-form>
-            </a-modal>
-          </div>
+                </a-select>
+              </a-form-item>
+            </a-form>
+          </a-modal>
+        </div>
+
+        <div v-for="(task, index) in useTask.tasks" :key="index">
+          <a-card :title="task.task" style="width: 300px">
+            <template #extra><a href="#">more</a></template>
+            <!-- <p> Description: " {{ task.description }} "</p> -->
+            <div
+              class="flex justify-between"
+              v-for="(item, index) in task.assignedStudents"
+              :key="index"
+            >
+              <p>{{ item.studentId }}</p>
+              <input
+                type="radio"
+                disabled
+                v-bind:value="item.isCompleted"
+                v-bind:checked="item.isCompleted"
+              />
+            </div>
+          </a-card>
         </div>
       </div>
+
+      <div>
+        <section class="tasks-container">
+          <p class="loading-text">njdnm</p>
+          <div class="tasks"></div>
+        </section>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import { defineComponent, onMounted, reactive, ref, toRaw, computed  } from "vue";
-  import { useStudentStore } from "../../../stores/student.js";
-  import { useTaskStore } from "../../../stores/task.js";
+  </div>
+</template>
 
-  import { RouterLink, RouterView } from "vue-router";
-  import { getUsername, getClass } from "../../../utils/getInfoUser.js";
-  import { message } from "ant-design-vue";
-  
-  export default defineComponent({
-    setup() {
-      const formRef = ref();
-      const visible = ref(false);
-  
-      const formState = reactive({
-        title: "",
-        task: "",
-        complete: null,
-        assignedStudents: [],   
-        username: getUsername(),   
-        // _class: getClass(),   
-      });
-  
-      const useStudent = useStudentStore(); 
-      const useTask = useTaskStore();
+<script>
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  ref,
+  toRaw,
+  computed,
+} from "vue";
+import { useStudentStore } from "../../../stores/student.js";
+import { useTaskStore } from "../../../stores/task.js";
 
-      const onOk = () => {
-        formRef.value
-          .validateFields()
-          .then((values) => {
-            formState.complete = checked.value;
-            console.log("formState: ", toRaw(formState));
-            const task = toRaw(formState);
-            console.log(formState);
-            checked.value = false;
-            visible.value = false;
-            formRef.value.resetFields();
-             
-          })
-          .catch((info) => {
-            console.log("Validate Failed:", info);
-          });
-      };
-  
-      const handleChange = (value) => {
-        formState.assignedStudents = value
-        console.log(formState.assignedStudents);  
-        
-      };
-  
-       const checked = ref(false);
-  
+import { RouterLink, RouterView } from "vue-router";
+import { getUsername, getId } from "../../../utils/getInfoUser.js";
+import { message } from "ant-design-vue";
+
+export default defineComponent({
+  setup() {
+    const formRef = ref();
+    const visible = ref(false);
+
+    const formState = reactive({
+      task: "",
+      description: "",
+      complete: null,
+      assignedStudents: [],
+      createdBy: getId(),
+      // _class: getClass(),
+    });
+
+    const useStudent = useStudentStore();
+    const useTask = useTaskStore();
+    const isComplete = ref();
+
+    const onOk = () => {
+      formRef.value
+        .validateFields()
+        .then((values) => {
+          formState.complete = checked.value;
+           
+          formState.assignedStudents = assignedStudents.value;
+          console.log("formState: ", toRaw(formState));
+          const task = toRaw(formState);
+          useTask.assignTasks(task);
+           
+          checked.value = false;
+          visible.value = false;
+          formRef.value.resetFields();
+        })
+        .catch((info) => {
+          console.log("Validate Failed:", info);
+        });
+    };
+
+    const assignedStudents = ref([]);
+    const handleChange = (value) => {
+      formState.assignedStudents = value
       
-  
-      const students = ref([]);
-      const tasks = ref([]);
-   
-      onMounted(async () => {
-        // students.value = await useStudent.getData();
-        tasks.value = await useTask.getTasks();
-      });
-  
-      const options = computed(() => {
-    if (students.value.length > 0) {
-      return students.value.map((student) => ({
-        value: student._id,
-        label: student.studentId
+      assignedStudents.value = formState.assignedStudents.map(studentId => ({ student: studentId }));
+
+      console.log(assignedStudents.value);
+      
+    };
+
+    const checked = ref(false);
+
+    const students = ref([]);
+    const tasks = ref([]);
+    const studentsId = ref([]);
+
+    onMounted(async () => {
+      students.value = await useStudent.getData();
+      studentsId.value = students.value.map(({ studentId, _id }) => ({
+        studentId,
+        _id,
       }));
-    } else {
-      return [];
-    }
-  });
-  
-       
-      return {
-        formState,
-        formRef,
-        visible,
-        onOk,
-        students,
-        value: ref([]),
-        handleChange,
-        options,
-        checked,
-        tasks
-        //   value: (i + 10).toString(36) + (i + 1),
-        // })),
-        // options: [...Array(25)].map((_, i) => ({
-        //   value: (i + 10).toString(36) + (i + 1),
-        // })),
-      };
-    },
-  });
-  </script>
-  
-  <style scoped>
-  ::v-deep .ant-switch-checked ant-switch {
-     background-color: #1890ff;
-  }
-  </style>
-  
+      console.log(studentsId.value);
+
+      tasks.value = await useTask.getTasks();
+      console.log(tasks.value);
+    });
+
+    const options = computed(() => {
+      if (students.value.length > 0) {
+        console.log(
+          students.value.map((student) => ({
+            value: student._id,
+            label: student.studentId,
+          }))
+        );
+        return students.value.map((student) => ({
+          value: student._id,
+          label: student.studentId,
+        }));
+      } else {
+        return [];
+      }
+    });
+
+    return {
+      formState,
+      formRef,
+      visible,
+      onOk,
+      students,
+      value: ref([]),
+      handleChange,
+      options,
+      checked,
+      tasks,
+      useTask,
+    };
+  },
+});
+</script>
+
+<style scoped>
+::v-deep .ant-switch-checked ant-switch {
+  background-color: #1890ff;
+}
+</style>

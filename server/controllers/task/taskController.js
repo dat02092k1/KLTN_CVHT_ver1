@@ -11,10 +11,10 @@ var getTaskController = async (req, res) => {
             .json({ success: false, message: "get all tasks failed" });
     }
 }
- 
+            
 var createTaskController = async (req, res) => {
     try {
-        var task = await taskService.createTaskService(req);
+        var task = await taskService.createTaskService(req.body);
         res.status(200).json({ success: true, task });  
     } catch (error) {
         console.log(error);

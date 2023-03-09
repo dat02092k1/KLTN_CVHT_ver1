@@ -21,15 +21,19 @@ var getTaskService = async (req) => {
 var createTaskService = async (taskDetail) => {
     try {
         const { task, description, assignedStudents, createdBy } = taskDetail;    
-        console.log(taskDetail); 
-
+         
+        console.log(taskDetail);
         for (const item of assignedStudents) {
+            console.log(item.student);
             const studentAssign = await studentModel.findById(item.student);
+             
             if (!studentAssign) {
                 throw new Error("Không tìm thấy sinh viên")
                 } 
+              item.studentId = studentAssign.studentId; 
               }
           
+              console.log(assignedStudents); 
 
         const newTask = new taskModel({
         task,
@@ -48,9 +52,18 @@ var createTaskService = async (taskDetail) => {
 
 var editTaskService = async (taskDetails, taskId) => {
     try {
-        
-        console.log(taskId, taskDetails); 
-
+        const { assignedStudents } = taskDetails; 
+         
+        for (const item of assignedStudents) {
+            const studentAssign = await studentModel.findById(item.student);
+             
+            if (!studentAssign) {
+                throw new Error("Không tìm thấy sinh viên")
+                } 
+              item.studentId = studentAssign.studentId; 
+              } 
+        console.log(taskDetails);   
+    
         const task = await taskModel.findByIdAndUpdate(taskId, taskDetails, { new: true });  
 
         if (!task) res.status(500).json({ message: 'update task failed' });

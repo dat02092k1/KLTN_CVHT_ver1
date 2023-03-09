@@ -16,6 +16,9 @@ var taskSchema = new Schema({
         ref: "students",
         required: true,
       },
+      studentId: {
+        type: String
+      },
       isCompleted: {
         type: Boolean,
         default: false,
