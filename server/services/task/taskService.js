@@ -78,6 +78,7 @@ var updateStatusTaskService = async (taskId, studentId, taskDetail) => {
     try {
         const task = await taskModel.findById(taskId);
 
+        console.log(isCompleted);
     if (!task) {
       throw new Error('Task not found');
     }
@@ -90,9 +91,11 @@ var updateStatusTaskService = async (taskId, studentId, taskDetail) => {
         throw new Error('Assigned student not found');
       }
 
+      
       assignedStudent.isCompleted = isCompleted;
     await task.save();
-           
+    
+    return task;
 
     } catch (error) {
         throw error;
