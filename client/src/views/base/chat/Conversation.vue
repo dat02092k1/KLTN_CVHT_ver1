@@ -126,8 +126,15 @@ export default {
 
     this.socket.on("getMessage", (data) => {
       console.log(data);
-      this.useChat.messages.push(data);
-      console.log(this.useChat.messages);
+       
+      if (this.members.includes(data.username)) {
+        this.useChat.messages.push(data);
+      }
+      else {
+        console.log('msg from username: ' + data.username);
+      }
+       
+      console.log(this.members);
     });
 
     this.socket.on("offlineUser", (data) => console.log(data));
@@ -255,7 +262,7 @@ export default {
 </script>
 <style scoped>
 .chat-zone {
-  height: 450px;
+  height: 400px;
   overflow-y: scroll;
 }
 

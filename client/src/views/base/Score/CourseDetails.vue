@@ -100,11 +100,11 @@
   <style scoped>
 
   .table-container {
-    height: 400px;
+    height: 350px;
     overflow-y: scroll;
     margin: 0 26px;
   }
-
+ 
    table {
     border-collapse: collapse;
     width: 100%;

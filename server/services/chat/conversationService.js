@@ -7,7 +7,7 @@ var createConversationService = async (req, res) => {
         const newConversation = new conversationModel({
             members: [req.body.senderId, req.body.receiverId],
         });
-
+        
         await newConversation.save();
 
         return newConversation;

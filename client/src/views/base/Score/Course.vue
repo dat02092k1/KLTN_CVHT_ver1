@@ -1,6 +1,6 @@
 <template>
   <div>
-  <nav-title :title="pageTitle"/>
+  <nav-title :title="pageTitle" class="p-[15px]"/>
 
   <div class="" v-if="userRole === 'student'">
     <div class="table-container mx-3 bg-[#ffffff]">
@@ -134,7 +134,7 @@ export default {
 
 <style scoped>
   .table-container {
-    height: 400px;
+    height: 200px;
     overflow-y: scroll;
     margin: 0 26px;
   }

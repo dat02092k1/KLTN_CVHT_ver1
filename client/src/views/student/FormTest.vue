@@ -50,6 +50,16 @@
               </a-form-item>
 
               <a-form-item
+                name="complete"
+                label="isComplete"
+                class="flex"
+              >
+              <a-checkbox v-model:checked="checked"></a-checkbox>
+              </a-form-item>
+               
+
+               
+              <a-form-item
                 name="assignedStudents"
                 label="Select"
                 :rules="[
@@ -92,11 +102,12 @@ export default defineComponent({
     const visible = ref(false);
 
     const formState = reactive({
-      username: getUsername(),
       title: "",
       task: "",
+      complete: null,
+      assignedStudents: [],   
+      username: getUsername(),   
       _class: getClass(),
-      assignedStudents: [],      
     });
 
     const useStudent = useStudentStore(); 
@@ -105,8 +116,11 @@ export default defineComponent({
       formRef.value
         .validateFields()
         .then((values) => {
+          formState.complete = checked.value;
           console.log("formState: ", toRaw(formState));
+          const task = toRaw(formState);
           console.log(formState);
+          checked.value = false;
           visible.value = false;
           formRef.value.resetFields();
            
@@ -121,6 +135,10 @@ export default defineComponent({
       console.log(formState.assignedStudents);  
       
     };
+
+     const checked = ref(false);
+
+    
 
     const students = ref([]);
     onMounted(async () => {
@@ -147,7 +165,8 @@ export default defineComponent({
       students,
       value: ref([]),
       handleChange,
-      options
+      options,
+      checked
       //   value: (i + 10).toString(36) + (i + 1),
       // })),
       // options: [...Array(25)].map((_, i) => ({
@@ -158,4 +177,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+::v-deep .ant-switch-checked ant-switch {
+   background-color: #1890ff;
+}
+</style>

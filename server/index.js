@@ -15,6 +15,7 @@ var search = require('./routes/search/search.js');
 var course = require('./routes/score/course.js');
 var score = require('./routes/score/score.js');
 var upload = require('./routes/upload/upload.js');
+var task = require('./routes/task/task.js');
 
 
 var logger = require('./logger/logger.js'); 
@@ -106,6 +107,7 @@ app.use("/api", search);
 app.use("/api", course);  
 app.use("/api", score);  
 app.use("/api", upload);  
+app.use("/api", task);  
 
 app.listen(PORT, (err) => {
     if (err) console.log('error');

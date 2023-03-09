@@ -32,6 +32,7 @@ const roleAuthentication = (req, res, next) => {
 
 const studentIdAuthentication = (req, res, next) => {
   verifyToken(req, res, () => {
+    console.log(req.user.id);
     if (req.user.id == req.params.studentId || req.user.role === "manager") {
       next();
     } else {
@@ -42,6 +43,7 @@ const studentIdAuthentication = (req, res, next) => {
 
 const roleAuthenticationGetUsername = (req, res, next) => {
   verifyToken(req, res, () => {
+    console.log(req)
     if (
       req.user.username == req.params.username ||
       req.user.role === "manager"

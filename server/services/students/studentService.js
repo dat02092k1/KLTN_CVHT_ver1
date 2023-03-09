@@ -2,6 +2,8 @@ const studentsModel = require("../../models/students/studentsModel");
 var studentModel = require("../../models/students/studentsModel");
 const bcrypt = require("bcryptjs");
 const SALT_ROUNDS = 10;
+const { ClientError } = require('../error/error.js');
+
 const mongoose = require("mongoose");
 
 var studentServiceGetAll = async (username, _class) => {
@@ -9,11 +11,11 @@ var studentServiceGetAll = async (username, _class) => {
     console.log(username);
     const data = await studentModel.find({ _class: _class, role: "student" });
 
-    if (!data) return false;
+    if (!data) throw new ClientError('data not found', 404)
 
     return data;
   } catch (error) {
-    return false;
+    throw error;
   }
 };
 
@@ -46,7 +48,7 @@ var createStudentService = async (studentDetail) => {
       studentId: studentDetail.studentId,
     });
     console.log(checkExisting);
-    if (checkExisting) throw new Error("Student already exists");
+    if (checkExisting) throw new ClientError("Student already exists", 404);
 
     // create student
     const student = new studentModel(studentDetail);
@@ -68,7 +70,7 @@ var updateStudentService = async (id, studentDetail) => {
 
     // mã hóa password
     studentDetail.password = hashPassword;
-
+        
     const student = await studentModel.findByIdAndUpdate(
       objectId,
       studentDetail,
@@ -76,7 +78,8 @@ var updateStudentService = async (id, studentDetail) => {
     );
 
     if (!student) {
-      throw new Error(`No student found with id: ${id}`);
+      
+      throw new ClientError(`No student found with id: ${id}`, 404);
     }
     return student;
   } catch (error) {
@@ -107,7 +110,7 @@ var getStudentDetailService = async (id) => {
     const student = await studentsModel.findById(id);
 
     if (!student) {
-      return "Student not found";
+      throw new ClientError(`No student found with id: ${id}`, 404);
     }
 
     return student;
@@ -123,7 +126,7 @@ var deleteStudentService = async (id) => {
     if (deleteStudent) {
       return "Deleted successfully!";
     } else {
-      throw new Error("student is not found");
+      throw new ClientError(`No student found with id: ${id}`, 404);
     }
   } catch (error) {
     throw error;
@@ -134,7 +137,7 @@ var getNameStudentService = async (_class) => {
   try {
     const getName = await studentModel.find({ class: _class }, "studentId");
 
-    if (!getName) throw new Error("Cant find students of class " + _class);
+    if (!getName) throw new ClientError(`Cant find students of class ${_class}`, 404);
 
     return getName;
   } catch (error) {
@@ -163,7 +166,7 @@ var uploadStudentsService = async (req) => {
       duplicateUsernames
     };
 
-    throw new Error(`duplicate ${duplicateUsernames}`); 
+    throw new ClientError(`duplicate ${errors}`, 404); 
 }
 
     const newStudents = await studentModel.insertMany(data);

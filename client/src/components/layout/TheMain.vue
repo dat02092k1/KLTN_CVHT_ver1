@@ -266,7 +266,7 @@ console.log(formattedDate);
 }
 /* TABLE CSS */
 .content-container {
-  height: 320px;
+  height: 290px;
   overflow-y: scroll;
 }
 
