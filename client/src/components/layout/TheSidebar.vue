@@ -56,6 +56,17 @@
                 <div class="h-12 hover:bg-[#2d3c50] flex items-center">
                     <a href="">
                         <li>
+                            <router-link to="/student/task" class="px-5">
+                                <i class="fa-solid fa-list-check mr-4"></i>
+                            <span>Nhiệm vụ</span>
+                            </router-link>
+                        </li>
+                    </a>
+                </div>
+
+                <div class="h-12 hover:bg-[#2d3c50] flex items-center">
+                    <a href="">
+                        <li>
                             <router-link to="/student/forum/posts" class="px-5">
                                 <i class="fa-regular fa-circle-question mr-4"></i>
                             <span>Diễn đàn</span>

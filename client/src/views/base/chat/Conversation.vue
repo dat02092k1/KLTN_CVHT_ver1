@@ -81,8 +81,11 @@
         </div>
       </div>
     </div>
+    <a-alert v-show="this.msgNoti === 'true'" message="Có tin nhắn mới" type="info" show-icon />
+
     <Spinner v-show="this.isLoading"/>
   </div>
+  
   
 </template>
 
@@ -108,6 +111,7 @@ export default {
       currentPage: null,
       pageSize: 10,
       isLoading: true,  
+      msgNoti: false
     };
   },
   async mounted() {
@@ -122,16 +126,17 @@ export default {
     this.socket.on("welcome", (msg) => console.log(msg));
 
     this.socket.emit("addUser", this.getUsername);
-    this.socket.on("getUsers", (users) => console.log(1));
+    this.socket.on("getUsers", (users) => console.log(users));
 
     this.socket.on("getMessage", (data) => {
       console.log(data);
-       
+       console.log(this.conversationId);
       if (this.members.includes(data.username)) {
         this.useChat.messages.push(data);
       }
       else {
         console.log('msg from username: ' + data.username);
+        alert('new msg')
       }
        
       console.log(this.members);

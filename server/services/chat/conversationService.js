@@ -1,5 +1,5 @@
 const conversationModel = require('../../models/Chat/conversation.js');
-
+const { ClientError } = require('../error/error.js');
 const mongoose = require('mongoose');
 
 var createConversationService = async (req, res) => { 
@@ -24,7 +24,7 @@ var getConversationService = async (req, res) => {
             }
         });
 
-        if (!listConversation) throw new Error("can't find conversation")
+        if (!listConversation) throw new ClientError("can't find conversation", 404)
 
         return listConversation;
     } catch (error) {

@@ -1,4 +1,5 @@
 var taskService = require('../../services/task/taskService.js');     
+const { ClientError } = require('../../services/error/error.js');
 
 var getTaskController = async (req, res) => { 
     try {
@@ -6,9 +7,12 @@ var getTaskController = async (req, res) => {
         var tasks = await taskService.getTaskService(req);
         res.status(200).json({ success: true, tasks });
     } catch (error) {
-        console.log(error);
-        res.status(500)
-            .json({ success: false, message: "get all tasks failed" });
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
     }
 }
             
@@ -17,9 +21,12 @@ var createTaskController = async (req, res) => {
         var task = await taskService.createTaskService(req.body);
         res.status(200).json({ success: true, task });  
     } catch (error) {
-        console.log(error);
-        res.status(500)
-            .json({ success: false, message: "create task failed" });
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
     }
 }
  
@@ -28,9 +35,12 @@ var editTaskController = async (req, res) => {
         var task = await taskService.editTaskService(req.body, req.params.taskId);
         res.status(200).json({ success: true, task });  
     } catch (error) {
-        console.log(error);
-        res.status(500)
-            .json({ success: false, message: "edit task failed" });
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
     }
 }
 
@@ -39,9 +49,12 @@ var deleteTaskController = async (req, res) => {
         var deleteTask = await taskService.deleteTaskService(req.params.taskId);
         res.status(200).json({ success: true });  
     } catch (error) {
-        console.log(error);
-        res.status(500)
-            .json({ success: false, message: "edit task failed" });
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
     }
 }
 
@@ -50,9 +63,12 @@ var updateStatusTaskController = async (req, res) => {
         var statusTask = await taskService.updateStatusTaskService(req.params.taskId, req. params.studentId, req.body);
         res.status(200).json({ success: true, statusTask });  
     } catch (error) {
-        console.log(error);
-        res.status(500)
-            .json({ success: false, message: "update task status failed" });
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
     }
 }
 module.exports = { getTaskController, createTaskController,

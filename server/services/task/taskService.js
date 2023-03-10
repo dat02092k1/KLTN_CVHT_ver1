@@ -1,5 +1,6 @@
 const studentModel = require('../../models/students/studentsModel.js');
 const taskModel = require('../../models/task/taskModel');
+const { ClientError } = require('../error/error.js');
 
 const mongoose = require('mongoose');
 
@@ -10,7 +11,7 @@ var getTaskService = async (req) => {
         } = req.query;
          
         const tasks = await taskModel.find({ createdBy: createdBy })
-        if (!tasks) throw new Error(`tasks not found`);
+        if (!tasks) throw new ClientError(`tasks not found`, 404);
 
         return tasks;   
     } catch (error) {
@@ -28,7 +29,7 @@ var createTaskService = async (taskDetail) => {
             const studentAssign = await studentModel.findById(item.student);
              
             if (!studentAssign) {
-                throw new Error("Không tìm thấy sinh viên")
+                throw new ClientError("Không tìm thấy sinh viên", 404)
                 } 
               item.studentId = studentAssign.studentId; 
               }
@@ -58,7 +59,7 @@ var editTaskService = async (taskDetails, taskId) => {
             const studentAssign = await studentModel.findById(item.student);
              
             if (!studentAssign) {
-                throw new Error("Không tìm thấy sinh viên")
+                throw new ClientError("Không tìm thấy sinh viên", 404)
                 } 
               item.studentId = studentAssign.studentId; 
               } 
@@ -93,7 +94,7 @@ var updateStatusTaskService = async (taskId, studentId, taskDetail) => {
 
         console.log(isCompleted);
     if (!task) {
-      throw new Error('Task not found');
+        throw new ClientError('Task not found', 404);
     }
 
     const assignedStudent = task.assignedStudents.find(
@@ -101,7 +102,7 @@ var updateStatusTaskService = async (taskId, studentId, taskDetail) => {
       );
   
       if (!assignedStudent) {
-        throw new Error('Assigned student not found');
+        throw new ClientError('Assigned student not found', 404);
       }
 
       

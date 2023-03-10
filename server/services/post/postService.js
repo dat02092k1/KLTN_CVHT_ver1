@@ -1,11 +1,12 @@
 const postModel = require('../../models/posts/post.js');
 
 const mongoose = require('mongoose');
+const { ClientError } = require('../error/error.js');
 
 var getPostListService = async (_class) => { 
     try {
         const post = await postModel.find( { class: _class } ); 
-        if (!post) throw new Error("There're no posts in history");
+        if (!post) throw new ClientError("There're no posts in history", 404);
         return post.reverse();
     } catch (error) {
         throw error;
@@ -46,7 +47,7 @@ var updatePostService = async (id, postDetails) => {
         // const objectId = mongoose.Types.ObjectId(username);
         const updatePost = await postModel.findByIdAndUpdate(id, postDetails, { new: true }); 
         if (!updatePost) {
-            throw new Error(`No post found with id: ${id}`);
+            throw new ClientError(`No post found with id: ${id}`, 404);
         }
         return updatePost;
     } catch (error) {
@@ -62,7 +63,7 @@ var deletePostService = async (id) => {
         if (deletePost) {
             return "Deleted successfully!";
         } else {
-            throw new Error('Post is not found');
+            throw new ClientError('Post is not found', 404);
           }
     } catch (error) {
         throw error;
@@ -74,7 +75,7 @@ var listPostOfUser = async (username) => {
         console.log('service');
         const listPost = await postModel.find({ username: username}); 
 
-        if (!listPost) throw new Error("There're no posts"); 
+        if (!listPost) throw new ClientError("There're no posts", 404); 
 
         else return listPost;  
     } catch (error) {

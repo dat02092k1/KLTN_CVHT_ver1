@@ -71,7 +71,7 @@
           </a-modal>
         </div>
 
-        <div v-for="(task, index) in useTask.tasks" :key="index">
+        <div v-for="(task, index) in useTask.tasks" :key="index" class="my-6">
           <a-card :title="task.task" style="width: 300px">
             <template #extra><a href="#">more</a></template>
             <!-- <p> Description: " {{ task.description }} "</p> -->
@@ -92,12 +92,12 @@
         </div>
       </div>
 
-      <div>
+      <!-- <div>
         <section class="tasks-container">
           <p class="loading-text">njdnm</p>
           <div class="tasks"></div>
         </section>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

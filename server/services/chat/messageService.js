@@ -1,5 +1,5 @@
 const messageModel = require("../../models/Chat/message.js");
-
+const { ClientError } = require('../error/error.js');
 const mongoose = require("mongoose");
 
 var getMessageSerivce = async (id) => {
@@ -8,7 +8,7 @@ var getMessageSerivce = async (id) => {
       conversationId: id,
     });
 
-    if (!messages) throw new Error("No messages found");
+    if (!messages) throw new ClientError("No messages found", 404);
 
     return messages;
   } catch (error) {
@@ -35,7 +35,7 @@ var getMessageLimitService = async (conversationId) => {
       .sort({ createdAt: -1 })
       .limit(10);
 
-    if (!messages) throw new Error("cant find messages");
+    if (!messages) throw new ClientError("cant find messages", 404);
 
     return messages.reverse();
   } catch (error) {
@@ -63,7 +63,7 @@ var loadMessageService = async (req) => {
     
     
 
-    if (!messages) throw new Error('No messages found');
+    if (!messages) throw new ClientError('No messages found', 404);
 
     return messages.reverse();  
   } catch (error) {

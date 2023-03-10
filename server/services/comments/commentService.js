@@ -1,5 +1,6 @@
 const commentModel = require('../../models/comments/comment.js');
 const postModel = require('../../models/posts/post.js');
+const { ClientError } = require('../error/error.js');
 
 const mongoose = require('mongoose');
 
@@ -32,7 +33,7 @@ var getComments = async (username) => {
 
         const listComments = await commentModel.find({ username: username}); 
 
-        if (!listComments) throw new Error("There're no comments at all"); 
+        if (!listComments) throw new ClientError("There're no comments at all", 404); 
 
         else return listComments;  
     } catch (error) {
@@ -93,7 +94,7 @@ var deleteCommentService = async (id) => {
         if (deleteComment) {
             return "Deleted successfully!";
         } else {
-            throw new Error('Comment is not found');
+            throw new ClientError('Comment is not found', 404);
           }
     } catch (error) {
         throw error;
@@ -107,7 +108,7 @@ var editCommentService = async (id, commentDetails) => {
         const updateComment = await commentModel.findByIdAndUpdate(id, commentDetails, { new: true }); 
 
         if (!updateComment) {
-            throw new Error(`No post found with id: ${id}`);  
+            throw new ClientError(`No post found with id: ${id}`, 404);  
         } 
 
         return updateComment;
@@ -120,7 +121,7 @@ var getCommentsMapPostIdService = async (id) => {
     try {
         const post = await postModel.findById(id); 
 
-        if (!post) throw new Error("Post not found"); 
+        if (!post) throw new ClientError("Post not found", 404); 
 
         const comments = await commentModel.find({ postId: id });
 
@@ -134,7 +135,7 @@ var getCommentByIdService = async (id) => {
     try {
         const comment = await commentModel.findById(id);
         console.log(comment);
-        if (!comment) throw new Error("Comment not found");
+        if (!comment) throw new ClientError("Comment not found", 404);
 
         return comment; 
     } catch (error) {

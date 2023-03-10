@@ -40,7 +40,10 @@ async function refreshToken() {
       
 <!--         
         <RouterLink to="/student/list"></RouterLink> -->
-      <RouterView />
+        <keep-alive :include="'/student/conversation'">
+          <RouterView />
+</keep-alive>
+      <!-- <RouterView /> -->
   </div>
   
 </template>

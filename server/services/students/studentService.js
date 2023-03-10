@@ -104,7 +104,7 @@ var updateStudentService = async (id, studentDetail) => {
 var getStudentDetailService = async (id) => {
   try {
     if (!id) {
-      throw new Error("ID is required");
+      throw new ClientError("ID is required", 404);
     }
 
     const student = await studentsModel.findById(id);

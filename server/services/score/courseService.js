@@ -1,6 +1,8 @@
 const courseModel = require("../../models/score/course.js");
 const studentsModel = require("../../models/students/studentsModel.js");
 const grades = require("../../utils/grade.js");
+const { ClientError } = require('../error/error.js');
+
 const mongoose = require("mongoose");
 
 var addCourseService = async (req, res) => {
@@ -8,7 +10,7 @@ var addCourseService = async (req, res) => {
     const { semester, studentId, subjects } = req.body;
 
     const student = await studentsModel.findById(studentId);
-    if (!student) throw new Error(`Student not found`);
+    if (!student) throw new ClientError(`Student not found`, 404);
 
     for (const subject of subjects) {
       subject.grade = grades.calculateGrade(subject.score);  
@@ -83,7 +85,7 @@ var getCourseService = async (studentId) => {
   try {
     const course = await courseModel.find({ student: studentId });
 
-    if (!course) throw new Error("There're no courses in history");
+    if (!course) throw new ClientError("There're no courses in history", 404);
 
     return course;
   } catch (error) {
@@ -123,12 +125,12 @@ var editCourseService = async (courseId, courseDetails) => {
     );
 
     if (!updateCourse) {
-      throw new Error(`No course found with id: ${courseId}`);
+      throw new ClientError(`No course found with id: ${courseId}`, 404);
     }
     console.log(updateCourse.student);
     const student = await studentsModel.findById(updateCourse.student);  
 
-    if (!student) throw new Error(`Student not found`);
+    if (!student) throw new ClientError(`Student not found`, 404);
 
     const result = await courseModel.aggregate([
       { $match: { student: student._id } },
@@ -185,7 +187,7 @@ var deleteCourseService = async (courseId, studentId) => {
 
       const student = await studentsModel.findById(studentId);  
 
-    if (!student) throw new Error(`Student not found`);
+    if (!student) throw new ClientError(`Student not found`, 404);
 
     const result = await courseModel.aggregate([
         { $match: { student: student._id } },
@@ -225,7 +227,7 @@ var deleteCourseService = async (courseId, studentId) => {
 
       return student;
     } else {
-      throw new Error("Couse is not found");
+      throw new ClientError("Couse is not found", 404);
     }
   } catch (error) {
     console.error(error);
@@ -237,7 +239,7 @@ var getCourseDetailsService = async (courseId) => {
   try {
     const course = await courseModel.findById(courseId);
 
-    if (!course) throw new Error('Course not found'); 
+    if (!course) throw new ClientError('Course not found', 404); 
 
     return course;
   } catch (error) {
