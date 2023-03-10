@@ -71,7 +71,21 @@ var updateStatusTaskController = async (req, res) => {
         }
     }
 }
+
+var getDetailsTaskController = async (req, res) => {
+    try {
+        var task = await taskService.getDetailsTaskService(req.params.taskId);
+        res.status(200).json({ success: true, task });  
+    } catch (error) {
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
+    }
+}
 module.exports = { getTaskController, createTaskController,
     editTaskController, deleteTaskController,
-    updateStatusTaskController } ;         
+    updateStatusTaskController, getDetailsTaskController } ;         
 

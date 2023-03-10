@@ -13,6 +13,8 @@ router.put('/student/edit-task/:taskId', userAuthenticate.isAdminAuthentication,
 router.delete('/student/delete-task/:taskId', userAuthenticate.isAdminAuthentication, taskController.deleteTaskController);
 // update status task
 router.put('/student/task/update-stauts/:taskId/:studentId', userAuthenticate.studentIdAuthentication, taskController.updateStatusTaskController);
+// get task details
+router.get('/student/task/get-task/:taskId', userAuthenticate.isAdminAuthentication, taskController.getDetailsTaskController);
 
 
 module.exports = router;       

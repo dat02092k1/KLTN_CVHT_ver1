@@ -56,12 +56,12 @@ var editTaskService = async (taskDetails, taskId) => {
         const { assignedStudents } = taskDetails; 
          
         for (const item of assignedStudents) {
-            const studentAssign = await studentModel.findById(item.student);
+            const studentAssign = await studentModel.findOne({ studentId: item.studentId });
              
             if (!studentAssign) {
                 throw new ClientError("Không tìm thấy sinh viên", 404)
                 } 
-              item.studentId = studentAssign.studentId; 
+              item.student = studentAssign._id; 
               } 
         console.log(taskDetails);   
     
@@ -115,6 +115,18 @@ var updateStatusTaskService = async (taskId, studentId, taskDetail) => {
         throw error;
     }
 }
+
+var getDetailsTaskService = async (taskId) => {
+    try {
+        console.log(taskId);
+        const task = await taskModel.findById(taskId);
+        if (!task) throw new ClientError(`task not found`, 404);
+
+        return task;   
+    } catch (error) {
+        throw error; 
+    }
+}
 module.exports = { getTaskService, createTaskService,
     editTaskService, deleteTaskService,
-    updateStatusTaskService } ;  
+    updateStatusTaskService, getDetailsTaskService } ;  

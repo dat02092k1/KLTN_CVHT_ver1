@@ -1,71 +1,42 @@
-<template>
+<!-- <template>
   <div>
     <div class="header-forum">
       <div class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded">
-        <div class="flex justify-end">
-          <a-button
-            class="bg-[#324f90] rounded"
-            type="primary"
-            @click="visible = true"
-            >Thêm task</a-button
-          >
-
-          <a-modal
-            v-model:visible="visible"
-            title="Thêm task"
-            ok-text="Create"
-            cancel-text="Cancel"
-            @ok="onOk"
-          >
-            <a-form
+        <div class="flex justify-center">
+          <a-form
               ref="formRef"
               :model="formState"
               layout="vertical"
               name="form_in_modal"
             >
               <a-form-item
-                name="title"
-                label="Title"
-                :rules="[
-                  {
-                    required: true,
-                    message: 'Please input the title of collection!',
-                  },
-                ]"
-              >
-                <a-input v-model:value="formState.title" />
-              </a-form-item>
-
-              <a-form-item
                 name="task"
-                label="Task"
+                label="Nhiệm vụ"
                 :rules="[
                   {
                     required: true,
-                    message: 'Please input the task of collection!',
+                    message: 'Chưa điền nhiệm vụ',
                   },
                 ]"
               >
-                <a-textarea v-model:value="formState.task" />
+                <a-input v-model:value="formState.task" />
               </a-form-item>
 
-              <a-form-item
-                name="complete"
-                label="isComplete"
-                class="flex"
-              >
-              <a-checkbox v-model:checked="checked"></a-checkbox>
+              <a-form-item name="description" label="Mô tả">
+                <a-textarea v-model:value="formState.description" />
               </a-form-item>
-               
 
-               
+               <a-form-item name="complete" label="Hoàn thành" class="flex">
+                <a-checkbox v-model:checked="checked"></a-checkbox>
+              </a-form-item> 
+
               <a-form-item
                 name="assignedStudents"
-                label="Select"
+                label="Sinh viên"
                 :rules="[
                   {
                     required: true,
-                    message: 'Please select Activity zone',
+                    message: 'Chưa chọn sinh viên',
                     trigger: 'change',
                   },
                 ]"
@@ -74,14 +45,22 @@
                   v-model:value="formState.assignedStudents"
                   mode="tags"
                   style="width: 100%"
-                  placeholder="Tags Mode"
+                  placeholder="Chọn sinh viên"
                   :options="options"
                   @change="handleChange"
                 >
                 </a-select>
               </a-form-item>
+
+              <a-form-item :wrapper-col="{ span: 14, offset: 4 }" class="flex">
+          <a-button type="primary" @click="onSubmit" class="bg-[#324f90]"
+            >Lưu</a-button
+          >
+          <a-button style="margin-left: 10px" @click="resetForm"
+            >Reset</a-button
+          >
+        </a-form-item>
             </a-form>
-          </a-modal>
         </div>
       </div>
     </div>
@@ -91,9 +70,10 @@
 <script>
 import { defineComponent, onMounted, reactive, ref, toRaw, computed  } from "vue";
 import { useStudentStore } from "../../stores/student";
+import { useTaskStore } from "../../stores/task.js";
 
 import { RouterLink, RouterView } from "vue-router";
-import { getUsername, getClass } from "../../utils/getInfoUser";
+import { getUsername, getId } from "../../utils/getInfoUser";
 import { message } from "ant-design-vue";
 
 export default defineComponent({
@@ -102,32 +82,30 @@ export default defineComponent({
     const visible = ref(false);
 
     const formState = reactive({
-      title: "",
       task: "",
+      description: "",
       complete: null,
-      assignedStudents: [],   
-      username: getUsername(),   
-      _class: getClass(),
+      assignedStudents: [],
+      createdBy: getId(),
     });
 
     const useStudent = useStudentStore(); 
-
-    const onOk = () => {
+    const useTask = useTaskStore(); 
+     
+    const onSubmit = () => {
       formRef.value
-        .validateFields()
-        .then((values) => {
-          formState.complete = checked.value;
-          console.log("formState: ", toRaw(formState));
-          const task = toRaw(formState);
-          console.log(formState);
-          checked.value = false;
-          visible.value = false;
-          formRef.value.resetFields();
+        .validate()
+        .then(() => {
+          console.log("values", formState);
            
         })
-        .catch((info) => {
-          console.log("Validate Failed:", info);
+        .catch((error) => {
+          console.log("error", error);
         });
+    };
+
+    const resetForm = () => {
+      formRef.value.resetFields();
     };
 
     const handleChange = (value) => {
@@ -141,8 +119,18 @@ export default defineComponent({
     
 
     const students = ref([]);
+    const taskId = "6408b78722b12a097ace731a";   
     onMounted(async () => {
       students.value = await useStudent.getData();
+      const response = await useTask.getTaskDetails(taskId); 
+      console.log(response);
+      formState.task = response.task;
+      formState.description = response.description;
+
+      const studentsAssign = response.assignedStudents.map(({ studentId }) => ({ studentId }));
+       
+      formState.assignedStudents = studentsAssign;
+      console.log(formState.assignedStudents);
     });
 
     const options = computed(() => {
@@ -160,25 +148,220 @@ export default defineComponent({
     return {
       formState,
       formRef,
-      visible,
-      onOk,
       students,
       value: ref([]),
       handleChange,
       options,
-      checked
-      //   value: (i + 10).toString(36) + (i + 1),
-      // })),
-      // options: [...Array(25)].map((_, i) => ({
-      //   value: (i + 10).toString(36) + (i + 1),
-      // })),
+      checked,
+      onSubmit,
+      resetForm,
+      labelCol: {
+        span: 4,
+      },
+      wrapperCol: {
+        span: 14,
+      }
     };
   },
 });
 </script>
 
 <style scoped>
-::v-deep .ant-switch-checked ant-switch {
-   background-color: #1890ff;
+::v-deep .ant-form-item-control-input-content {
+   display: flex;
+}
+</style> 
+ -->
+
+ <template>
+  <a-form
+    ref="formRef"
+    name="dynamic_form_item"
+    :model="dynamicValidateForm"
+    v-bind="formItemLayoutWithOutLabel"
+  >
+
+  <a-form-item
+                name="task"
+                label="Nhiệm vụ"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'Chưa điền nhiệm vụ',
+                  },
+                ]"
+              >
+                <a-input v-model:value="dynamicValidateForm.task" />
+              </a-form-item>
+
+              <a-form-item name="description" label="Mô tả">
+                <a-textarea v-model:value="dynamicValidateForm.description" />
+              </a-form-item>
+
+               <a-form-item name="complete" label="Hoàn thành" class="flex">
+                <a-checkbox v-model:checked="checked"></a-checkbox>
+              </a-form-item> 
+
+    <a-form-item
+      v-for="(domain, index) in dynamicValidateForm.domains"
+      :key="domain.key"
+      v-bind="index === 0 ? formItemLayout : {}"
+      :label="index === 0 ? 'Domains' : ''"
+      :name="['domains', index, 'value']"
+      :rules="{
+        required: true,
+        message: 'domain can not be null',
+        trigger: 'change',
+      }"
+    >                                                 
+      <a-input
+        v-model:value="domain.value"
+        placeholder="please input domain"
+        style="width: 60%; margin-right: 8px"
+      />
+      <MinusCircleOutlined
+        v-if="dynamicValidateForm.domains.length > 1"
+        class="dynamic-delete-button"
+        :disabled="dynamicValidateForm.domains.length === 1"
+        @click="removeDomain(domain)"
+      />
+    </a-form-item>
+    <a-form-item v-bind="formItemLayoutWithOutLabel">
+      <a-button type="dashed" style="width: 60%" @click="addDomain">
+        <PlusOutlined />
+        Add field
+      </a-button>
+    </a-form-item>
+    <a-form-item v-bind="formItemLayoutWithOutLabel">
+      <a-button type="primary" html-type="submit" @click="submitForm">Submit</a-button>
+      <a-button style="margin-left: 10px" @click="resetForm">Reset</a-button>
+    </a-form-item>
+  </a-form>
+</template>
+<script>
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { defineComponent, reactive, ref, onMounted } from 'vue';
+import { useStudentStore } from "../../stores/student";
+import { useTaskStore } from "../../stores/task.js";
+
+import { RouterLink, RouterView } from "vue-router";
+import { getUsername, getId } from "../../utils/getInfoUser";
+export default defineComponent({
+  components: {
+    MinusCircleOutlined,
+    PlusOutlined,
+  },
+  setup() {
+    const formRef = ref();
+    const useStudents = useStudentStore();
+    const useTask = useTaskStore(); 
+    const students = ref([]);
+    const tasks = ref([]);
+    const checked = ref(false);
+    const formItemLayout = {
+      labelCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 4,
+        },
+      },
+      wrapperCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 20,
+        },
+      },
+    };
+    const formItemLayoutWithOutLabel = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 20,
+          offset: 4,
+        },
+      },
+    };
+
+    const dynamicValidateForm = reactive({
+      task: "",
+      description: "",
+      complete: null, 
+      domains: [],
+    });
+       
+    const submitForm = () => {
+      formRef.value.validate().then(() => {
+        console.log('values', dynamicValidateForm.domains);
+      }).catch(error => {
+        console.log('error', error);
+      });
+    };
+    const resetForm = () => {
+      formRef.value.resetFields();
+    };
+    const removeDomain = item => {
+      let index = dynamicValidateForm.domains.indexOf(item);
+      if (index !== -1) {
+        dynamicValidateForm.domains.splice(index, 1);
+      }
+    };
+    const addDomain = () => {
+      dynamicValidateForm.domains.push({
+        value: '',
+        key: Date.now(),
+      });
+    };
+
+    const taskId = "6408b78722b12a097ace731a";   
+    onMounted(async () => {
+      students.value = await useStudents.getData();
+      const response = await useTask.getTaskDetails(taskId); 
+       
+      dynamicValidateForm.task = response.task;
+      dynamicValidateForm.description = response.description;
+      const studentsAssign = response.assignedStudents.map(({ studentId }) => ({ studentId }));
+      dynamicValidateForm.domains = studentsAssign;     
+      console.log(dynamicValidateForm.domains)
+      // const studentsAssign = response.assignedStudents.map(({ studentId }) => ({ studentId }));
+       
+      // formState.assignedStudents = studentsAssign;
+      // console.log(formState.assignedStudents);
+    });
+    return {
+      formRef,
+      formItemLayout,
+      formItemLayoutWithOutLabel,
+      dynamicValidateForm,
+      submitForm,
+      resetForm,
+      removeDomain,
+      addDomain,
+      checked
+    };
+  },
+});
+</script>
+<style>
+.dynamic-delete-button {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  color: #999;
+  transition: all 0.3s;
+}
+.dynamic-delete-button:hover {
+  color: #777;
+}
+.dynamic-delete-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>

@@ -49,6 +49,28 @@ export const useTaskStore = defineStore({
       } catch (error) {
         console.log(error);
       }
+    },
+    async getTaskDetails(taskId) {
+      try {
+        const config = getAccessToken();
+        const getTask = await axios.get(API_ENDPOINTS.getDetailsTask + taskId, config)
+
+        this.tasks = getTask.data.task; 
+        return getTask.data.task; 
+      } catch (error) {
+        console.log(error); 
+      }
+    },
+    async editTask(taskId, taskDetails) {
+      try {
+        const config = getAccessToken();
+        const task = await axios.put(API_ENDPOINTS.editTask + taskId, taskDetails, config)
+
+        console.log(task);
+         
+      } catch (error) {
+        console.log(error); 
+      }
     }
   },
 });

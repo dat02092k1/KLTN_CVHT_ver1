@@ -27,7 +27,8 @@ import CourseDetails from '../views/base/Score/CourseDetails.vue'
 import CourseAdd from '../views/base/Score/CourseAdd.vue'
 import CourseEdit from '../views/base/Score/CourseEdit.vue'
 import TaskList from '../views/base/task/TaskList.vue'
-import TaskEdit from '../views/base/Tasks/TaskEdit.vue'
+import TaskEdit from '../views/base/task/TaskEdit.vue'
+ 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -167,7 +168,7 @@ const router = createRouter({
       component: TaskList
     },
     {
-      path: '/student/task-edit',
+      path: '/student/task/edit/:id',
       name: 'edit task',  
       component: TaskEdit
     }

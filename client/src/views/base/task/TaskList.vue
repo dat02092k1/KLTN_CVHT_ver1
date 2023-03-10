@@ -72,8 +72,10 @@
         </div>
 
         <div v-for="(task, index) in useTask.tasks" :key="index" class="my-6">
-          <a-card :title="task.task" style="width: 300px">
-            <template #extra><a href="#">more</a></template>
+          <a-card :title="task.task" style="width: 400px">
+            <template #extra>
+            <router-link :to="{ path: '/student/task/edit/' + task._id }" >more</router-link> 
+             </template>
             <!-- <p> Description: " {{ task.description }} "</p> -->
             <div
               class="flex justify-between"
