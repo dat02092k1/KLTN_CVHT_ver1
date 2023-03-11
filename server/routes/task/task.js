@@ -14,7 +14,9 @@ router.delete('/student/delete-task/:taskId', userAuthenticate.isAdminAuthentica
 // update status task
 router.put('/student/task/update-stauts/:taskId/:studentId', userAuthenticate.studentIdAuthentication, taskController.updateStatusTaskController);
 // get task details
-router.get('/student/task/get-task/:taskId', userAuthenticate.isAdminAuthentication, taskController.getDetailsTaskController);
+router.get('/student/task/get-task/:taskId', userAuthenticate.verifyToken, taskController.getDetailsTaskController);
+// get task of student
+router.get('/student/task/get-tasks/:studentId', userAuthenticate.studentIdAuthentication, taskController.getTasksofStudentController);
 
 
 module.exports = router;       

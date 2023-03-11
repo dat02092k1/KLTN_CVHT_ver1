@@ -71,6 +71,29 @@ export const useTaskStore = defineStore({
       } catch (error) {
         console.log(error); 
       }
+    },
+    async getTasksOfStudent(_id) {
+      try {
+        const config = getAccessToken();
+        console.log(_id);
+        const task = await axios.get(API_ENDPOINTS.getTasksOfStudent + _id, config)
+
+        console.log(task.data.tasks);
+        return task.data.tasks;
+      } catch (error) {
+        console.log(error); 
+      }
+    },
+    async updateStatusTask(taskId, studentId, isCompleted) {
+      try {
+        const config = getAccessToken();
+
+        const update = await axios.put(API_ENDPOINTS.updateStatus + taskId + '/' + studentId, isCompleted, config)
+
+        console.log(update);    
+      } catch (error) {
+        console.log(error); 
+      }
     }
   },
 });

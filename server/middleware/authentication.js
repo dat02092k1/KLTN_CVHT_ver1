@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
       }
 
       req.user = user;
-       
+      console.log(req.user);
       next();
     });
   } else {
@@ -22,6 +22,7 @@ const verifyToken = (req, res, next) => {
 
 const roleAuthentication = (req, res, next) => {
   verifyToken(req, res, () => {
+    console.log(req.params)
     if (req.user.id == req.params.id || req.user.role === "manager") {
       next();
     } else {
@@ -31,8 +32,9 @@ const roleAuthentication = (req, res, next) => {
 };
 
 const studentIdAuthentication = (req, res, next) => {
+    
   verifyToken(req, res, () => {
-    console.log(req.user.id);
+    console.log(req.params);
     if (req.user.id == req.params.studentId || req.user.role === "manager") {
       next();
     } else {

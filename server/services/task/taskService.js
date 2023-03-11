@@ -127,6 +127,19 @@ var getDetailsTaskService = async (taskId) => {
         throw error; 
     }
 }
+
+var getTasksofStudentService = async (id) => {
+    try {
+        console.log(id);  
+        const tasks = await taskModel.find({ "assignedStudents.student": id });
+        if (!tasks) throw new ClientError(`there're no tasks found`, 404);
+
+        return tasks;   
+    } catch (error) {
+        throw error; 
+    }
+}
 module.exports = { getTaskService, createTaskService,
     editTaskService, deleteTaskService,
-    updateStatusTaskService, getDetailsTaskService } ;  
+    updateStatusTaskService, getDetailsTaskService,
+    getTasksofStudentService } ;  

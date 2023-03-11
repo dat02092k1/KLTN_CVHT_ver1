@@ -74,7 +74,7 @@
         <div v-for="(task, index) in useTask.tasks" :key="index" class="my-6">
           <a-card :title="task.task" style="width: 400px">
             <template #extra>
-            <router-link :to="{ path: '/student/task/edit/' + task._id }" >more</router-link> 
+            <router-link :to="{ path: '/consultant/task/edit/' + task._id }" >more</router-link> 
              </template>
             <!-- <p> Description: " {{ task.description }} "</p> -->
             <div

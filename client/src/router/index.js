@@ -27,7 +27,10 @@ import CourseDetails from '../views/base/Score/CourseDetails.vue'
 import CourseAdd from '../views/base/Score/CourseAdd.vue'
 import CourseEdit from '../views/base/Score/CourseEdit.vue'
 import TaskList from '../views/base/task/TaskList.vue'
+import TaskStudent from '../views/base/task/TaskStudent.vue'
 import TaskEdit from '../views/base/task/TaskEdit.vue'
+import UpdateStatus from '../views/base/task/UpdateStatus.vue'
+
  
 
 const router = createRouter({
@@ -163,14 +166,24 @@ const router = createRouter({
       component: StudentEdit
     },
     {
-      path: '/student/task',
+      path: '/consultant/task',
       name: 'assign task',  
       component: TaskList
     },
     {
-      path: '/student/task/edit/:id',
+      path: '/student/task/',
+      name: 'list tasks',  
+      component: TaskStudent
+    },
+    {
+      path: '/consultant/task/edit/:id',
       name: 'edit task',  
       component: TaskEdit
+    },
+    {
+      path: '/student/task/update/:taskId/:id',
+      name: 'update task status',  
+      component: UpdateStatus
     }
   ]
 })
