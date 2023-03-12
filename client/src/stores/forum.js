@@ -39,9 +39,9 @@ export const useForumStore = defineStore({
               'token': `Bearer ${accessToken}`
             }
           };
-
+          console.log(postContent);
         const post = await axios.post("http://localhost:8000/post/create", postContent, config)
-        console.log(post);
+         
       } catch (error) {
         console.log(error); 
       }
@@ -56,7 +56,7 @@ export const useForumStore = defineStore({
             }
           };
           
-        const deletePost = axios.delete(`http://localhost:8000/post/delete/${id}`, config)
+        const deletePost = await axios.delete(`http://localhost:8000/post/delete/${id}`, config)
 
         console.log(deletePost); 
 
@@ -153,11 +153,12 @@ export const useForumStore = defineStore({
               'token': `Bearer ${accessToken}`
             }
           };
-
+          console.log(username);
         const edit = await axios.put(`http://localhost:8000/post/comment/edit/${username}/${id}`, 
-        {
-          content: comment
-         }
+        // {
+        //   content: comment
+        //  }
+        comment
         , config);
 
         console.log(edit);  

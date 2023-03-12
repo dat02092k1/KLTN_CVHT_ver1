@@ -196,11 +196,11 @@ export default {
     },
     formatIsoDate(dtStr) {
       const dtUtc = new Date(dtStr);
-      console.log(dtUtc)
+       
 const tzOffset = -7; // UTC+7
 const dtVn = new Date(dtUtc.getTime() + tzOffset * 60 * 60 * 1000);
 
-console.log(dtVn.toLocaleDateString('en-GB'));
+ 
 return dtVn.toLocaleDateString('en-GB');
 },
     formatDate(dateStr) {

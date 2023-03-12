@@ -1,5 +1,8 @@
 const studentsModel = require("../../models/students/studentsModel");
 var studentModel = require("../../models/students/studentsModel");
+var postModel = require("../../models/posts/post.js");
+var commentModel = require("../../models/comments/comment.js");
+
 const bcrypt = require("bcryptjs");
 const SALT_ROUNDS = 10;
 const { ClientError } = require('../error/error.js');
@@ -64,8 +67,8 @@ var updateStudentService = async (id, studentDetail) => {
   try {
     const objectId = mongoose.Types.ObjectId(id);
     const { password } = studentDetail;
-    console.log(password);
-
+     
+    
     const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
 
     // mã hóa password
@@ -81,6 +84,26 @@ var updateStudentService = async (id, studentDetail) => {
       
       throw new ClientError(`No student found with id: ${id}`, 404);
     }
+
+    console.log(student);
+
+    await postModel.updateMany({
+      userId: id
+    }, {
+      $set: {
+        username: student.studentId,
+        _class: student._class
+      }
+    });
+
+    await commentModel.updateMany({
+      userId: id
+    }, {
+      $set: {
+        username: student.studentId
+      }
+    })
+
     return student;
   } catch (error) {
     throw error;

@@ -3,7 +3,7 @@ const { ClientError } = require('../../services/error/error.js');
 
 var createCommentController = async (req, res) => { 
     try {
-        var comment = await commentService.createCommentService(req.params.id, req.user.username, req.body);
+        var comment = await commentService.createCommentService(req.params.id, req.user.id, req.body);
         res.status(200).json({ success: true, comment });
     } catch (error) {
         if (error instanceof ClientError) {

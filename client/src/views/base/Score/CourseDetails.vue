@@ -2,8 +2,12 @@
     <div>
     <nav-title :title="pageTitle"/>
   
-    <button>Thêm môn học</button>
-    <div class="table-container mx-3 bg-[#ffffff]">
+     
+    <router-link :to="{ path: '/student/course/add/' + id }" >
+      <button class="bg-[#324f90] text-[#ffffff] ml-6 my-2 p-2">Thêm môn học</button>
+              </router-link>
+    <div class="">
+      <div  class="table-container hidden mx-3 bg-[#ffffff]">
       <table>
         <thead>
           <tr>
@@ -38,10 +42,49 @@
           </tr>
         </tbody>
       </table>
-
-       
     </div>
 
+    <div class="table-container mx-3">
+      <table v-for="(course, index) in courses" :key="index">
+        <thead>
+          <tr class="flex justify-between items-center my-2">
+
+            <div class="semester flex">
+              <h3>Học kỳ: </h3>
+              <span class="ml-2">
+                {{ course.semester }}
+              </span>
+            </div>  
+            <router-link :to="{ path: '/student/course/edit/' + course._id }" class="bg-[#51a6ef] text-[#fff] rounded p-2">
+                Cập nhật
+              </router-link>
+          </tr>
+          <tr>
+            
+          </tr>
+          <tr>
+            <th>STT</th>
+              <th>Môn học</th>
+              <th>Số tín</th>
+            <th>Điểm số</th>
+            <th>Điểm chữ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in course.subjects" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td >{{ item.name }}</td>
+              <td>{{ item.credits }}</td>
+              <td>{{ item.score }}</td>
+              <td>{{ item.grade }}</td>            
+          </tr>
+        </tbody>
+      </table>
+
+      <hr>
+       
+    </div>
+    </div>
     <div>Tổng trung bình tích lũy: </div>
     <span>{{ studentCpa }}</span>
    
@@ -118,11 +161,11 @@
   th {
     background-color: #f2f2f2;
   }
-  td.subject, th.subject {
+  /* td.subject, th.subject {
     width: 50%;
     text-align: left;
-  }
-  th.stt {
+  } */
+  /* th.stt {
     width: 10%;
   }
   th.sotin {
@@ -130,6 +173,6 @@
   }
   th.diem {
     width: 30%;
-  }
+  } */
   </style>
   

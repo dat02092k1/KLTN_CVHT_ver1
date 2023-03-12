@@ -6,7 +6,8 @@ const studentSchema = new Schema({
     studentId: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
     password: {
         type: String,
@@ -21,7 +22,6 @@ const studentSchema = new Schema({
         default: "student",
         required: true,
     },
-    // diem: { type: array, required: true}
     birthdate: {
         type: Date,
     },
@@ -55,23 +55,6 @@ const studentSchema = new Schema({
         type: Number,
         default: 0 
     },
-    // total_creadits: {
-    //     type: Number,
-    // },
-    // status: {
-    //     type: String,
-    //     enum: [
-    //         "Không",
-    //         "Cảnh báo học vụ",
-    //         "Thiếu tín chỉ",
-    //         "Thiếu học phí",
-    //         "Khen thưởng"
-    //       ],
-    //     default: "Không"
-    // },
-    // gpa: {
-    //     type: Number
-    // },
     _class: {
         type: String,
     },
@@ -80,5 +63,6 @@ const studentSchema = new Schema({
     }
 })
 
+studentSchema.index({ studentId: 1 })
 
 module.exports = mongoose.model('students', studentSchema);              

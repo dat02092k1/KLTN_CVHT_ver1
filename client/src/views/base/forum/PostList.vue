@@ -120,7 +120,7 @@ import { defineComponent, onMounted, reactive, ref, toRaw } from "vue";
 import NavTitle from "../NavTitle.vue";
 import Spinner from "../Spinner/Spinner.vue";
 import { RouterLink, RouterView } from "vue-router";
-import { getUsername, getClass } from "../../../utils/getInfoUser";
+import { getClass, getId } from "../../../utils/getInfoUser";
 import { message } from "ant-design-vue";
 import { useForumStore } from "../../../stores/forum.js";
 import { useImgStore } from "../../../stores/upload.js";
@@ -132,10 +132,10 @@ export default defineComponent({
     const successMsg = ref(false);
     const errorMsg = ref(false);
     const formState = reactive({
-      username: getUsername(),
+      user: getId(),
       title: "",
       content: "",
-      _class: getClass(),
+      _class: getClass(),  
       imageUrl: ""
     });
 
@@ -145,8 +145,9 @@ export default defineComponent({
         .then((values) => {
           console.log("formState: ", toRaw(formState));
           const post = toRaw(formState);
+          
           useForum.addPost(post);
-          useForum.getListPosts(getClass());
+          useForum.getListPosts(formState._class);
           visible.value = false;
           formRef.value.resetFields();
           console.log("reset formState: ", toRaw(formState));

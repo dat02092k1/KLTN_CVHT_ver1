@@ -1,12 +1,16 @@
 const postModel = require('../../models/posts/post.js');
+const userModel = require('../../models/students/studentsModel.js');
 
+const commentModel = require('../../models/comments/comment.js');
+
+const logger = require('../../logger/logger.js')
 const mongoose = require('mongoose');
 const { ClientError } = require('../error/error.js');
 
 var getPostListService = async (_class) => { 
     try {
         const post = await postModel.find( { class: _class } ); 
-        if (!post) throw new ClientError("There're no posts in history", 404);
+        if (!post) throw new ClientError("There're no posts", 404);
         return post.reverse();
     } catch (error) {
         throw error;
@@ -16,19 +20,29 @@ var getPostListService = async (_class) => {
 var createPostService = async (postDetails) => {
     try {
         const {
-            username,
+            user,
             title,
             content,
-            _class,
+            // _class,
             imageUrl        
         } = postDetails;
 
+         
         console.log(postDetails);
+
+        const getUser = await userModel.findById(user);  
+
+        console.log(getUser); 
+        const username = getUser.studentId; 
+        const _class = getUser._class;
+           
+        
         const newPost = new postModel({
+            userId: user,
             username,
             title,
             content,
-            _class,
+            _class, 
             imageUrl
           });
 
@@ -42,8 +56,9 @@ var createPostService = async (postDetails) => {
 
 var updatePostService = async (id, postDetails) => {
     try {
-        console.log(postDetails.username);
-        const username = postDetails.username;
+        console.log(postDetails.userId);
+        
+
         // const objectId = mongoose.Types.ObjectId(username);
         const updatePost = await postModel.findByIdAndUpdate(id, postDetails, { new: true }); 
         if (!updatePost) {
@@ -57,10 +72,17 @@ var updatePostService = async (id, postDetails) => {
 
 var deletePostService = async (id) => {
     try {
+        console.log('flag delete')
         console.log(id);
+
+        const commentRelated = await commentModel.deleteMany({ postId: id });
+
+        if (!commentRelated) throw new ClientError(`cound not find comment related to this post`, 404); 
+
         const deletePost = await postModel.findByIdAndDelete(id);
 
-        if (deletePost) {
+        console.log(deletePost);
+        if (deletePost) { 
             return "Deleted successfully!";
         } else {
             throw new ClientError('Post is not found', 404);

@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <div v-if="isAdmin">
      <div class="">
         <Pie v-if="loaded" :data="chartData" :options="chartOptions"/>
@@ -73,9 +73,9 @@
       }
     }
   }
-  </script> -->
+  </script>
 
-  <template>
+  <!-- <template>
     <div>
         <Pie v-if="loaded" :data="chartData" :options="chartOptions"/>
     </div>
@@ -99,4 +99,4 @@
     },
   };
   </script>
-  
+   -->

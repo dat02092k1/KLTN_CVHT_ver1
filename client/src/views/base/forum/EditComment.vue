@@ -35,6 +35,7 @@ import { getUsername } from "../../../utils/getInfoUser.js";
     setup() {
       const formRef = ref();
       const formState = reactive({
+        userId: '', 
         username: '', 
         content: ''
       });
@@ -54,16 +55,16 @@ import { getUsername } from "../../../utils/getInfoUser.js";
         
       onMounted(async () => {
         await useForum.viewCommentById(commentId);
-        
+        formState.userId = useForum.getComment.data.comment.userId;
         formState.content = useForum.getComment.data.comment.content;
-        console.log(formState.content)
+        console.log(formState)
       } ) 
       const onSubmit = () => {
         formRef.value
           .validate()
           .then(() => {
             console.log('values', toRaw(formState.content));
-            const comment = toRaw(formState.content);
+            const comment = toRaw(formState);
             useForum.editComment(commentId, comment, formState.username); 
           })
           .catch(error => {

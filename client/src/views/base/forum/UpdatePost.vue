@@ -51,7 +51,7 @@
   import { useImgStore } from "../../../stores/upload.js";
 
   import { RouterLink, RouterView, useRoute } from "vue-router";
-  import { getUsername, getClass } from "../../../utils/getInfoUser";
+  import { getId, getUsername, getClass } from "../../../utils/getInfoUser";
 
   export default {
     data() {
@@ -59,9 +59,10 @@
         useForum: useForumStore(),
         id: useRoute().params.id,
         post: {
+         userId: "",
          title: "",
-         username: "", 
          content: "",
+         username: "",    
          _class: "",
          imageUrl: "" 
         },
@@ -72,8 +73,8 @@
     async mounted() {
       await this.useForum.getPostAndComment(this.id);
       this.post = this.useForum.post;
-      this.post.username = getUsername();
-      this.post._class = getClass(); 
+      
+      // this.post._class = getClass(); 
       console.log(this.post);
     },
     methods: {

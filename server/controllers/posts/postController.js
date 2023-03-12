@@ -3,7 +3,7 @@ const { ClientError } = require('../../services/error/error.js');
 
 var getPostListController = async (req, res) => { 
     try {
-        console.log(req.params.class); 
+          
         var postList = await postService.getPostListService(req.params.class);
         res.status(200).json({ success: true, postList });
     } catch (error) {
@@ -19,7 +19,7 @@ var getPostListController = async (req, res) => {
 
 var createPostController = async (req, res) => {
     try {
-        
+          
         var newPost = await postService.createPostService(req.body); 
         res.status(200).json({ success: true, newPost });
     } catch (error) {
@@ -35,7 +35,7 @@ var createPostController = async (req, res) => {
 
 var updatePostController = async (req, res) => {
     try {
-        var update = await postService.updatePostService(req.params.id ,req.body);
+        var update = await postService.updatePostService(req.params.id, req.body);
         res.status(200).json({ success: true, update });
     } catch (error) {
         console.log(error);

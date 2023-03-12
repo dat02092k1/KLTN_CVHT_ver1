@@ -68,7 +68,7 @@
         <div class="h-12 hover:bg-[#2d3c50] flex items-center">
           <a href="">
             <li>
-              <router-link :to="userRole === 'student' ? '/student/task' : '/consultant/task'" class="px-5">
+              <router-link :to="getRole === 'student' ? '/student/task' : '/consultant/task'" class="px-5">
                 <i class="fa-solid fa-list-check mr-4"></i>
                 <span>Nhiệm vụ</span>
               </router-link>
@@ -177,7 +177,7 @@ export default {
     },
   },
   computed: {
-    userRole() {
+    getRole() {
       return this.userRole;
     },
   },

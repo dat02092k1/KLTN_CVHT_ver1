@@ -1,20 +1,26 @@
 const commentModel = require('../../models/comments/comment.js');
 const postModel = require('../../models/posts/post.js');
+const studentModel = require('../../models/students/studentsModel.js');
+
 const { ClientError } = require('../error/error.js');
 
 const mongoose = require('mongoose');
 
-var createCommentService = async (id, user, commentDetails) => {
+var createCommentService = async (id, userId, commentDetails) => {
     try {
         const postId = id;
-        const username = user;
         const {
             content
             } = commentDetails;
         console.log(id); 
 
+        const getStudent = await studentModel.findById(userId);
+         
+        const username = getStudent.studentId; 
+
         const newComment = new commentModel({
-            postId,
+            postId, 
+            userId, 
             username,
             content
         })
@@ -103,10 +109,12 @@ var deleteCommentService = async (id) => {
 
 var editCommentService = async (id, commentDetails) => {
     try {
-        console.log(id, commentDetails);
+        console.log('flag1')
+        console.log(commentDetails);
+        console.log('flag2')
         // const objectId = mongoose.Types.ObjectId(username);
         const updateComment = await commentModel.findByIdAndUpdate(id, commentDetails, { new: true }); 
-
+        console.log(updateComment);
         if (!updateComment) {
             throw new ClientError(`No post found with id: ${id}`, 404);  
         } 

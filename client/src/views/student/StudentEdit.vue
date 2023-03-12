@@ -139,9 +139,7 @@
             </div>
           </div>
 
-          <!-- <div class="h-[300px]">
-            <ChartCredits :chart-data="chartData" :chart-options="chartOptions"/>
-          </div> -->
+          
         </div>
 
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
