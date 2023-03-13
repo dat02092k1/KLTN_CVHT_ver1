@@ -21,17 +21,19 @@ export const useAuthStore = defineStore({
   actions: {
     async login(studentId, password) {
       try {
-        const user = await axios.post("http://localhost:8000/user/login", {
+        const user = await axios.post("http://localhost:8000/user/login",
+        {
           studentId,
           password,
         });
 
         this.user = user.data.user;
-        console.log(this.user);
+        console.log(user.data);
         localStorage.setItem("_id", this.user._id);
         localStorage.setItem("username", this.user.studentId);
         localStorage.setItem("role", this.user.role);
         localStorage.setItem("class", this.user._class);
+        localStorage.setItem("refreshToken", user.data.refreshToken);
 
         this.accessToken = user.data;
         window.localStorage.setItem("token", this.accessToken.acessToken);

@@ -6,15 +6,15 @@ let refreshTokens = [];
 var userModel = require('../../models/students/studentsModel');
 
 var createAccessToken = (user) => {
-    return jwt.sign({ id: user._id, username: user.studentId, role: user.role}, process.env.JWT_SECRET, { expiresIn: '1h' }); 
+    return jwt.sign({ id: user._id, username: user.studentId, role: user.role}, process.env.JWT_SECRET, { expiresIn: '3000' }); 
 }
 
 var createRefreshToken = (user) => {
-    return jwt.sign({ id: user._id, username: user.studentId, role: user.role}, process.env.JWT_REFRESH, { expiresIn: '500d' }); 
+    return jwt.sign({ id: user._id, username: user.studentId, role: user.role}, process.env.JWT_REFRESH, { expiresIn: '30d' }); 
 }
 
 var loginService = async (req, res, next) => {
-     
+     console.log(req.body);
     const { studentId, password } = req.body;
      
     try {
@@ -41,13 +41,16 @@ var loginService = async (req, res, next) => {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             path: '/',
-            samesite: "strict"
+            // samesite: "strict"
+            sameSite: "none",
+            secure: "false",
+            // sameSite: "none",
+             
         })
 
-        console.log('flag');
-        console.log(refreshToken);
+         
 
-        return res.status(200).json({ acessToken, user });   
+        return res.status(200).json({ acessToken, refreshToken, user });   
         
     } catch (error) {
         return res.status(400).json({ msg: 'user not found' }); 

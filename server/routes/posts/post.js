@@ -8,7 +8,7 @@ router.get('/post/list/:class', userAuthenticate.verifyToken, postController.get
 // get list of posts of specified class
 router.post('/post/create', userAuthenticate.verifyToken, postController.createPostController);
 // create a post on forum
-router.put('/post/edit/:id', userAuthenticate.roleAuthentication , postController.updatePostController);
+router.put('/post/edit/:id', userAuthenticate.onlyOwner , postController.updatePostController);
 // edit post on forum
 router.delete('/post/delete/:id', userAuthenticate.roleAuthentication, postController.deletePostController);
 // delete post on forum

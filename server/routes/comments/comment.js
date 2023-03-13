@@ -16,9 +16,9 @@ router.get('/post-comment-list/:username', userAuthenticate.roleAuthenticationGe
 // delete comments of username
 router.delete('/post/comment/delete/:id', userAuthenticate.roleAuthenticationGetUsername, commentController.deleteCommentController);
 // edit comments of username 
-router.put('/post/comment/edit/:username/:id', userAuthenticate.roleAuthenticationGetUsername, commentController.editCommentController);
+router.put('/post/comment/edit/:username/:id', userAuthenticate.onlyOwner, commentController.editCommentController);
 // get unique comments
-router.get('/post/comment/view/:id', userAuthenticate.verifyToken   , commentController.getCommentById);
+router.get('/post/comment/view/:id', userAuthenticate.verifyToken, commentController.getCommentById);
 
 
 
