@@ -51,7 +51,7 @@ import { getUsername } from "../../../utils/getInfoUser.js";
        const commentId = useRoute().params.id; 
        const useForum = useForumStore();
          
-       formState.username = getUsername(); 
+        
         
       onMounted(async () => {
         await useForum.viewCommentById(commentId);
