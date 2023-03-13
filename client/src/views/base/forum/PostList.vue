@@ -117,7 +117,7 @@
 
 <script>
 import { defineComponent, onMounted, reactive, ref, toRaw } from "vue";
-import NavTitle from "../NavTitle.vue";
+import NavTitle from"../NavBar/NavTitle.vue";
 import Spinner from "../Spinner/Spinner.vue";
 import { RouterLink, RouterView } from "vue-router";
 import { getClass, getId } from "../../../utils/getInfoUser";

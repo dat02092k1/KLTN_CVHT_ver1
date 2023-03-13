@@ -57,6 +57,7 @@ import { getUsername } from "../../../utils/getInfoUser.js";
         await useForum.viewCommentById(commentId);
         formState.userId = useForum.getComment.data.comment.userId;
         formState.content = useForum.getComment.data.comment.content;
+        formState.username = useForum.getComment.data.comment.username;
         console.log(formState)
       } ) 
       const onSubmit = () => {

@@ -48,7 +48,7 @@
       <a-button
         type="primary"
         html-type="submit"
-        class="bg-[#409eff] h-12 w-full bg-[#409eff] text-white rounded"
+        class="h-12 w-full bg-[#409eff] text-white rounded"
         :disabled="formState.user === '' || formState.password === ''"
       >
         Đăng nhập

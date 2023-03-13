@@ -32,7 +32,7 @@ export const useStudentStore = defineStore({
   actions: {
     async getData() {
         try {
-          const accessToken = window.sessionStorage.getItem("token");
+          const accessToken = window.localStorage.getItem("token");
            
           const config = {
             headers: {
@@ -52,7 +52,7 @@ export const useStudentStore = defineStore({
       },
     async postData() {
         try {
-          const accessToken = window.sessionStorage.getItem("token");
+          const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {
@@ -67,7 +67,7 @@ export const useStudentStore = defineStore({
     },
     async addStudent(student) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
         console.log(accessToken);
         const config = {
           headers: {
@@ -83,7 +83,7 @@ export const useStudentStore = defineStore({
   },
     async updateStudent(id, details) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {
@@ -100,7 +100,7 @@ export const useStudentStore = defineStore({
     ,
     async getStudentDetails(id) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {
@@ -119,7 +119,7 @@ export const useStudentStore = defineStore({
     },
     async deleteStudent(id) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {

@@ -15,7 +15,7 @@ export const useTaskStore = defineStore({
   actions: {
     async getTasks() {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
         const config = {
           headers: {
             token: `Bearer ${accessToken}`,

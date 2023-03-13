@@ -11,10 +11,9 @@ import ImportExcel from '../views/student/ImportExcel.vue'
 import FormTest from '../views/student/FormTest.vue'
 import ChartGpa from '../views/chart/ChartGpa.vue'
 import ChartCredits from '../views/chart/ChartCredits.vue'
-import Forum from '../views/base/Forum.vue'
 import PostList from '../views/base/forum/PostList.vue'
-import PostDetails from '../views/base/PostDetails.vue'
-import Loading from '../views/base/Loading.vue'
+import PostDetails from '../views/base/forum/PostDetails.vue'
+import Loading from '../views/base/Spinner/Loading.vue'
 import Test from '../views/base/Test.vue'
 import AddPost from '../views/base/forum/AddPost.vue'
 import UpdatePost from '../views/base/forum/UpdatePost.vue'
@@ -85,11 +84,6 @@ const router = createRouter({
       name: 'chart credits',
       component: ChartCredits
     }, 
-    {
-      path: '/student/forum',
-      name: 'forum',
-      component: Forum
-    },
     {
       path: '/student/forum/posts',
       name: 'list posts',

@@ -167,7 +167,7 @@ import { useStudentStore } from "../../stores/student.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import { format, parseISO } from "date-fns";
 import dayjs from "dayjs";
-import NavTitle from "../base/NavTitle.vue";
+import NavTitle from "../base/NavBar/NavTitle.vue";
 import ChartCredits from "../chart/ChartCredits.vue";
 
 

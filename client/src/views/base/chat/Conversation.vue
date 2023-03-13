@@ -117,7 +117,7 @@ export default {
   async mounted() {
     this.users = await this.useChat.getListUser();
 
-    const username = window.sessionStorage.getItem("username");
+    const username = window.localStorage.getItem("username");
 
     this.socket = io("http://localhost:9000");
     this.useChat.getConversation(username);

@@ -159,7 +159,7 @@
 <script>
 import { defineComponent, reactive, ref, toRaw } from "vue";
 import { useStudentStore } from "../../stores/student.js";
-import NavTitle from "../base/NavTitle.vue";
+import NavTitle from "../base/NavBar/NavTitle.vue";
 
 export default defineComponent({
   setup() {

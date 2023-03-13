@@ -15,7 +15,7 @@ export const useForumStore = defineStore({
   actions: {
     async getListPosts (_class) {
         try {
-            const accessToken = window.sessionStorage.getItem("token");
+            const accessToken = window.localStorage.getItem("token");
             const config = {
             headers: {
               'token': `Bearer ${accessToken}`
@@ -32,7 +32,7 @@ export const useForumStore = defineStore({
     },
     async addPost(postContent) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {
@@ -48,7 +48,7 @@ export const useForumStore = defineStore({
     },
     async deletePost(id) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {
@@ -67,7 +67,7 @@ export const useForumStore = defineStore({
     },
     async updatePost(id, postDetails) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {
@@ -84,7 +84,7 @@ export const useForumStore = defineStore({
     },
     async getPostAndComment(id)  { 
         try {
-            const accessToken = window.sessionStorage.getItem("token");
+            const accessToken = window.localStorage.getItem("token");
             const config = {
             headers: {
               'token': `Bearer ${accessToken}`
@@ -102,7 +102,7 @@ export const useForumStore = defineStore({
     },
     async addComment(id, content) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {
@@ -127,7 +127,7 @@ export const useForumStore = defineStore({
     },
     async deleteComment(id, postId) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(accessToken);
           const config = {
             headers: {
@@ -146,7 +146,7 @@ export const useForumStore = defineStore({
     },
     async editComment(id, comment, username) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           console.log(comment);
           const config = {
             headers: {
@@ -168,7 +168,7 @@ export const useForumStore = defineStore({
     },
     async viewCommentById(commentId) {
       try {
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
           
           const config = {
             headers: {

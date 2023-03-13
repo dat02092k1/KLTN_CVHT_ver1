@@ -8,7 +8,7 @@
   
   <script> 
   import { Bar, Line } from 'vue-chartjs'
-  import Loading from '../base/Loading.vue';
+  import Loading from '../base/Spinner/Loading.vue';
 
   import axios from 'axios'
   // import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
@@ -46,8 +46,8 @@
     }),
       async mounted () {    
        try {
-        const accessToken = window.sessionStorage.getItem("token");
-        const role = window.sessionStorage.getItem("role");
+        const accessToken = window.localStorage.getItem("token");
+        const role = window.localStorage.getItem("role");
           console.log(role);
         
         if (role === 'manager') {

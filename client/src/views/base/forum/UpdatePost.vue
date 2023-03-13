@@ -46,7 +46,7 @@
   </template>
   
   <script>
-  import NavTitle from "../NavTitle.vue";
+  import NavTitle from "../NavBar/NavTitle.vue";
   import { useForumStore } from "../../../stores/forum.js";
   import { useImgStore } from "../../../stores/upload.js";
 

@@ -28,14 +28,14 @@ export const useAuthStore = defineStore({
 
         this.user = user.data.user;
         console.log(this.user);
-        sessionStorage.setItem("_id", this.user._id);
-        sessionStorage.setItem("username", this.user.studentId);
-        sessionStorage.setItem("role", this.user.role);
-        sessionStorage.setItem("class", this.user._class);
+        localStorage.setItem("_id", this.user._id);
+        localStorage.setItem("username", this.user.studentId);
+        localStorage.setItem("role", this.user.role);
+        localStorage.setItem("class", this.user._class);
 
         this.accessToken = user.data;
-        window.sessionStorage.setItem("token", this.accessToken.acessToken);
-        const storedToken = window.sessionStorage.getItem("token");
+        window.localStorage.setItem("token", this.accessToken.acessToken);
+        const storedToken = window.localStorage.getItem("token");
 
         if (user.status === 200) {
           router.push("/student/list");
@@ -60,7 +60,7 @@ export const useAuthStore = defineStore({
         const logout = await axios.post(`http://localhost:8000/api/user/logout`, {}, config);
  
          
-        sessionStorage.clear(); 
+        localStorage.clear(); 
 
         if (logout.status === 200) {
           router.push("/login");

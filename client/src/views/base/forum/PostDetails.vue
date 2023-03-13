@@ -108,12 +108,12 @@
 </template>
 
 <script>
-import NavTitle from "./NavTitle.vue";
-import EditComment from "../base/forum/EditComment.vue";
+import NavTitle from "../NavBar/NavTitle.vue";
+import EditComment from "./EditComment.vue";
 import { format } from 'date-fns';
 
 
-import { useForumStore } from "../../stores/forum";
+import { useForumStore } from "../../../stores/forum.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 export default {
   data() {

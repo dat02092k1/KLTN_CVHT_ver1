@@ -1,5 +1,5 @@
 export const getAccessToken = () => {
-    const accessToken = window.sessionStorage.getItem("token");
+    const accessToken = window.localStorage.getItem("token");
     const config = {
       headers: {
         token: `Bearer ${accessToken}`,

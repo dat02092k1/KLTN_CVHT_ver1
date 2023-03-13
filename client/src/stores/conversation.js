@@ -20,7 +20,7 @@ export const useChatStore = defineStore({
   getters: {},
   actions: {
     async getConversation(username) {
-      const accessToken = window.sessionStorage.getItem("token");
+      const accessToken = window.localStorage.getItem("token");
       const config = {
         headers: {
           token: `Bearer ${accessToken}`,
@@ -106,7 +106,7 @@ export const useChatStore = defineStore({
           throw new Error('Invalid page or pageSize');
         }
     
-        const accessToken = window.sessionStorage.getItem("token");
+        const accessToken = window.localStorage.getItem("token");
         console.log(accessToken);
 
         const msg = await axios.get('http://localhost:8000/api/message-load',{
