@@ -148,6 +148,7 @@ export default defineComponent({
           
           useForum.addPost(post);
           useForum.getListPosts(formState._class);
+          console.log(formState._class);
           visible.value = false;
           formRef.value.resetFields();
           console.log("reset formState: ", toRaw(formState));

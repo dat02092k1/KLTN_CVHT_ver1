@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
  import axios from "axios";
+ import { axiosIns } from "../api/axios.js";
 
 export const useForumStore = defineStore({
   id: "forum",
@@ -22,7 +23,7 @@ export const useForumStore = defineStore({
             }
           };
           
-          const posts = await axios.get(`http://localhost:8000/post/list/${_class}`, config); 
+          const posts = await axiosIns.get(`http://localhost:8000/post/list/${_class}`, config); 
           this.listPost = posts.data.postList;
            
           
@@ -40,7 +41,7 @@ export const useForumStore = defineStore({
             }
           };
           console.log(postContent);
-        const post = await axios.post("http://localhost:8000/post/create", postContent, config)
+        const post = await axiosIns.post("http://localhost:8000/post/create", postContent, config)
          
       } catch (error) {
         console.log(error); 
@@ -56,7 +57,7 @@ export const useForumStore = defineStore({
             }
           };
           
-        const deletePost = await axios.delete(`http://localhost:8000/post/delete/${id}`, config)
+        const deletePost = await axiosIns.delete(`http://localhost:8000/post/delete/${id}`, config)
 
         console.log(deletePost); 
 
@@ -75,7 +76,7 @@ export const useForumStore = defineStore({
             }
           };
 
-        const updatePost = await axios.put(`http://localhost:8000/post/edit/${id}`, postDetails, config);
+        const updatePost = await axiosIns.put(`http://localhost:8000/post/edit/${id}`, postDetails, config);
 
         console.log(updatePost);  
       } catch (error) {
@@ -91,7 +92,7 @@ export const useForumStore = defineStore({
             }
           };
 
-          const postDetails = await axios.get(`http://localhost:8000/comment/post/${id}`, config); 
+          const postDetails = await axiosIns.get(`http://localhost:8000/comment/post/${id}`, config); 
           this.post = postDetails.data.commentAndPost.post;
           this.comments = postDetails.data.commentAndPost.comments;
           console.log(this.post);
@@ -111,7 +112,7 @@ export const useForumStore = defineStore({
           };
        
 
-       const comment = await axios.post(`http://localhost:8000/post/comment/create/${id}`, 
+       const comment = await axiosIns.post(`http://localhost:8000/post/comment/create/${id}`, 
        {
         content: content
        }
@@ -135,7 +136,7 @@ export const useForumStore = defineStore({
             }
           };
 
-          const deleteComment = await axios.delete(`http://localhost:8000/post/comment/delete/${id}`, config);
+          const deleteComment = await axiosIns.delete(`http://localhost:8000/post/comment/delete/${id}`, config);
 
           console.log(deleteComment);
 
@@ -154,7 +155,7 @@ export const useForumStore = defineStore({
             }
           };
           console.log(username);
-        const edit = await axios.put(`http://localhost:8000/post/comment/edit/${username}/${id}`, 
+        const edit = await axiosIns.put(`http://localhost:8000/post/comment/edit/${username}/${id}`, 
         // {
         //   content: comment
         //  }
@@ -176,7 +177,7 @@ export const useForumStore = defineStore({
             }
           };
 
-        const comment = await axios.get(`http://localhost:8000/post/comment/view/${commentId}`, config);
+        const comment = await axiosIns.get(`http://localhost:8000/post/comment/view/${commentId}`, config);
 
         console.log(comment);
         this.getComment = comment;

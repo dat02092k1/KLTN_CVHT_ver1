@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
  import axios from "axios";
  import { getAccessToken } from '../utils/config.js';
  import { getClass } from '../utils/getInfoUser';
+ import { axiosIns } from "../api/axios.js";
+
 export const useStudentStore = defineStore({
   id: "student",
   state: () => ({
@@ -40,7 +42,7 @@ export const useStudentStore = defineStore({
             }
           }; 
   
-          const response = await axios.get(
+          const response = await axiosIns.get(
             `http://localhost:8000/student/getAll/${this._class}`, config
           );
           this.data = response.data.allStudent;
@@ -59,7 +61,7 @@ export const useStudentStore = defineStore({
               'token': `Bearer ${accessToken}`
             }
           };
-          const response = await axios.post('http://localhost:8000/student/create', this.student, config);
+          const response = await axiosIns.post('http://localhost:8000/student/create', this.student, config);
           console.log(response.data);  
         } catch (error) {
           console.error(error);
@@ -75,7 +77,7 @@ export const useStudentStore = defineStore({
           }
         };
         
-        const response = await axios.post('http://localhost:8000/student/create', student, config);
+        const response = await axiosIns.post('http://localhost:8000/student/create', student, config);
         console.log(response.data);  
       } catch (error) {
         console.error(error);
@@ -90,7 +92,7 @@ export const useStudentStore = defineStore({
               'token': `Bearer ${accessToken}`
             }
           };
-        const response = await axios.patch(`http://localhost:8000/student/update/${id}`, details, config
+        const response = await axiosIns.patch(`http://localhost:8000/student/update/${id}`, details, config
         ); 
         console.log(response);
       } catch (error) {
@@ -108,7 +110,7 @@ export const useStudentStore = defineStore({
             }
           };
   
-        const response = await axios.get(`http://localhost:8000/student/details/${id}`, config);   
+        const response = await axiosIns.get(`http://localhost:8000/student/details/${id}`, config);   
         this.studentDetails = response.data.details;
          
         return response.data.details;
@@ -126,7 +128,7 @@ export const useStudentStore = defineStore({
               'token': `Bearer ${accessToken}`
             }
           };
-        const response = await axios.delete(`http://localhost:8000/student/remove/${id}`, config);   
+        const response = await axiosIns.delete(`http://localhost:8000/student/remove/${id}`, config);   
 
         console.log(response);
         

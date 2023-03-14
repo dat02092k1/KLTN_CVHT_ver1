@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
  import axios from "axios";
  import { getAccessToken } from '../utils/config.js'
-
+ import { axiosIns } from "../api/axios.js";
 
 export const useImgStore = defineStore({
   id: "image",
@@ -17,7 +17,7 @@ export const useImgStore = defineStore({
         try {
             const config = getAccessToken(); 
             console.log(data);
-            const img = await axios.post("http://localhost:8000/api/upload", data, config); 
+            const img = await axiosIns.post("http://localhost:8000/api/upload", data, config); 
              
             return img.data.url; 
              
@@ -29,7 +29,7 @@ export const useImgStore = defineStore({
       try {
         const config = getAccessToken();
 
-        const upload = await axios.post("http://localhost:8000/student/import-excel", data, config); 
+        const upload = await axiosIns.post("http://localhost:8000/student/import-excel", data, config); 
              
         console.log(upload);    
         this.successMsg = true;

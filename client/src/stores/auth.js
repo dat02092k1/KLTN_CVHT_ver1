@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { getAccessToken } from '../utils/config.js'
+import { getRefreshToken } from '../utils/getInfoUser.js'
 import { useStudentStore } from "./student.js";
+import { axiosIns } from "../api/axios.js";
 
 import router from "../router/index.js";
 
@@ -21,7 +23,7 @@ export const useAuthStore = defineStore({
   actions: {
     async login(studentId, password) {
       try {
-        const user = await axios.post("http://localhost:8000/user/login",
+        const user = await axiosIns.post("http://localhost:8000/api/user/login",
         {
           studentId,
           password,
@@ -49,7 +51,7 @@ export const useAuthStore = defineStore({
         }
       } catch (error) {
         this.errorMsg = true;
-        console.log(this.errorMsg);
+        console.log(error);
         setTimeout(() => (this.errorMsg = false), 3000); 
         throw error;
       }
@@ -59,7 +61,7 @@ export const useAuthStore = defineStore({
         const config = getAccessToken();
 
           console.log(config.headers)   
-        const logout = await axios.post(`http://localhost:8000/api/user/logout`, {}, config);
+        const logout = await axiosIns.post(`http://localhost:8000/api/user/logout`, {}, config);
  
          
         localStorage.clear(); 
@@ -72,6 +74,29 @@ export const useAuthStore = defineStore({
       } catch (error) {
         throw error; 
       }
+    },
+   
+      // try {
+      //   const refreshToken = getRefreshToken(); 
+
+      //   const res = await axios.post(`http://localhost:8000/api/token-refresh`, {
+      //     refreshToken: refreshToken
+      //   })
+      //   console.log(res); 
+      // } catch (error) {
+      //   console.log(error); 
+      // }
+      refreshToken() {
+      return new Promise((resolve, reject) => {
+        axiosIns
+          .post(`token-refresh`)
+          .then(response => {
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
     }
   },
 });

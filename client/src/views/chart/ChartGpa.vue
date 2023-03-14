@@ -11,6 +11,8 @@
   import Loading from '../base/Spinner/Loading.vue';
 
   import axios from 'axios'
+  import { axiosIns } from "../../api/axios.js";
+
   // import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
   import {
   Chart as ChartJS,
@@ -58,7 +60,7 @@
               'token': `Bearer ${accessToken}`
             }
           };
-        const userlist  = await axios.get('http://localhost:8000/student/getAll/K64-C-CLC', config); 
+        const userlist  = await axiosIns.get('http://localhost:8000/student/getAll/K64-C-CLC', config); 
         console.log(userlist);
         const fetchData = userlist.data.allStudent;
         this.isShowSpinner = false;

@@ -19,3 +19,7 @@ export const getId = () => {
     return id; 
   } 
 
+export const getRefreshToken = () => {
+    const refreshToken = window.localStorage.getItem("refreshToken");
+    return refreshToken; 
+  } 

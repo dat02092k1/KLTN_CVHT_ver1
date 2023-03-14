@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { axiosIns } from "../api/axios.js";
 import { getAccessToken } from '../utils/config.js'
 import { getClass } from '../utils/getInfoUser.js'
 
@@ -27,7 +28,7 @@ export const useChatStore = defineStore({
         },
       };
 
-      const conversations = await axios.get(
+      const conversations = await axiosIns.get(
         `http://localhost:8000/api/conversation/${username}`,
         config
       );
@@ -47,7 +48,7 @@ export const useChatStore = defineStore({
         try {
             const config = getAccessToken();
             console.log(conversationId);
-            const messages = await axios.get(`http://localhost:8000/api/message-limit/${conversationId}`, config);
+            const messages = await axiosIns.get(`http://localhost:8000/api/message-limit/${conversationId}`, config);
             this.messages = messages.data.messages;
             // console.log(this.messages); 
         } catch (error) {
@@ -58,7 +59,7 @@ export const useChatStore = defineStore({
         try {
             const config = getAccessToken();
 
-        const msg = await axios.post("http://localhost:8000/api/message/create", message, config);
+        const msg = await axiosIns.post("http://localhost:8000/api/message/create", message, config);
         console.log(msg);  
         } catch (error) {
             console.log(error);
@@ -69,7 +70,7 @@ export const useChatStore = defineStore({
         const config = getAccessToken();
         const _class = getClass();
          
-        const users = await axios.get(`http://localhost:8000/student/names/${_class}`, config)
+        const users = await axiosIns.get(`http://localhost:8000/student/names/${_class}`, config)
 
          
         return users.data.names;
@@ -85,7 +86,7 @@ export const useChatStore = defineStore({
           senderId: sender,
           receiverId: receiver
         }
-        const conversation = await axios.post("http://localhost:8000/api/conversation/create", mems, config)
+        const conversation = await axiosIns.post("http://localhost:8000/api/conversation/create", mems, config)
 
             
         this.newConversation._id = conversation.data.conversation._id;
@@ -109,7 +110,7 @@ export const useChatStore = defineStore({
         const accessToken = window.localStorage.getItem("token");
         console.log(accessToken);
 
-        const msg = await axios.get('http://localhost:8000/api/message-load',{
+        const msg = await axiosIns.get('http://localhost:8000/api/message-load',{
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

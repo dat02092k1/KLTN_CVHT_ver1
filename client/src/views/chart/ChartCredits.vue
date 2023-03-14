@@ -11,7 +11,7 @@
   import { Pie } from 'vue-chartjs'
   import Loading from '../base/Spinner/Loading.vue';
   import { useStudentStore } from '../../stores/student.js'
-
+  import { axiosIns } from "../../api/axios.js";
   import axios from 'axios'
   
   import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'

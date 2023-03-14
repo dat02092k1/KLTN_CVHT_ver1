@@ -56,9 +56,6 @@ var createPostService = async (postDetails) => {
 
 var updatePostService = async (id, postDetails) => {
     try {
-        console.log(postDetails.userId);
-        
-
         // const objectId = mongoose.Types.ObjectId(username);
         const updatePost = await postModel.findByIdAndUpdate(id, postDetails, { new: true }); 
         if (!updatePost) {
@@ -73,7 +70,6 @@ var updatePostService = async (id, postDetails) => {
 var deletePostService = async (id) => {
     try {
         console.log('flag delete')
-        console.log(id);
 
         const commentRelated = await commentModel.deleteMany({ postId: id });
 
@@ -94,7 +90,7 @@ var deletePostService = async (id) => {
 
 var listPostOfUser = async (username) => {
     try {
-        console.log('service');
+         
         const listPost = await postModel.find({ username: username}); 
 
         if (!listPost) throw new ClientError("There're no posts", 404); 

@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 // verify token
 const verifyToken = (req, res, next) => {
   const token = req.headers.token;
-   
+    
   if (token) {
     const accessToken = token.split(" ")[1];
     jwt.verify(accessToken, process.env.JWT_SECRET, (err, user) => {
@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
       }
 
       req.user = user;
-        
+        console.log(req.user);
       next();
     });
   } else {
@@ -33,8 +33,7 @@ const roleAuthentication = (req, res, next) => {
 
 const onlyOwner = (req, res, next) => {
   verifyToken(req, res, () => {
-     console.log(req.user.id);
-     console.log(req.body.userId);
+      
     if (req.user.id == req.body.userId || req.user.username == req.params.username) {
       next();
     } else {
@@ -57,7 +56,7 @@ const studentIdAuthentication = (req, res, next) => {
 
 const roleAuthenticationGetUsername = (req, res, next) => {
   verifyToken(req, res, () => {
-    console.log(req.params);  
+     
     if (
       req.user.username == req.params.username ||
       req.user.role === "manager"

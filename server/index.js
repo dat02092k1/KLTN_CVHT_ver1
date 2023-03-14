@@ -22,7 +22,7 @@ var logger = require('./logger/logger.js');
 var cookieParser = require('cookie-parser');
 var io = require('socket.io')(9000, {
     cors: {
-      origin: "http://127.0.0.1:5173",
+      origin: "http://127.0.0.1:5174",
     },
   });
 
@@ -101,7 +101,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use("/", student);  
 app.use("/", register);
-app.use("/", login);       
+app.use("/api", login);       
 app.use("/api", logout);       
 app.use("/", post); 
 app.use("/", comment);

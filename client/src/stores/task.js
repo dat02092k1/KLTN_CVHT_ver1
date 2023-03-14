@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { getAccessToken } from "../utils/config.js";
 import { getUsername, getId } from "../utils/getInfoUser.js";
-
+import { axiosIns } from "../api/axios.js";
 import API_ENDPOINTS from "../api/api.js";
 
 export const useTaskStore = defineStore({
@@ -23,7 +23,7 @@ export const useTaskStore = defineStore({
         };
  
 
-        const tasks = await axios.get(API_ENDPOINTS.getTasks, {
+        const tasks = await axiosIns.get(API_ENDPOINTS.getTasks, {
             params: {
               createdBy: this.createdBy,
             },
@@ -42,7 +42,7 @@ export const useTaskStore = defineStore({
       try {
         const config = getAccessToken();
 
-        const task = await axios.post(API_ENDPOINTS.assignTask, taskDetails, config)
+        const task = await axiosIns.post(API_ENDPOINTS.assignTask, taskDetails, config)
 
         console.log(task);
         this.getTasks();     
@@ -53,7 +53,7 @@ export const useTaskStore = defineStore({
     async getTaskDetails(taskId) {
       try {
         const config = getAccessToken();
-        const getTask = await axios.get(API_ENDPOINTS.getDetailsTask + taskId, config)
+        const getTask = await axiosIns.get(API_ENDPOINTS.getDetailsTask + taskId, config)
 
         this.tasks = getTask.data.task; 
         return getTask.data.task; 
@@ -64,7 +64,7 @@ export const useTaskStore = defineStore({
     async editTask(taskId, taskDetails) {
       try {
         const config = getAccessToken();
-        const task = await axios.put(API_ENDPOINTS.editTask + taskId, taskDetails, config)
+        const task = await axiosIns.put(API_ENDPOINTS.editTask + taskId, taskDetails, config)
 
         console.log(task);
          
@@ -76,7 +76,7 @@ export const useTaskStore = defineStore({
       try {
         const config = getAccessToken();
         console.log(_id);
-        const task = await axios.get(API_ENDPOINTS.getTasksOfStudent + _id, config)
+        const task = await axiosIns.get(API_ENDPOINTS.getTasksOfStudent + _id, config)
 
         console.log(task.data.tasks);
         return task.data.tasks;
@@ -88,7 +88,7 @@ export const useTaskStore = defineStore({
       try {
         const config = getAccessToken();
 
-        const update = await axios.put(API_ENDPOINTS.updateStatus + taskId + '/' + studentId, isCompleted, config)
+        const update = await axiosIns.put(API_ENDPOINTS.updateStatus + taskId + '/' + studentId, isCompleted, config)
 
         console.log(update);    
       } catch (error) {

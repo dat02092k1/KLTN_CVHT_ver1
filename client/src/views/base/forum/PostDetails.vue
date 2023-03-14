@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavTitle :title="pageTitle"/>
-    <div>
+    <div class="max-w-[80%]">
       <div class="post flex" v-if="useForum.post">
         <div class="forum-item w-[80%] rounded-md mx-auto">
           <div>

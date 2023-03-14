@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
  import axios from "axios";
  import { getAccessToken } from '../utils/config.js'
-
+ import { axiosIns } from "../api/axios.js";
 
 export const useScoreStore = defineStore({
   id: "score",
@@ -15,7 +15,7 @@ export const useScoreStore = defineStore({
         try {
             const config = getAccessToken();
              
-            const courses = await axios.get(`http://localhost:8000/api/student/get-course/${studentId}`, config); 
+            const courses = await axiosIns.get(`http://localhost:8000/api/student/get-course/${studentId}`, config); 
 
             return courses.data.courses;      
         } catch (error) {
@@ -26,7 +26,7 @@ export const useScoreStore = defineStore({
       try {
         const config = getAccessToken();
          
-        const course = await axios.post("http://localhost:8000/api/student/add-course", courseDetails, config); 
+        const course = await axiosIns.post("http://localhost:8000/api/student/add-course", courseDetails, config); 
 
         return course;     
     } catch (error) {
@@ -37,7 +37,7 @@ export const useScoreStore = defineStore({
       try {
         const config = getAccessToken();
          
-        const course = await axios.put(`http://localhost:8000/api/student/edit-course/${courseId}`, courseDetails, config); 
+        const course = await axiosIns.put(`http://localhost:8000/api/student/edit-course/${courseId}`, courseDetails, config); 
 
         console.log(course);  
         return course;   
@@ -49,7 +49,7 @@ export const useScoreStore = defineStore({
       try {
         const config = getAccessToken();
 
-        const course = await axios.get(`http://localhost:8000/api/student/course/${courseId}`, config); 
+        const course = await axiosIns.get(`http://localhost:8000/api/student/course/${courseId}`, config); 
 
         this.courseDetails = course.data.course;
         console.log(this.courseDetails);

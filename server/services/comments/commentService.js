@@ -12,7 +12,7 @@ var createCommentService = async (id, userId, commentDetails) => {
         const {
             content
             } = commentDetails;
-        console.log(id); 
+        console.log(id, userId, commentDetails); 
 
         const getStudent = await studentModel.findById(userId);
          
