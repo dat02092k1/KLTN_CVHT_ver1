@@ -1,5 +1,7 @@
 <template>
   <div>
+    <NavTitle :title="pageTitle" />
+
     <div class="header-forum">
       <div
         class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded h-[450px] overflow-y-scroll"
@@ -105,6 +107,8 @@
 </template>
 
 <script>
+import NavTitle from"../NavBar/NavTitle.vue"
+
 import {
   defineComponent,
   onMounted,
@@ -124,7 +128,7 @@ export default defineComponent({
   setup() {
     const formRef = ref();
     const visible = ref(false);
-
+    const pageTitle = 'Danh sách việc giao cho sinh viên'; 
     const formState = reactive({
       task: "",
       description: "",
@@ -215,8 +219,12 @@ export default defineComponent({
       checked,
       tasks,
       useTask,
+      pageTitle
     };
   },
+  components: {
+    NavTitle
+  }
 });
 </script>
 

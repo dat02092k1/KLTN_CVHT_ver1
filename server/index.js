@@ -22,7 +22,7 @@ var logger = require('./logger/logger.js');
 var cookieParser = require('cookie-parser');
 var io = require('socket.io')(9000, {
     cors: {
-      origin: "http://127.0.0.1:5174",
+      origin: "http://127.0.0.1:5173",
     },
   });
 
@@ -72,6 +72,7 @@ io.on('connection', (socket) => {
     socket.on("sendMessage", ({username, receiverName, content}) => {
         console.log(receiverName)
         const user = getUser(receiverName); 
+        console.log('flag user')
         console.log(user);
         if (user) {
         io.to(user.socketId).emit("getMessage", {

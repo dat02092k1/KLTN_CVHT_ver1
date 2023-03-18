@@ -49,6 +49,7 @@ export const useChatStore = defineStore({
             const config = getAccessToken();
             console.log(conversationId);
             const messages = await axiosIns.get(`http://localhost:8000/api/message-limit/${conversationId}`, config);
+            console.log(messages);
             this.messages = messages.data.messages;
             // console.log(this.messages); 
         } catch (error) {
@@ -95,9 +96,26 @@ export const useChatStore = defineStore({
         console.log(this.newConversation);
          return this.newConversation;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
+        throw error;
       }
     },
+    async handleConversation(sender, receiver) {
+      try {
+        const config = getAccessToken(); 
+        const mems = {
+          senderId: sender,
+          receiverId: receiver
+        }
+        const conversation = await axiosIns.post("http://localhost:8000/api/conversation/handle", mems, config)
+
+         return conversation.data.conversation;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
+    ,
     async loadMessage(conversationId, page, pageSize) {
       try {
         const pageNumber = parseInt(page);

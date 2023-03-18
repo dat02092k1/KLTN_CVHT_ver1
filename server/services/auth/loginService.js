@@ -7,7 +7,7 @@ var userModel = require('../../models/students/studentsModel');
 
 var createAccessToken = (user) => {
     console.log(user);
-    return jwt.sign({ id: user._id, username: user.studentId, role: user.role}, process.env.JWT_SECRET, { expiresIn: '300000' }); 
+    return jwt.sign({ id: user._id, username: user.studentId, role: user.role}, process.env.JWT_SECRET, { expiresIn: '500000' }); 
 }
 
 var createRefreshToken = (user) => {
@@ -15,7 +15,7 @@ var createRefreshToken = (user) => {
 }
 
 var generateAccessToken = (user) => {
-    return jwt.sign({ id: user.id, username: user.username, role: user.role}, process.env.JWT_SECRET, { expiresIn: '300000' }); 
+    return jwt.sign({ id: user.id, username: user.username, role: user.role}, process.env.JWT_SECRET, { expiresIn: '500000' }); 
 }
 
 var generateRefreshToken = (user) => {

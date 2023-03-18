@@ -13,4 +13,6 @@ const conversationSchema = new Schema(
     }
 )
 
+conversationSchema.index({ members: 1 });
+
 module.exports = mongoose.model("conversations", conversationSchema);

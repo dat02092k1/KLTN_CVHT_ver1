@@ -8,6 +8,8 @@ const router = express.Router();
 router.get('/conversation/:username', conversation.getConversationController);
 // create conversation
 router.post('/conversation/create', userAuthenticate.verifyToken, conversation.createConversationController);
+// handle conversation
+router.post('/conversation/handle', userAuthenticate.verifyToken, conversation.handleConversationController);
 
 
 

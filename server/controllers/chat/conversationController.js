@@ -30,4 +30,18 @@ var getConversationController = async (req, res) => {
     }
 }
 
-module.exports = {getConversationController, createConversationController } ;  
+var handleConversationController = async (req, res) => {
+    try {
+        var conversation = await conversationService.handleConversationService(req, res);
+        res.status(200).json({ success: true, conversation });
+    } catch (error) {
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
+    }
+}
+module.exports = {getConversationController, createConversationController,
+    handleConversationController } ;  

@@ -93,6 +93,8 @@
 import { useChatStore } from "../../../stores/conversation.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import Spinner from "../Spinner/Spinner.vue";
+import { Mutex } from 'async-mutex';
+const mutex = new Mutex();
 
 import io from "socket.io-client";
 
@@ -131,7 +133,7 @@ export default {
     this.socket.on("getMessage", (data) => {
       console.log(data);
        console.log(this.conversationId);
-      if (this.members.includes(data.username)) {
+      if (this.members.includes(data.username) && this.members.includes(this.getUsername)) {
         this.useChat.messages.push(data);
       }
       else {
@@ -200,33 +202,48 @@ export default {
       return conversation;
     },
     async handleConversation(receiver) {
-      const chatted = this.useChat.friends.includes(receiver);
-      console.log(chatted);
-      if (chatted) {
-        const id = this.findConversation(
-          this.useChat.conversation,
-          this.getUsername,
-          receiver
-        );
-        console.log(id);
-
-        this.useChat.getMessages(id);
-      } else {
-        const conversation = await this.conversationInfo(this.getUsername, receiver);
-
+      try {
+        const conversation = await this.useChat.handleConversation(this.getUsername, receiver);
+         
         const conversationId = conversation._id;
-      const conversationMembers = conversation.members;
+        const conversationMembers = conversation.members;
 
-        console.log(conversationId, conversationMembers);
+      console.log(conversationId, conversationMembers);
 
-        this.getMessage(conversationId, conversationMembers)
-
-        // const newConversationid = this.useChat.newConversation._id;
-        // const newConversationMembers = this.useChat.newConversation.members;
-        // console.log(newConversationid, newConversationMembers);
-        // this.getMessage(newConversationid, newConversationMembers);
+      this.getMessage(conversationId, conversationMembers)
+      } catch (error) {
+        console.log(error);
       }
     },
+  //   async handleConversation(receiver) {
+  //     const mutex = new Mutex();
+  //     const release = await mutex.acquire();
+  // try {
+  //   const chatted = this.useChat.friends.includes(receiver);
+  //   console.log(chatted);
+  //   if (chatted) {
+  //     const id = this.findConversation(
+  //       this.useChat.conversation,
+  //       this.getUsername,
+  //       receiver
+  //     );
+  //     console.log(id);
+
+  //     this.useChat.getMessages(id);
+  //   } else {
+  //     const conversation = await this.conversationInfo(this.getUsername, receiver);
+
+  //     const conversationId = conversation._id;
+  //     const conversationMembers = conversation.members;
+
+  //     console.log(conversationId, conversationMembers);
+
+  //     this.getMessage(conversationId, conversationMembers)
+  //   }
+  // } finally {
+  //   release();
+  // }
+  //   },
     findConversation(conversations, sender, receiver) {
       try {
         for (let i = 0; i < conversations.length; i++) {
@@ -283,6 +300,8 @@ export default {
   background-color: #0084ff;
   border-radius: 4px;
   margin: 10px;
+  max-width: 60%;
+  align-self: flex-end;
 }
 
 .receiver-message {
@@ -293,5 +312,8 @@ export default {
   display: inline-block;
   border-radius: 4px;
   margin: 10px;
+  max-width: 60%;
+  align-self: flex-start;
+
 }
 </style>

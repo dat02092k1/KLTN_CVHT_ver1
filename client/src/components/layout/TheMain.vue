@@ -90,8 +90,8 @@
                 </td>
 
                 <td>{{ item.status }}</td>
-                <td class="flex flex-col md:grid grid-cols-2">
-                  <div>
+                <td class="flex flex-col md:grid grid-rows-2">
+                  <!-- <div>
                     <RouterLink :to="{ path: '/student/details/' + item._id }">
                       <button>
                         <i class="fa-solid fa-circle-info text-yellow-400"></i>
@@ -104,7 +104,7 @@
                         class="fa-sharp fa-solid fa-delete-left text-red-500"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <RouterLink :to="{ path: '/student/edit/' + item._id }">
                       <button>

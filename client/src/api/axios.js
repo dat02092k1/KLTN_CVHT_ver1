@@ -18,7 +18,7 @@ const refreshToken = async () => {
   
 
 axiosIns.interceptors.response.use((response) => {
-    console.log('token where'); 
+     
     return (response);
 }, async (err) => {
     const originalRequest = err.config;
