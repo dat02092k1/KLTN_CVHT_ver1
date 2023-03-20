@@ -4,6 +4,8 @@ import { getAccessToken } from '../utils/config.js'
 import { getRefreshToken } from '../utils/getInfoUser.js'
 import { useStudentStore } from "./student.js";
 import { axiosIns } from "../api/axios.js";
+import { joinRoom ,getUsersOnl, logOut } from "../socket/socket.js";
+import { getClass } from "../utils/getInfoUser.js";
 
 import router from "../router/index.js";
 
@@ -17,7 +19,8 @@ export const useAuthStore = defineStore({
       username: "",
       role: "",
     },
-    errorMsg: false
+    errorMsg: false,
+    userClass: getClass()
   }),
   getters: {},
   actions: {
@@ -30,7 +33,7 @@ export const useAuthStore = defineStore({
         });
 
         this.user = user.data.user;
-        console.log(user.data);
+        console.log(user.status);
         localStorage.setItem("_id", this.user._id);
         localStorage.setItem("username", this.user.studentId);
         localStorage.setItem("role", this.user.role);
@@ -38,10 +41,14 @@ export const useAuthStore = defineStore({
         localStorage.setItem("refreshToken", user.data.refreshToken);
 
         this.accessToken = user.data;
+         
         window.localStorage.setItem("token", this.accessToken.acessToken);
         const storedToken = window.localStorage.getItem("token");
 
         if (user.status === 200) {
+          console.log(this.userClass);
+          this.userClass = getClass();
+          joinRoom(this.userClass);
           router.push("/student/list");
         } else {
           console.log(this.errorMsg);
@@ -63,7 +70,8 @@ export const useAuthStore = defineStore({
           console.log(config.headers)   
         const logout = await axiosIns.post(`http://localhost:8000/api/user/logout`, {}, config);
  
-         
+        const _class = getClass();
+        logOut(_class);        
         localStorage.clear(); 
 
         if (logout.status === 200) {

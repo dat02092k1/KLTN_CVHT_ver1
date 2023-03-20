@@ -1,6 +1,6 @@
 const postModel = require('../../models/posts/post.js');
 const userModel = require('../../models/students/studentsModel.js');
-
+const notiModel = require('../../models/notifications/notifications.js');
 const commentModel = require('../../models/comments/comment.js');
 
 const logger = require('../../logger/logger.js')
@@ -47,6 +47,16 @@ var createPostService = async (postDetails) => {
           });
 
         await newPost.save();   
+
+        const users = await userModel.find({ _id: { $ne: newPost.userId }, _class: newPost._class });
+
+        const notification = users.map((user) => ({
+            userId: user._id,
+            postId: newPost._id,
+            message: `New post: ${newPost.title} in your class`,
+          }));
+
+        await notiModel.insertMany(notification);
 
         return newPost;
     } catch (error) {

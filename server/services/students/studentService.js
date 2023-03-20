@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 
 var studentServiceGetAll = async (username, _class) => {
   try {
-    console.log(username);
+     
     const data = await studentModel.find({ _class: _class, role: "student" });
 
     if (!data) throw new ClientError('data not found', 404)
@@ -50,7 +50,7 @@ var createStudentService = async (studentDetail) => {
     var checkExisting = await studentModel.findOne({
       studentId: studentDetail.studentId,
     });
-    console.log(checkExisting);
+    
     if (checkExisting) throw new ClientError("Student already exists", 404);
 
     // create student
@@ -85,7 +85,6 @@ var updateStudentService = async (id, studentDetail) => {
       throw new ClientError(`No student found with id: ${id}`, 404);
     }
 
-    console.log(student);
 
     await postModel.updateMany({
       userId: id
@@ -109,20 +108,6 @@ var updateStudentService = async (id, studentDetail) => {
     throw error;
   }
 };
-
-// var updateStudentService = async (req, res) => {
-//     try {
-//         console.log(req.body);
-//         const student = await studentModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//         if (!student) {
-//             res.json({ message: "Update fail" });
-//         }
-
-//         res.status(200).json(student);
-//     } catch (error) {
-//         res.status(500).json({ message: "Server error ~ updateStudent" });
-//     }
-// }
 
 var getStudentDetailService = async (id) => {
   try {
@@ -171,15 +156,13 @@ var getNameStudentService = async (_class) => {
 var uploadStudentsService = async (req) => {
   try {
     const data = req.data;
-    console.log("api flag");
-    console.log(data);
     
     // Kiểm tra xem email và tên người dùng đã tồn tại trong cơ sở dữ liệu hay chưa
    const existingUsers = await Promise.all([
     studentModel.find({ studentId: { $in: data.map(item => item.studentId) } }, { studentId: 1 }),
     studentModel.find({ emailAddress: { $in: data.map(item => item.emailAddress) } }, { emailAddress: 1 })
   ]);
-  console.log(existingUsers[1]); 
+   
   const duplicateEmails = data.filter(item => existingUsers[1].some(user => user.emailAddress === item.emailAddress));
   const duplicateUsernames = data.filter(item => existingUsers[0].some(user => user.studentId === item.studentId));
 

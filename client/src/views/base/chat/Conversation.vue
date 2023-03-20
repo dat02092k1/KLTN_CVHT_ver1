@@ -93,8 +93,7 @@
 import { useChatStore } from "../../../stores/conversation.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import Spinner from "../Spinner/Spinner.vue";
-import { Mutex } from 'async-mutex';
-const mutex = new Mutex();
+import { addUser, getUsersOnl, offlineUser } from '../../../socket/socket.js';
 
 import io from "socket.io-client";
 
@@ -127,9 +126,12 @@ export default {
     this.isLoading = false;
     this.socket.on("welcome", (msg) => console.log(msg));
 
-    this.socket.emit("addUser", this.getUsername);
-    this.socket.on("getUsers", (users) => console.log(users));
+    addUser(this.getUsername);
+    // this.socket.emit("addUser", this.getUsername);
+    // this.socket.on("getUsers", (users) => console.log(users));
+    getUsersOnl();
 
+    console.log('online list');
     this.socket.on("getMessage", (data) => {
       console.log(data);
        console.log(this.conversationId);
@@ -144,7 +146,8 @@ export default {
       console.log(this.members);
     });
 
-    this.socket.on("offlineUser", (data) => console.log(data));
+    offlineUser();
+    // this.socket.on("offlineUser", (data) => console.log(data));
   },
   created() {},
   methods: {

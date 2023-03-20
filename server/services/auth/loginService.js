@@ -25,11 +25,11 @@ var generateRefreshToken = (user) => {
 var loginService = async (req, res, next) => {
       
     const { studentId, password } = req.body;
-     console.log(req.body);
+      
 
     try {
         var user = await userModel.findOne( {studentId});
-        console.log(user);
+         
         if (!user) return res.status(400).json({ message: 'Email or password is incorrect' });
 
         // check for password
@@ -37,21 +37,18 @@ var loginService = async (req, res, next) => {
 
         const isMatch = await bcrypt.compareSync(password, user.password);
         
-        console.log(isMatch);
+         
         if (!isMatch) 
         {
             return res.status(400).json({ message: 'Invalid credentials'});
         }
         
         // create token
-         console.log(isMatch);
+          
         const acessToken = createAccessToken(user);
-        console.log(acessToken);
+         
         const refreshToken = createRefreshToken(user);
         refreshTokens.push(refreshToken);
-        
-        console.log(refreshToken);
-
          
 
         return res.status(200).json({ acessToken, refreshToken, user });   
@@ -77,7 +74,7 @@ var refreshTokenService = async (req, res) => {
 
         refreshTokens = refreshTokens.filter(token => token !== refreshToken);
 
-        console.log(user);
+         
         // create new accessToken, refreshToken and response to user
         const newAccessToken = createAccessToken(user);
         const newRefreshToken = createRefreshToken(user);

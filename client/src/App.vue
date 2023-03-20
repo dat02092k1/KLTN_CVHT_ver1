@@ -6,24 +6,20 @@ import TheMain from './components/layout/TheMain.vue'
 import StudentDetails from './views/student/StudentDetails.vue'
 import { onMounted, onUpdated } from 'vue'
 import axios from "axios";
+import { receiveNoti, getUsersOnl } from "./socket/socket.js";
+import { getClass } from "./utils/getInfoUser.js";
 
 const route = useRoute();
 
-async function refreshToken() {
-  try {
-    const token = await axios.post('http://localhost:8000/token/refresh');
-    console.log(token); 
-    
-  } catch (error) {
-    console.log(error); 
-  }
-}
 
-// onMounted(() => {
-//       setInterval(() => {
-//         refreshToken();
-//       }, 5 * 1000);  
-//     });
+
+onMounted(() => {
+  receiveNoti(noti => alert('post new: ' + noti));
+  // const _class = getClass();
+  // console.log(_class);
+  // addUserClass(_class);
+  // getUsersOnl()
+    });
 
 // onUpdated(() => {
 //       setInterval(() => {

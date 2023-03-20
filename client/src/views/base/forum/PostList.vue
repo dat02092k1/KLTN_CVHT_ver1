@@ -121,6 +121,7 @@ import NavTitle from"../NavBar/NavTitle.vue";
 import Spinner from "../Spinner/Spinner.vue";
 import { RouterLink, RouterView } from "vue-router";
 import { getClass, getId } from "../../../utils/getInfoUser";
+import { sendNoti } from "../../../socket/socket.js";
 import { message } from "ant-design-vue";
 import { useForumStore } from "../../../stores/forum.js";
 import { useImgStore } from "../../../stores/upload.js";
@@ -147,6 +148,12 @@ export default defineComponent({
           const post = toRaw(formState);
           
           useForum.addPost(post);
+
+          const noti = {
+          noti: post.title,
+          room: post._class
+        }
+          sendNoti(noti);
           useForum.getListPosts(formState._class);
           console.log(formState._class);
           visible.value = false;

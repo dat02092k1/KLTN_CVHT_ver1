@@ -6,14 +6,31 @@ export const welcome = () => {
     socket.on("welcome", (msg) => console.log(msg));
 }
 
+// add user to list online by username
 export const addUser = (username) => {
     socket.emit("addUser", username);
 }
 
+// join room by class of user
+export const joinRoom = (roomId) => {
+  socket.emit('join-room', roomId);
+};
+
+// leave room by class of user (meaning user is offline)
+export const leaveRoom = (roomId) => {
+  socket.emit('leave-room', roomId);
+};
+
+export const logOut = (roomId) => {
+  socket.emit('logout', roomId);
+};
+
+// return list of users online
 export const getUsersOnl = () => {
     socket.on("getUsers", (users) => console.log(users));
 }
 
+// get messages from another user
 export const getMessage = (members, messages) => {
     socket.on("getMessage", (data) => {
         console.log(data);
@@ -29,6 +46,7 @@ export const getMessage = (members, messages) => {
       });
 }
 
+// send message to specified user
 export const sendMessage = (sender, receiver, content) => {
     socket.emit("sendMessage", {
         username: sender,
@@ -43,6 +61,7 @@ export const receiveMessage = (callback) => {
     });
   };
 
+// return offline user 
 export const offlineUser = () => {
     socket.on("offlineUser", (data) => console.log(data));
 }

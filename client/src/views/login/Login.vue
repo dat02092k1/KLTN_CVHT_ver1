@@ -71,6 +71,7 @@
 <script>
 import { useAuthStore } from "../../stores/auth.js";
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { getClass } from "../../utils/getInfoUser.js";
 
 export default {
   data() {
@@ -81,7 +82,8 @@ export default {
       formState: {
         studentId: '',
       password: '',
-      }
+      },
+      userClass: getClass()
     };
   },
   mounted() {
