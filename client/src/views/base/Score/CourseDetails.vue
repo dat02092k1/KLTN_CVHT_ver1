@@ -3,11 +3,17 @@
     <nav-title :title="pageTitle"/>
   
      
-    <router-link :to="{ path: '/student/course/add/' + id }" >
-      <button class="bg-[#324f90] text-[#ffffff] ml-6 my-2 p-2">Thêm môn học</button>
+    <div class="flex justify-between">
+      <router-link class="" :to="{ path: '/student/course'}" >
+      <button class="bg-[#ef1419] rounded text-[#ffffff] ml-6 my-2 p-2">Quay lại</button>
               </router-link>
+
+      <router-link class="mr-6" :to="{ path: '/student/course/add/' + id }" >
+      <button class="bg-[#324f90] rounded text-[#ffffff] ml-6 my-2 p-2">Thêm môn học</button>
+              </router-link>
+    </div>
     <div class="">
-      <div  class="table-container hidden mx-3 bg-[#ffffff]">
+      <!-- <div  class="table-container hidden mx-3 bg-[#ffffff]">
       <table>
         <thead>
           <tr>
@@ -42,19 +48,19 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
 
     <div class="table-container mx-3">
       <table v-for="(course, index) in courses" :key="index">
         <thead>
           <tr class="flex justify-between items-center my-2">
 
-            <div class="semester flex">
+            <!-- <div class="semester flex">
               <h3>Học kỳ: </h3>
               <span class="ml-2">
                 {{ course.semester }}
               </span>
-            </div>  
+            </div>   -->
             <router-link :to="{ path: '/student/course/edit/' + course._id }" class="bg-[#51a6ef] text-[#fff] rounded p-2">
                 Cập nhật
               </router-link>
@@ -69,6 +75,11 @@
             <th>Điểm số</th>
             <th>Điểm chữ</th>
           </tr>
+
+          <tr>
+  <th class="semester" colspan="5">HỌC KỲ {{ course.semester }}</th>
+   
+</tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in course.subjects" :key="index">
@@ -160,6 +171,14 @@
   }
   th {
     background-color: #f2f2f2;
+  }
+
+  tr td {
+    background-color: #ffffff;
+  }
+  tr .semester {
+    background-color: #ffffff;
+    text-align: left;
   }
   /* td.subject, th.subject {
     width: 50%;

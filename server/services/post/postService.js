@@ -79,11 +79,15 @@ var updatePostService = async (id, postDetails) => {
 
 var deletePostService = async (id) => {
     try {
-        console.log('flag delete')
+         
 
         const commentRelated = await commentModel.deleteMany({ postId: id });
 
         if (!commentRelated) throw new ClientError(`cound not find comment related to this post`, 404); 
+
+        const notiRelated = await notiModel.deleteMany({ postId: id });
+         
+        if (!notiRelated) throw new ClientError(`cound not find notification related to this post`, 404); 
 
         const deletePost = await postModel.findByIdAndDelete(id);
 

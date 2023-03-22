@@ -1,8 +1,8 @@
 <template>
-    <div class="mb-4 px-2 flex justify-center items-center">
+    <div class="task-form mb-4 px-2 mx-auto flex justify-center items-center">
       <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> -->
   
-      <form @submit.prevent="submitForm" class="add--course m-6 bg-[#fff]">
+      <form @submit.prevent="submitForm" class="add--course m-6 p-3 bg-[#fff]">
         <div class="task flex">
           <div
             class="bg-gray-100  items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div
-          class="student grid grid-cols-6 gap-3"
+          class="student grid grid-cols-6 gap-3 my-5"
           v-for="(student, index) in this.useTask.tasks.assignedStudents" :key="index"
         >
           <div
@@ -79,15 +79,28 @@
         <button class="flex" type="submit">Lưu</button>
         </div>
       </form>
+
+      <div class="w-[60%] h-[60%] flex flex-col items-center">
+         <h3>
+          Tỉ lệ sinh viên hoàn thành nhiệm vụ đề ra
+         </h3>
+        <Pie v-if="loaded" :data="chartData" :options="chartOptions"/>
+      
+      </div>
     </div>
   </template>
   
   <script>
     import { RouterLink, RouterView, useRoute } from "vue-router";
     import { useTaskStore } from "../../../stores/task.js";
+    import { getAccessToken } from "../../../utils/config.js";
     import { getId } from "../../../utils/getInfoUser.js";
-  
-  export default {
+    import { Pie } from 'vue-chartjs'
+    import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+
+  ChartJS.register(ArcElement, Tooltip, Legend)
+    export default {
+      components: { Pie },
     data() {
       return {
         task: "",
@@ -96,12 +109,33 @@
         taskId: useRoute().params.id,
         useTask: useTaskStore(),
         task: [],
-        createdBy: getId() 
+        createdBy: getId(),
+        loaded: false,
+      chartData: null,
+      data: [],
+      chartOptions: null,
       };
     },
     async mounted() { 
         this.task = await this.useTask.getTaskDetails(this.taskId);
-        console.log(this.task)
+
+        const completedStudents = this.task.assignedStudents.filter(student => student.isCompleted === true);
+
+        const numCompletedStudents = completedStudents.length;
+        const remainStudents = this.task.assignedStudents.length - numCompletedStudents;
+
+        this.chartData = {
+          labels: this.task,
+          datasets: [
+          {
+            label: 'Thống kê số lượng sinh viên hoàn thành',
+            backgroundColor: ['#cc1357', '#63ccf2'],
+            data: [numCompletedStudents, remainStudents]
+          }
+          ]
+          }
+
+          this.loaded = true
     },
     methods: {
         addStudent() {
@@ -140,6 +174,11 @@
   
   .student input {
     height: 100%;
+  }
+
+  .task-form {
+    height: 450px;
+    overflow-y: scroll;
   }
   </style>
   "

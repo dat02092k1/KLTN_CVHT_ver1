@@ -18,10 +18,10 @@
         <div class="h-12 hover:bg-[#2d3c50] flex items-center">
           <a href="">
             <li>
-              <div class="px-5">
+              <router-link to="/" class="px-5">
                 <i class="fa-solid fa-house mr-4"></i>
                 <span>Trang chủ</span>
-              </div>
+              </router-link>
             </li>
           </a>
         </div>

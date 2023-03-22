@@ -1,7 +1,10 @@
 <template>
-  <div class="mb-4 px-2 flex justify-center items-center">
+  <div class="mb-4 px-2 flex flex-col">
     <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> -->
 
+    <router-link class="" :to="{ path: '/student/course'}" >
+      <button class="bg-[#ef1419] rounded text-[#ffffff] ml-6 my-2 p-2">Quay lại</button>
+              </router-link>
     <form @submit.prevent="submitForm" class="add--course m-6 bg-[#fff]">
       <div class="semester flex">
         <div
@@ -16,6 +19,8 @@
             class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
             type="text"
             placeholder="Học kỳ"
+            pattern="^[1-4]\.[1-2]$"
+            required
           />
         </div>
       </div>
@@ -35,6 +40,7 @@
             type="text"
             v-model="subject.name"
             placeholder="Môn học"
+            required
           />
         </div>
         <div
@@ -49,6 +55,7 @@
             type="text"
             v-model.number="subject.score"
             placeholder="Điểm"
+            required
           />
         </div>
         <div
@@ -63,6 +70,7 @@
            
             placeholder="Số tín chỉ"
             v-model.number="subject.credits" type="number"
+            required
           />
         </div>
         <button @click.prevent="removeSubject(index)">
@@ -128,4 +136,4 @@ export default {
   height: 100%;
 }
 </style>
-"
+

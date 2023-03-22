@@ -6,7 +6,7 @@ import TheMain from './components/layout/TheMain.vue'
 import StudentDetails from './views/student/StudentDetails.vue'
 import { onMounted, onUpdated } from 'vue'
 import axios from "axios";
-import { receiveNoti, getUsersOnl } from "./socket/socket.js";
+import { receiveNoti, getUsersOnl, joinRoom } from "./socket/socket.js";
 import { getClass } from "./utils/getInfoUser.js";
 
 const route = useRoute();
@@ -14,6 +14,8 @@ const route = useRoute();
 
 
 onMounted(() => {
+  const _class = getClass();
+  joinRoom(_class);
   receiveNoti(noti => alert('post new: ' + noti));
   // const _class = getClass();
   // console.log(_class);

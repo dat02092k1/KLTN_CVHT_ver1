@@ -44,13 +44,16 @@
   </div>
 
   <div class="consultant-container" v-else>
+   <div class="ml-9 my-3">
     <h2>Danh sách sinh viên</h2>
     <h3>Lớp: <span class="font-bold"> {{ userClass }} </span></h3>
+   </div>
     <table class="student-table">
       <thead>
         <tr>
           <th>STT</th>
-          <th colspan="2">Sinh viên</th>
+          <th >MSSV</th>
+          <th>Sinh viên</th>
           <th>Điểm</th>
           <th>Hành động</th>
         </tr>
@@ -61,10 +64,10 @@
           <td>{{ student.studentId }}</td>
           <td>{{ student.name }}</td>
           <td class="text-center">{{ roundToTwoDecimalPlaces(student.CPA) }}</td>
-          <td class="flex flex-col items-center justify-center">
+          <td  class="flex items-center justify-center px-1">
             <div class="m-2">
               <router-link :to="{ path: '/student/course/' + student._id }" >
-                <button class="flex items-center bg-[#409eff]  text-[#ffffff] rounded py-1 px-2">
+                <button class="flex items-center bg-[#409eff]  text-[#ffffff] rounded py-1 px-2 ">
                   <i class="fa-regular fa-eye"></i>
                  
                 </button>
@@ -168,4 +171,6 @@ export default {
     height: 400px;
     overflow-y: scroll;
   }
+
+    
 </style>

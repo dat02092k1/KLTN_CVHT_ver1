@@ -94,6 +94,17 @@ export const useTaskStore = defineStore({
       } catch (error) {
         console.log(error); 
       }
+    },
+    async deleteTask(id) {
+      try {
+        const config = getAccessToken();  
+
+        const deleteTask = await axiosIns.delete(API_ENDPOINTS.deleteTask + id, config);
+         
+        this.getTasks();
+      } catch (error) {
+        console.log(error); 
+      }
     }
   },
 });

@@ -49,7 +49,7 @@ export const useAuthStore = defineStore({
           console.log(this.userClass);
           this.userClass = getClass();
           joinRoom(this.userClass);
-          router.push("/student/list");
+          router.push("/");
         } else {
           console.log(this.errorMsg);
           this.errorMsg = true;

@@ -1,5 +1,6 @@
 <template>
     <div>
+      <NavTitle :title="pageTitle" />
       <div class="header-forum">
         <div
           class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded h-[450px] overflow-y-scroll"
@@ -9,7 +10,7 @@
           <div v-for="(task, index) in tasks" :key="index" class="my-6">
             <a-card :title="task.task" style="width: 400px">
               <template #extra>
-              <router-link :to="{ path: '/student/task/update/' + task._id + '/' + _id }" >more</router-link> 
+              <router-link :to="{ path: '/student/task/update/' + task._id + '/' + id }" >more</router-link> 
                </template>
               <!-- <p> Description: " {{ task.description }} "</p> -->
               <div
@@ -54,7 +55,8 @@
   import { RouterLink, RouterView } from "vue-router";
   import { getUsername, getId } from "../../../utils/getInfoUser.js";
   import { message } from "ant-design-vue";
-  
+  import NavTitle from "../NavBar/NavTitle.vue";
+
   export default defineComponent({
     setup() {
       const formRef = ref();
@@ -71,14 +73,13 @@
   
       const useTask = useTaskStore();
       const isComplete = ref();
-  
-  
       const tasks = ref([]);
       const studentsId = ref([]);
-      const _id = getId(); 
+      const id = getId(); 
+      const pageTitle = 'Danh sách nhiệm vụ được giao'; 
 
       onMounted(async () => {
-        tasks.value = await useTask.getTasksOfStudent(_id);
+        tasks.value = await useTask.getTasksOfStudent(id);
         
       });
   
@@ -88,9 +89,13 @@
         value: ref([]),
         tasks,
         useTask,
-        _id
+        id,
+        pageTitle
       };
     },
+    components: {
+      NavTitle
+    }
   });
   </script>
   

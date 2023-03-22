@@ -76,7 +76,22 @@
         <div v-for="(task, index) in useTask.tasks" :key="index" class="my-6">
           <a-card :title="task.task" style="width: 400px">
             <template #extra>
-            <router-link :to="{ path: '/consultant/task/edit/' + task._id }" >more</router-link> 
+            <a-dropdown :trigger="['click']">
+    <a class="ant-dropdown-link" @click.prevent>
+      More
+      <DownOutlined />
+    </a>
+    <template #overlay>
+      <a-menu>
+        <a-menu-item key="0">
+          <router-link :to="{ path: '/consultant/task/edit/' + task._id }" >Edit</router-link> 
+        </a-menu-item>
+        <a-menu-item key="1">
+          <div @click="deleteTask(task._id)">Delete</div>
+        </a-menu-item>
+      </a-menu>
+    </template>
+  </a-dropdown>
              </template>
             <!-- <p> Description: " {{ task.description }} "</p> -->
             <div
@@ -108,6 +123,7 @@
 
 <script>
 import NavTitle from"../NavBar/NavTitle.vue"
+import { DownOutlined } from '@ant-design/icons-vue';
 
 import {
   defineComponent,
@@ -190,6 +206,10 @@ export default defineComponent({
       console.log(tasks.value);
     });
 
+    async function deleteTask(id) {
+      await useTask.deleteTask(id);
+    }
+
     const options = computed(() => {
       if (students.value.length > 0) {
         console.log(
@@ -219,11 +239,12 @@ export default defineComponent({
       checked,
       tasks,
       useTask,
-      pageTitle
+      pageTitle,
+      deleteTask
     };
   },
   components: {
-    NavTitle
+    NavTitle, DownOutlined
   }
 });
 </script>

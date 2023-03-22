@@ -16,6 +16,7 @@ var course = require("./routes/score/course.js");
 var score = require("./routes/score/score.js");
 var upload = require("./routes/upload/upload.js");
 var task = require("./routes/task/task.js");
+var notification = require("./routes/notification/notification.js");
 
 var logger = require("./logger/logger.js");
 var cookieParser = require("cookie-parser");
@@ -56,6 +57,72 @@ const removeUser = (socketId) => {
 const getUser = (username) => {
   return users.find((user) => user.username === username);
 };
+
+// if(io.sockets._events == undefined) {
+//   io.on("connection", (socket) => {
+//     //connect
+//     console.log("new connection " + socket.id);
+  
+//     // get username and socket from users
+//     socket.on("addUser", (username) => {
+//       addUser(username, socket.id);
+//       console.log(users);
+//       io.emit("getUsers", users);
+//     });
+  
+//     // join room by user's class
+//     socket.on("join-room", (roomId) => {
+//       console.log(`User joined room ${roomId}`);
+//       socket.join(roomId);
+//     });
+  
+//     // leaver room
+//     socket.on('leave-room', (roomId) => {
+//       console.log(`User left room ${roomId}`);
+//       socket.leave(roomId);
+//     });
+  
+//     // send and get message
+//     socket.on("sendMessage", ({ username, receiverName, content }) => {
+//       console.log(receiverName);
+//       const user = getUser(receiverName);
+//       console.log("flag user");
+//       console.log(user);
+//       if (user) {
+//         io.to(user.socketId).emit("getMessage", {
+//           username,
+//           content,
+//         });
+//       } else {
+//         socket.emit("offlineUser", "this user is offline");
+//       }
+//     });
+  
+//     // send noti
+//     socket.on('send-noti', (notification) => {
+//       console.log(notification);
+//       const room = notification.room;
+//       socket.to(room).emit('receive-noti', notification.noti); 
+//     });
+  
+//     // log out
+//     socket.on("logout", (roomId) => {
+//       console.log(users);
+//       console.log(socket.id);
+//       removeUser(socket.id); 
+//       socket.leave(roomId);
+//       console.log(users);
+//   });
+  
+//     // disconnect
+//     socket.on("disconnect", () => {
+//       console.log(socket.id + " disconnected");
+//       removeUser(socket.id);
+  
+//       io.emit("getUsers", users);
+//     });
+//   });
+// }
 
 io.on("connection", (socket) => {
   //connect
@@ -142,6 +209,7 @@ app.use("/api", course);
 app.use("/api", score);
 app.use("/api", upload);
 app.use("/api", task);
+app.use("/api", notification);
 
 app.listen(PORT, (err) => {
   if (err) console.log("error");
