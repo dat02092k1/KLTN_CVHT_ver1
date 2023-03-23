@@ -25,7 +25,11 @@
         <a-menu @click="handleMenuClick">
           <a-menu-item key="1">
             <UserOutlined />
-            Xem thông tin cá nhân
+            <RouterLink :to="{ path: '/student/edit/' + userId }">
+                     <div>
+                        Xem thông tin cá nhân
+                     </div>
+                    </RouterLink>
           </a-menu-item>
           <a-menu-item key="2">
             <UserOutlined />
@@ -44,9 +48,9 @@
 </template>
 
 <script>
-import { getUsername } from '../../utils/getInfoUser.js'
+import { getUsername, getId } from '../../utils/getInfoUser.js'
 import { useAuthStore } from '../../stores/auth.js'
-
+import { RouterLink, RouterView } from "vue-router";
 import { defineComponent } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 
@@ -54,11 +58,13 @@ export default {
     data() {
         return {
           username: '',
-          useAuth: useAuthStore()   
+          useAuth: useAuthStore(),
+          userId: '',
         }
     },
     mounted() {
         this.username = getUsername();
+        this.userId = getId();
     },
     methods: {
         handleButtonClick(e) {

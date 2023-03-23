@@ -111,14 +111,14 @@
         </div>
       </div>
     </div>
-    <Spinner v-if="showLoading" />
+    <Loading v-if="showLoading" />
   </div>
 </template>
 
 <script>
 import { defineComponent, onMounted, reactive, ref, toRaw } from "vue";
 import NavTitle from"../NavBar/NavTitle.vue";
-import Spinner from "../Spinner/Spinner.vue";
+import Loading from '../Spinner/Loading.vue';
 import { RouterLink, RouterView } from "vue-router";
 import { getClass, getId } from "../../../utils/getInfoUser";
 import { sendNoti } from "../../../socket/socket.js";
@@ -216,46 +216,9 @@ export default defineComponent({
       errorMsg,
     };
   },
-  components: { NavTitle, Spinner },
+  components: { NavTitle, Loading },
 });
 </script>
-
-<!-- <script>
-import NavTitle from "../NavTitle.vue";
-import Spinner from "../Spinner/Spinner.vue";
-
-import { RouterLink, RouterView } from "vue-router";
-import { useForumStore } from "../../../stores/forum.js";
-
-export default {
-  data() {
-    return {
-      useForum: useForumStore(),
-      _class: "K64-C-CLC",
-      showOptions: [],
-      showLoading: true,
-      pageTitle: "Diễn đàn FAQ",
-    };
-  },
-  mounted() {
-    this.useForum.getListPosts(this._class);
-    this.showLoading = false;
-  },
-  methods: {
-    handleOptionClick(option) {
-      // Xử lý khi người dùng click vào một option
-      console.log(option);
-      // ở đây có thể gọi các method tương ứng với option được chọn
-      // ví dụ: this.handleViewClick() nếu option là 'view'
-      // ẩn các option sau khi người dùng click
-    },
-    deletePost(id) {
-      this.useForum.deletePost(id);
-    },
-  },
-  components: { NavTitle, Spinner },
-};
-</script> -->
 
 <style scoped>
 .forum-list {

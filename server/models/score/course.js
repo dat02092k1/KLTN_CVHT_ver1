@@ -8,7 +8,8 @@ var courseSchema = new Schema({
     },
     student: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'students'
+        ref: 'students',
+        index: true
     },
     subjects: [{
         name: {

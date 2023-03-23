@@ -90,13 +90,14 @@
   </div>
 </div>
 
+<Loading v-show="isShowSpinner"/>
 </template>
 
 <script>
 import NavTitle from "../NavBar/NavTitle.vue";
 import { useScoreStore } from "../../../stores/score.js";
 import { useStudentStore } from "../../../stores/student.js";
-
+import Loading from '../Spinner/Loading.vue';
 import { getRole, getId, getClass } from '../../../utils/getInfoUser.js'
 import { getAccessToken } from '../../../utils/config.js'
 
@@ -112,18 +113,21 @@ export default {
       userRole: getRole(),
       userClass: getClass(),
       students: [],
-      studentCpa: ''
+      studentCpa: '',
+      isShowSpinner: true
     };
   },
   async mounted() {
     if (this.userRole === 'student') {
     this.courses = await this.useScore.getCourses(this.studentId); 
     this.studentCpa = await this.useStudent.getStudentDetails(this.studentId);
-    console.log(this.courses, this.studentCpa.CPA)
+    console.log(this.courses, this.studentCpa.CPA);
+    this.isShowSpinner = false;
     }
     else {
       this.students = await this.useStudent.getData();  
-      console.log(this.students)
+      console.log(this.students);
+      this.isShowSpinner = false;
     }
   },
   methods: {
@@ -131,7 +135,7 @@ export default {
             return num.toFixed(2);
         }
   },
-  components: { NavTitle },
+  components: { NavTitle, Loading },
 };
 </script>
 

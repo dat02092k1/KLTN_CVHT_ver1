@@ -119,11 +119,13 @@
       </div> -->
     </div>
   </div>
+  <Loading v-show="isShowSpinner"/>
 </template>
 
 <script>
 import NavTitle from"../NavBar/NavTitle.vue"
 import { DownOutlined } from '@ant-design/icons-vue';
+import Loading from '../Spinner/Loading.vue';
 
 import {
   defineComponent,
@@ -157,6 +159,8 @@ export default defineComponent({
     const useStudent = useStudentStore();
     const useTask = useTaskStore();
     const isComplete = ref();
+
+    const isShowSpinner = ref(true);
 
     const onOk = () => {
       formRef.value
@@ -203,6 +207,7 @@ export default defineComponent({
       console.log(studentsId.value);
 
       tasks.value = await useTask.getTasks();
+      isShowSpinner.value = false;
       console.log(tasks.value);
     });
 
@@ -240,11 +245,12 @@ export default defineComponent({
       tasks,
       useTask,
       pageTitle,
-      deleteTask
+      deleteTask,
+      isShowSpinner
     };
   },
   components: {
-    NavTitle, DownOutlined
+    NavTitle, DownOutlined, Loading
   }
 });
 </script>

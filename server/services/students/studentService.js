@@ -48,7 +48,11 @@ var createStudentService = async (studentDetail) => {
     studentDetail.password = hashPassword;
 
     var checkExisting = await studentModel.findOne({
-      studentId: studentDetail.studentId,
+      $or: [
+        { studentId: studentDetail.studentId },
+        { emailAddress: studentDetail.emailAddress },
+        { phone: studentDetail.phone },
+      ]
     });
     
     if (checkExisting) throw new ClientError("Student already exists", 404);
