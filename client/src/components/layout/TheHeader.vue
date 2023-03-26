@@ -33,7 +33,11 @@
           </a-menu-item>
           <a-menu-item key="2">
             <UserOutlined />
-            Xem lại các bài đăng của mình
+            <RouterLink :to="{ path: '/account/posts/' + userId }">
+                     <div>
+                        Xem lại các bài đăng của mình
+                     </div>
+                    </RouterLink>
           </a-menu-item>
           <a-menu-item key="3" class="flex items-center" @click="logout">
             <UserOutlined />

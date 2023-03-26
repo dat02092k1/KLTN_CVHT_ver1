@@ -2,9 +2,6 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:9000');
 
-export const welcome = () => {
-    socket.on("welcome", (msg) => console.log(msg));
-}
 
 // add user to list online by username
 export const addUser = (username) => {
@@ -28,6 +25,10 @@ export const logOut = (roomId) => {
 // return list of users online
 export const getUsersOnl = () => {
     socket.on("getUsers", (users) => console.log(users));
+}
+
+export const welcome = () => {
+  socket.on("welcome", (msg) => console.log(msg));
 }
 
 // get messages from another user
@@ -62,8 +63,8 @@ export const receiveMessage = (callback) => {
   };
 
 // return offline user 
-export const offlineUser = () => {
-    socket.on("offlineUser", (data) => console.log(data));
+export const offlineUser = (callback) => {
+    socket.on("offlineUser", (data) => callback(data));
 }
 
   export const sendNoti = (notification) => {

@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
  import axios from "axios";
  import { axiosIns } from "../api/axios.js";
+ import { getAccessToken } from "../utils/config.js";
+ import { getId } from "../utils/getInfoUser.js";
  import { sendNoti } from "../socket/socket.js";
 
 export const useForumStore = defineStore({
@@ -10,7 +12,8 @@ export const useForumStore = defineStore({
     listPost: [],
     post: null,
     comments: [],
-    getComment: []
+    getComment: [],
+    userId: getId()
   }),
   getters: {
   },
@@ -185,6 +188,14 @@ export const useForumStore = defineStore({
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+    async getListPostOfUser(page) {
+      const config = getAccessToken();
+      const userId = getId();
+
+      const response = await axiosIns.get(`http://localhost:8000/list/${userId}?page=${page}`, config); 
+
+      return response.data;
+    }  
   },
 });

@@ -92,12 +92,12 @@
                     Xem
                   </router-link>
                 </div>
-                <div @click="handleOptionClick('edit')">
+                <div v-if="userRole === 'manager' || username === item.username" @click="handleOptionClick('edit')">
                   <router-link :to="{ path: '/student/forum/edit/' + item._id }"
                     >Sửa</router-link
                   >
                 </div>
-                <div @click="deletePost(item._id)">Xóa</div>
+                <div v-if="userRole === 'manager' || username === item.username" @click="deletePost(item._id)">Xóa</div>
               </div>
             </div>
             <div>
@@ -120,7 +120,7 @@ import { defineComponent, onMounted, reactive, ref, toRaw } from "vue";
 import NavTitle from"../NavBar/NavTitle.vue";
 import Loading from '../Spinner/Loading.vue';
 import { RouterLink, RouterView } from "vue-router";
-import { getClass, getId } from "../../../utils/getInfoUser";
+import { getClass, getId, getRole, getUsername } from "../../../utils/getInfoUser";
 import { sendNoti } from "../../../socket/socket.js";
 import { message } from "ant-design-vue";
 import { useForumStore } from "../../../stores/forum.js";
@@ -175,6 +175,8 @@ export default defineComponent({
     const _class = "K64-C-CLC";
     const showLoading = ref(true);
     const pageTitle = ("Diễn đàn FAQ");
+    const username = getUsername();
+    const userRole = getRole();
 
     function handleOptionClick(option) {
       // Xử lý khi người dùng click vào một option
@@ -214,6 +216,8 @@ export default defineComponent({
       uploadImage,
       successMsg,
       errorMsg,
+      username,
+      userRole
     };
   },
   components: { NavTitle, Loading },

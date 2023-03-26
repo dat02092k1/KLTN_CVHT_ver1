@@ -40,6 +40,17 @@
           </a>
         </div>
 
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center">
+          <a href="">
+            <li>
+              <router-link to="/student/announcement" class="px-5">
+                <i class="fa-solid fa-school mr-4"></i>
+                <span>Thông báo học vụ</span>
+              </router-link>
+            </li>
+          </a>
+        </div>
+
         <div
           class="h-12 hover:bg-[#2d3c50] flex items-center"
           v-if="userRole === 'manager'"
@@ -60,6 +71,17 @@
               <router-link to="/student/course" class="px-5">
                 <i class="fa-solid fa-graduation-cap mr-4"></i>
                 <span>Kết quả học tập</span>
+              </router-link>
+            </li>
+          </a>
+        </div>
+
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center">
+          <a href="">
+            <li>
+              <router-link :to="getRole === 'student' ? '/student/onegate' : '/consultant/onegate'" class="px-5">
+                <i class="fa-solid fa-file-waveform mr-4"></i>  
+                <span>Biểu mẫu</span>
               </router-link>
             </li>
           </a>
@@ -98,57 +120,7 @@
           </a>
         </div>
 
-        <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center"
-        :class="[
-          { active: activeColor === 'active2' },
-          'hover:bg-2d3c50'
-        ]"
-        @click="changeColor('active2')">
-                    <router-link class="flex items-center py-0 px-5 justify-center" to="/student/list">
-                        <i class="fa-solid fa-list mr-4"></i>
-                        <div>Danh sách sinh viên</div>
-                    </router-link>
-                </div> -->
-
-        <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center" :class="{ active: color === activeColor }"
-  @click="changeColor('active3')">
-                    <router-link class="flex items-center py-0 px-5 justify-center" to="/student/chart">
-                        <i class="fa-solid fa-chart-simple mr-4"></i>
-                        <div>Điểm sinh viên</div>
-                    </router-link>
-                </div> -->
-
-        <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center" :class="{ active: color === activeColor }"
-  @click="changeColor('active3')">
-                    <router-link class="flex items-center py-0 px-5 justify-center" to="/student/chart">
-                        <i class="fa-solid fa-graduation-cap "></i>
-                        <div>Kết quả học tập</div>
-                    </router-link>           
-                </div> -->
-
-        <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center" :class="{ active: color === activeColor }"
-  @click="changeColor('active4')">
-                    
-                <router-link class="h-12 hover:bg-[#2d3c50]" :class="{ active: color === activeColor }"
-  @click="changeColor('active4')" to="/student/forum">
-                    <li class="flex items-center py-0 px-5">
-                        <i class="fa-regular fa-circle-question mr-4"></i>
-                        <div>Diễn đàn</div>
-                    </li>
-                </router-link>
-                </div> -->
-
-        <!-- <div class="h-12 hover:bg-[#2d3c50] flex items-center justify-center" :class="{ active: color === activeColor }"
-  @click="changeColor('active3')">
-                    <a class="item__list">
-                     
-
-                    <router-link class="flex items-center py-0 px-5" to="/student/conversation">
-                        <i class="fa-regular fa-message mr-3"></i>
-                        <div>Trò chuyện</div>
-                    </router-link>
-                </a> 
-                </div> -->
+         
       </ul>
     </div>
   </div>
@@ -157,6 +129,7 @@
 <script>
 import { RouterLink, RouterView } from "vue-router";
 import { getRole } from "../../utils/getInfoUser.js";
+import { MailOutlined } from '@ant-design/icons-vue';
 
 export default {
   data() {
@@ -165,6 +138,11 @@ export default {
       isOpen: false,
       activeColor: "",
       userRole: getRole(),
+      state: {
+      rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
+      openKeys: ['sub1'],
+      selectedKeys: [],
+    }
     };
   },
   methods: {
@@ -175,6 +153,14 @@ export default {
     changeColor(color) {
       this.activeColor = color === this.activeColor ? "" : color;
     },
+    onOpenChange(openKeys) {
+      const latestOpenKey = openKeys.find(key => state.openKeys.indexOf(key) === -1);
+      if (state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+        state.openKeys = openKeys;
+      } else {
+        state.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      }
+    }
   },
   computed: {
     getRole() {

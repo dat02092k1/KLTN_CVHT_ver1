@@ -15,6 +15,7 @@ import ChartGpa from "../views/chart/ChartGpa.vue";
 import ChartCredits from "../views/chart/ChartCredits.vue";
 import PostList from "../views/base/forum/PostList.vue";
 import PostDetails from "../views/base/forum/PostDetails.vue";
+import UserPosts from "../views/base/account/UserPosts.vue";
 import Loading from "../views/base/Spinner/Loading.vue";
 import Test from "../views/base/Test.vue";
 import AddPost from "../views/base/forum/AddPost.vue";
@@ -32,6 +33,15 @@ import TaskStudent from "../views/base/task/TaskStudent.vue";
 import TaskEdit from "../views/base/task/TaskEdit.vue";
 import UpdateStatus from "../views/base/task/UpdateStatus.vue";
 import Notification from "../views/base/Notification/Notification.vue";
+import AnnouncementList from "../views/base/Announcement/AnnouncementList.vue";
+import AnnouncementEdit from "../views/base/Announcement/AnnouncementEdit.vue";
+import FormFill from "../views/base/one gate/FormFill.vue";
+import FormTraining from "../views/base/one gate/FormTraining.vue";
+import FormStudy from "../views/base/one gate/FormStudy.vue";
+import FormMeeting from "../views/base/one gate/FormMeeting.vue";
+import FormList from "../views/base/one gate/FormList.vue";
+import Update from "../views/base/one gate/Update.vue";
+import FormSubmited from "../views/base/one gate/FormSubmited.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -103,6 +113,12 @@ const router = createRouter({
       path: "/student/forum/post/:id",
       name: "post details",
       component: PostDetails,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/account/posts/:id",
+      name: "posts by user",
+      component: UserPosts,
       meta: { requiresAuth: true },
     },
     {
@@ -210,6 +226,63 @@ const router = createRouter({
       path: "/student/notification",
       name: "student notification",
       component: Notification,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/student/announcement",
+      name: "student announcement",
+      component: AnnouncementList,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/student/announcement/edit/:id",
+      name: "edit announcement",
+      component: AnnouncementEdit,
+      meta: { requiresAuth: true,
+              requiresManager: true },
+    },
+    {
+      path: "/student/onegate",
+      name: "student onegate",
+      component: FormFill,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/student/onegate/training",
+      name: "student onegate training",
+      component: FormTraining,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/student/onegate/study",
+      name: "student onegate study",
+      component: FormStudy,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/student/onegate/meeting",
+      name: "student onegate meeting",
+      component: FormMeeting,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/consultant/onegate",
+      name: "consultant onegate",
+      component: FormList,
+      meta: { requiresAuth: true,
+              requiresManager: true },
+    },
+    {
+      path: "/consultant/onegate/status/:id",
+      name: "consultant onegate update",
+      component: Update,
+      meta: { requiresAuth: true,
+              requiresManager: true },
+    },
+    {
+      path: "/student/onegate/forms/:id",
+      name: "student onegate forms",
+      component: FormSubmited,
       meta: { requiresAuth: true },
     },
     { 

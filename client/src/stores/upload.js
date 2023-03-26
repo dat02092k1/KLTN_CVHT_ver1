@@ -39,6 +39,19 @@ export const useImgStore = defineStore({
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);  
       }
-    }
+    },
+    async uploadDocs(data) {
+      try {
+          const config = getAccessToken(); 
+          console.log(data);
+          const docs = await axiosIns.post("http://localhost:8000/api/upload-doc", data, config); 
+           
+          console.log(docs)
+          return docs.data.url; 
+           
+      } catch (error) {
+          console.log(error);         
+      }
+  },
   },
 });

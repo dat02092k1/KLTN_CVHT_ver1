@@ -12,7 +12,7 @@ router.put('/post/edit/:id', userAuthenticate.onlyOwner , postController.updateP
 // edit post on forum
 router.delete('/post/delete/:id', userAuthenticate.roleAuthentication, postController.deletePostController);
 // delete post on forum
-router.get('/list/:username', userAuthenticate.roleAuthenticationGetUsername, postController.listUserPostController);
+router.get('/list/:id', userAuthenticate.onlyOwner, postController.listUserPostController);
 // get all post of a user with username
 
 

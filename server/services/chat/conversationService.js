@@ -30,7 +30,8 @@ var getConversationService = async (req, res) => {
       members: {
         $in: [req.params.username],
       },
-    });
+    })
+    .sort({ createdAt: -1 });
 
     if (!listConversation)
       throw new ClientError("can't find conversation", 404);

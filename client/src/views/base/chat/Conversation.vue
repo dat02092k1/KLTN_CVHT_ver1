@@ -26,7 +26,7 @@
         </div>
 
         <div v-show="selectedOption === 1">
-          <div class="text-center"><h2>Người dùng</h2></div>
+          <div class="text-center"><h2>Trò chuyện gần đây</h2></div>
 
           <ul v-for="(user, index) in useChat.conversation" :key="index">
             <li
@@ -39,7 +39,7 @@
         </div>
 
         <div v-show="selectedOption === 2">
-          users:
+          Sinh viên trong lớp:
           <div v-for="(user, index) in users" :key="index">
             <div
               @click="handleConversation(user.studentId)"
@@ -93,7 +93,6 @@
 import { useChatStore } from "../../../stores/conversation.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import Spinner from "../Spinner/Spinner.vue";
-import { addUser, getUsersOnl, offlineUser } from '../../../socket/socket.js';
 
 import io from "socket.io-client";
 
@@ -107,7 +106,7 @@ export default {
       socket: null,
       members: [],
       receiver: "Username",
-      selectedOption: null,
+      selectedOption: 1,
       users: [],
       currentPage: null,
       pageSize: 10,
@@ -126,12 +125,9 @@ export default {
     this.isLoading = false;
     this.socket.on("welcome", (msg) => console.log(msg));
 
-    addUser(this.getUsername);
-    // this.socket.emit("addUser", this.getUsername);
-    // this.socket.on("getUsers", (users) => console.log(users));
-    getUsersOnl();
+    this.socket.emit("addUser", this.getUsername);
+    this.socket.on("getUsers", (users) => console.log(users));
 
-    console.log('online list');
     this.socket.on("getMessage", (data) => {
       console.log(data);
        console.log(this.conversationId);
@@ -146,8 +142,7 @@ export default {
       console.log(this.members);
     });
 
-    offlineUser();
-    // this.socket.on("offlineUser", (data) => console.log(data));
+    this.socket.on("offlineUser", (data) => console.log(data));
   },
   created() {},
   methods: {

@@ -7,4 +7,6 @@ const router = express.Router();
 
 router.post('/upload', userAuthenticate.verifyToken, upload.single('image'), uploadController.uploadImageController);
 
+router.post('/upload-doc', userAuthenticate.verifyToken, upload.single('doc'), uploadController.uploadDocsController);
+
 module.exports = router;       

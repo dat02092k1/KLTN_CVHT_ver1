@@ -1,145 +1,150 @@
-const studentModel = require('../../models/students/studentsModel.js');
-const taskModel = require('../../models/task/taskModel');
-const { ClientError } = require('../error/error.js');
+const studentModel = require("../../models/students/studentsModel.js");
+const taskModel = require("../../models/task/taskModel");
+const { ClientError } = require("../error/error.js");
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-var getTaskService = async (req) => { 
-    try { 
-        const {
-            createdBy
-        } = req.query;
-         
-        const tasks = await taskModel.find({ createdBy: createdBy })
-        if (!tasks) throw new ClientError(`tasks not found`, 404);
+var getTaskService = async (req) => {
+  try {
+    const { createdBy } = req.query;
 
-        return tasks;   
-    } catch (error) {
-        throw error;
-    }
-}
+    const tasks = await taskModel.find({ createdBy: createdBy });
+    if (!tasks) throw new ClientError(`tasks not found`, 404);
+
+    return tasks;
+  } catch (error) {
+    throw error;
+  }
+};
 
 var createTaskService = async (taskDetail) => {
-    try {
-        const { task, description, assignedStudents, createdBy } = taskDetail;    
-         
-        console.log(taskDetail);
-        for (const item of assignedStudents) {
-            console.log(item.student);
-            const studentAssign = await studentModel.findById(item.student);
-             
-            if (!studentAssign) {
-                throw new ClientError("Không tìm thấy sinh viên", 404)
-                } 
-              item.studentId = studentAssign.studentId; 
-              }
-          
-              console.log(assignedStudents); 
+  try {
+    const { task, description, assignedStudents, createdBy } = taskDetail;
 
-        const newTask = new taskModel({
-        task,
-        description,               
-        assignedStudents,
-        createdBy   
+    console.log(taskDetail);
+    for (const item of assignedStudents) {
+      console.log(item.student);
+      const studentAssign = await studentModel.findById(item.student);
+
+      if (!studentAssign) {
+        throw new ClientError("Không tìm thấy sinh viên", 404);
+      }
+      item.studentId = studentAssign.studentId;
+    }
+
+    console.log(assignedStudents);
+
+    const newTask = new taskModel({
+      task,
+      description,
+      assignedStudents,
+      createdBy,
     });
 
-    await newTask.save();  
+    await newTask.save();
 
-        return newTask; 
-    } catch (error) {
-        throw error;
-    }
-}
+    return newTask;
+  } catch (error) {
+    throw error;
+  }
+};
 
 var editTaskService = async (taskDetails, taskId) => {
-    try {
-        const { assignedStudents } = taskDetails; 
-         
-        for (const item of assignedStudents) {
-            const studentAssign = await studentModel.findOne({ studentId: item.studentId });
-             
-            if (!studentAssign) {
-                throw new ClientError("Không tìm thấy sinh viên", 404)
-                } 
-              item.student = studentAssign._id; 
-              } 
-        console.log(taskDetails);   
-    
-        const task = await taskModel.findByIdAndUpdate(taskId, taskDetails, { new: true });  
+  try {
+    const { assignedStudents } = taskDetails;
 
-        if (!task) res.status(500).json({ message: 'update task failed' });
-             
-        return task;
-    } catch (error) {
-        throw error;
+    for (const item of assignedStudents) {
+      const studentAssign = await studentModel.findOne({
+        studentId: item.studentId,
+      });
+
+      if (!studentAssign) {
+        throw new ClientError("Không tìm thấy sinh viên", 404);
+      }
+      item.student = studentAssign._id;
     }
-}
+    console.log(taskDetails);
+
+    const task = await taskModel.findByIdAndUpdate(taskId, taskDetails, {
+      new: true,
+    });
+
+    if (!task) res.status(500).json({ message: "update task failed" });
+
+    return task;
+  } catch (error) {
+    throw error;
+  }
+};
 
 var deleteTaskService = async (taskId) => {
-    try {
-        const task = await taskModel.findByIdAndDelete(taskId);  
+  try {
+    const task = await taskModel.findByIdAndDelete(taskId);
 
-        if (!task) res.status(500).json({ message: 'delete task failed' });
-             
-        return task;
-    } catch (error) {
-        throw error;
-    }
-}
+    if (!task) res.status(500).json({ message: "delete task failed" });
+
+    return task;
+  } catch (error) {
+    throw error;
+  }
+};
 
 var updateStatusTaskService = async (taskId, studentId, taskDetail) => {
-    const { isCompleted } = taskDetail;
-    try {
-        const task = await taskModel.findById(taskId);
+  const { isCompleted } = taskDetail;
+  try {
+    const task = await taskModel.findById(taskId);
 
-        console.log(isCompleted);
+    console.log(isCompleted);
     if (!task) {
-        throw new ClientError('Task not found', 404);
+      throw new ClientError("Task not found", 404);
     }
 
     const assignedStudent = task.assignedStudents.find(
-        (assignedStudent) => assignedStudent.student.toString() === studentId
-      );
-  
-      if (!assignedStudent) {
-        throw new ClientError('Assigned student not found', 404);
-      }
+      (assignedStudent) => assignedStudent.student.toString() === studentId
+    );
 
-      
-      assignedStudent.isCompleted = isCompleted;
-    await task.save();
-    
-    return task;
-
-    } catch (error) {
-        throw error;
+    if (!assignedStudent) {
+      throw new ClientError("Assigned student not found", 404);
     }
-}
+
+    assignedStudent.isCompleted = isCompleted;
+    await task.save();
+
+    return task;
+  } catch (error) {
+    throw error;
+  }
+};
 
 var getDetailsTaskService = async (taskId) => {
-    try {
-        console.log(taskId);
-        const task = await taskModel.findById(taskId);
-        if (!task) throw new ClientError(`task not found`, 404);
+  try {
+    console.log(taskId);
+    const task = await taskModel.findById(taskId);
+    if (!task) throw new ClientError(`task not found`, 404);
 
-        return task;   
-    } catch (error) {
-        throw error; 
-    }
-}
+    return task;
+  } catch (error) {
+    throw error;
+  }
+};
 
 var getTasksofStudentService = async (id) => {
-    try {
-        console.log(id);  
-        const tasks = await taskModel.find({ "assignedStudents.student": id });
-        if (!tasks) throw new ClientError(`there're no tasks found`, 404);
+  try {
+    console.log(id);
+    const tasks = await taskModel.find({ "assignedStudents.student": id });
+    if (!tasks) throw new ClientError(`there're no tasks found`, 404);
 
-        return tasks;   
-    } catch (error) {
-        throw error; 
-    }
-}
-module.exports = { getTaskService, createTaskService,
-    editTaskService, deleteTaskService,
-    updateStatusTaskService, getDetailsTaskService,
-    getTasksofStudentService } ;  
+    return tasks;
+  } catch (error) {
+    throw error;
+  }
+};
+module.exports = {
+  getTaskService,
+  createTaskService,
+  editTaskService,
+  deleteTaskService,
+  updateStatusTaskService,
+  getDetailsTaskService,
+  getTasksofStudentService,
+};

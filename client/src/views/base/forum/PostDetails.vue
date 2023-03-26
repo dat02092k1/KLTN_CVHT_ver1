@@ -62,13 +62,13 @@
               </div>
               </div>
 
-              <div>
+              <div v-if="userRole === 'manager' || username === item.username">
                 <div  @click="showOptions[index] = !showOptions[index]" class="ml-2">
               <i class="fa-solid fa-ellipsis"></i>
             </div>
 
             <div v-if="showOptions[index]" class="absolute right-[-8px] top-6 bg-[#f0f2f5] text-xs p-1">
-            <div @click="showEdit = true">
+            <div v-if="username === item.username" @click="showEdit = true">
               <router-link :to="{ path: '/student/comment/edit/' + useForum.post._id + '/' + item._id }">Sửa</router-link>
             </div>
             <div @click="deleteFn(item._id, item.postId)">Xóa</div>
@@ -111,8 +111,7 @@
 import NavTitle from "../NavBar/NavTitle.vue";
 import EditComment from "./EditComment.vue";
 import { format } from 'date-fns';
-
-
+import { getRole, getUsername } from "../../../utils/getInfoUser.js";
 import { useForumStore } from "../../../stores/forum.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 export default {
@@ -125,7 +124,9 @@ export default {
       content: "",
       showOptions: [],
       showEdit: false,
-      pageTitle: "Thông tin bài đăng"
+      pageTitle: "Thông tin bài đăng",
+      userRole: getRole(),
+      username: getUsername()
     };
   },
   mounted() {
