@@ -4,60 +4,51 @@
 
     <div class="flex justify-end my-2 mx-7">
       <router-link :to="{ path: '/student/onegate/forms/' + studentId }">
-      <button class="bg-[#2296f3] p-2 rounded text-[#ffffff]">
-        Danh sách mẫu đã nộp
-      </button>
-    </router-link>
-    </div>  
+        <button class="bg-[#2296f3] p-2 rounded text-[#ffffff]">
+          Danh sách mẫu đã nộp
+        </button>
+      </router-link>
+    </div>
 
-    <div class=" flex flex-col justify-center items-center my-4">
-        <div class="my-3">
+    <div class="flex flex-col justify-center items-center my-4">
+      <div class="my-3">
         <h2 class="font-bold text-lg">Chọn biểu mẫu nộp</h2>
-    </div>
-    <a-menu
-      v-model:selectedKeys="selectedKeys"
-      style="width: 300px"
-      mode="inline"
-      :open-keys="openKeys"
-      @openChange="onOpenChange"
-    >
-      <a-sub-menu key="sub1">
-        <template #icon>
-          <MailOutlined />
-        </template>
-        <template #title>Biểu mẫu</template>
-        <a-menu-item key="1">
+      </div>
+      <a-menu
+        v-model:selectedKeys="selectedKeys"
+        style="width: 300px"
+        mode="inline"
+        :open-keys="openKeys"
+        @openChange="onOpenChange"
+      >
+        <a-sub-menu key="sub1">
+          <template #icon>
+            <MailOutlined />
+          </template>
+          <template #title>Biểu mẫu</template>
+          <a-menu-item key="1">
             <span><i class="fa-solid fa-sheet-plastic"></i> </span>
-            <router-link :to="{ path: '/student/onegate/training'}">
-                <span>
-            Phiếu đánh giá kết quả rèn luyện
-        </span>
+            <router-link :to="{ path: '/student/onegate/training' }">
+              <span> Phiếu đánh giá kết quả rèn luyện </span>
             </router-link>
-        </a-menu-item>
+          </a-menu-item>
 
-        <a-menu-item key="2">
+          <a-menu-item key="2">
             <span><i class="fa-solid fa-sheet-plastic"></i> </span>
-            <router-link :to="{ path: '/student/onegate/meeting'}">
-                <span>
-                    Biên bản họp lớp
-        </span>
-    </router-link>
-        </a-menu-item>
+            <router-link :to="{ path: '/student/onegate/meeting' }">
+              <span> Biên bản họp lớp </span>
+            </router-link>
+          </a-menu-item>
 
-        <a-menu-item key="3">
+          <a-menu-item key="3">
             <span><i class="fa-solid fa-sheet-plastic"></i> </span>
-            <router-link :to="{ path: '/student/onegate/study'}">
-                <span>
-             Kế hoạch học tập
-        </span>
-    </router-link>
-         
-        </a-menu-item>
-      </a-sub-menu>
-      
-    </a-menu>
+            <router-link :to="{ path: '/student/onegate/study' }">
+              <span> Kế hoạch học tập </span>
+            </router-link>
+          </a-menu-item>
+        </a-sub-menu>
+      </a-menu>
     </div>
-
   </div>
 </template>
 <script>
@@ -103,17 +94,17 @@ export default defineComponent({
     const studentId = getId();
 
     const forms = ref([]);
-    onMounted(async() => {
-        // const _id = getId();
-        // forms.value = await useForm.getUserForms(_id);  
-        // console.log(forms.value);
-    })
+    onMounted(async () => {
+      // const _id = getId();
+      // forms.value = await useForm.getUserForms(_id);
+      // console.log(forms.value);
+    });
     return {
       ...toRefs(state),
       onOpenChange,
       pageTitle,
       forms,
-      studentId
+      studentId,
     };
   },
 });

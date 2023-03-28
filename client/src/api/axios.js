@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from "../router/index.js";
 
 const axiosIns = axios.create({
     baseURL: 'http://localhost:8000/'
@@ -35,6 +36,8 @@ axiosIns.interceptors.response.use((response) => {
             return axiosIns(originalRequest);
         } catch (error) {
             console.log('Refresh token failed', error);
+            alert('Phiên đăng nhập đã hết, vui lòng đăng nhập lại');
+            router.push("/login");
         return Promise.reject(error);
 
         }

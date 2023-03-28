@@ -186,6 +186,23 @@ var uploadStudentsService = async (req) => {
     throw error;
   }
 };
+
+var getStudentStatusService = async (req) => {
+  try {
+    const _class = req.params.class;
+                
+    const status = req.query.status; 
+
+    console.log(_class, req.query.status);
+    const students = await studentModel.find({ _class: _class, status: status, role: "student" });
+
+    if (!students) throw new ClientError(`Cant find students`, 404);
+
+    return students;  
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   studentServiceGetAll,
   createStudentService,
@@ -193,5 +210,6 @@ module.exports = {
   getStudentDetailService,
   deleteStudentService,
   getNameStudentService,
-  uploadStudentsService
+  uploadStudentsService,
+  getStudentStatusService
 };

@@ -9,7 +9,7 @@
   
         <div class="task-content">
           <div class="flex justify-between my-2">
-            <h3 class="mr-4">Task</h3>
+            <h3 class="mr-4">Sinh viên</h3>
             <span class="ml-4">
                 {{ this.form.username }}
             </span>
@@ -17,7 +17,7 @@
    
   
            
-              <h3>{{ this.form.username }}</h3>
+              <h3>Status</h3>
              
               <a-select class="p-6" v-model:value="selectedOption" @change="handleSelectChange">
     <a-select-option v-for="option in options" :key="option.value" :value="option.value">

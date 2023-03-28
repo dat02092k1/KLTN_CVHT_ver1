@@ -26,9 +26,9 @@
 
             <RouterLink
               class="bg-[#324f90] text-[#fff] p-2 rounded"
-              to="/student/import-excel"
+              to="/student/status"
             >
-              Import Excel
+              Danh sách sinh viên theo trạng thái
             </RouterLink>
           </div>
         </div>

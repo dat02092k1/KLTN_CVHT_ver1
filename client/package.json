@@ -16,6 +16,8 @@
     "dayjs": "^1.11.7",
     "element-plus": "^2.2.31",
     "jsonwebtoken": "^9.0.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.28",
     "pinia": "^2.0.28",
     "socket.io-client": "^4.6.1",
     "vue": "^3.2.45",

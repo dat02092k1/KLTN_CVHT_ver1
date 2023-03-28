@@ -13,7 +13,9 @@ export const useForumStore = defineStore({
     post: null,
     comments: [],
     getComment: [],
-    userId: getId()
+    userId: getId(),
+    successMsg: null,
+    errorMsg: null,
   }),
   getters: {
   },
@@ -29,10 +31,10 @@ export const useForumStore = defineStore({
           
           const posts = await axiosIns.get(`http://localhost:8000/post/list/${_class}`, config); 
           this.listPost = posts.data.postList;
-           
-          
         } catch (error) {
             console.log(error);   
+            this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);
         }
     },
     async addPost(postContent) {
@@ -47,8 +49,12 @@ export const useForumStore = defineStore({
           console.log(postContent);
         const post = await axiosIns.post("http://localhost:8000/post/create", postContent, config)
          
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000);
       } catch (error) {
         console.log(error); 
+        this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
     async deletePost(id) {
@@ -66,8 +72,12 @@ export const useForumStore = defineStore({
         console.log(deletePost); 
 
         this.getListPosts(); 
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000);
       } catch (error) {
         console.log(error);
+        this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
     async updatePost(id, postDetails) {
@@ -82,9 +92,13 @@ export const useForumStore = defineStore({
 
         const updatePost = await axiosIns.put(`http://localhost:8000/post/edit/${id}`, postDetails, config);
 
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000);
         console.log(updatePost);  
       } catch (error) {
         console.log(error);
+        this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
     async getPostAndComment(id)  { 
@@ -147,6 +161,7 @@ export const useForumStore = defineStore({
           this.getPostAndComment(postId);
       } catch (error) {
         console.log(error);
+        
       }
     },
     async editComment(id, comment, username) {

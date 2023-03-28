@@ -9,6 +9,7 @@ import StudentDetails from "../views/student/StudentDetails.vue";
 import StudentForm from "../views/student/StudentForm.vue";
 import StudentAdd from "../views/student/StudentAdd.vue";
 import StudentEdit from "../views/student/StudentEdit.vue";
+import StudentStatus from "../views/student/StudentStatus.vue";
 import ImportExcel from "../views/student/ImportExcel.vue";
 import FormTest from "../views/student/FormTest.vue";
 import ChartGpa from "../views/chart/ChartGpa.vue";
@@ -79,6 +80,12 @@ const router = createRouter({
       name: "students import",
       component: ImportExcel,
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/student/status",
+      name: "students status list",
+      component: StudentStatus,
+      meta: { requiresAuth: true, requiresManager: true },
     },
     {
       path: "/login",

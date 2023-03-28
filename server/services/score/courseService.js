@@ -68,7 +68,7 @@ var addCourseService = async (req, res) => {
         ? "Khen thưởng"
         : "Không";
 
-      student.CPA = cpaValue;
+      student.CPA = grades.roundToTwoDecimalPlaces(cpaValue);
 
       student.status = status;
 
@@ -160,7 +160,7 @@ var editCourseService = async (courseId, courseDetails) => {
         ? "Khen thưởng"
         : "Không";
 
-      student.CPA = cpaValue;
+      student.CPA = grades.roundToTwoDecimalPlaces(cpaValue);
 
       student.status = status;
 
@@ -217,7 +217,7 @@ var deleteCourseService = async (courseId, studentId) => {
         ? "Khen thưởng"          
         : "Không"; 
 
-      student.CPA = cpaValue;
+      student.CPA = grades.roundToTwoDecimalPlaces(cpaValue);
 
       student.status = status;
 

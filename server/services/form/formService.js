@@ -33,7 +33,7 @@ var getFormsService = async (req) => {
     const _class = req.params.class;
     const type = req.query.type;
 
-    console.log(req.query);
+    console.log(_class);
     const forms = await formModel.find({ _class, type });
 
     if (!forms) throw new ClientError("forms not found", 404);
