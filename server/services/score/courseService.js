@@ -182,6 +182,7 @@ var deleteCourseService = async (courseId, studentId) => {
   try {   
     const deleteCourse = await courseModel.findByIdAndDelete(courseId);
      
+    console.log(deleteCourse);
 
     if (deleteCourse) {
 

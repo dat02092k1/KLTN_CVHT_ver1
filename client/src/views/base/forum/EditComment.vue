@@ -23,6 +23,9 @@
           <a-button style="margin-left: 10px" @click="resetForm">Reset</a-button>
         </a-form-item>
       </a-form>
+
+      <a-alert v-show="useForum.successMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
+    <a-alert v-show="useForum.useTask.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
     </div>
   </template>
   <script>
@@ -89,7 +92,8 @@ import { getUsername } from "../../../utils/getInfoUser.js";
         rules,
         onSubmit,
         resetForm,
-        postId
+        postId,
+        useForum
       };
     },
   });

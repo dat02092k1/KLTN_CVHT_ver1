@@ -37,6 +37,7 @@ axiosIns.interceptors.response.use((response) => {
         } catch (error) {
             console.log('Refresh token failed', error);
             alert('Phiên đăng nhập đã hết, vui lòng đăng nhập lại');
+            localStorage.clear();
             router.push("/login");
         return Promise.reject(error);
 
@@ -44,6 +45,9 @@ axiosIns.interceptors.response.use((response) => {
          
       }
 
+    if (err.response.data.message === "Only image files are allowed") {
+        alert('Vui lòng điền đúng định dạng file yêu cầu');
+    }
     return Promise.reject(err);
 });
 

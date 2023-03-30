@@ -55,6 +55,7 @@ var createStudentService = async (studentDetail) => {
       ]
     });
     
+    console.log(checkExisting);
     if (checkExisting) throw new ClientError("Student already exists", 404);
 
     // create student
@@ -67,17 +68,18 @@ var createStudentService = async (studentDetail) => {
   }
 };
 
-var updateStudentService = async (id, studentDetail) => {
+var updateStudentService = async (id, studentDetail, role) => {
   try {
     const objectId = mongoose.Types.ObjectId(id);
-    const { password } = studentDetail;
-     
     
-    const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
+    // const { password } = studentDetail;
+     
+    // if (!password) throw new ClientError('Incorrect password', 403);
 
-    // mã hóa password
-    studentDetail.password = hashPassword;
-        
+    // const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
+
+    // studentDetail.password = hashPassword;
+
     const student = await studentModel.findByIdAndUpdate(
       objectId,
       studentDetail,

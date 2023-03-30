@@ -33,8 +33,8 @@ var createStudentControllerfn = async (req, res) => {
 
 var updateStudentControllerfn = async (req, res) => {
     try {
-        
-        var update = await studentService.updateStudentService(req.params.id, req.body);
+        console.log(req.user);
+        var update = await studentService.updateStudentService(req.params.id, req.body, req.user.role);
         res.status(200).json({ success: true, update });
     } catch (error) {
         if (error instanceof ClientError) {

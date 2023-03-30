@@ -41,6 +41,9 @@
         <button class="flex bg-[#645bf5] text-[#ffffff] rounded p-3" type="submit">Lưu</button>
       </div>
     </form>
+
+    <a-alert v-show="useTask.successMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
+    <a-alert v-show="useTask.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
   </div>
 </template>
 

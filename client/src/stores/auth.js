@@ -4,6 +4,7 @@ import { getAccessToken } from '../utils/config.js'
 import { getRefreshToken } from '../utils/getInfoUser.js'
 import { useStudentStore } from "./student.js";
 import { axiosIns } from "../api/axios.js";
+import API_ENDPOINTS from "../api/api.js";
 import { joinRoom ,getUsersOnl, logOut } from "../socket/socket.js";
 import { getClass } from "../utils/getInfoUser.js";
 
@@ -20,6 +21,7 @@ export const useAuthStore = defineStore({
       role: "",
     },
     errorMsg: false,
+    successMsg: false,
     userClass: getClass()
   }),
   getters: {},
@@ -83,18 +85,7 @@ export const useAuthStore = defineStore({
         throw error; 
       }
     },
-   
-      // try {
-      //   const refreshToken = getRefreshToken(); 
-
-      //   const res = await axios.post(`http://localhost:8000/api/token-refresh`, {
-      //     refreshToken: refreshToken
-      //   })
-      //   console.log(res); 
-      // } catch (error) {
-      //   console.log(error); 
-      // }
-      refreshToken() {
+    refreshToken() {
       return new Promise((resolve, reject) => {
         axiosIns
           .post(`token-refresh`)
@@ -105,6 +96,22 @@ export const useAuthStore = defineStore({
             reject(error);
           });
       });
+    },
+    async changePassword(data, id) {
+      try {
+        const config = getAccessToken(); 
+
+        const res = await axiosIns.post(API_ENDPOINTS.changePassword + id, data, config)
+
+        console.log(res);
+        
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000);
+      } catch (error) {
+        console.log(error); 
+        this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);
+      }
     }
   },
 });

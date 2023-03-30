@@ -46,9 +46,9 @@ var editCourseController = async (req, res) => {
 
 var deleteCourseController = async (req, res) => {
     try {
-        const {studentId} = req.body;
+        const studentId = req.query.student;
         var course = await courseService.deleteCourseService(req.params.courseId, studentId);
-        res.status(200).json({ success: true });
+        res.status(200).json({ success: true, course });
     } catch (error) {
         if (error instanceof ClientError) {
             res.status(error.status).send({ message: error.message });

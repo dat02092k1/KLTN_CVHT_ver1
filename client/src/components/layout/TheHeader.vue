@@ -13,11 +13,6 @@
             </div>
         </div>
         <div class="flex items-center">
-            <!-- <div class="mr-3">Xin chào</div>
-            <span class="text-[#576e9f] font-bold cursor-pointer"> {{ this.username }} </span>
-            <div class="ml-3 cursor-pointer">
-                <i class="fa-solid fa-caret-down"></i>
-            </div> -->
             <div class="mr-3">Xin chào</div>
             <a-dropdown-button>
                 {{ this.username }}
@@ -25,7 +20,7 @@
         <a-menu @click="handleMenuClick">
           <a-menu-item key="1">
             <UserOutlined />
-            <RouterLink :to="{ path: '/student/edit/' + userId }">
+            <RouterLink :to="{ path: '/student/details/' + userId }">
                      <div>
                         Xem thông tin cá nhân
                      </div>
@@ -33,9 +28,9 @@
           </a-menu-item>
           <a-menu-item key="2">
             <UserOutlined />
-            <RouterLink :to="{ path: '/account/posts/' + userId }">
+            <RouterLink :to="{ path: '/account/password/' + userId }">
                      <div>
-                        Xem lại các bài đăng của mình
+                        Đổi mật khẩu
                      </div>
                     </RouterLink>
           </a-menu-item>

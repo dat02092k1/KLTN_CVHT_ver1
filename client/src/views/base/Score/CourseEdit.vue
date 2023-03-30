@@ -76,6 +76,9 @@
         <button class="flex" type="submit">Lưu</button>
         </div>
       </form>
+
+      <a-alert v-show="useScore.successMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
+    <a-alert v-show="useScore.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
     </div>
   </template>
   

@@ -28,10 +28,13 @@ export const useStudentStore = defineStore({
     },
     _class: getClass(),
     accessToken: "",
-    successMsg: null,
-    errorMsg: null,
+    successMsg: false,
+    errorMsg: false,
   }),
-  getters: {},
+  getters: {
+    showSuccessMsg: (state) => state.successMsg,
+    showErrorMsg: (state) => state.errorMsg,
+  },
   actions: {
     async getData() {
       try {
@@ -79,13 +82,7 @@ export const useStudentStore = defineStore({
     },
     async addStudent(student) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-        console.log(accessToken);
-        const config = {
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        };
+        const config = getAccessToken();  
 
         const response = await axiosIns.post(
           "http://localhost:8000/student/create",
@@ -93,10 +90,12 @@ export const useStudentStore = defineStore({
           config
         );
         console.log(response.data);
+        this.$state.successMsg = true;
+        setTimeout(() => (this.$state.successMsg = false), 3000);
       } catch (error) {
         console.error(error);
-        this.errorMsg = true;
-        setTimeout(() => (this.errorMsg = false), 3000);
+        this.$state.errorMsg = true;
+        setTimeout(() => (this.$state.errorMsg = false), 3000);
       }
     },
     async updateStudent(id, details) {

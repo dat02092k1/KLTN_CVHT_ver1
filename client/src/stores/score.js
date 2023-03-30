@@ -2,13 +2,14 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { getAccessToken } from "../utils/config.js";
 import { axiosIns } from "../api/axios.js";
+import API_ENDPOINTS from "../api/api.js";
 
 export const useScoreStore = defineStore({
   id: "score",
   state: () => ({
     courseDetails: [],
-    successMsg: null,
-    errorMsg: null,
+    successMsg: false,
+    errorMsg: false,
   }),
   getters: {},
   actions: {
@@ -20,7 +21,7 @@ export const useScoreStore = defineStore({
           `http://localhost:8000/api/student/get-course/${studentId}`,
           config
         );
-
+          console.log(courses.data.courses);
         return courses.data.courses;
       } catch (error) {
         console.log(error);
@@ -80,6 +81,25 @@ export const useScoreStore = defineStore({
         return course.data.course;
       } catch (error) {
         console.log(error);
+      }
+    },
+    async deleteCourse(courseId, studentId) {
+      try {
+        const config = getAccessToken();
+
+        const course = await axiosIns.delete(
+          API_ENDPOINTS.deleteCourse + courseId + `?student=${studentId}`,
+          config
+        );
+
+        console.log(course);
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000);
+        return course;
+      } catch (error) {
+        console.log(error);
+        this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
   },

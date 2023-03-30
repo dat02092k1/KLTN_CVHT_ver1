@@ -91,25 +91,6 @@ export default {
       }
     };
 
-    // const columns = [
-    //   {
-    //     title: 'Username',
-    //     dataIndex: 'username',
-    //     key: 'username',
-    //   },
-    //   {
-    //     title: 'File',
-    //     dataIndex: 'fileUrl',
-    //     key: 'fileUrl',
-    //   },
-    //   {
-    //     title: 'Status',
-    //     dataIndex: 'status',
-    //     key: 'status',
-    //   },
-    // ];
-
-
     onMounted(async () => {
         const type = selectedOption.value;
         await useForm.getListForm(type); 

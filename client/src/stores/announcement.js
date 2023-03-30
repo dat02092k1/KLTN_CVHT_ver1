@@ -13,8 +13,8 @@ export const useAnnouncementStore = defineStore({
     comments: [],
     getComment: [],
     userId: getId(),
-    successMsg: null,
-    errorMsg: null,
+    successMsg: false,
+    errorMsg: false,
   }),
   getters: {},
   actions: {

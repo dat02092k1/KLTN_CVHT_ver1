@@ -13,57 +13,21 @@
               </router-link>
     </div>
     <div class="">
-      <!-- <div  class="table-container hidden mx-3 bg-[#ffffff]">
-      <table>
-        <thead>
-          <tr>
-            <td colspan="3" class="semester">HỌC KỲ 1 - NĂM HỌC 2022-2023</td>
-          </tr>
-          <tr>
-            <th>STT</th>
-            <div>
-              <th class="subject" colspan="2">Môn học</th>
-              <th>Số tín</th>
-            <th>Điểm</th>
-            <th>Trạng thái</th>
-            </div>
-             
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(course, index) in courses" :key="index">
-            <td>{{ index + 1 }}</td>
-            <div v-for="(item, index) in course.subjects" :key="index">
-              <td class="subject" style="width: 50%;">{{ item.name }}</td>
-              <td style="width: 50%;">{{ item.credits }}</td>
-              <td>{{ item.score }}</td>
-            </div>
-
-            <td>
-              <router-link :to="{ path: '/student/course/edit/' + course._id }" class="bg-[#51a6ef] text-[#fff] rounded p-2">
-                Cập nhật
-              </router-link>
-            </td>
-            
-          </tr>
-        </tbody>
-      </table>
-    </div> -->
-
     <div class="table-container mx-3">
       <table v-for="(course, index) in courses" :key="index">
         <thead>
           <tr class="flex justify-between items-center my-2">
 
-            <!-- <div class="semester flex">
-              <h3>Học kỳ: </h3>
-              <span class="ml-2">
-                {{ course.semester }}
-              </span>
-            </div>   -->
             <router-link :to="{ path: '/student/course/edit/' + course._id }" class="bg-[#51a6ef] text-[#fff] rounded p-2">
                 Cập nhật
               </router-link>
+
+              <a-popconfirm title="Title" @confirm="confirm(course._id, id)" @cancel="cancel">
+                <button class="bg-[#ef1419] rounded text-[#ffffff] ml-6 my-2 p-2">
+                Xóa
+              </button>
+  </a-popconfirm>
+               
           </tr>
           <tr>
             
@@ -107,10 +71,11 @@
   import NavTitle from "../NavBar/NavTitle.vue";
   import { useScoreStore } from "../../../stores/score.js";
   import { useStudentStore } from "../../../stores/student.js";
-  
+  import { message } from "ant-design-vue";
   import { getRole, getId, getClass } from '../../../utils/getInfoUser.js'
   import { getAccessToken } from '../../../utils/config.js'
-  
+  import { notification } from 'ant-design-vue';
+
   import { RouterLink, RouterView, useRoute } from "vue-router";
   export default {
     data() {
@@ -145,8 +110,44 @@
           } catch (error) {
             console.log(error); 
           }
-        }
+        },
+        async confirm(courseId, studentId) {
+          console.log(courseId, studentId);
+          this.useScore.deleteCourse(courseId, studentId);
+          this.courses = await this.useScore.getCourses(studentId); 
+        },
+        cancel(e) {
+        console.log(e);
+        message.error('Click on No');
+      },
+      openNotification() {
+        notification.open({
+        key,
+        message: 'Notification Title',
+        description: 'description.',
+      });
+
+      setTimeout(() => {
+        notification.open({
+          key,
+          message: 'New Title',
+          description: 'New description.',
+        });
+      }, 1000);
+      }
     },
+    computed: {
+    storeSuccessMsg() {
+      return this.useScore.successMsg;
+    },
+  },
+  watch: {
+    storeSuccessMsg(value) {
+      if (value) {
+        this.openNotification();
+      }
+    },
+  },
     components: { NavTitle },
   };
   </script>

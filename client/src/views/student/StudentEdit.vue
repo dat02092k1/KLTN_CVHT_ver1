@@ -27,18 +27,6 @@
             </a-form-item>
 
             <a-form-item
-              ref="password"
-              label="Password"
-              name="password"
-              class="form-item block"
-            >
-              <a-input
-                v-model:value="formState.password"
-                placeholder="Nhập mật khẩu"
-              />
-            </a-form-item>
-
-            <a-form-item
               ref="_class"
               label="Lớp"
               name="_class"
@@ -58,18 +46,6 @@
                 <a-select-option value="student">Sinh viên</a-select-option>
                 <a-select-option value="manager">Cố vấn</a-select-option>
               </a-select>
-            </a-form-item>
-
-            <a-form-item
-              ref="emailAddress"
-              label="Email"
-              name="emailAddress"
-              class="form-item block"
-            >
-              <a-input
-                v-model:value="formState.emailAddress"
-                placeholder="Nhập email"
-              />
             </a-form-item>
           </div>
 
@@ -113,6 +89,23 @@
                   @change="(value) => (formState.birthdate = value)"
                 />
               </a-form-item>
+            </div>
+          </div>
+
+          <div class="mx-auto">
+            <div>
+              
+              <a-form-item
+              ref="emailAddress"
+              label="Email"
+              name="emailAddress"
+              class="form-item block"
+            >
+              <a-input
+                v-model:value="formState.emailAddress"
+                placeholder="Nhập email"
+              />
+            </a-form-item>
 
               <a-form-item
                 label="Giới tính"
@@ -138,8 +131,6 @@
               </a-form-item>
             </div>
           </div>
-
-          
         </div>
 
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">

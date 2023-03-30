@@ -155,8 +155,8 @@
       
     </div>
 
-    <a-alert v-show="success === true" message="Thêm sinh viên thành công" type="success" show-icon />
-    <a-alert v-show="errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
+    <a-alert v-show="useStudent.showSuccessMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
+    <a-alert v-show="useStudent.showErrorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
 
   </div>
 </template>
@@ -283,13 +283,9 @@ export default defineComponent({
         .then(() => {
           console.log("values", formState);
           useStudent.addStudent(formState);
-          success.value = true;
-          setTimeout(() => (success.value = false), 3000);    
         })
         .catch((error) => {
           console.log("error", error);
-          errorMsg.value = true;
-          setTimeout(() => (errorMsg.value = false), 3000);
         });
     };
 
@@ -312,7 +308,8 @@ export default defineComponent({
       resetForm,
       pageTitle,
       success,
-      errorMsg
+      errorMsg,
+      useStudent
     };
   },
   components: { NavTitle },
@@ -325,11 +322,11 @@ export default defineComponent({
   overflow-y: scroll;
 }
 
-.form-item ::v-deep .ant-col-14 {
+.form-item :deep .ant-col-14 {
   max-width: 100%;
 }
 
-.form-item ::v-deep .ant-col-4 {
+.form-item :deep .ant-col-4 {
   max-width: 100%;
 }
 </style>

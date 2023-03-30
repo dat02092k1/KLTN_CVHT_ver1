@@ -6,12 +6,11 @@ import TheMain from "../components/layout/TheMain.vue";
 import Homepage from "../views/homepage/Homepage.vue";
 import ErrorPage from "../views/base/error/ErrorPage.vue";
 import StudentDetails from "../views/student/StudentDetails.vue";
-import StudentForm from "../views/student/StudentForm.vue";
 import StudentAdd from "../views/student/StudentAdd.vue";
 import StudentEdit from "../views/student/StudentEdit.vue";
 import StudentStatus from "../views/student/StudentStatus.vue";
 import ImportExcel from "../views/student/ImportExcel.vue";
-import FormTest from "../views/student/FormTest.vue";
+import ChangePassword from "../views/student/ChangePassword.vue";
 import ChartGpa from "../views/chart/ChartGpa.vue";
 import ChartCredits from "../views/chart/ChartCredits.vue";
 import PostList from "../views/base/forum/PostList.vue";
@@ -64,15 +63,9 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresManager: true },
     },
     {
-      path: "/student/form",
-      name: "student form",
-      component: StudentDetails,
-      meta: { requiresAuth: true },
-    },
-    {
       path: "/student/details/:id",
       name: "student details",
-      component: StudentForm,
+      component: StudentDetails,
       meta: { requiresAuth: true },
     },
     {
@@ -91,12 +84,6 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: Login,
-    },
-    {
-      path: "/test/form",
-      name: "test form",
-      component: FormTest,
-      meta: { requiresAuth: true },
     },
     {
       path: "/student/chart",
@@ -123,9 +110,9 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/account/posts/:id",
-      name: "posts by user",
-      component: UserPosts,
+      path: "/account/password/:id",
+      name: "password",
+      component: ChangePassword,
       meta: { requiresAuth: true },
     },
     {

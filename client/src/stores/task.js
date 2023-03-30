@@ -10,8 +10,8 @@ export const useTaskStore = defineStore({
   state: () => ({
     createdBy: getId(),
     tasks: [],
-    successMsg: null,
-    errorMsg: null,
+    successMsg: false,
+    errorMsg: false,
   }),
   getters: {},
   actions: {

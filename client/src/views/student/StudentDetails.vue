@@ -1,291 +1,273 @@
 <template>
-  <div class="form-warpper pt-0 px-7 pb-7 flex-column">
-    <div class="nav-content bg-[#324f90] p-[1.5rem]">
-      <div class="nav-title text-[#fbfbff] font-bold text-[15px]">
-        <div>THÊM SINH VIÊN</div>
-      </div>
+  <div>
+    <div class="add-header">
+      <NavTitle :title="pageTitle" />
     </div>
+    <div class="add-form mx-10">
+      <a-form
+        ref="formRef"
+        :model="formState"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+        class="p-2 bg-[#fff]"
+      >
+        <div class="flex">
+          <div class="mx-auto">
+            <a-form-item
+              class="form-item block"
+              ref="studentId"
+              label="Tài khoản"
+              name="studentId"
+            >
+              <a-input
+                v-model:value="formState.studentId"
+                placeholder="Nhập tài khoản"
+                disabled
+                class="text-black"
+              />
+            </a-form-item>
 
-    <div class="form-content">
-      <form class="bg-[#ffffff]">
-        <div class="form-column mx-3">
-          <div class="form-group">
-            <label>ID</label>
-            <input required type="text" v-model="this.useStudent.student.studentId"/>
-            <!-- <p v-if="this.useStudent.error" class="error">{{ usernameError  }}</p> -->
-          </div>
-          <div class="form-group">
-            <label>Ngày sinh</label>
-            <input type="text" v-model="this.useStudent.student.birthdate"/>
-          </div>
+            <a-form-item
+              ref="_class"
+              label="Lớp"
+              name="_class"
+              class="form-item block"
+            >
+              <a-input
+                v-model:value="formState._class"
+                placeholder="Nhập lớp"
+                disabled
+              />
+            </a-form-item>
 
-          <div class="form-group">
-            <label>Giới tính</label>
-            <select name="gender" id="gender" v-model="this.useStudent.student.gender">
-              <option value="Nam">Nam</option>
-              <option value="Nữ">Nữ</option>
-            </select>
-          </div>
+            <a-form-item
+              ref="emailAddress"
+              label="Email"
+              name="emailAddress"
+              class="form-item block"
+            >
+              <a-input
+                v-model:value="formState.emailAddress"
+                placeholder="Nhập email"
+                disabled
+              />
+            </a-form-item>
 
-          <div class="form-group">
-            <label>Học phí</label>
-            <select name="gender" id="gender" v-model="this.useStudent.student.paidFee">
-              <option value="true">Đã đóng</option>
-              <option value="false">Chưa</option>
-            </select>
-          </div>
-           
-        </div>
-
-        <div class="form-column mx-3">
-          <div class="form-group">
-            <label>Mật khẩu</label>
-            <input type="text" v-model="this.useStudent.student.password"/>
-          </div>
-          <div class="form-group">
-            <label>Vai trò</label>
-            <select name="gender" id="gender" v-model="this.useStudent.student.role">
-              <option value="student">Sinh viên</option>
-              <option value="manager">Cố vấn học tập</option>
-            </select>
-          </div>
-           
-        </div>
-        <div class="form-column">
-          <div class="form-group">
-            <label> Họ và Tên</label>
-            <input type="text" v-model="this.useStudent.student.name"/>
-          </div>
-          <div class="form-group">
-            <label>Số điện thoại</label>
-            <input type="text" v-model="this.useStudent.student.phone"/>
-          </div>
-
-          <div class="form-group">
-            <label>Địa chỉ</label>
-            <input type="text" v-model="this.useStudent.student.address"/>
-          </div>
-
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" v-model="this.useStudent.student.emailAddress"/>
+            <a-form-item
+                label="Giới tính"
+                name="gender"
+                class="form-item block"
+              >
+                <a-radio-group v-model:value="formState.gender" class="flex">
+                  <a-radio value="Nam">Nam</a-radio>
+                  <a-radio value="Nữ">Nữ</a-radio>
+                </a-radio-group>
+              </a-form-item>
           </div>
 
-        </div>
-        <div class="form-column">
-          <div class="form-group">
-            <label>Lớp</label>
-            <input type="text" v-model="this.useStudent.student._class"/>
-          </div>
-          <div class="form-group">
-            <label>Tổng tín chỉ tích lũy</label>
-            <input type="text" v-model="this.useStudent.student.total_creadits"/>
-          </div>
+          <div class="mx-auto">
+            <div>
+              <a-form-item
+                ref="name"
+                label="Họ tên"
+                name="name"
+                class="form-item block"
+              >
+                <a-input
+                  v-model:value="formState.name"
+                  placeholder="Nhập họ tên"
+                />
+              </a-form-item>
 
-          <div class="form-group">
-            <label>Điểm trung bình tích lũy hệ 4</label>
-            <input type="text" v-model="this.useStudent.student.gpa"/>
-          </div>
+              <a-form-item
+                ref="phone"
+                label="Số điện thoại"
+                name="phone"
+                class="form-item block"
+              >
+                <a-input
+                  v-model:value="formState.phone"
+                  placeholder="Nhập số điện thoại"
+                />
+              </a-form-item>
 
-          <div class="form-group">
-            <label>Trạng Thái</label>
-            <select name="gender" id="gender" v-model="this.useStudent.student.status">
-              <option value="Không">Không</option>
-              <option value="Cảnh báo học vụ">Cảnh báo học vụ</option>
-              <option value="Thiếu tín chỉ">Thiếu tín chỉ</option>
-              <option value="Thiếu học phí">Thiếu học phí</option>
-              <option value="Khen thưởng">Khen thưởng</option>
-            </select>
+              <a-form-item
+                label="Ngày sinh"
+                required
+                name="birthdate"
+                class="form-item block"
+              >
+                <a-date-picker
+                  v-model:value="formState.birthdate"
+                  type="date"
+                  placeholder="Pick a date"
+                  style="width: 100%"
+                  @change="(value) => (formState.birthdate = value)"
+                />
+              </a-form-item>
+
+              <a-form-item
+                ref="address"
+                label="Địa chỉ"
+                name="address"
+                class="form-item block"
+              >
+                <a-input
+                  v-model:value="formState.address"
+                  placeholder="Nhập địa chỉ"
+                />
+              </a-form-item>
+            </div>
           </div>
 
           
+          
         </div>
 
-        
-        
-
-        
-      </form>
-    </div>
-
-    <div class="button--act flex my-2">
-      <RouterLink
-        to="/student/list"
-        class="bg-[#324f90] text-[#fff] p-3 rounded mx-2"
-      >
-        Quay lại
-      </RouterLink>
-      <RouterView />
-
-      <button @click="saveData" class="bg-[#324f90] text-[#fff] p-3 px-4 rounded mx-2">
-        Lưu
-      </button>
+        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+          <a-button type="primary" @click="onSubmit" class="bg-[#324f90]"
+            >Lưu</a-button
+          >
+          
+        </a-form-item>
+      </a-form>
     </div>
   </div>
 </template>
-
 <script>
-import { RouterLink, RouterView, useRoute } from "vue-router";
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  ref,
+  toRaw,
+  computed,
+} from "vue";
 import { useStudentStore } from "../../stores/student.js";
+import { RouterLink, RouterView, useRoute } from "vue-router";
+import { format, parseISO } from "date-fns";
+import dayjs from "dayjs";
+import NavTitle from "../base/NavBar/NavTitle.vue";
+import ChartCredits from "../chart/ChartCredits.vue";
 
-export default {
-  data() {
+
+export default defineComponent({
+  setup() {
+    const formRef = ref();
+    const pageTitle = ref("Cập nhật thông tin Sinh viên");
+    const formState = reactive({
+      studentId: "",
+      name: "",
+      gender: "",
+      birthdate: undefined,
+      emailAddress: "",
+      phone: "",
+      role: "",
+      _class: "",
+      address: "",
+    });
+    const rules = {
+      birthdate: [
+        {
+          required: true,
+          message: "Please pick a date",
+          trigger: "change",
+          type: "object",
+        },
+      ],
+      address: [
+        {
+          required: true,
+          message: "Chưa nhập địa chỉ",
+          trigger: "change",
+        },
+      ],
+      gender: [
+        {
+          required: true,
+          message: "Please select gender",
+          trigger: "change",
+        },
+      ],
+      phone: [
+        {
+          required: true,
+          message: "Chưa nhập số điện thoại",
+          trigger: "blur",
+        },
+        {
+          min: 10,
+          max: 10,
+          message: "Chưa nhập đúng định dạng số điện thoại",
+          trigger: "blur",
+          required: true,
+        },
+      ],
+    };
+    const useStudent = useStudentStore();
+    const studentId = useRoute().params.id;
+     
+
+    const onSubmit = () => {
+      formRef.value
+        .validate()
+        .then(() => {
+          console.log("values", formState);
+          useStudent.updateStudent(studentId, formState);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    };
+
+    // const formattedDob = computed(() => {
+    //     return format(formState.birthdate, 'yyyy-MM-dd');
+    // })
+
+    onMounted(async () => {
+      const response = await useStudent.getStudentDetails(studentId);
+      formState.studentId = response.studentId;
+      formState.name = response.name;
+      formState.gender = response.gender;
+      formState.role = response.role;
+      formState.emailAddress = response.emailAddress;
+      formState.phone = response.phone;
+      formState._class = response._class;
+      formState.address = response.address;
+      formState.birthdate = dayjs(response.birthdate);
+    });
+
     return {
-      student: {
-        studentId: '',
-        name: '',
-        phone: ''
+      formRef,
+      labelCol: {
+        span: 4,
       },
-      useStudent: useStudentStore(),
-      usernameError: 'Không được để trống',
-      errors: [],
-    }
-  }, 
-  methods: {
-    saveData() {
-      
-      this.errors = [];
-      var isValid = this.isValidData();  
-      // validate data
-      if (isValid) {
-      this.useStudent.postData(); 
-      }
-      else {
-        alert('error');
-        console.log('error');   
-      }
-    }
-    ,
-    isValidData() { 
-      try {
-        if (!this.validateRequired(this.useStudent.student.studentId)) {
-          this.errors.push("Mã sinh viên không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.password)) {
-          this.errors.push("MK không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.name)) {
-          this.errors.push("Tên không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.role)) {
-          this.errors.push("Vai trò không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.birthdate)) {
-          this.errors.push("Ngày sinh không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.address)) {
-          this.errors.push("Địa chỉ không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.role)) {
-          this.errors.push("Vai trò không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.birthdate)) {
-          this.errors.push("Ngày sinh không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.address)) {
-          this.errors.push("Địa chỉ không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.emailAddress)) {
-          this.errors.push("Vai trò không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.phone)) {
-          this.errors.push("Ngày sinh không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.gender)) {
-          this.errors.push("Địa chỉ không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.status)) {
-          this.errors.push("Ngày sinh không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student._class)) {
-          this.errors.push("Địa chỉ không được phép trống");
-          console.log(this.errors);
-        }
-
-
-        if (this.errors.length > 0) {
-          alert('loi')
-          return false;
-        }
-        return true;
-
-      } catch (error) {
-        console.log(error); 
-      }
-    },
-    validateRequired(value) {
-      try {
-        if (value == "" || value == null || value == undefined) {
-        return false;
-      }
-      return true;
-      } catch (error) {
-        console.log(error);
-      }
-    }, 
-  }
-}
+      wrapperCol: {
+        span: 14,
+      },
+      other: "",
+      formState,
+      rules,
+      onSubmit,
+      pageTitle,
+    };
+  },
+  components: { NavTitle, ChartCredits },
+});
 </script>
+
 <style scoped>
-form {
-  display: flex;
+.add-form {
+  height: 400px;
+  overflow-y: scroll;
 }
 
-.form-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.form-item ::v-deep .ant-col-14 {
+  max-width: 100%;
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input[type="text"] {
-  width: 50%;
-  height: 40px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-input:hover {
-  border: 1px solid #324f90;
-}
-
-input:focus {
-  border: 1px solid #324f90;
-  outline: none;
+.form-item ::v-deep .ant-col-4 {
+  max-width: 100% !important;
 }
 </style>

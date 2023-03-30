@@ -56,7 +56,7 @@
                 label="Image"
               >
              
-      <input type="file" @change="uploadImage">
+      <input type="file" @change="uploadImage" accept="image/*">
               </a-form-item>
 
               
@@ -65,8 +65,8 @@
         </div>
 
         <div>
-          <a-alert v-show="successMsg === true" message="Thêm bài đăng thành công" type="success" show-icon />
-          <a-alert v-show="errorMsg === true" message="Thêm bài đăng thất bại" type="error" show-icon />
+          <a-alert v-show="useForum.successMsg === true" message="Thêm bài đăng thành công" type="success" show-icon />
+          <a-alert v-show="useForum.errorMsg === true" message="Thêm bài đăng thất bại" type="error" show-icon />
           <div
             v-for="(item, index) in useForum.listPost"
             :key="index"

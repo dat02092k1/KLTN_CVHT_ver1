@@ -2,6 +2,8 @@
 const BASE_URL = 'http://localhost:8000/api/';
 
 const API_ENDPOINTS = {
+    // AUTH
+    changePassword: BASE_URL +'user/change-password/', // + studentId
     // TASKS MANAGEMENT
     getTasks: BASE_URL + 'student/get-task-all',
     deleteTask: BASE_URL + 'student/delete-task/', // + taskId   
@@ -26,6 +28,10 @@ const API_ENDPOINTS = {
     editForm: BASE_URL + 'form/update/', // + formId    
     detailForm: BASE_URL + 'form/details/', // + formId   
     getUserForms:  BASE_URL + 'form/student/', // + studentId 
+    /**
+     * Course
+     */
+    deleteCourse: BASE_URL + '/student/delete-course/', // + courseId + qery: student = studentId
   };  
   
   export default API_ENDPOINTS;   

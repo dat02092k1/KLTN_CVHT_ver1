@@ -2,6 +2,11 @@ const { cloudinary } = require("../../uploads/cloudinary.js");
 
 var uploadImageController = async (req, res) => { 
     const file = req.file;
+
+    if (!file.mimetype.startsWith('image/')) {
+      return res.status(400).send({ message: 'Only image files are allowed' });
+    }
+    
     cloudinary.uploader.upload(file.path, 
       {
         folder: 'File_img_CVHT_UET'

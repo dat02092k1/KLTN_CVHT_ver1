@@ -11,8 +11,8 @@ export const useFormStore = defineStore({
     listForms: [],
     form: null,
     userId: getId(),
-    successMsg: null,
-    errorMsg: null,
+    successMsg: false,
+    errorMsg: false,
   }),
   getters: {},
   actions: {
