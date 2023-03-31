@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>homepage</h1>
+        <h1>HOMEPAGE UET</h1>
 
         <Notifications/>
     </div>

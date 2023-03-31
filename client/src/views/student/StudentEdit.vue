@@ -339,14 +339,13 @@ console.log(formattedDate)
 <style scoped>
 .add-form {
   height: 400px;
-  overflow-y: scroll;
 }
 
-.form-item ::v-deep .ant-col-14 {
+.form-item :deep .ant-col-14 {
   max-width: 100%;
 }
 
-.form-item ::v-deep .ant-col-4 {
+.form-item :deep .ant-col-4 {
   max-width: 100% !important;
 }
 </style>

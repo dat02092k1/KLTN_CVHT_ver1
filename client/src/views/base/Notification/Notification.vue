@@ -1,6 +1,6 @@
 <template>
     <div class="flex">
-        <h2>Notifications</h2>
+        <h2>Thông báo</h2>
         <div>
             <div class="notification-icon"  @click="showNotifications" :class="{ active: displayNotifications }">
                 <i class="fa-solid fa-bell"></i>

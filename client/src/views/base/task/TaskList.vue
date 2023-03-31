@@ -146,7 +146,7 @@ export default defineComponent({
   setup() {
     const formRef = ref();
     const visible = ref(false);
-    const pageTitle = 'Danh sách việc giao cho sinh viên'; 
+    const pageTitle = 'Danh sách nhiệm vụ'; 
     const formState = reactive({
       task: "",
       description: "",

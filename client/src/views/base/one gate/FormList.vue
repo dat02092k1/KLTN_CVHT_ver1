@@ -2,7 +2,8 @@
     <div>
         <NavTitle :title="pageTitle" />
 
-        <a-select class="p-6" v-model:value="selectedOption" @change="handleSelectChange">
+        <div>
+          <a-select class="p-6" v-model:value="selectedOption" @change="handleSelectChange">
     <a-select-option v-for="option in options" :key="option.value" :value="option.value">
       {{ option.label }}
     </a-select-option>  
@@ -56,6 +57,7 @@
       </tbody>
     </table>
   </div>
+        </div>
 
   </div>
 

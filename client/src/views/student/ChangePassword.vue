@@ -148,7 +148,7 @@
   </script>
 
   <style scoped>
-  ::v-deep .ant-col-4 {
+  :deep(.ant-col-4) {
   flex: 40%;
   max-width: 100%;
 }

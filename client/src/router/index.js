@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import AboutView from "../views/AboutView.vue";
 
 import TheMain from "../components/layout/TheMain.vue";
 import Homepage from "../views/homepage/Homepage.vue";
@@ -15,7 +13,6 @@ import ChartGpa from "../views/chart/ChartGpa.vue";
 import ChartCredits from "../views/chart/ChartCredits.vue";
 import PostList from "../views/base/forum/PostList.vue";
 import PostDetails from "../views/base/forum/PostDetails.vue";
-import UserPosts from "../views/base/account/UserPosts.vue";
 import Loading from "../views/base/Spinner/Loading.vue";
 import Test from "../views/base/Test.vue";
 import AddPost from "../views/base/forum/AddPost.vue";
@@ -46,10 +43,6 @@ import FormSubmited from "../views/base/one gate/FormSubmited.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // {
-    //   path: '/',
-    //   redirect: '/login'
-    // },
     {
       path: "/",
       name: "homepage",
@@ -309,3 +302,4 @@ router.beforeEach((to, from, next) => {
   }
 });
 export default router;
+

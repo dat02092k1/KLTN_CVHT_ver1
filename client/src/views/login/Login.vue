@@ -6,22 +6,6 @@
                 <img src="../../assets/images/logo_banner.png" alt="">
             </div>
             <div>
-                <!-- <div class="form-item mb-5 relative">
-                <div class="absolute top-3 left-2 text-[#889aa4]">
-                    <i class="fa-solid fa-circle-user "></i>
-                </div>
-                <div class="input__item rounded">
-                    <input class="pt-3 pb-3 pr-1 pl-8 h-12 w-full" type="text" tabindex="1" placeholder="Email" v-model="studentId" name="email">
-                </div>
-            </div>
-            <div class="form-item mb-5 rounded relative">
-                <div class="absolute top-3 left-2 text-[#889aa4]">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <div class="input__item rounded">
-                    <input class="pt-3 pb-3 pr-1 pl-8 h-12 w-full" type="text" tabindex="1" placeholder="Password" v-model="password" name="password">
-                </div>
-            </div> -->
 
             <a-alert v-show="this.store.errorMsg === true" message="Sai thông tin tài khoản hoặc mật khẩu" type="error" show-icon />
             <!--

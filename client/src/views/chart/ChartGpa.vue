@@ -73,7 +73,7 @@
           labels: student,
           datasets: [
           {
-            label: 'Thống kê GPA của sinh viên lớp K64-C-CLC',
+            label: 'Thống kê điểm của sinh viên lớp K64-C-CLC',
             backgroundColor: '#f87979',
             data: gpa
           }

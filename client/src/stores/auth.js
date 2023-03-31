@@ -48,8 +48,8 @@ export const useAuthStore = defineStore({
         const storedToken = window.localStorage.getItem("token");
 
         if (user.status === 200) {
-          console.log(this.userClass);
           this.userClass = getClass();
+          console.log(this.userClass);
           joinRoom(this.userClass);
           router.push("/");
         } else {

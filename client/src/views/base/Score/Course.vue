@@ -1,6 +1,6 @@
 <template>
   <div>
-  <nav-title :title="pageTitle" class="p-[15px]"/>
+  <nav-title :title="pageTitle" class="p-4"/>
 
   <div class="" v-if="userRole === 'student'">
     <div class="table-container mx-3 bg-[#ffffff]">
@@ -43,7 +43,7 @@
     <span>{{ studentCpa.CPA }}</span>
   </div>
 
-  <div class="consultant-container" v-else>
+  <div class="consultant-container mx-6 bg-[#ffffff]" v-else>
    <div class="ml-9 my-3">
     <h2>Danh sách sinh viên</h2>
     <h3>Lớp: <span class="font-bold"> {{ userClass }} </span></h3>

@@ -61,24 +61,24 @@
                 <table style="border-collapse: collapse; width: 100%; margin: auto; background-color: #ffffff;">
   <thead>
     <tr class="py-2">
-      <th style="text-align: center; border-bottom: 1px solid gray; padding: 10px 0; color: #909399">STT</th>
-      <th style="text-align: center; border-bottom: 1px solid gray; padding: 10px 0; color: #909399">Tên quy định</th>
-      <th style="text-align: center; border-bottom: 1px solid gray; padding: 10px 0; color: #909399">Tên file/link</th>
-      <th v-if="userRole === 'manager'" style="text-align: center; border-bottom: 1px solid gray; padding: 10px 0; color: #909399">Hành động</th>
+      <th style="text-align: center; border-bottom: 1px solid #f0f2f7; padding: 10px 0; color: #909399">STT</th>
+      <th style="text-align: center; border-bottom: 1px solid #f0f2f7; padding: 10px 0; color: #909399">Tên quy định</th>
+      <th style="text-align: center; border-bottom: 1px solid #f0f2f7; padding: 10px 0; color: #909399">Tên file / Link</th>
+      <th v-if="userRole === 'manager'" style="text-align: center; border-bottom: 1px solid #f0f2f7; padding: 10px 0; color: #909399">Hành động</th>
 
     </tr>
   </thead>
   <tbody>
     <tr class="py-2" v-for="(item, index) in useAnnouncement.listAnnouncement"
             :key="index">
-      <td style="text-align: center; border-bottom: 1px solid gray; padding: 10px 0;">{{ index + 1 }}</td>
-      <td style="text-align: center; border-bottom: 1px solid gray; padding: 10px 0; max-width: 200px; word-wrap: break-word;">{{ item.title }}</td>
-      <td style="text-align: center; border-bottom: 1px solid gray; padding: 10px 0">
+      <td style="text-align: center; border-bottom: 1px solid #f0f2f7; padding: 10px 0;">{{ index + 1 }}</td>
+      <td style="text-align: center; border-bottom: 1px solid #f0f2f7; padding: 10px 0; max-width: 200px; word-wrap: break-word;">{{ item.title }}</td>
+      <td style="text-align: center; border-bottom: 1px solid #f0f2f7; padding: 10px 0">
         <a :href="item.fileUrl">
             file.pdf
         </a>
     </td>
-    <td v-if="userRole === 'manager'" style="text-align: center; border-bottom: 1px solid gray; padding: 10px 0">
+    <td v-if="userRole === 'manager'" style="text-align: center; border-bottom: 1px solid #f0f2f7; padding: 10px 0">
         <a-popconfirm title="Title" @confirm="confirm(item._id)" @cancel="cancel">
     <button class="mr-1"><i class="fa-regular fa-trash-can"></i></button>
   </a-popconfirm>
