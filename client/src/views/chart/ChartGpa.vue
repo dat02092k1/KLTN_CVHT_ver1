@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isAdmin">
+    <div v-if="isAdmin" class="bg-[#fff]">
       <!-- <Bar v-if="loaded" :data="chartData" /> -->
       <Line v-if="loaded" :data="chartData" :options="chartOptions"/>
       <Loading v-if="isShowSpinner" />

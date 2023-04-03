@@ -19,6 +19,7 @@ var task = require("./routes/task/task.js");
 var notification = require("./routes/notification/notification.js");
 var announcement = require("./routes/announcement/announcement.js");
 var form = require("./routes/form/form.js");
+var report = require("./routes/report/report.js");
 
 var logger = require("./logger/logger.js");
 var cookieParser = require("cookie-parser");
@@ -152,6 +153,7 @@ app.use("/api", task);
 app.use("/api", notification);
 app.use("/api", announcement);         
 app.use("/api", form);                
+app.use("/api", report);                
 
 app.listen(PORT, (err) => {
   if (err) console.log("error");

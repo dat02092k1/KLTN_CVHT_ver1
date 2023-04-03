@@ -13,6 +13,7 @@ export const useFormStore = defineStore({
     userId: getId(),
     successMsg: false,
     errorMsg: false,
+    loading: false,
   }),
   getters: {},
   actions: {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="text-[32px] font-bold">
-            Not Found
+            Not Found Page
         </h1>
 
         <div>

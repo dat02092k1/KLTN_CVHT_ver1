@@ -32,6 +32,15 @@ const API_ENDPOINTS = {
      * Course
      */
     deleteCourse: BASE_URL + '/student/delete-course/', // + courseId + qery: student = studentId
+    /**
+     * REPORTS
+     */
+    createReport: BASE_URL + '/report/create/', // + userId 
+    getListReports: BASE_URL + '/report/list', // 
+    getDetailsReport: BASE_URL + '/report/details/', // + reportId
+    editReport: BASE_URL + '/report/edit/', // + reportId
+    deleteReport: BASE_URL + '/report/delete/', // + reportId
+    getReportsOfUser: BASE_URL + 'reports/', // + userId
   };  
   
   export default API_ENDPOINTS;   

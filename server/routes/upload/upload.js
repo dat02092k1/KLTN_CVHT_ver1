@@ -9,4 +9,6 @@ router.post('/upload', userAuthenticate.verifyToken, upload.single('image'), upl
 
 router.post('/upload-doc', userAuthenticate.verifyToken, upload.single('doc'), uploadController.uploadDocsController);
 
+router.post('/upload-docs', userAuthenticate.verifyToken, upload.array('docs', 3), uploadController.uploadMultiDocs);
+
 module.exports = router;       

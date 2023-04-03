@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { getRole } from "../utils/getInfoUser.js";
 
 import TheMain from "../components/layout/TheMain.vue";
 import Homepage from "../views/homepage/Homepage.vue";
@@ -39,6 +40,10 @@ import FormMeeting from "../views/base/one gate/FormMeeting.vue";
 import FormList from "../views/base/one gate/FormList.vue";
 import Update from "../views/base/one gate/Update.vue";
 import FormSubmited from "../views/base/one gate/FormSubmited.vue";
+import ReportList from "../views/base/report/ReportList.vue";
+import ReportAdd from "../views/base/report/ReportAdd.vue";
+import ReportEdit from "../views/base/report/ReportEdit.vue";
+import Report from "../views/base/report/Report.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -217,7 +222,7 @@ const router = createRouter({
     },
     {
       path: "/student/announcement",
-      name: "student announcement",
+      name: "student announcements",
       component: AnnouncementList,
       meta: { requiresAuth: true },
     },
@@ -272,16 +277,35 @@ const router = createRouter({
       component: FormSubmited,
       meta: { requiresAuth: true },
     },
+    {
+      path: "/consultant/reports-list",
+      name: "consultant list reports",
+      component: ReportList,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/consultant/progress",
+      name: "consultant progress report",
+      component: ReportAdd,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/consultant/report/edit/:id",
+      name: "edit report",
+      component: ReportEdit,
+      meta: { requiresAuth: true },
+    },
     { 
       path: "/:pathMatch(.*)*", 
-      component: ErrorPage 
+      component: ErrorPage,
+      meta: { requiresAuth: true },
     },
   ],
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem("role") !== null;
-  const isConsultant = localStorage.getItem("role") === "manager";
+  const isAuthenticated = (getRole() !== null);
+  const isConsultant = (getRole() === "manager");
 
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (!isAuthenticated) {
@@ -302,4 +326,3 @@ router.beforeEach((to, from, next) => {
   }
 });
 export default router;
-

@@ -15,6 +15,7 @@ export const useAnnouncementStore = defineStore({
     userId: getId(),
     successMsg: false,
     errorMsg: false,
+    loading: false,
   }),
   getters: {},
   actions: {

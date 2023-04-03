@@ -8,21 +8,25 @@ export const useImgStore = defineStore({
   state: () => ({
     imageUrl: "",
     successMsg: false,
-    errorMsg: false 
+    errorMsg: false,
+    loading: false
 }),
   getters: {
   },
   actions: {
     async uploadImg(data) {
         try {
+          this.loading = true;
             const config = getAccessToken(); 
             console.log(data);
             const img = await axiosIns.post("http://localhost:8000/api/upload", data, config); 
              
+            this.loading = false;
             return img.data.url; 
              
         } catch (error) {
-            console.log(error);         
+            console.log(error);    
+            this.loading = false;     
         }
     },
     async uploadExcel(data) {
@@ -42,16 +46,35 @@ export const useImgStore = defineStore({
     },
     async uploadDocs(data) {
       try {
+          this.loading = true;
           const config = getAccessToken(); 
           console.log(data);
           const docs = await axiosIns.post("http://localhost:8000/api/upload-doc", data, config); 
            
           console.log(docs)
+          this.loading = false;
           return docs.data.url; 
            
       } catch (error) {
-          console.log(error);         
+          console.log(error);        
+          this.loading = false; 
       }
-  },
+    },
+    async uploadMultiDocs(data) {
+      try {
+        this.loading = true;
+          const config = getAccessToken(); 
+
+          const docs = await axiosIns.post("http://localhost:8000/api/upload-docs", data, config); 
+           
+          console.log(docs);
+          this.loading = false;
+          return docs.data.files;
+           
+      } catch (error) {
+        console.log(error);        
+          this.loading = false; 
+      }      
+    }
   },
 });

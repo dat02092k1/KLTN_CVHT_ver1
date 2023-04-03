@@ -48,6 +48,7 @@
   
                 
               </a-form>
+              <Loading v-show="useImg.loading" />
             </a-modal>
           </div>
   
@@ -101,7 +102,7 @@
         </div>
         </div>
       </div>
-      <Loading v-if="showLoading" />
+      
     </div>
   </template>
   
@@ -207,7 +208,8 @@
         errorMsg,
         confirm,
         cancel,
-        userRole
+        userRole,
+        useImg
       };
     },
     components: { NavTitle, Loading },

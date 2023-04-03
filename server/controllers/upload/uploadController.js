@@ -47,5 +47,51 @@ var uploadDocsController = async (req, res) => {
   });
 }
 
-module.exports = { uploadImageController, uploadDocsController } ;         
+var uploadMultiDocs = async (req, res) => {
+  const files = req.files;
+
+  const fileUrls = [];
+  if (!files) {
+    return res.status(400).send({ message: 'No files uploaded' });
+  }
+
+   for (const file of files) {
+    if (
+      file.mimetype !== "application/pdf" &&
+      file.mimetype !==
+        "application/msword" &&
+      file.mimetype !==
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
+      file.mimetype !== "application/zip"
+    ) {
+      res.status(400).send({ message: "Invalid file type"}); 
+    }
+
+    const fileExtension = require("mime-types").extension(file.mimetype);
+
+        console.log("File extension:", fileExtension);
+
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "Report files",
+          resource_type: "raw",
+          format: fileExtension,
+        });
+
+        console.log("Document uploaded successfully", result); 
+
+        fileUrls.push({
+          url: result.secure_url,
+          public_id: result.public_id,
+        });
+
+        if (fileUrls.length === files.length) {
+          res.status(200).send({ files: fileUrls });
+        }
+    }
+
+}
+
+
+module.exports = { uploadImageController, uploadDocsController,
+  uploadMultiDocs } ;         
 
