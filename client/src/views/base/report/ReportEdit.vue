@@ -48,7 +48,7 @@
   import { RouterLink, useRoute } from "vue-router";
   import NavTitle from "../NavBar/NavTitle.vue";
   import { useReportStore } from "../../../stores/report.js";
-  import { useImgStore } from "../../../stores/upload.js";
+  import { useUploadStore } from "../../../stores/upload.js";
   import { getId } from "../../../utils/getInfoUser.js";
   import Loading from "../Spinner/Loading.vue";
 
@@ -64,7 +64,7 @@
             content: "",
             fileUrl: []
         },
-        useUpload: useImgStore()
+        useUpload: useUploadStore()
       };
     },
     async mounted() {

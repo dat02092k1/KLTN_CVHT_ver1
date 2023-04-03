@@ -48,7 +48,7 @@
   <script>
   import NavTitle from "../NavBar/NavTitle.vue";
   import { useForumStore } from "../../../stores/forum.js";
-  import { useImgStore } from "../../../stores/upload.js";
+  import { useUploadStore } from "../../../stores/upload.js";
 
   import { RouterLink, RouterView, useRoute } from "vue-router";
   import { getId, getUsername, getClass } from "../../../utils/getInfoUser";
@@ -67,7 +67,7 @@
          imageUrl: "" 
         },
         pageTitle: "Edit bài đăng",
-        useImg: useImgStore() 
+        useImg: useUploadStore() 
       };
     },
     async mounted() {

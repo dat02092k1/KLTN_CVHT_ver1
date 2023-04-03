@@ -45,8 +45,6 @@ var getMessageLimitService = async (conversationId) => {
 
 var loadMessageService = async (req) => {
   try {
-     
-
     const conversationId = req.query.conversationId;
     const page = req.query.page;
     const pageSize = req.query.pageSize || 10;

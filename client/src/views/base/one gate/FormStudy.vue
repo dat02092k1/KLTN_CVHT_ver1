@@ -75,7 +75,7 @@
   import { sendNoti } from "../../../socket/socket.js";
   import { message } from "ant-design-vue";
   import { useFormStore } from "../../../stores/form.js";
-  import { useImgStore } from "../../../stores/upload.js";
+  import { useUploadStore } from "../../../stores/upload.js";
   
   export default defineComponent({
     setup() {
@@ -110,7 +110,7 @@
       };
   
       const useForm = useFormStore();
-      const useImg = useImgStore();
+      const useUpload = useUploadStore();
       const showOptions = reactive([]);
       const showLoading = ref(true);
       const pageTitle = ("Kế hoạch học tập");
@@ -134,7 +134,7 @@
         const file = event.target.files[0];
         const formData = new FormData();
         formData.append('doc', file);
-        const docs = await useImg.uploadDocs(formData);
+        const docs = await useUpload.uploadDocs(formData);
         formState.fileUrl = docs;
         console.log(formState.fileUrl);
       }

@@ -48,7 +48,7 @@
   
                 
               </a-form>
-              <Loading v-show="useImg.loading" />
+              <Loading v-show="useUpload.loading" />
             </a-modal>
           </div>
   
@@ -115,7 +115,7 @@
   import { sendNoti } from "../../../socket/socket.js";
   import { message } from "ant-design-vue";
   import { useAnnouncementStore } from "../../../stores/announcement.js";
-  import { useImgStore } from "../../../stores/upload.js";
+  import { useUploadStore } from "../../../stores/upload.js";
   
   export default defineComponent({
     setup() {
@@ -152,7 +152,7 @@
       };
   
       const useAnnouncement = useAnnouncementStore();
-      const useImg = useImgStore();
+      const useUpload = useUploadStore();
       const showOptions = reactive([]);
       const _class = "K64-C-CLC";
       const showLoading = ref(true);
@@ -177,7 +177,7 @@
         const file = event.target.files[0];
         const formData = new FormData();
         formData.append('doc', file);
-        const docs = await useImg.uploadDocs(formData);
+        const docs = await useUpload.uploadDocs(formData);
         formState.fileUrl = docs;
         console.log(formState.fileUrl);
       }
@@ -209,7 +209,7 @@
         confirm,
         cancel,
         userRole,
-        useImg
+        useUpload
       };
     },
     components: { NavTitle, Loading },

@@ -1,9 +1,8 @@
 import { defineStore } from "pinia";
- import axios from "axios";
  import { getAccessToken } from '../utils/config.js'
  import { axiosIns } from "../api/axios.js";
 
-export const useImgStore = defineStore({
+export const useUploadStore = defineStore({
   id: "image",
   state: () => ({
     imageUrl: "",

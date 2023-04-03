@@ -41,7 +41,7 @@
   <script>
   import NavTitle from "../NavBar/NavTitle.vue";
   import { useAnnouncementStore } from "../../../stores/announcement.js";
-  import { useImgStore } from "../../../stores/upload.js";
+  import { useUploadStore } from "../../../stores/upload.js";
 
   import { RouterLink, RouterView, useRoute } from "vue-router";
   import { getId, getUsername, getClass } from "../../../utils/getInfoUser";
@@ -56,7 +56,7 @@
          fileUrl: "" 
         },
         pageTitle: "Edit thông báo",
-        useImg: useImgStore() 
+        useUpload: useUploadStore() 
       };
     },
     async mounted() {
@@ -72,7 +72,7 @@
       const file = event.target.files[0];
       const formData = new FormData();
       formData.append('doc', file);
-      const doc = await this.useImg.uploadDocs(formData);
+      const doc = await this.useUpload.uploadDocs(formData);
       this.announcement.fileUrl = doc;
       console.log(this.announcement.fileUrl);
       },

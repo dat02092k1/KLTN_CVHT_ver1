@@ -14,12 +14,4 @@ router.delete('/student/delete-course/:courseId', userAuthenticate.roleAuthentic
 // get course details
 router.get('/student/course/:courseId', userAuthenticate.roleAuthentication, courseController.getCourseDetailsController);
 
-
-
-
-
-
-
-
-
 module.exports = router;       

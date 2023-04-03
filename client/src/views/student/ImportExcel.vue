@@ -11,13 +11,13 @@
   
   <script>
   import axios from 'axios';
-  import { useImgStore } from '../../stores/upload.js';
+  import { useUploadStore } from '../../stores/upload.js';
   export default {
     name: 'UploadExcel',
     data() {
       return {
         selectedFile: null,
-        useUpload: useImgStore()
+        useUpload: useUploadStore()
       }
     },
     methods: {

@@ -61,7 +61,9 @@
 
               
             </a-form>
+            <Spinner v-show="useImg.loading" />
           </a-modal>
+          
         </div>
 
         <div>
@@ -119,12 +121,13 @@
 import { defineComponent, onMounted, reactive, ref, toRaw } from "vue";
 import NavTitle from"../NavBar/NavTitle.vue";
 import Loading from '../Spinner/Loading.vue';
+import Spinner from '../Spinner/Spinner.vue';
 import { RouterLink, RouterView } from "vue-router";
 import { getClass, getId, getRole, getUsername } from "../../../utils/getInfoUser";
 import { sendNoti } from "../../../socket/socket.js";
 import { message } from "ant-design-vue";
 import { useForumStore } from "../../../stores/forum.js";
-import { useImgStore } from "../../../stores/upload.js";
+import { useUploadStore } from "../../../stores/upload.js";
 
 export default defineComponent({
   setup() {
@@ -170,7 +173,7 @@ export default defineComponent({
     };
 
     const useForum = useForumStore();
-    const useImg = useImgStore();
+    const useImg = useUploadStore();
     const showOptions = reactive([]);
     const _class = "K64-C-CLC";
     const showLoading = ref(true);
@@ -217,10 +220,11 @@ export default defineComponent({
       successMsg,
       errorMsg,
       username,
-      userRole
+      userRole,
+      useImg
     };
   },
-  components: { NavTitle, Loading },
+  components: { NavTitle, Loading, Spinner } 
 });
 </script>
 

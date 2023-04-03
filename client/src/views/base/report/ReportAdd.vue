@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="mx-auto">
+    <div class="mx-6">
       <NavTitle :title="pageTitle" />
 
-      <div class="flex justify-end mx-6">
+      <div class="flex my-3 rounded justify-end mx-6">
         <a-button type="primary" @click="showModal">Thêm báo cáo</a-button>
         <a-modal v-model:visible="visible" title="Basic Modal" @ok="handleOk">
           <a-form
@@ -50,12 +50,13 @@
         </a-modal>
       </div>
 
-      <div class="mx-auto w-[100%] h-[400px] overflow-auto">
+      <div class=" bg-[#fff] mx-6 h-[400px] overflow-y-auto">
         <a-list
           item-layout="horizontal"
           size="small"
           :pagination="pagination"
           :data-source="useReport.reports"
+          class="my-2"
         >
           <template #renderItem="{ item }">
             <a-list-item key="item.title">
@@ -78,7 +79,7 @@
                 </div>
               </div>
               <div class="flex justify-between">
-                <span> 
+                <span class="text-xs"> 
                 {{ formatDate(item.createdAt) }}  
                 </span>
 
