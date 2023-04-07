@@ -42,8 +42,7 @@ export const useTaskStore = defineStore({
     async assignTasks(taskDetails) {
       try {
         const config = getAccessToken();
-
-        const task = await axiosIns.post(
+         const task = await axiosIns.post(
           API_ENDPOINTS.assignTask,
           taskDetails,
           config
@@ -52,7 +51,7 @@ export const useTaskStore = defineStore({
         console.log(task);
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
-        this.getTasks();
+        this.getTasksPerPage(); 
       } catch (error) {
         console.log(error);
         this.errorMsg = true;
@@ -68,6 +67,7 @@ export const useTaskStore = defineStore({
         );
 
         this.tasks = getTask.data.task;
+        console.log(this.tasks);
         return getTask.data.task;
       } catch (error) {
         console.log(error);
@@ -137,12 +137,28 @@ export const useTaskStore = defineStore({
         );
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
-        this.getTasks();
+        this.getTasksPerPage();          
       } catch (error) {
         console.log(error);
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
+    async getTasksPerPage(page) {
+      try {
+        const config = getAccessToken();
+        const createdBy = getId();
+        console.log(page);
+        const res = await axiosIns.get(
+          API_ENDPOINTS.getTasksPerPage + createdBy + `?page=${page}`,
+          config
+        );
+        console.log(res.data.tasks);
+        this.tasks = res.data.tasks.tasks;
+        return res.data.tasks;
+      } catch (error) {
+        console.log(error); 
+      }
+    }
   },
 });

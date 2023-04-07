@@ -99,8 +99,22 @@ var getTasksofStudentController = async (req, res) => {
         }
     }
 }
+
+var getTasksPerPageController = async (req, res) => {
+    try {
+        var tasks = await taskService.getTasksPerPageService(req);
+        res.status(200).json({ success: true, tasks });  
+    } catch (error) {
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
+    }
+}
 module.exports = { getTaskController, createTaskController,
     editTaskController, deleteTaskController,
     updateStatusTaskController, getDetailsTaskController,
-    getTasksofStudentController } ;         
+    getTasksofStudentController, getTasksPerPageController } ;         
 

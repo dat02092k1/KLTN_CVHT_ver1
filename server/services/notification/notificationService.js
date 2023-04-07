@@ -12,7 +12,9 @@ var getNotificationsService = async (id) => {
         const notifications = await notificationModel.find({
             userId: id,
             isRead: false
-        }).populate('postId');
+        })
+        .populate('postId')
+        .sort({ createdAt: -1 });
 
         if (!notifications) throw new ClientError(`No notifications found`, 404);
 

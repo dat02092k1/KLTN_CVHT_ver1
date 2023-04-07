@@ -36,7 +36,7 @@ export const useChatStore = defineStore({
       // console.log(this.conversation) 
       const membersArr = this.conversation.map((obj) => obj.members);
        
-      
+      console.log(this.conversation);
       const friends = membersArr
         .flatMap((friend) => friend)
         .filter((friend) => friend !== username);

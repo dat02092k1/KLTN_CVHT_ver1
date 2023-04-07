@@ -10,6 +10,8 @@ import StudentEdit from "../views/student/StudentEdit.vue";
 import StudentStatus from "../views/student/StudentStatus.vue";
 import ImportExcel from "../views/student/ImportExcel.vue";
 import ChangePassword from "../views/student/ChangePassword.vue";
+import ForgetPassword from "../views/login/ForgetPassword.vue";
+import ResetPassword from "../views/login/ResetPassword.vue";
 import ChartGpa from "../views/chart/ChartGpa.vue";
 import ChartCredits from "../views/chart/ChartCredits.vue";
 import PostList from "../views/base/forum/PostList.vue";
@@ -82,6 +84,7 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: Login,
+      meta: { hideSidebar: true, hideHeader: true },
     },
     {
       path: "/student/chart",
@@ -112,6 +115,18 @@ const router = createRouter({
       name: "password",
       component: ChangePassword,
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/forget-password",
+      name: "password forget",
+      component: ForgetPassword,
+      meta: { hideSidebar: true, hideHeader: true },
+    },
+    {
+      path: "/reset-password/:id",
+      name: "password reset",
+      component: ResetPassword,
+      meta: { hideSidebar: true, hideHeader: true },
     },
     {
       path: "/loading",

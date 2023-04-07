@@ -45,7 +45,10 @@
             </div>
              
             <div>
+              <router-link :to="{ path: '/forget-password' }">
                 <button class="h-12 w-full bg-[#fff] text-[#409eff] rounded underline">Quên mật khẩu</button>
+              </router-link>
+                 
             </div>
         </div>
     </div>
@@ -105,7 +108,7 @@ export default {
     border: 1px solid #409eff;
 }
 
-::v-deep .ant-form-inline .ant-form-item {
+:deep(.ant-form-inline .ant-form-item) {
     margin-bottom: 1.25rem;
 }
  

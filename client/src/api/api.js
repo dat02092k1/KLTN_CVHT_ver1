@@ -3,7 +3,9 @@ const BASE_URL = 'http://localhost:8000/api/';
 
 const API_ENDPOINTS = {
     // AUTH
-    changePassword: BASE_URL +'user/change-password/', // + studentId
+    changePassword: BASE_URL + 'user/change-password/', // + studentId
+    forgetPassword: BASE_URL + 'user/forget-password', 
+    resetPassword: BASE_URL + 'user/reset-password', 
     // TASKS MANAGEMENT
     getTasks: BASE_URL + 'student/get-task-all',
     deleteTask: BASE_URL + 'student/delete-task/', // + taskId   
@@ -12,6 +14,7 @@ const API_ENDPOINTS = {
     getDetailsTask: BASE_URL + 'student/task/get-task/', // + taskId 
     getTasksOfStudent: BASE_URL + 'student/task/get-tasks/', // + studentId
     updateStatus: BASE_URL + 'student/task/update-stauts/', // + taskId + studentId
+    getTasksPerPage: BASE_URL + 'student/get/tasks-page/', // + userId + query page 
     /**
      * ANNOUNCEMENT 
      */

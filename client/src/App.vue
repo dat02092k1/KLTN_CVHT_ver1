@@ -32,8 +32,8 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <TheSidebar v-if="route.name !== 'login'"/> 
-      <TheHeader v-if="route.name !== 'login'"/>
+    <TheSidebar v-if="!$route.meta.hideSidebar"/> 
+      <TheHeader v-if="!$route.meta.hideHeader"/>
       <!-- <TheMain />    -->
       
 <!--         

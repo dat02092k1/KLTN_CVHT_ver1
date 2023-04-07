@@ -73,6 +73,15 @@
           </button>
         </div>
   
+        <div>
+          <a-date-picker
+        v-model:value="this.useTask.tasks.duration"
+        show-time
+        type="date"
+        format="YYYY-MM-DD HH:mm:ss"
+        value-format="YYYY-MM-DD HH:mm:ss"
+      />
+        </div>
         <div class="flex flex-col  ">
           <button class="flex" @click.prevent="addStudent">Thêm sinh viên</button>
   
@@ -111,6 +120,7 @@
         task: "",
         assignedStudents: [{ studentId: "", isCompleted: null }],
         description: "",  
+        duration: undefined, 
         taskId: useRoute().params.id,
         useTask: useTaskStore(),
         task: [],
@@ -157,6 +167,7 @@
         const taskDetails = {
         task: this.useTask.tasks.task,
         description: this.useTask.tasks.description,
+        duration: this.useTask.tasks.duration,
         assignedStudents: this.useTask.tasks.assignedStudents,
         createdBy: this.useTask.tasks.createdBy
       };
@@ -186,5 +197,4 @@
     overflow-y: scroll;
   }
   </style>
-  "
   

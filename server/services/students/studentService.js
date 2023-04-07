@@ -2,6 +2,10 @@ const studentsModel = require("../../models/students/studentsModel");
 var studentModel = require("../../models/students/studentsModel");
 var postModel = require("../../models/posts/post.js");
 var commentModel = require("../../models/comments/comment.js");
+var taskModel = require("../../models/task/taskModel.js");
+var formModel = require("../../models/forms/form.js");
+var reportModel = require("../../models/reports/report.js");
+var conversationModel = require("../../models/Chat/conversation.js");
 
 const bcrypt = require("bcryptjs");
 const SALT_ROUNDS = 10;
@@ -72,13 +76,7 @@ var updateStudentService = async (id, studentDetail, role) => {
   try {
     const objectId = mongoose.Types.ObjectId(id);
     
-    // const { password } = studentDetail;
-     
-    // if (!password) throw new ClientError('Incorrect password', 403);
-
-    // const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
-
-    // studentDetail.password = hashPassword;
+    const { studentId, _class } = studentDetail;
 
     const student = await studentModel.findByIdAndUpdate(
       objectId,
@@ -91,23 +89,48 @@ var updateStudentService = async (id, studentDetail, role) => {
       throw new ClientError(`No student found with id: ${id}`, 404);
     }
 
+    if (student.studentId !== studentId || student._class !== _class) {
+      await postModel.updateMany({
+        userId: id
+      }, {
+        $set: {
+          username: student.studentId,
+          _class: student._class
+        }
+      });
+  
+      await commentModel.updateMany({
+        userId: id
+      }, {
+        $set: {
+          username: student.studentId
+        }
+      })
 
-    await postModel.updateMany({
-      userId: id
-    }, {
-      $set: {
-        username: student.studentId,
-        _class: student._class
-      }
-    });
+      await taskModel.updateMany(
+        { "assignedStudents.student": student._id },
+        { $set: { "assignedStudents.$.studentId": student.studentId } }
+      );
 
-    await commentModel.updateMany({
-      userId: id
-    }, {
-      $set: {
-        username: student.studentId
-      }
-    })
+      await formModel.updateMany({
+        student: id
+      }, {
+        $set: {
+          username: student.studentId,
+          _class: student._class           
+        }
+      });
+
+      await reportModel.updateMany({
+        userId: id
+      }, {
+        $set: {
+          username: student.studentId,
+        }
+      });
+      
+  }
+  
 
     return student;
   } catch (error) {

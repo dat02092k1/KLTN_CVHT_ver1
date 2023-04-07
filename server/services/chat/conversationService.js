@@ -1,4 +1,6 @@
 const conversationModel = require("../../models/Chat/conversation.js");
+const messageModel = require("../../models/Chat/message.js");
+
 const { ClientError } = require("../error/error.js");
 const mongoose = require("mongoose");
 
@@ -24,19 +26,36 @@ var createConversationService = async (req, res) => {
   }
 };
 
-var getConversationService = async (req, res) => {
+const getConversationService = async (req, res) => {
   try {
-    const listConversation = await conversationModel.find({
+    const conversations = await conversationModel.find({
       members: {
         $in: [req.params.username],
       },
-    })
-    .sort({ createdAt: -1 });
+    });
 
-    if (!listConversation)
-      throw new ClientError("can't find conversation", 404);
+    const conversationsWithLatestMessages = await Promise.all(
+      conversations.map(async conversation => {
+        // Find all messages belonging to this conversation and sort them by createdAt in descending order
+        const messages = await messageModel.find({ conversationId: conversation._id })
+          .sort({ createdAt: 'desc' })
+          .exec();
 
-    return listConversation;
+        // Get the message with the closest createdAt time to the current time
+        const latestMessage = messages.find(message => message.createdAt <= new Date());
+
+          // Return the conversation with the latest message as a new object
+          return {
+            ...conversation.toObject(),
+            latestMessageCreatedAt: latestMessage ? latestMessage.createdAt : null
+          };
+      })
+    )
+
+    // Sort conversations by latestMessageCreatedAt in descending order
+    const sortedConversations = conversationsWithLatestMessages.sort((a, b) => b.latestMessageCreatedAt - a.latestMessageCreatedAt);
+
+    return sortedConversations;
   } catch (error) {
     throw error;
   }

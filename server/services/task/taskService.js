@@ -19,7 +19,7 @@ var getTaskService = async (req) => {
 
 var createTaskService = async (taskDetail) => {
   try {
-    const { task, description, assignedStudents, createdBy } = taskDetail;
+    const { task, description, assignedStudents, createdBy, duration } = taskDetail;
 
     console.log(taskDetail);
     for (const item of assignedStudents) {
@@ -38,6 +38,7 @@ var createTaskService = async (taskDetail) => {
       task,
       description,
       assignedStudents,
+      duration,
       createdBy,
     });
 
@@ -139,6 +140,34 @@ var getTasksofStudentService = async (id) => {
     throw error;
   }
 };
+
+var getTasksPerPageService = async (req) => {
+  try {
+    const createdBy = req.params.username; 
+     
+    const page = req.query.page || 1;
+    console.log(page);
+    const pageSize = 3;
+    const skip = (page - 1) * pageSize;                
+
+    const totalTask = await taskModel.find({ createdBy: createdBy });
+
+    const tasks = await taskModel.find({ createdBy: createdBy })
+                                   .sort({ createdAt: 1 })
+                                   .skip(skip)
+                                   .limit(pageSize);
+
+    if (!tasks) throw new ClientError(`there're no tasks found`, 404);
+
+    const total = Math.ceil(totalTask.length / 3);
+
+    return {
+      total, tasks
+    };
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   getTaskService,
   createTaskService,
@@ -147,4 +176,5 @@ module.exports = {
   updateStatusTaskService,
   getDetailsTaskService,
   getTasksofStudentService,
+  getTasksPerPageService
 };

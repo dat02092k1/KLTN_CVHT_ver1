@@ -17,6 +17,7 @@ router.put('/student/task/update-stauts/:taskId/:studentId', userAuthenticate.st
 router.get('/student/task/get-task/:taskId', userAuthenticate.verifyToken, taskController.getDetailsTaskController);
 // get task of student
 router.get('/student/task/get-tasks/:studentId', userAuthenticate.studentIdAuthentication, taskController.getTasksofStudentController);
-
+// get task pagination
+router.get('/student/get/tasks-page/:username', userAuthenticate.verifyToken, taskController.getTasksPerPageController);
 
 module.exports = router;       

@@ -97,6 +97,20 @@ export const useAuthStore = defineStore({
           });
       });
     },
+    async forgetPassword(email) {
+      try {
+        const res = axiosIns.post(API_ENDPOINTS.forgetPassword, email);
+
+        console.log(res);
+
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000); 
+      } catch (error) {
+        this.errorMsg = true;
+        console.log(error);
+        setTimeout(() => (this.errorMsg = false), 3000); 
+      }
+    },
     async changePassword(data, id) {
       try {
         const config = getAccessToken(); 
@@ -105,12 +119,28 @@ export const useAuthStore = defineStore({
 
         console.log(res);
         
-        this.successMsg = true;
-        setTimeout(() => (this.successMsg = false), 3000);
+        if (res.status === 200) {
+          this.successMsg = true;
+          setTimeout(() => (this.successMsg = false), 3000);
+          this.userClass = getClass();
+          console.log(this.userClass);
+          joinRoom(this.userClass);
+          router.push("/login");
+        } else {
+          throw new Error("Sai thông tn đăng nhập");
+        }
       } catch (error) {
         console.log(error); 
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);
+      }
+    },
+    async resetPassword(data) {
+      try {
+        const res = axiosIns.post(API_ENDPOINTS.resetPassword, data);
+        console.log(res);
+      } catch (error) {
+        
       }
     }
   },

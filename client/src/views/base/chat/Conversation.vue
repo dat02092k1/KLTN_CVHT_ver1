@@ -14,7 +14,7 @@
       <div class="conversation col-span-4 text-[#ffffff] bg-[#3596ff] rounded">
         <div class="flex justify-center">
           <div class="m-2">
-            <button @click="selectedOption = 1">
+            <button @click="getConversations(currentUser)">
               <i class="fa-solid fa-clock-rotate-left"></i>
             </button>
           </div>
@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <div v-show="selectedOption === 1">
+        <div v-if="selectedOption === 1">
           <div class="text-center"><h2>Trò chuyện gần đây</h2></div>
 
           <ul v-for="(user, index) in useChat.conversation" :key="index">
@@ -67,6 +67,7 @@
           >
             <div>{{ message.content }}</div>
           </div>
+          
         </div>
         <div>
           <textarea
@@ -91,6 +92,7 @@
 
 <script>
 import { useChatStore } from "../../../stores/conversation.js";
+import { getUsername } from "../../../utils/getInfoUser.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import Spinner from "../Spinner/Spinner.vue";
 
@@ -111,7 +113,8 @@ export default {
       currentPage: null,
       pageSize: 10,
       isLoading: true,  
-      msgNoti: false
+      msgNoti: false,
+      currentUser: getUsername()
     };
   },
   async mounted() {
@@ -213,35 +216,6 @@ export default {
         console.log(error);
       }
     },
-  //   async handleConversation(receiver) {
-  //     const mutex = new Mutex();
-  //     const release = await mutex.acquire();
-  // try {
-  //   const chatted = this.useChat.friends.includes(receiver);
-  //   console.log(chatted);
-  //   if (chatted) {
-  //     const id = this.findConversation(
-  //       this.useChat.conversation,
-  //       this.getUsername,
-  //       receiver
-  //     );
-  //     console.log(id);
-
-  //     this.useChat.getMessages(id);
-  //   } else {
-  //     const conversation = await this.conversationInfo(this.getUsername, receiver);
-
-  //     const conversationId = conversation._id;
-  //     const conversationMembers = conversation.members;
-
-  //     console.log(conversationId, conversationMembers);
-
-  //     this.getMessage(conversationId, conversationMembers)
-  //   }
-  // } finally {
-  //   release();
-  // }
-  //   },
     findConversation(conversations, sender, receiver) {
       try {
         for (let i = 0; i < conversations.length; i++) {
@@ -273,6 +247,10 @@ export default {
       const response = await this.useChat.loadMessage(this.conversationId, this.currentPage, this.pageSize) ;
       this.currentPage++;
       this.isLoading = false;
+    },
+    async getConversations(username) {
+      await this.useChat.getConversation(username);
+      this.selectedOption = 1;
     }
   },
   components: {
