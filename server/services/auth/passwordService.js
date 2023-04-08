@@ -37,9 +37,10 @@ var changePassword = async (oldPassword, newPassword, userId) => {
       }
 }
 
-var forgetPassword = async (data) => {
+var forgetPassword = async (req) => {
   try {   
-    const { emailAddress } = data;
+    const { emailAddress } = req.body;
+    console.log(req.body); 
 
     if (!emailAddress) {
         throw new ClientError('Email is required', 400);
@@ -89,7 +90,8 @@ var resetPassword = async (data) => {
       throw new ClientError('User not found', 404);
     }
 
-    user.password = password; 
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    user.password = hashedPassword; 
     await user.save();
 
     return 'Password reset successful';

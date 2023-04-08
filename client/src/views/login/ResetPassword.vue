@@ -67,7 +67,13 @@ export default defineComponent({
         required: true,
         validator: validatePass,
         trigger: 'change',
-      }],
+      },
+      {
+          min: 6,
+          max: 15,
+          message: "Mật khẩu cần có độ dài từ 6 đến 15 kí tự",
+          trigger: "blur",
+        }],
       checkPass: [{
         validator: validatePass2,
         trigger: 'change',

@@ -8,26 +8,34 @@ import { onMounted, onUpdated } from 'vue'
 import axios from "axios";
 import { receiveNoti, getUsersOnl, joinRoom } from "./socket/socket.js";
 import { getClass } from "./utils/getInfoUser.js";
+import { notification } from 'ant-design-vue';
+import { h } from 'vue';
+import { SmileOutlined } from '@ant-design/icons-vue';
 
 const route = useRoute();
-
-
 
 onMounted(() => {
   const _class = getClass();
   joinRoom(_class);
-  receiveNoti(noti => alert('post new: ' + noti));
+  // receiveNoti(noti => alert('post new: ' + noti));
+  receiveNoti(noti => openNotification(noti));
   // const _class = getClass();
   // console.log(_class);
   // addUserClass(_class);
   // getUsersOnl() 
     });
 
-// onUpdated(() => {
-//       setInterval(() => {
-//         refreshToken();
-//       }, 5 * 1000); 
-//     });
+    const openNotification = (data) => {
+      notification.open({
+        message: 'Thông báo mới',
+        description: data,
+        icon: () => h(SmileOutlined, {
+          style: 'color: #108ee9',
+        }),
+      });
+    };
+
+
 </script>
 
 <template>

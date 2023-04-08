@@ -16,10 +16,10 @@
   >
     <a-form-item
       label="Email"
-      name="email"
+      name="emailAddress"
       :rules="[{ required: true, message: 'Chưa nhập địa chỉ email!' }]"
     >
-      <a-input v-model:value="formState.email" />
+      <a-input v-model:value="formState.emailAddress" />
     </a-form-item>
 
     <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
@@ -40,11 +40,11 @@ import { useAuthStore } from '../../stores/auth.js';
 export default defineComponent({
   setup() {
     const formState = reactive({
-        email: '',
+      emailAddress: '',
     });
     const onFinish = values => {
       console.log('Success:', values);
-      useAuth.forgetPassword(formState.email);
+      useAuth.forgetPassword(formState.emailAddress);
 
     };
     const onFinishFailed = errorInfo => {

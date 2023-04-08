@@ -56,7 +56,7 @@
                 placeholder="Chọn vai trò"
               >
                 <a-select-option value="student">Sinh viên</a-select-option>
-                <a-select-option value="manager">Cố vấn</a-select-option>
+                <a-select-option value="consultant">Cố vấn</a-select-option>
               </a-select>
             </a-form-item>
 

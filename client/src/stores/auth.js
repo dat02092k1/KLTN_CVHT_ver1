@@ -99,7 +99,8 @@ export const useAuthStore = defineStore({
     },
     async forgetPassword(email) {
       try {
-        const res = axiosIns.post(API_ENDPOINTS.forgetPassword, email);
+        console.log(email); 
+        const res = await axiosIns.post(API_ENDPOINTS.forgetPassword, { emailAddress: email });
 
         console.log(res);
 
@@ -119,16 +120,8 @@ export const useAuthStore = defineStore({
 
         console.log(res);
         
-        if (res.status === 200) {
-          this.successMsg = true;
-          setTimeout(() => (this.successMsg = false), 3000);
-          this.userClass = getClass();
-          console.log(this.userClass);
-          joinRoom(this.userClass);
-          router.push("/login");
-        } else {
-          throw new Error("Sai thông tn đăng nhập");
-        }
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000);
       } catch (error) {
         console.log(error); 
         this.errorMsg = true;
@@ -137,8 +130,17 @@ export const useAuthStore = defineStore({
     },
     async resetPassword(data) {
       try {
-        const res = axiosIns.post(API_ENDPOINTS.resetPassword, data);
+        const res = await axiosIns.post(API_ENDPOINTS.resetPassword, data);
         console.log(res);
+
+        if (res.status === 200) {
+          this.successMsg = true;
+          setTimeout(() => (this.successMsg = false), 3000);
+          
+          router.push("/login");
+        } else {
+          throw new Error("Sai thông tn đăng nhập");
+        }
       } catch (error) {
         
       }

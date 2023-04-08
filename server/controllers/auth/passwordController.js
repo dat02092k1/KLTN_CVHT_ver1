@@ -22,7 +22,7 @@ var changePasswordController = async (req, res) => {
 
 var forgetPasswordController = async (req, res) => {
     try {
-        let msg = await service.forgetPassword(req.body);
+        let msg = await service.forgetPassword(req);
         res.status(200).json({ success: true, msg });
     } catch (error) {
         if (error instanceof ClientError) {

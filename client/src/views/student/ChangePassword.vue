@@ -149,7 +149,7 @@
 
   <style scoped>
   :deep(.ant-col-4) {
-  flex: 40%;
+  /* flex: 40%; */
   max-width: 100%;
 }
 </style>

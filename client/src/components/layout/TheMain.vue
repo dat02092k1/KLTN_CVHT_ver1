@@ -13,7 +13,7 @@
               >Lớp học:</label
             >
             <label class="text-[14px] text-[#606266] ml-2 leading-10" for=""
-              >K64-C-CLC</label
+              >{{ userClass }}</label
             >
           </div>
           <div class="flex justify-between">
@@ -21,7 +21,7 @@
               class="bg-[#324f90] text-[#fff] p-2 rounded"
               to="/student/add"
             >
-              Thêm sinh viên
+              Thêm người dùng 
             </RouterLink>
 
             <RouterLink
@@ -137,7 +137,7 @@ import Spinner from "../../views/base/Spinner/Spinner.vue";
 import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
 import { createVNode, defineComponent } from "vue";
 import { Modal } from "ant-design-vue";
-import { getRole } from "../../utils/getInfoUser.js";
+import { getRole, getClass } from "../../utils/getInfoUser.js";
 import {
   format, parseISO
 } from "date-fns";
@@ -155,7 +155,8 @@ export default {
       showFilter: false,
       searchName: "",
       isShowSpinner: true,
-      userRole: getRole()
+      userRole: getRole(),
+      userClass: getClass()      
     };
   },
   computed: {
