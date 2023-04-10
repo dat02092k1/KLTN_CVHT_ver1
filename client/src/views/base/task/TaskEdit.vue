@@ -36,43 +36,23 @@
             />
           </div>
         </div>
-        <div
-          class="student grid grid-cols-6 gap-3 my-5"
-          v-for="(student, index) in this.useTask.tasks.assignedStudents" :key="index"
-        >
-          <div
-            class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
-          >
-          {{ index + 1 }}
-          </div>
-           
-          <div
-            class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
-          >
-            Sinh viên
-          </div>
-          <div class="">
-            <input
-              id="pretext-input"
-              class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
-              type="text"
-              v-model.number="student.studentId"
-              placeholder="Điểm"
-            />
-          </div>
-          <div
-            class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
-          >
-          Trạng thái
-          </div>
-          <div class="">
-            <input type="checkbox" v-model="student.isCompleted">
-          </div>
-          <button @click.prevent="removeStudent(index)">
-            <i class="fa-solid fa-minus"></i>
-          </button>
-        </div>
+        
   
+        <a-form-item
+                name="assignedStudents"
+                label="Sinh viên"
+              >
+                <a-select
+                  v-model:value="this.formState.studentAssign"
+                  mode="tags"
+                  style="width: 100%"
+                  placeholder="Chọn sinh viên"
+                  :options="optionStudents"
+                  @change="handleChange"
+                >
+                </a-select>
+              </a-form-item>
+
         <div>
           <a-date-picker
         v-model:value="this.useTask.tasks.duration"
@@ -83,8 +63,6 @@
       />
         </div>
         <div class="flex flex-col  ">
-          <button class="flex" @click.prevent="addStudent">Thêm sinh viên</button>
-  
         <button class="flex" type="submit">Lưu</button>
         </div>
       </form>
@@ -107,6 +85,7 @@
   <script>
     import { RouterLink, RouterView, useRoute } from "vue-router";
     import { useTaskStore } from "../../../stores/task.js";
+    import { useStudentStore } from "../../../stores/student.js";
     import { getAccessToken } from "../../../utils/config.js";
     import { getId } from "../../../utils/getInfoUser.js";
     import { Pie } from 'vue-chartjs'
@@ -123,17 +102,25 @@
         duration: undefined, 
         taskId: useRoute().params.id,
         useTask: useTaskStore(),
+        useStudent: useStudentStore(),
         task: [],
         createdBy: getId(),
         loaded: false,
       chartData: null,
       data: [],
       chartOptions: null,
+      students: [],
+      studentIds: [],
+      formState: {
+        studentAssign: []
+      }          
       };
     },
     async mounted() { 
         this.task = await this.useTask.getTaskDetails(this.taskId);
+        this.students = await this.useStudent.getData(); 
 
+        console.log(this.useTask.tasks.assignedStudents);
         const completedStudents = this.task.assignedStudents.filter(student => student.isCompleted === true);
 
         const numCompletedStudents = completedStudents.length;
@@ -150,33 +137,60 @@
           ]
           }
 
+          this.formState.studentAssign = this.useTask.tasks.assignedStudents.map((student) => ({
+                    value: student.student,
+                    label: student.studentId,
+                }));
+                console.log(this.formState.studentAssign);
           this.loaded = true
     },
-    methods: {
-        addStudent() {
-        console.log(this.useTask.tasks.assignedStudents)
-        this.useTask.tasks.assignedStudents.push({ studentId: "", isCompleted: null });
-      },
-        removeStudent(index) {
-        if (index == 0) { alert('cant remove anymore'); }
-        else {
-            this.useTask.tasks.assignedStudents.splice(index, 1);
+    computed: {
+      optionStudents() {
+        if (this.students && this.students.length > 0) {
+            console.log(
+                this.students.map((student) => ({
+                    value: student._id,
+                    label: student.studentId,
+                }))
+            );
+            return this.students.map((student) => ({
+                value: student._id,
+                label: student.studentId,
+            }));
+        } else {
+            return [];
         }
-      },
+      }
+    },
+    methods: {
       submitForm() {
         const taskDetails = {
         task: this.useTask.tasks.task,
         description: this.useTask.tasks.description,
         duration: this.useTask.tasks.duration,
-        assignedStudents: this.useTask.tasks.assignedStudents,
+        assignedStudents: this.studentIds,
         createdBy: this.useTask.tasks.createdBy
       };
 
       console.log(taskDetails);
-
-      this.useTask.editTask(this.taskId, this.task);
+      this.useTask.editTask(this.taskId, taskDetails);
        
-      }
+      },
+      handleChange(value) {
+        this.studentIds = value.map((studentId) => ({
+        student: studentId,
+      }));
+      console.log(this.studentIds);
+    //     if (value) {
+    //       this.formState.studentAssign = value.map((student) => ({
+    //   student: student,
+    //   studentId: ''
+    //     }));
+    //     console.log(this.formState.studentAssign);
+    // } else {
+    //     console.error('Invalid value passed to handleChange:', value);
+    // }
+    }
     },
   };
   </script>

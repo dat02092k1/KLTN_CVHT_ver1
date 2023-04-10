@@ -67,14 +67,14 @@
               </a-form-item>
 
               <a-form-item name="duration" label="Hạn nộp">
-      <a-date-picker
-        v-model:value="formState.duration"
-        show-time
-        type="date"
-        format="YYYY-MM-DD HH:mm:ss"
-        value-format="YYYY-MM-DD HH:mm:ss"
-      />
-    </a-form-item>
+                <a-date-picker
+                  v-model:value="formState.duration"
+                  show-time
+                  type="date"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                />
+              </a-form-item>
             </a-form>
           </a-modal>
         </div>
@@ -130,8 +130,8 @@
             <button @click="prevPage" :disabled="currentPage === 1">
               <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <span> Trang: {{ currentPage }} / {{ totalPages }} </span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">
+            <span> Trang: {{ currentPage }} / {{ useTask.totalPage }} </span>
+            <button @click="nextPage" :disabled="currentPage === useTask.totalPage">
               <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
@@ -182,7 +182,7 @@ export default defineComponent({
       duration: undefined,
       complete: null,
       assignedStudents: [],
-      createdBy: getId()    
+      createdBy: getId(),
       // _class: getClass(),
     });
 
@@ -202,6 +202,7 @@ export default defineComponent({
           formState.complete = checked.value;
 
           formState.assignedStudents = assignedStudents.value;
+          console.log(formState.assignedStudents);
           console.log("formState: ", toRaw(formState));
           const task = toRaw(formState);
           console.log(task);
@@ -218,11 +219,13 @@ export default defineComponent({
 
     const assignedStudents = ref([]);
     const handleChange = (value) => {
+       
       formState.assignedStudents = value;
-
+      console.log(formState.assignedStudents)
       assignedStudents.value = formState.assignedStudents.map((studentId) => ({
         student: studentId,
       }));
+      console.log(assignedStudents.value);
     };
 
     const checked = ref(false);
@@ -260,13 +263,13 @@ export default defineComponent({
 
     function format(dateString) {
       const date = new Date(dateString);
-const day = date.getDate().toString().padStart(2, "0");
-const month = (date.getMonth() + 1).toString().padStart(2, "0");
-const year = date.getFullYear();
-const hours = date.getHours().toString().padStart(2, "0");
-const minutes = date.getMinutes().toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const year = date.getFullYear();
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
 
-return `${day}/${month}/${year} ${hours}:${minutes}`;
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
     }
 
     const options = computed(() => {
@@ -303,7 +306,7 @@ return `${day}/${month}/${year} ${hours}:${minutes}`;
 
     const pages = computed(() => {
       const pages = [];
-      for (let i = 1; i <= totalPages.value; i++) {
+      for (let i = 1; i <= useTask.totalPage; i++) {
         pages.push(i);
       }
       return pages;

@@ -28,13 +28,27 @@
 
         <div
           class="h-12 hover:bg-[#2d3c50] flex items-center"
+          v-if="userRole === 'consultant' "
+        >
+          <a href="">
+            <li>
+              <router-link to="/student/list" class="px-5"> 
+                <i class="fa-solid fa-list mr-4"></i>
+                <span>Danh sách sinh viên</span>
+              </router-link>
+            </li>
+          </a>
+        </div>
+
+        <div
+          class="h-12 hover:bg-[#2d3c50] flex items-center"
           v-if="userRole === 'manager'"
         >
           <a href="">
             <li>
-              <router-link to="/student/list" class="px-5">
+              <router-link to="/student/add" class="px-5">
                 <i class="fa-solid fa-list mr-4"></i>
-                <span>Danh sách sinh viên</span>
+                <span>Thêm người dùng</span>
               </router-link>
             </li>
           </a>
@@ -51,7 +65,7 @@
           </a>
         </div>
 
-        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole === 'manager'">
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole === 'consultant'">
           <a href="">
             <li>
               <router-link to="/consultant/progress" class="px-5">
@@ -62,9 +76,20 @@
           </a>
         </div>
 
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole === 'manager'">
+          <a href="">
+            <li>
+              <router-link to="/consultant/reports-list" class="px-5">
+                <i class="fa-solid fa-paste mr-4"></i>
+                <span>Báo cáo</span>
+              </router-link>
+            </li>
+          </a>
+        </div>
+
         <div
           class="h-12 hover:bg-[#2d3c50] flex items-center"
-          v-if="userRole === 'manager'"
+          v-if="userRole === 'consultant'"
         >
           <a href="">
             <li>
@@ -87,7 +112,7 @@
           </a>
         </div>
 
-        <div class="h-12 hover:bg-[#2d3c50] flex items-center">
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole !== 'manager'">
           <a href="">
             <li>
               <router-link :to="getRole === 'student' ? '/student/onegate' : '/consultant/onegate'" class="px-5">
@@ -98,7 +123,7 @@
           </a>
         </div>
 
-        <div class="h-12 hover:bg-[#2d3c50] flex items-center">
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole !== 'manager'">
           <a href="">
             <li>
               <router-link :to="getRole === 'student' ? '/student/task' : '/consultant/task'" class="px-5">
@@ -120,7 +145,7 @@
           </a>
         </div>
 
-        <div class="h-12 hover:bg-[#2d3c50] flex items-center">
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole !== 'manager'">
           <a href="">
             <li>
               <router-link to="/student/conversation" class="px-5">
@@ -138,7 +163,7 @@
 </template>
 
 <script>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView, useRoute } from "vue-router";
 import { getRole } from "../../utils/getInfoUser.js";
 import { MailOutlined } from '@ant-design/icons-vue';
 
@@ -153,6 +178,7 @@ export default {
       rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
       openKeys: ['sub1'],
       selectedKeys: [],
+      route: useRoute()
     }
     };
   },

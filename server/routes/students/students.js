@@ -23,4 +23,10 @@ router.post('/student/import-excel', userAuthenticate.isAdminAuthentication, upl
 // import studnets by excel
 router.get('/student/status/:class', userAuthenticate.isAdminAuthentication, studentController.getStudentStatusController);
 // get students by class and status
+
+/**
+ * for test function
+ */
+router.get('/student/get-details/:username' ,studentController.getStudentDetails);
+
 module.exports = router;       

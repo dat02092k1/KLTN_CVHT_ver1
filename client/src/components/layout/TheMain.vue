@@ -1,5 +1,5 @@
 <template>
-  <div class="main" v-if="userRole === 'manager'">
+  <div class="main" v-if="userRole === 'consultant'">
     <div class="main-container pt-0 px-7 pb-7">
       <div class="nav-content bg-[#324f90] p-[1.5rem]">
         <div class="nav-title text-[#fbfbff] font-bold text-[15px]">

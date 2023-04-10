@@ -22,6 +22,7 @@ export const useAuthStore = defineStore({
     },
     errorMsg: false,
     successMsg: false,
+    isLoading: false, 
     userClass: getClass()
   }),
   getters: {},
@@ -55,12 +56,16 @@ export const useAuthStore = defineStore({
         } else {
           console.log(this.errorMsg);
           this.errorMsg = true;
-          setTimeout(() => (this.errorMsg = false), 3000); 
+          this.isLoading = true;
+          setTimeout(() => (
+            this.errorMsg = false
+            ), 3000); 
           throw new Error("Sai thông tn đăng nhập");
         }
       } catch (error) {
         this.errorMsg = true;
         console.log(error);
+        console.log(this.errorMsg);
         setTimeout(() => (this.errorMsg = false), 3000); 
         throw error;
       }

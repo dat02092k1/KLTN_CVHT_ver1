@@ -60,7 +60,7 @@ const router = createRouter({
       path: "/student/list",
       name: "student",
       component: TheMain,
-      meta: { requiresAuth: true, requiresManager: true },
+      meta: { requiresAuth: true, requiresConsultant: true },
     },
     {
       path: "/student/details/:id",
@@ -78,7 +78,7 @@ const router = createRouter({
       path: "/student/status",
       name: "students status list",
       component: StudentStatus,
-      meta: { requiresAuth: true, requiresManager: true },
+      meta: { requiresAuth: true, requiresConsultant: true },
     },
     {
       path: "/login",
@@ -209,7 +209,7 @@ const router = createRouter({
       path: "/consultant/task",
       name: "assign task",
       component: TaskList,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, hideManager: true },
     },
     {
       path: "/student/task/",
@@ -246,7 +246,7 @@ const router = createRouter({
       name: "edit announcement",
       component: AnnouncementEdit,
       meta: { requiresAuth: true,
-              requiresManager: true },
+        requiresConsultant: true },
     },
     {
       path: "/student/onegate",
@@ -277,14 +277,14 @@ const router = createRouter({
       name: "consultant onegate",
       component: FormList,
       meta: { requiresAuth: true,
-              requiresManager: true },
+        requiresConsultant: true },
     },
     {
       path: "/consultant/onegate/status/:id",
       name: "consultant onegate update",
       component: Update,
       meta: { requiresAuth: true,
-              requiresManager: true },
+        requiresConsultant: true },
     },
     {
       path: "/student/onegate/forms/:id",
@@ -296,7 +296,8 @@ const router = createRouter({
       path: "/consultant/reports-list",
       name: "consultant list reports",
       component: ReportList,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true,
+        requiresManager: true },
     },
     {
       path: "/consultant/progress",
@@ -320,20 +321,34 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = (getRole() !== null);
-  const isConsultant = (getRole() === "manager");
+  const isConsultant = (getRole() === "consultant");
+  const isManager = (getRole() === "manager");
 
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (!isAuthenticated) {
       next({ name: "login" });
-    } else if (
-      to.matched.some((route) => route.meta.requiresManager && !isConsultant)
-    ) {
+    } 
+    else if (
+      to.matched.some((route) => route.meta.requiresConsultant && !isConsultant)
+    ) 
+    {
       if (from.path) {
         next(from.path);
       } else {
         next("student/form");
       }
-    } else {
+    }
+    else if(
+      to.matched.some((route) => route.meta.requiresManager && !isManager)
+    ) 
+    {
+      if (from.path) {
+        next(from.path);
+      } else {
+        next("student/form");
+      }
+    } 
+    else {
       next();
     }
   } else {

@@ -33,6 +33,7 @@
               @click="getMessage(user._id, user.members)"
               class="my-3 text-center cursor-pointer hover:bg-[#5b6ed8]"
             >
+              <!-- {{ names[filterDuplicate(user.members, getUsername)] }} -->
               {{ filterDuplicate(user.members, getUsername) }}
             </li>
           </ul>
@@ -94,6 +95,7 @@
 import { useChatStore } from "../../../stores/conversation.js";
 import { getUsername } from "../../../utils/getInfoUser.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
+import axios from "axios";
 import Spinner from "../Spinner/Spinner.vue";
 
 import io from "socket.io-client";
@@ -114,7 +116,8 @@ export default {
       pageSize: 10,
       isLoading: true,  
       msgNoti: false,
-      currentUser: getUsername()
+      currentUser: getUsername(),
+      names: undefined
     };
   },
   async mounted() {
@@ -150,7 +153,13 @@ export default {
   created() {},
   methods: {
     filterDuplicate(arr, username) {
-      return arr.find((another) => another !== username);
+      console.log(username);
+      const otherUsername = arr.find((another) => another !== username);
+      return otherUsername;
+      // const res = await axios.get(`http://localhost:8000/student/get-details/${otherUsername}`)
+
+      // console.log(res.data.students.name);
+      // return res.data.students.name;
     },
     getMessage(id, mem) {
       this.conversationId = id;
@@ -251,7 +260,37 @@ export default {
     async getConversations(username) {
       await this.useChat.getConversation(username);
       this.selectedOption = 1;
+      this.names = await this.getUserNames(this.useChat.conversation, username)
+    },
+    // Function to get names for all unique usernames in an array of conversations
+    async getUserNames(conversations, currentUser) {
+      console.log(currentUser);
+  const usernames = new Set();
+
+  conversations.forEach((conversation) => {
+    conversation.members.forEach((member) => {
+      if (member !== currentUser) {
+        usernames.add(member);
+      }
+    });
+  });
+
+  const names = {};
+
+  for (const username of usernames) {
+    try {
+      const response = await axios.get(`http://localhost:8000/student/get-details/${username}`);
+
+      const user = response.data.students;
+      names[user.studentId] = user.name;
+      console.log(names); 
+    } catch (error) {
+      console.error(error);
     }
+  }
+  return names;
+}
+
   },
   components: {
     Spinner

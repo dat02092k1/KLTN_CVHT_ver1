@@ -7,7 +7,7 @@
             </div>
             <div>
 
-            <a-alert v-show="this.store.errorMsg === true" message="Sai thông tin tài khoản hoặc mật khẩu" type="error" show-icon />
+            <a-alert v-show="this.store.errorMsg" message="Sai thông tin tài khoản hoặc mật khẩu" type="error" show-icon />
             <!--
                 // ANTD COMPONENTS
             -->

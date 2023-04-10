@@ -124,7 +124,7 @@ export const useStudentStore = defineStore({
     async getStudentDetails(id) {
       try {
         const accessToken = window.localStorage.getItem("token");
-        console.log(accessToken);
+         
         const config = {
           headers: {
             token: `Bearer ${accessToken}`,
@@ -136,9 +136,9 @@ export const useStudentStore = defineStore({
           config
         );
         this.studentDetails = response.data.details;
-
+        console.log(response.data.details);
         return response.data.details;
-        console.log(this.studentDetails.studentId);
+         
       } catch (error) {
         console.error(error);
       }

@@ -10,6 +10,7 @@ export const useTaskStore = defineStore({
   state: () => ({
     createdBy: getId(),
     tasks: [],
+    totalPage: null,
     successMsg: false,
     errorMsg: false,
   }),
@@ -51,7 +52,8 @@ export const useTaskStore = defineStore({
         console.log(task);
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
-        this.getTasksPerPage(); 
+        const page = 1;
+        this.getTasksPerPage(page); 
       } catch (error) {
         console.log(error);
         this.errorMsg = true;
@@ -76,6 +78,7 @@ export const useTaskStore = defineStore({
     async editTask(taskId, taskDetails) {
       try {
         const config = getAccessToken();
+        console.log(taskDetails);
         const task = await axiosIns.put(
           API_ENDPOINTS.editTask + taskId,
           taskDetails,
@@ -154,6 +157,8 @@ export const useTaskStore = defineStore({
           config
         );
         console.log(res.data.tasks);
+        this.totalPage = res.data.tasks.total;
+        console.log(this.totalPage);
         this.tasks = res.data.tasks.tasks;
         return res.data.tasks;
       } catch (error) {

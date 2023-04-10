@@ -12,7 +12,7 @@ router.delete('/report/delete/:id', userAuthenticate.isAdminAuthentication, repo
 // delete report
 router.get('/report/details/:id', userAuthenticate.isAdminAuthentication, report.getDetailsReport);
 // get details report
-router.get('/report/list', userAuthenticate.isAdminAuthentication, report.getListReports);
+router.get('/report/list', userAuthenticate.isManagerAuth, report.getListReports);
 // get list reports 
 router.put('/report/edit/:id', userAuthenticate.isAdminAuthentication, report.editReport);
 // edit report

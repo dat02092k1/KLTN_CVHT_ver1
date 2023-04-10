@@ -8,7 +8,7 @@ var getTaskService = async (req) => {
   try {
     const { createdBy } = req.query;
 
-    const tasks = await taskModel.find({ createdBy: createdBy });
+    const tasks = await taskModel.find({ createdBy: createdBy }).sort({ createdAt: -1 });
     if (!tasks) throw new ClientError(`tasks not found`, 404);
 
     return tasks;
@@ -53,16 +53,24 @@ var createTaskService = async (taskDetail) => {
 var editTaskService = async (taskDetails, taskId) => {
   try {
     const { assignedStudents } = taskDetails;
+    console.log(assignedStudents);
 
+     // Check for duplicate items in the assignedStudents array
+     const studentIds = new Set();
+     for (const item of assignedStudents) {
+       if (studentIds.has(item.student)) {
+         throw new ClientError("Duplicate student id " + item.student, 400);
+       }
+       studentIds.add(item.student);
+     }
+ 
     for (const item of assignedStudents) {
-      const studentAssign = await studentModel.findOne({
-        studentId: item.studentId,
-      });
+      const studentAssign = await studentModel.findById(item.student);
 
       if (!studentAssign) {
-        throw new ClientError("Không tìm thấy sinh viên", 404);
+        throw new ClientError("Không tìm thấy sinh viên " + item.student , 404);
       }
-      item.student = studentAssign._id;
+      item.studentId = studentAssign.studentId;
     }
     console.log(taskDetails);
 
@@ -153,7 +161,7 @@ var getTasksPerPageService = async (req) => {
     const totalTask = await taskModel.find({ createdBy: createdBy });
 
     const tasks = await taskModel.find({ createdBy: createdBy })
-                                   .sort({ createdAt: 1 })
+                                   .sort({ createdAt: -1 })
                                    .skip(skip)
                                    .limit(pageSize);
 

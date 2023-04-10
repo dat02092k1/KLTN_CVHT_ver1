@@ -52,7 +52,7 @@
         const role = window.localStorage.getItem("role");
           console.log(role);
         
-        if (role === 'manager') {
+        if (role === 'consultant') {
           this.isAdmin = true;
         }
           const config = {

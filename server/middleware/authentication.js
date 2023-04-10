@@ -22,7 +22,7 @@ const verifyToken = (req, res, next) => {
 const roleAuthentication = (req, res, next) => {
   verifyToken(req, res, () => {
      
-    if (req.user.id == req.params.id || req.user.role === "manager") {
+    if (req.user.id == req.params.id || req.user.role === "consultant") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");
@@ -45,7 +45,7 @@ const studentIdAuthentication = (req, res, next) => {
     
   verifyToken(req, res, () => {
      
-    if (req.user.id == req.params.studentId || req.user.role === "manager") {
+    if (req.user.id == req.params.studentId || req.user.role === "consultant") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");
@@ -58,8 +58,19 @@ const roleAuthenticationGetUsername = (req, res, next) => {
      
     if (
       req.user.username == req.params.username ||
-      req.user.role === "manager"
+      req.user.role === "consultant"
     ) {
+      next();
+    } else {
+      res.status(403).json("You are not allowed to do this");
+    }
+  });
+};
+
+const isManagerAuth = (req, res, next) => {
+  verifyToken(req, res, () => {
+     
+    if (req.user.role === "manager") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");
@@ -70,7 +81,7 @@ const roleAuthenticationGetUsername = (req, res, next) => {
 const isAdminAuthentication = (req, res, next) => {
   verifyToken(req, res, () => {
      
-    if (req.user.role === "manager") {
+    if (req.user.role === "consultant") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");
@@ -84,5 +95,6 @@ module.exports = {
   roleAuthenticationGetUsername,
   isAdminAuthentication,
   studentIdAuthentication,
-  onlyOwner
+  onlyOwner,
+  isManagerAuth
 };

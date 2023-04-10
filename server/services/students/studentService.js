@@ -228,6 +228,24 @@ var getStudentStatusService = async (req) => {
     throw error;
   }
 };
+
+var getStudentDetailsService = async (username) => {
+  try {
+    if (!username) {
+      throw new ClientError("username is required", 404);
+    }
+
+    const student = await studentsModel.findOne({ studentId: username});
+
+    if (!student) {
+      throw new ClientError(`No student found with id: ${username}`, 404);
+    }
+
+    return student;
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   studentServiceGetAll,
   createStudentService,
@@ -236,5 +254,6 @@ module.exports = {
   deleteStudentService,
   getNameStudentService,
   uploadStudentsService,
-  getStudentStatusService
+  getStudentStatusService,
+  getStudentDetailsService
 };
