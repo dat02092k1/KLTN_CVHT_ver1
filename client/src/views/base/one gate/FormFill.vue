@@ -1,82 +1,197 @@
 <template>
   <div>
-    <NavTitle :title="pageTitle" />
+    <div class="header-forum">
+      <NavTitle :title="pageTitle" />
 
-    <div class="flex justify-end my-2 mx-7">
-      <router-link :to="{ path: '/student/onegate/forms/' + studentId }">
-        <button class="bg-[#2296f3] p-2 rounded text-[#ffffff]">
-          Danh sách mẫu đã nộp
-        </button>
-      </router-link>
-    </div>
+      <div class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded">
+        <div class="flex justify-between items-center">
+          <div>
+            <router-link :to="{ path: '/student/onegate/forms/' + studentId }">
+              <button class="bg-[#2296f3] p-2 rounded text-[#ffffff]">
+                Danh sách mẫu đã nộp
+              </button>
+            </router-link>
+          </div>
 
-    <div class="flex flex-col justify-center items-center my-4">
-      <div class="my-3">
-        <h2 class="font-bold text-lg">Chọn biểu mẫu nộp</h2>
+          <a-button
+            class="bg-[#324f90] rounded"
+            type="primary"
+            @click="visible = true"
+            >Thêm biểu mẫu</a-button
+          >
+
+          <a-modal
+            v-model:visible="visible"
+            title="Thêm bài đăng mới"
+            ok-text="Create"
+            cancel-text="Cancel"
+            @ok="onOk"
+          >
+            <a-form
+              ref="formRef"
+              :model="formState"
+              layout="vertical"
+              name="form_in_modal"
+            >
+              <a-form-item
+                name="type"
+                label="Type"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'Chưa điền tên biểu mẫu!',
+                  },
+                ]"
+              >
+                <a-input v-model:value="formState.type" />
+              </a-form-item>
+
+
+              <a-form-item name="file" label="File">
+                <input type="file" @change="uploadDocs">
+              </a-form-item>
+            </a-form>
+            <Spinner v-show="useUpload.loading" />
+          </a-modal>
+        </div>
+
+        <div class="flex justify-center my-4">
+          <a-alert
+            v-show="useForm.successMsg === true"
+            message="Thêm biểu mẫu thành công"
+            type="success"
+            show-icon
+          />
+          <a-alert
+            v-show="useForm.errorMsg === true"
+            message="Thêm biểu mẫu thất bại"
+            type="error"
+            show-icon
+          />
+
+          <a-menu
+            v-model:selectedKeys="selectedKeys"
+            style="width: 300px"
+            mode="inline"
+            :open-keys="openKeys"
+            @openChange="onOpenChange"
+          >
+            <a-sub-menu key="sub1">
+              <template #icon>
+                <MailOutlined />
+              </template>
+              <template #title>Biểu mẫu</template>
+              <a-menu-item key="1">
+                <span><i class="fa-solid fa-sheet-plastic"></i> </span>
+                <router-link :to="{ path: '/student/onegate/training' }">
+                  <span> Phiếu đánh giá kết quả rèn luyện </span>
+                </router-link>
+              </a-menu-item>
+
+              <a-menu-item key="2">
+                <span><i class="fa-solid fa-sheet-plastic"></i> </span>
+                <router-link :to="{ path: '/student/onegate/meeting' }">
+                  <span> Biên bản họp lớp </span>
+                </router-link>
+              </a-menu-item>
+
+              <a-menu-item key="3">
+                <span><i class="fa-solid fa-sheet-plastic"></i> </span>
+                <router-link :to="{ path: '/student/onegate/study' }">
+                  <span> Kế hoạch học tập </span>
+                </router-link>
+              </a-menu-item>
+
+              <a-menu-item key="4">
+                <span><i class="fa-solid fa-sheet-plastic"></i> </span>
+                <router-link :to="{ path: '/student/onegate/rest' }">
+                  <span> Khác </span>
+                </router-link>
+              </a-menu-item>
+            </a-sub-menu>
+          </a-menu>
+        </div>
       </div>
-      <a-menu
-        v-model:selectedKeys="selectedKeys"
-        style="width: 300px"
-        mode="inline"
-        :open-keys="openKeys"
-        @openChange="onOpenChange"
-      >
-        <a-sub-menu key="sub1">
-          <template #icon>
-            <MailOutlined />
-          </template>
-          <template #title>Biểu mẫu</template>
-          <a-menu-item key="1">
-            <span><i class="fa-solid fa-sheet-plastic"></i> </span>
-            <router-link :to="{ path: '/student/onegate/training' }">
-              <span> Phiếu đánh giá kết quả rèn luyện </span>
-            </router-link>
-          </a-menu-item>
-
-          <a-menu-item key="2">
-            <span><i class="fa-solid fa-sheet-plastic"></i> </span>
-            <router-link :to="{ path: '/student/onegate/meeting' }">
-              <span> Biên bản họp lớp </span>
-            </router-link>
-          </a-menu-item>
-
-          <a-menu-item key="3">
-            <span><i class="fa-solid fa-sheet-plastic"></i> </span>
-            <router-link :to="{ path: '/student/onegate/study' }">
-              <span> Kế hoạch học tập </span>
-            </router-link>
-          </a-menu-item>
-        </a-sub-menu>
-      </a-menu>
     </div>
+    
   </div>
 </template>
-<script>
-import { defineComponent, reactive, toRefs, onMounted, ref } from "vue";
-import NavTitle from "../NavBar/NavTitle.vue";
-import { getId } from "../../../utils/getInfoUser.js";
-import { useFormStore } from "../../../stores/form.js";
 
+<script>
+import { defineComponent, onMounted, reactive, ref, toRefs, toRaw, watch } from "vue";
+import NavTitle from "../NavBar/NavTitle.vue";
+import Loading from "../Spinner/Loading.vue";
+import Spinner from "../Spinner/Spinner.vue";
+import { RouterLink, RouterView } from "vue-router";
+import {
+  getClass,
+  getId,
+  getRole,
+  getUsername,
+} from "../../../utils/getInfoUser";
+import { sendNoti } from "../../../socket/socket.js";
+import { message } from "ant-design-vue";
+import { useFormStore } from "../../../stores/form.js";
+import { useUploadStore } from "../../../stores/upload.js";
 import {
   MailOutlined,
   AppstoreOutlined,
   SettingOutlined,
 } from "@ant-design/icons-vue";
+
 export default defineComponent({
-  components: {
-    MailOutlined,
-    AppstoreOutlined,
-    SettingOutlined,
-    NavTitle,
-  },
   setup() {
+    const formRef = ref();
+    const visible = ref(false);
+    const successMsg = ref(false);
+    const errorMsg = ref(false);
+    const userClass = getClass()
+    const formState = reactive({
+      student: getId(),
+      type: "",
+      fileUrl: "",
+      _class: userClass[0],
+    });    
+
+    const studentId = getId();
     const state = reactive({
       rootSubmenuKeys: ["sub1", "sub2", "sub4"],
       openKeys: ["sub1"],
       selectedKeys: [],
     });
 
-    const pageTitle = "Điền biểu mẫu";
+    const onOk = () => {
+      formRef.value
+        .validateFields()
+        .then((values) => {
+          console.log("formState: ", toRaw(formState));
+          const form = toRaw(formState);
+
+          useForm.addForm(form);
+          visible.value = false;
+          formRef.value.resetFields();
+          console.log("reset formState: ", toRaw(formState));
+          successMsg.value = true;
+          setTimeout(() => (successMsg.value = false), 3000);
+        })
+        .catch((info) => {
+          console.log("Validate Failed:", info);
+          errorMsg.value = true;
+          setTimeout(() => (errorMsg.value = false), 3000);
+        });
+    };
+
+    const useForm = useFormStore();
+    const useUpload = useUploadStore();
+    const showLoading = ref(true);
+    const pageTitle = "Biểu mẫu";
+    const username = getUsername();
+    const userRole = getRole();
+
+
+    // onMounted(async () => {
+    //    showLoading.value = false;
+    // });
 
     const onOpenChange = (openKeys) => {
       const latestOpenKey = openKeys.find(
@@ -89,23 +204,52 @@ export default defineComponent({
       }
     };
 
-    const useForm = useFormStore();
+    const uploadDocs = async (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('doc', file);
+        const docs = await useUpload.uploadDocs(formData);
+        formState.fileUrl = docs;
+        console.log(formState.fileUrl);
+      }
 
-    const studentId = getId();
-
-    const forms = ref([]);
-    onMounted(async () => {
-      // const _id = getId();
-      // forms.value = await useForm.getUserForms(_id);
-      // console.log(forms.value);
-    });
     return {
+      formState,
+      formRef,
+      visible,
+      onOk,
+      useForm,
+      pageTitle,
+      showLoading,
+      uploadDocs,
+      successMsg,
+      errorMsg,
+      username,
+      userRole,
+      useUpload,
       ...toRefs(state),
       onOpenChange,
-      pageTitle,
-      forms,
-      studentId,
+      studentId
     };
+  },
+  components: {
+    NavTitle,
+    Loading,
+    Spinner,
+    MailOutlined,
+    AppstoreOutlined,
+    SettingOutlined,
   },
 });
 </script>
+
+<style scoped>
+.forum-list {
+  overflow-y: scroll;
+  height: calc(100vh - 150px);
+}
+.forum-item {
+  border: 1px solid #85bde5;
+  padding: 20px;
+}
+</style>

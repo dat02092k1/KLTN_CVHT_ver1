@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
- 
 const Schema = mongoose.Schema;
 
 const studentSchema = new Schema({
@@ -55,9 +54,14 @@ const studentSchema = new Schema({
         type: Number,
         default: 0 
     },
-    _class: {
-        type: String,
-    },
+    _class: [
+        {
+            name: { 
+                type: String,
+                required: true
+            }
+        }
+    ],
     paidFee: {
         type: Boolean
     }

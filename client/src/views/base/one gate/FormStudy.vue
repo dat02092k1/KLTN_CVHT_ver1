@@ -58,8 +58,63 @@
               </a-form>
             </a-modal>
           </div>
-  
           
+          <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+        <th>STT</th>
+          <th>Mẫu đơn</th>
+          <th>File</th>
+          <th>Status</th>
+          <th>Thời gian</th> 
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in forms" :key="index">
+            <td>{{ index + 1 }}</td>
+          <td class="text-[#7bb2ff]">{{ item.type }}</td>
+          <td>
+            <button @click="downloadFile(item.fileUrl)">file</button>
+          </td>
+          <td>
+            <span v-if="item.status === 'pending'" class="text-[#e9990c]" title="Pending">
+                  <i class="fa-regular fa-circle-question"></i>
+            </span>
+      <span v-else-if="item.status === 'rejected'" title="Rejected" class="text-[#d50023]">
+        <i class="fa-regular fa-circle-xmark"></i>
+    </span>
+      <span v-else  title="Successful" class="text-[#38af48]">
+        <i class="fa-regular fa-circle-check"></i>
+      </span>
+          </td>
+
+          <td>
+           <span>
+            {{ formatDate(item.updatedAt) }}
+           </span>
+          </td>
+           
+          <td>
+            <div class="flex justify-center gap-2">
+              <a-popconfirm title="Title" @confirm="confirm(item._id, item.type)" @cancel="cancel">
+    <button class="mr-1"><i class="fa-regular fa-trash-can"></i></button>
+  </a-popconfirm>
+            
+            
+              <router-link :to="{ path: '/consultant/onegate/status/' + item._id}" >
+                <span>
+                <i class="fa-regular fa-pen-to-square"></i>
+            </span>
+              </router-link>
+                 
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
         </div>
       </div>
       <Loading v-if="showLoading" />
@@ -120,8 +175,10 @@
         console.log(option);
       }
   
+      const forms = ref ([]);
+      const studentId = getId(); 
       onMounted(async () => {
-        // useForm.getListAnnouncement();
+         forms.value = await useForm.getFormsByType(studentId, formState.type); 
         showLoading.value = false;
       });
   
@@ -140,7 +197,7 @@
       }
        
       const confirm = (id) => {
-        useForm.deleteAnnouncement(id); 
+        useForm.deleteForm(id); 
     };
 
     const cancel = e => {
@@ -150,6 +207,15 @@
 
     const sampleFile = "https://res.cloudinary.com/dpnjutbws/raw/upload/v1679729291/File_docs_CVHT_UET/t9uwd8hsq6fn6dnqrxrs.pdf"; 
 
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+  return `${day}/${month}/${year} ${hour}:${minute}`;
+}
       return {
         formState,
         formRef,
@@ -167,7 +233,9 @@
         confirm,
         cancel,
         userRole,
-        sampleFile  
+        sampleFile,
+        forms,
+        formatDate
       };
     },
     components: { NavTitle, Loading },
@@ -175,18 +243,28 @@
   </script>
   
   <style scoped>
-  .forum-list {
-    overflow-y: scroll;
-    height: calc(100vh - 150px);
-  }
-  .forum-item {
-    border: 1px solid #85bde5;
-    padding: 20px;
-  }
+   .table-container {
+  margin: 0 auto;
+  width: 100%;
+  height: 360px;
+   overflow: auto;
+}
 
-  .academic_announ {
-    height: 400px;
-    margin: 10px 0;
-  }
+table {
+  border-collapse: collapse;
+  width: 60%;
+  margin: auto;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #fafafa;
+}
   </style>
   

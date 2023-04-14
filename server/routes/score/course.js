@@ -1,6 +1,10 @@
 var express = require('express');
 var courseController = require('../../controllers/score/courseController.js')
 var userAuthenticate = require('../../middleware/authentication.js')
+var validate = require('../../middleware/validation.js');
+
+var upload = require('../../uploads/multer.js').upload;
+
 const router = express.Router();
 
 // add course
@@ -13,5 +17,7 @@ router.put('/student/edit-course/:courseId', userAuthenticate.roleAuthentication
 router.delete('/student/delete-course/:courseId', userAuthenticate.roleAuthentication, courseController.deleteCourseController);
 // get course details
 router.get('/student/course/:courseId', userAuthenticate.roleAuthentication, courseController.getCourseDetailsController);
+// import courses by excel
+router.post('/student/course/import', upload.single('file'), validate.validateCourse, courseController.importCoursesExcel);
 
 module.exports = router;       

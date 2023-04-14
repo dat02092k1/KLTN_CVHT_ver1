@@ -9,12 +9,12 @@
               class="bg-[#324f90] rounded"
               type="primary"
               @click="visible = true"
-              >Thêm phiếu KQRL</a-button
+              >Thêm biên bản họp lớp</a-button
             >
   
             <a-modal
               v-model:visible="visible"
-              title="Phiếu đánh giá kết quả rèn luyện"
+              title="Biên bản họp lớp"
               ok-text="Create"
               cancel-text="Cancel"
               @ok="onOk"
@@ -32,17 +32,9 @@
                     <span class="text-red-500 text-xl"> * </span> <label>Lưu ý :</label>
                 </div>
                 <p class="text-sm italic">
-                        Sinh viên chọn phiếu theo yêu cầu, số bản bằng tiếng Việt hoặc tiếng Anh; phiếu đánh giá KQRL cần ghi rõ họ tên, lớp, và các yêu cầu khác, cụ thể theo mẫu file bên dưới.
+                        Sinh viên chọn phiếu theo yêu cầu, số bản bằng tiếng Việt hoặc tiếng Anh; mẫu Biên bản họp lớp cần ghi rõ họ tên, lớp, và các yêu cầu khác, cụ thể theo mẫu file bên dưới.
                 </p>
-                <div class="flex gap-1">
-                    <span class="text-red-500 text-xl">*</span>
-                <label>
-                    File mẫu:
-                </label>
-
-                <a :href="sampleFile">sample.pdf</a>
                
-                </div>
                 </div>
                 
   
@@ -132,7 +124,7 @@
       const errorMsg = ref(false);
       const formState = reactive({
         student: getId(),
-        type: "Phiếu đánh giá kết quả rèn luyện",  
+        type: "Biên bản họp lớp",  
         fileUrl: ""
       });
   
@@ -160,7 +152,7 @@
       const useUpload = useUploadStore();
       const showOptions = reactive([]);
       const showLoading = ref(true);
-      const pageTitle = ("Đánh giá KQRL");
+      const pageTitle = ("Khác");
   
       function handleOptionClick(option) {
         // Xử lý khi người dùng click vào một option
@@ -170,8 +162,7 @@
       const forms = ref ([]);
       const studentId = getId(); 
       onMounted(async () => {
-        // useForm.getListAnnouncement();
-         forms.value = await useForm.getFormsByType(studentId, formState.type); 
+         forms.value = await useForm.getFormsRest(studentId); 
         showLoading.value = false;
       });
   
@@ -190,16 +181,14 @@
       }
        
       const confirm = (id) => {
-        useForm.deleteAnnouncement(id); 
+        useForm.deleteForm(id); 
     };
 
     const cancel = e => {
       console.log(e);
       message.error('Click on No');
     };
-
-    const sampleFile = "https://res.cloudinary.com/dpnjutbws/raw/upload/v1679729291/File_docs_CVHT_UET/t9uwd8hsq6fn6dnqrxrs.pdf"; 
-
+ 
       return {
         formState,
         formRef,
@@ -217,8 +206,7 @@
         confirm,
         cancel,
         userRole,
-        sampleFile,
-        forms
+        forms 
       };
     },
     components: { NavTitle, Loading },
@@ -226,7 +214,7 @@
   </script>
   
   <style scoped>
-  .table-container {
+   .table-container {
   margin: 0 auto;
   width: 100%;
   height: 360px;

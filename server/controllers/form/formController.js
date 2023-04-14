@@ -90,11 +90,43 @@ var getFormsUserController = async (req, res) => {
     }
   }
 };
+
+var getFormsByType = async (req, res) => {
+  try {
+    var forms = await formService.getFormsByTypeService(req);
+    res.status(200).json({ success: true, forms });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof ClientError) {
+      res.status(error.status).send({ message: error.message });
+    } else {
+      console.log(error);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  }
+};
+
+var getFormsRest = async (req, res) => {
+  try {
+    var forms = await formService.getFormsRestService(req.params.id);
+    res.status(200).json({ success: true, forms });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof ClientError) {
+      res.status(error.status).send({ message: error.message });
+    } else {
+      console.log(error);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  }
+};
 module.exports = {
   createFormController,
   getFormsController,
   deleteFormController,
   updateFormController,
   getDetailsFormController,
-  getFormsUserController
+  getFormsUserController,
+  getFormsByType,
+  getFormsRest
 };

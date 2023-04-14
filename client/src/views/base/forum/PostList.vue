@@ -3,8 +3,17 @@
     <div class="header-forum">
       <NavTitle :title="pageTitle" />
 
-      <div class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded">
-        <div class="flex justify-end">
+      <div class="forum-list bg-[#fff] px-[1.5rem] py-4 mx-6 rounded">
+        <div class="flex justify-between items-center">
+          <div>
+            <label for=""> Lớp: </label>
+            <a-select class="p-6" v-model:value="selectedOption" >
+    <a-select-option v-for="option in optionsWithValueAndLabel" :key="option.value" :value="option.value">
+      {{ option.label }}
+    </a-select-option>  
+  </a-select>
+          </div>
+
           <a-button
             class="bg-[#324f90] rounded"
             type="primary"
@@ -66,7 +75,7 @@
           
         </div>
 
-        <div>
+        <div class="forum-table bg-[#fff]">
           <a-alert v-show="useForum.successMsg === true" message="Thêm bài đăng thành công" type="success" show-icon />
           <a-alert v-show="useForum.errorMsg === true" message="Thêm bài đăng thất bại" type="error" show-icon />
           <div
@@ -112,13 +121,37 @@
           <hr style="border-top: 1px solid #ddd" />
         </div>
       </div>
+
+      <div class="flex flex-col ml-[1.5rem]">
+          <div class="flex gap-1">
+            <button @click="prevPage" :disabled="currentPage === 1">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <span> Trang: {{ currentPage }} / {{ useForum.totalPages }} </span>
+            <button
+              @click="nextPage"
+              :disabled="currentPage === useForum.totalPages"
+            >
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <ul class="flex gap-1">
+            <li
+              v-for="page in pages"
+              :key="page"
+              :class="{ active: page === currentPage }"
+            >
+              <a href="#" @click.prevent="goToPage(page)">{{ page }}</a>
+            </li>
+          </ul>
+        </div>
     </div>
     <Loading v-if="showLoading" />
   </div>
 </template>
 
 <script>
-import { defineComponent, onMounted, reactive, ref, toRaw } from "vue";
+import { defineComponent, onMounted, reactive, ref, toRaw, watch, computed } from "vue";
 import NavTitle from"../NavBar/NavTitle.vue";
 import Loading from '../Spinner/Loading.vue';
 import Spinner from '../Spinner/Spinner.vue';
@@ -135,12 +168,24 @@ export default defineComponent({
     const visible = ref(false);
     const successMsg = ref(false);
     const errorMsg = ref(false);
+    const userClass = getClass();
+    const selectedOption = ref(userClass[0]);
     const formState = reactive({
       user: getId(),
       title: "",
       content: "",
-      _class: getClass(),  
-      imageUrl: ""
+      imageUrl: "",
+      _class: selectedOption.value
+    });
+
+    const optionsWithValueAndLabel = userClass.map((className) => {
+      return { value: className, label: className };
+    });
+
+    watch(selectedOption, async (newVal) => {
+      await useForum.getPostsPerPage(newVal, currentPage.value);
+      formState._class = newVal;
+      console.log(formState._class);
     });
 
     const onOk = () => {
@@ -157,7 +202,7 @@ export default defineComponent({
           room: post._class
         }
           sendNoti(noti);
-          useForum.getListPosts(formState._class);
+          useForum.getPostsPerPage(formState._class, 1);
           console.log(formState._class);
           visible.value = false;
           formRef.value.resetFields();
@@ -186,13 +231,17 @@ export default defineComponent({
       console.log(option);
     }
 
+    const currentPage = ref(1);
+
     onMounted(async () => {
-      useForum.getListPosts(_class);
+      await useForum.getPostsPerPage(selectedOption.value, currentPage.value);
       showLoading.value = false;
     });
 
     function deletePost(id) {
-      useForum.deletePost(id);
+      showLoading.value = true;
+      useForum.deletePost(id, selectedOption.value, currentPage.value);
+      showLoading.value = false;
     }
 
     const uploadImage = async (event) => {
@@ -204,7 +253,34 @@ export default defineComponent({
       console.log(formState.imageUrl);
     }
      
-    
+    const prevPage = () => {
+      showLoading.value = true;
+      currentPage.value -= 1;
+      useForum.getPostsPerPage(selectedOption.value, currentPage.value);
+      showLoading.value = false;
+    };
+
+    const nextPage = () => {
+      showLoading.value = true;
+      currentPage.value += 1;
+      useForum.getPostsPerPage(selectedOption.value, currentPage.value);
+      showLoading.value = false;
+    };
+
+    const goToPage = (page) => {
+      showLoading.value = true;
+      currentPage.value = page;
+      useForum.getPostsPerPage(selectedOption.value, currentPage.value);
+      showLoading.value = false;
+    };
+
+    const pages = computed(() => {
+      const pages = [];
+      for (let i = 1; i <= useForum.totalPages; i++) {
+        pages.push(i);
+      }
+      return pages;
+    });
     return {
       formState,
       formRef,
@@ -221,7 +297,14 @@ export default defineComponent({
       errorMsg,
       username,
       userRole,
-      useImg
+      useImg,
+      optionsWithValueAndLabel,
+      selectedOption,
+      currentPage,
+      prevPage,
+      nextPage,
+      goToPage,
+      pages
     };
   },
   components: { NavTitle, Loading, Spinner } 
@@ -230,8 +313,12 @@ export default defineComponent({
 
 <style scoped>
 .forum-list {
-  overflow-y: scroll;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 150px - 30px);
+}
+
+.forum-table {
+  overflow-y: auto;
+  height: 300px;
 }
 .forum-item {
   border: 1px solid #85bde5;

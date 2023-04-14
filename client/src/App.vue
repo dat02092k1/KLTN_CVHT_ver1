@@ -16,7 +16,11 @@ const route = useRoute();
 
 onMounted(() => {
   const _class = getClass();
-  joinRoom(_class);
+  console.log(_class);
+  for (const item of _class) {
+    joinRoom(item);
+  }
+  
   // receiveNoti(noti => alert('post new: ' + noti));
   receiveNoti(noti => openNotification(noti));
   // const _class = getClass();

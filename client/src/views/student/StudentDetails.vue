@@ -233,7 +233,8 @@ export default defineComponent({
       formState.role = response.role;
       formState.emailAddress = response.emailAddress;
       formState.phone = response.phone;
-      formState._class = response._class;
+      console.log(response._class.map(item => item.name).join(', '));
+      formState._class = response._class.map(item => item.name).join(', ');
       formState.address = response.address;
       formState.birthdate = dayjs(response.birthdate);
     });

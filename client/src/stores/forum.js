@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
- import axios from "axios";
  import { axiosIns } from "../api/axios.js";
  import { getAccessToken } from "../utils/config.js";
  import { getId } from "../utils/getInfoUser.js";
- import { sendNoti } from "../socket/socket.js";
-
+ import API_ENDPOINTS from "../api/api.js";
+  
 export const useForumStore = defineStore({
   id: "forum",
   state: () => ({
     error: true,
     listPost: [],
+    totalPages: null,
     post: null,
     comments: [],
     getComment: [],
@@ -22,30 +22,35 @@ export const useForumStore = defineStore({
   actions: {
     async getListPosts (_class) {
         try {
-            const accessToken = window.localStorage.getItem("token");
-            const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
-          
+            const config = getAccessToken();
+            console.log(_class);
           const posts = await axiosIns.get(`http://localhost:8000/post/list/${_class}`, config); 
           this.listPost = posts.data.postList;
+          console.log(this.listPost);
         } catch (error) {
             console.log(error);   
             this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);
         }
     },
+    async getPostsPerPage (_class, page) {
+      try {
+          const config = getAccessToken();
+         const res = await axiosIns.get(`http://localhost:8000/posts/per-page/${_class}?page=${page}`, config); 
+         console.log(res.data.list);
+        this.listPost = res.data.list.posts;
+        this.totalPages = res.data.list.totalPages;
+        console.log(this.listPost);
+        return res.data.list;
+      } catch (error) {
+          console.log(error);   
+          this.errorMsg = true;
+      setTimeout(() => (this.errorMsg = false), 3000);
+      }
+  },
     async addPost(postContent) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-          console.log(accessToken);
-          const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
+        const config = getAccessToken();
           console.log(postContent);
         const post = await axiosIns.post("http://localhost:8000/post/create", postContent, config)
          
@@ -57,21 +62,15 @@ export const useForumStore = defineStore({
         setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
-    async deletePost(id) {
+    async deletePost(id, _class, page) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-          console.log(accessToken);
-          const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
+        const config = getAccessToken();
           
         const deletePost = await axiosIns.delete(`http://localhost:8000/post/delete/${id}`, config)
 
         console.log(deletePost); 
 
-        this.getListPosts(); 
+        this.getPostsPerPage(_class, page); 
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
       } catch (error) {
@@ -82,14 +81,7 @@ export const useForumStore = defineStore({
     },
     async updatePost(id, postDetails) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-          console.log(accessToken);
-          const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
-
+        const config = getAccessToken();
         const updatePost = await axiosIns.put(`http://localhost:8000/post/edit/${id}`, postDetails, config);
 
         this.successMsg = true;
@@ -103,12 +95,7 @@ export const useForumStore = defineStore({
     },
     async getPostAndComment(id)  { 
         try {
-            const accessToken = window.localStorage.getItem("token");
-            const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
+          const config = getAccessToken();
 
           const postDetails = await axiosIns.get(`http://localhost:8000/comment/post/${id}`, config); 
           this.post = postDetails.data.commentAndPost.post;
@@ -121,14 +108,7 @@ export const useForumStore = defineStore({
     },
     async addComment(id, content) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-          console.log(accessToken);
-          const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
-       
+        const config = getAccessToken();
 
        const comment = await axiosIns.post(`http://localhost:8000/post/comment/create/${id}`, 
        {
@@ -146,13 +126,7 @@ export const useForumStore = defineStore({
     },
     async deleteComment(id, postId) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-          console.log(accessToken);
-          const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
+        const config = getAccessToken();
 
           const deleteComment = await axiosIns.delete(`http://localhost:8000/post/comment/delete/${id}`, config);
 
@@ -166,14 +140,8 @@ export const useForumStore = defineStore({
     },
     async editComment(id, comment, username) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-          console.log(comment);
-          const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
-          console.log(username);
+        const config = getAccessToken();
+
         const edit = await axiosIns.put(`http://localhost:8000/post/comment/edit/${username}/${id}`, 
         // {
         //   content: comment
@@ -188,13 +156,7 @@ export const useForumStore = defineStore({
     },
     async viewCommentById(commentId) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-          
-          const config = {
-            headers: {
-              'token': `Bearer ${accessToken}`
-            }
-          };
+        const config = getAccessToken();
 
         const comment = await axiosIns.get(`http://localhost:8000/post/comment/view/${commentId}`, config);
 

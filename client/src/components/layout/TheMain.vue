@@ -8,13 +8,17 @@
       </div>
       <div class="table-content bg-[#ffffff]">
         <div class="filter-container p-6">
-          <div class="row font-bold">
+          <div class="row font-bold flex items-center">
             <label class="text-[14px] text-[#606266] leading-10" for=""
               >Lớp học:</label
             >
-            <label class="text-[14px] text-[#606266] ml-2 leading-10" for=""
-              >{{ userClass }}</label
-            >
+            <div>
+    <select v-model="selectedClass">
+      <option v-for="className in userClass" :value="className">{{ className }}</option>
+    </select>
+  </div> 
+
+            
           </div>
           <div class="flex justify-between">
             <RouterLink
@@ -26,7 +30,7 @@
 
             <RouterLink
               class="bg-[#324f90] text-[#fff] p-2 rounded"
-              to="/student/status"
+              :to="{ path: '/student/status/' + selectedClass }"
             >
               Danh sách sinh viên theo trạng thái
             </RouterLink>
@@ -43,7 +47,6 @@
                 <th>Ngày sinh</th>
 
                 <th>Trạng thái</th>
-                <th></th>
               </tr>
               <tr class="filter-course">
                 <th></th>
@@ -67,7 +70,6 @@
                     />
                   </div>
                 </th>
-                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -156,7 +158,8 @@ export default {
       searchName: "",
       isShowSpinner: true,
       userRole: getRole(),
-      userClass: getClass()      
+      userClass: getClass(),
+      selectedClass: ""
     };
   },
   computed: {
@@ -180,10 +183,19 @@ export default {
     },
   },
   async mounted() {
-    await this.useStudent.getData();
+    this.selectedClass = this.userClass[0];
+    console.log(this.selectedClass);
+    await this.useStudent.getData(this.selectedClass);
     this.students = this.useStudent.data;
+     
     this.isShowSpinner = false;
     console.log(this.students);
+  },
+  watch: {
+    async selectedClass(newVal) {
+      await this.useStudent.getData(newVal);
+      this.students = this.useStudent.data;
+    },
   },
   methods: {
     async getDataStudent() {

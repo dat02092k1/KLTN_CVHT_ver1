@@ -12,8 +12,11 @@
               <template #extra>
               <router-link :to="{ path: '/student/task/update/' + task._id + '/' + id }" >more</router-link> 
                </template>
-              <!-- <p> Description: " {{ task.description }} "</p> -->
-              <div
+               <div class="text-xs flex justify-end">
+              {{ formatDate(task.createdAt) }}
+            </div>
+  
+            <div
                 class="flex justify-between"
                 v-for="(item, index) in task.assignedStudents"
                 :key="index"
@@ -26,6 +29,9 @@
                   v-bind:checked="item.isCompleted"
                 />
               </div>
+              <div v-if="task.duration" class="text-xs flex justify-end">
+              Hạn nộp: {{ format(task.duration) }}
+            </div>
             </a-card>
           </div>
         </div>
@@ -83,6 +89,24 @@
         
       });
   
+      function formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = date.getUTCDate();
+      const month = date.getUTCMonth() + 1;
+      const year = date.getUTCFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    function format(dateString) {
+      const date = new Date(dateString);
+      const day = date.getDate().toString().padStart(2, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const year = date.getFullYear();
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
+    }
       return {
         formState,
         formRef,
@@ -90,7 +114,9 @@
         tasks,
         useTask,
         id,
-        pageTitle
+        pageTitle,
+        formatDate,
+        format 
       };
     },
     components: {

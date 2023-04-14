@@ -42,10 +42,13 @@ import FormMeeting from "../views/base/one gate/FormMeeting.vue";
 import FormList from "../views/base/one gate/FormList.vue";
 import Update from "../views/base/one gate/Update.vue";
 import FormSubmited from "../views/base/one gate/FormSubmited.vue";
+import FormRest from "../views/base/one gate/FormRest.vue";
 import ReportList from "../views/base/report/ReportList.vue";
 import ReportAdd from "../views/base/report/ReportAdd.vue";
 import ReportEdit from "../views/base/report/ReportEdit.vue";
 import Report from "../views/base/report/Report.vue";
+import Notice from "../views/base/notice/Notice.vue";
+import NoticeEdit from "../views/base/notice/NoticeEdit.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,7 +78,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/student/status",
+      path: "/student/status/:class",
       name: "students status list",
       component: StudentStatus,
       meta: { requiresAuth: true, requiresConsultant: true },
@@ -273,6 +276,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/student/onegate/rest",
+      name: "student onegate form rest",
+      component: FormRest,
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/consultant/onegate",
       name: "consultant onegate",
       component: FormList,
@@ -310,6 +319,18 @@ const router = createRouter({
       name: "edit report",
       component: ReportEdit,
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/consultant/notice",
+      name: "notice list",
+      component: Notice,
+      meta: { requiresAuth: true, requiresConsultant: true },
+    },
+    {
+      path: "/consultant/notice/edit/:id",
+      name: "notice edit",
+      component: NoticeEdit,
+      meta: { requiresAuth: true, requiresConsultant: true },
     },
     { 
       path: "/:pathMatch(.*)*", 

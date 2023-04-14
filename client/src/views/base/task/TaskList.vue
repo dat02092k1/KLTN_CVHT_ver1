@@ -6,7 +6,17 @@
       <div
         class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded h-[450px] overflow-y-scroll"
       >
-        <div class="flex justify-end">
+        <div class="flex justify-between items-center">
+          
+          <div>
+            <label for=""> Lớp: </label>
+            <a-select class="p-6" v-model:value="selectedOption" @change="handleSelectChange">
+    <a-select-option v-for="option in optionsWithValueAndLabel" :key="option.value" :value="option.value">
+      {{ option.label }}
+    </a-select-option>  
+  </a-select>
+          </div>
+
           <a-button
             class="bg-[#324f90] rounded"
             type="primary"
@@ -131,7 +141,10 @@
               <i class="fa-solid fa-arrow-left"></i>
             </button>
             <span> Trang: {{ currentPage }} / {{ useTask.totalPage }} </span>
-            <button @click="nextPage" :disabled="currentPage === useTask.totalPage">
+            <button
+              @click="nextPage"
+              :disabled="currentPage === useTask.totalPage"
+            >
               <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
@@ -155,6 +168,7 @@
 import NavTitle from "../NavBar/NavTitle.vue";
 import { DownOutlined } from "@ant-design/icons-vue";
 import Loading from "../Spinner/Loading.vue";
+import { Select } from 'ant-design-vue';
 
 import {
   defineComponent,
@@ -163,12 +177,13 @@ import {
   ref,
   toRaw,
   computed,
+  watch 
 } from "vue";
 import { useStudentStore } from "../../../stores/student.js";
 import { useTaskStore } from "../../../stores/task.js";
 
 import { RouterLink, RouterView } from "vue-router";
-import { getUsername, getId } from "../../../utils/getInfoUser.js";
+import { getClass, getId } from "../../../utils/getInfoUser.js";
 import { message } from "ant-design-vue";
 
 export default defineComponent({
@@ -183,9 +198,15 @@ export default defineComponent({
       complete: null,
       assignedStudents: [],
       createdBy: getId(),
-      // _class: getClass(),
+      _class: ""
     });
 
+    const userClass = getClass();
+    const selectedOption = ref(userClass[0]);
+
+    const optionsWithValueAndLabel = userClass.map((className) => {
+      return { value: className, label: className };
+    });
     const useStudent = useStudentStore();
     const useTask = useTaskStore();
     const isComplete = ref();
@@ -194,6 +215,20 @@ export default defineComponent({
 
     const currentPage = ref(1);
     const totalTasks = ref(0);
+
+    watch(selectedOption, async (newVal) => {
+      formState._class = selectedOption.value;
+      tasks.value = await useTask.getTasksPerPage(newVal, currentPage.value);
+      totalPages.value = tasks.value.total;
+      isShowSpinner.value = false;
+      console.log(tasks.value);
+    });
+
+    const handleSelectChange = async () => {
+      if (selectedOption.value) {
+        students.value = await useStudent.getData(selectedOption.value);
+      }
+    };
 
     const onOk = () => {
       formRef.value
@@ -206,7 +241,7 @@ export default defineComponent({
           console.log("formState: ", toRaw(formState));
           const task = toRaw(formState);
           console.log(task);
-          useTask.assignTasks(task);
+          useTask.assignTasks(formState._class, task);
 
           checked.value = false;
           visible.value = false;
@@ -219,9 +254,8 @@ export default defineComponent({
 
     const assignedStudents = ref([]);
     const handleChange = (value) => {
-       
       formState.assignedStudents = value;
-      console.log(formState.assignedStudents)
+      console.log(formState.assignedStudents);
       assignedStudents.value = formState.assignedStudents.map((studentId) => ({
         student: studentId,
       }));
@@ -236,21 +270,22 @@ export default defineComponent({
     const studentsId = ref([]);
 
     onMounted(async () => {
-      students.value = await useStudent.getData();
+      students.value = await useStudent.getData(selectedOption.value);
+      formState._class = selectedOption.value;
       studentsId.value = students.value.map(({ studentId, _id }) => ({
         studentId,
         _id,
       }));
       console.log(studentsId.value);
 
-      tasks.value = await useTask.getTasksPerPage(currentPage.value);
+      tasks.value = await useTask.getTasksPerPage(selectedOption.value, currentPage.value);
       totalPages.value = tasks.value.total;
       isShowSpinner.value = false;
       console.log(tasks.value);
     });
 
     async function deleteTask(id) {
-      await useTask.deleteTask(id);
+      await useTask.deleteTask(formState._class, id);
     }
 
     function formatDate(dateString) {
@@ -291,17 +326,17 @@ export default defineComponent({
 
     const prevPage = () => {
       currentPage.value -= 1;
-      useTask.getTasksPerPage(currentPage.value);
+      useTask.getTasksPerPage(formState._class, currentPage.value);
     };
 
     const nextPage = () => {
       currentPage.value += 1;
-      useTask.getTasksPerPage(currentPage.value);
+      useTask.getTasksPerPage(formState._class, currentPage.value);
     };
 
     const goToPage = (page) => {
       currentPage.value = page;
-      useTask.getTasksPerPage(currentPage.value);
+      useTask.getTasksPerPage(formState._class, currentPage.value);
     };
 
     const pages = computed(() => {
@@ -335,6 +370,9 @@ export default defineComponent({
       nextPage,
       goToPage,
       pages,
+      optionsWithValueAndLabel,
+      selectedOption,
+      handleSelectChange
     };
   },
   components: {

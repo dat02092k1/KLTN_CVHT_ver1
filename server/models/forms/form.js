@@ -7,6 +7,7 @@ const formSchema = new Schema(
     student: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "students",
+      index: true,
     },
     username: {
       type: String,
@@ -20,13 +21,7 @@ const formSchema = new Schema(
     },
     type: {
       type: String,
-      enum: [
-        "Phiếu đánh giá kết quả rèn luyện",
-        "Kế hoạch học tập",
-        "Biên bản họp lớp",
-      ],
       required: true,
-      index: true,
     },
     status: {
       type: String,

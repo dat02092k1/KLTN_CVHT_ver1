@@ -3,8 +3,8 @@ const { ClientError } = require('../../services/error/error.js');
 
 var getTaskController = async (req, res) => { 
     try {
-         
-        var tasks = await taskService.getTaskService(req);
+        console.log(req.params.class);   
+        var tasks = await taskService.getTaskService(req.params.class);
         res.status(200).json({ success: true, tasks });
     } catch (error) {
         if (error instanceof ClientError) {

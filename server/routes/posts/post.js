@@ -12,8 +12,7 @@ router.put('/post/edit/:id', userAuthenticate.onlyOwner , postController.updateP
 // edit post on forum
 router.delete('/post/delete/:id', userAuthenticate.roleAuthentication, postController.deletePostController);
 // delete post on forum
-router.get('/list/:id', userAuthenticate.onlyOwner, postController.listUserPostController);
-// get all post of a user with username
-
+router.get('/posts/per-page/:class', userAuthenticate.verifyToken, postController.listPostsPerPage);
+// get all post of a user with username 
 
 module.exports = router;       

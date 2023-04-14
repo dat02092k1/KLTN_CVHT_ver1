@@ -59,7 +59,54 @@
             </a-modal>
           </div>
   
-          
+          <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+        <th>STT</th>
+          <th>Mẫu đơn</th>
+          <th>File</th>
+          <th>Status</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in forms" :key="index">
+            <td>{{ index + 1 }}</td>
+          <td class="text-[#7bb2ff]">{{ item.type }}</td>
+          <td>
+            <button @click="downloadFile(item.fileUrl)">file</button>
+          </td>
+          <td>
+            <span v-if="item.status === 'pending'" class="text-[#e9990c]" title="Pending">
+                  <i class="fa-regular fa-circle-question"></i>
+            </span>
+      <span v-else-if="item.status === 'rejected'" title="Rejected" class="text-[#d50023]">
+        <i class="fa-regular fa-circle-xmark"></i>
+    </span>
+      <span v-else  title="Successful" class="text-[#38af48]">
+        <i class="fa-regular fa-circle-check"></i>
+      </span>
+          </td>
+          <td>
+            <div class="flex justify-center gap-2">
+              <a-popconfirm title="Title" @confirm="confirm(item._id, item.type)" @cancel="cancel">
+    <button class="mr-1"><i class="fa-regular fa-trash-can"></i></button>
+  </a-popconfirm>
+            
+            
+              <router-link :to="{ path: '/consultant/onegate/status/' + item._id}" >
+                <span>
+                <i class="fa-regular fa-pen-to-square"></i>
+            </span>
+              </router-link>
+                 
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
         </div>
       </div>
       <Loading v-if="showLoading" />
@@ -71,7 +118,7 @@
   import NavTitle from"../NavBar/NavTitle.vue";
   import Loading from '../Spinner/Loading.vue';
   import { RouterLink, RouterView } from "vue-router";
-  import { getClass, getId, getRole } from "../../../utils/getInfoUser";
+  import { getStudentClass, getId, getRole } from "../../../utils/getInfoUser";
   import { sendNoti } from "../../../socket/socket.js";
   import { message } from "ant-design-vue";
   import { useFormStore } from "../../../stores/form.js";
@@ -86,9 +133,12 @@
       const formState = reactive({
         student: getId(),
         type: "Biên bản họp lớp",  
-        fileUrl: ""
+        fileUrl: "",
+        _class: getStudentClass()
       });
   
+      const forms = ref ([]);
+      const studentId = getId(); 
       const userRole = getRole(); 
       const onOk = () => {
         formRef.value
@@ -119,10 +169,10 @@
         // Xử lý khi người dùng click vào một option
         console.log(option);
       }
-  
+   
       onMounted(async () => {
-        // useForm.getListAnnouncement();
-        showLoading.value = false;
+         forms.value = await useForm.getFormsByType(studentId, formState.type); 
+         showLoading.value = false;
       });
   
       function deletePost(id) {
@@ -167,7 +217,8 @@
         confirm,
         cancel,
         userRole,
-        sampleFile  
+        sampleFile,
+        forms 
       };
     },
     components: { NavTitle, Loading },
@@ -175,18 +226,28 @@
   </script>
   
   <style scoped>
-  .forum-list {
-    overflow-y: scroll;
-    height: calc(100vh - 150px);
-  }
-  .forum-item {
-    border: 1px solid #85bde5;
-    padding: 20px;
-  }
+   .table-container {
+  margin: 0 auto;
+  width: 100%;
+  height: 360px;
+   overflow: auto;
+}
 
-  .academic_announ {
-    height: 400px;
-    margin: 10px 0;
-  }
+table {
+  border-collapse: collapse;
+  width: 60%;
+  margin: auto;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #fafafa;
+}
   </style>
   

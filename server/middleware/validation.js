@@ -2,8 +2,7 @@ const xlsx = require("xlsx");
 // xlsx.SSF.format("yyyy-MM-dd", new Date(), { forceGMT: true });
 
 var schema = require("../models/students/validate.js");
-
- 
+var courseValidate = require("../models/score/courseValidate.js");
  
 const formatBirthdate = (date) => {
   return new Date(1900, 0, date);
@@ -23,9 +22,9 @@ const validateFieldsMiddleware = (req, res, next) => {
 
   for (const item of data) {
     item.birthdate = formatBirthdate(item.birthdate)
-    console.log('birthdate')
-    console.log((item.birthdate));
-    console.log(isNaN(new Date(item.birthdate).getTime()));
+     console.log((item.birthdate));
+    console.log(typeof(item.name));
+    console.log(typeof(item.password));
     if (isNaN(new Date(item.birthdate).getTime())) {
       validationErrors.push('invalid birthdate');
     }
@@ -55,7 +54,36 @@ const validateFieldsMiddleware = (req, res, next) => {
   next();
 };
 
-module.exports = { validateFieldsMiddleware };
+const validateCourse = (req, res, next) => {
+  const workbook = xlsx.readFile(req.file.path);
+  // , { cellDates: true }
+  const sheetName = workbook.SheetNames[0];
+  const worksheet = workbook.Sheets[sheetName];
+  const data = xlsx.utils.sheet_to_json(worksheet);
+
+
+  const validationErrors = [];
+
+  for (const item of data) {
+    
+    const { error } = courseValidate.courseSchema.validate(item);
+
+    if (error) {
+      validationErrors.push(`Row ${data.indexOf(item) + 2}: ${error.message}`);
+    }
+  }
+
+  if (validationErrors.length > 0) {
+    return res.status(400).json({
+      message: "Validation errors",
+      errors: validationErrors,
+    });
+  }
+
+  req.data = data;
+  next();
+}
+module.exports = { validateFieldsMiddleware, validateCourse };
 
   // const birthdate = item.birthdate instanceof Date ? item.birthdate.toISOString().split('T')[0] : item.birthdate;
      

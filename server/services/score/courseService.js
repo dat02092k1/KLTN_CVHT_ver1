@@ -248,10 +248,116 @@ var getCourseDetailsService = async (courseId) => {
   }
 }
 
+var importCoursesExcel = async (req) => {
+  try {
+    const data = req.data; 
+     
+    const courses = [];
+
+    for (let i = 0; i < data.length; i++) {
+      console.log('data[i] ' + data[i]);
+      const {
+        semester, studentId, subjectName, subjectScore, subjectCredits
+      } = data[i];
+ 
+      const student = await studentsModel.find({ studentId: studentId });
+      if (!student) throw new ClientError(`Student not found`, 404); 
+
+      const getCourse = await courseModel.findOne({ semester, studentId }); 
+
+      if (getCourse) throw new ClientError(`Course existed`, 400); 
+      
+      const Sid = student[0]._id;
+        console.log(typeof(Sid))
+      const subject = { name: subjectName, score: subjectScore, credits: subjectCredits };
+      console.log('courses ' + courses);
+      let course = courses.find(c => {
+        const isTrue = (c.semester === semester.toString());
+        console.log(isTrue);
+         
+        return c.semester === semester.toString() && c.student.toString() === Sid.toString();
+      });
+      console.log(course);
+      if (!course) {
+        course = new courseModel({ semester, student: Sid, studentId: studentId });
+        courses.push(course);
+      }
+      course.subjects.push(subject);
+       console.log(course + 'flag 1st loop')
+    }
+    
+    for (const course of courses) {
+      console.log(courses.length);
+      // Calculate GPA and total credits for course based on subjects
+      
+      let totalScore = 0;
+      let total_credits = 0;
+   
+      for (const subject of course.subjects) {
+        totalScore += (grades.convertGradeByRand4(subject.score) * subject.credits);
+        total_credits += subject.credits;
+      }
+
+      const gpaRaw = totalScore / total_credits;
+      const GPA = grades.roundToTwoDecimalPlaces(gpaRaw);
+      console.log(GPA);
+
+      course.GPA = GPA;
+      course.total_credits = total_credits;
+      // Save course to database
+      await course.save();
+      console.log(course.student);
+      const student = await studentsModel.findById(course.student);
+      console.log(student);
+      const result = await courseModel.aggregate([
+        { $match: { student: student._id } },
+        {
+          $group: {
+            _id: null,
+            totalGPA: { $sum: { $multiply: ["$GPA", "$total_credits"] } },
+            totalCredits: { $sum: "$total_credits" },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            CPA: { $divide: ["$totalGPA", "$totalCredits"] },
+            totalCredits: "$totalCredits",
+          },
+        },
+      ]);
+  
+      const cpaValue = result[0].CPA;
+      const credits = result[0].totalCredits;
+  
+      const status =
+        cpaValue < 2.3
+          ? "Cảnh báo học vụ"
+          : cpaValue > 3.2
+          ? "Khen thưởng"
+          : "Không";
+  
+        student.CPA = grades.roundToTwoDecimalPlaces(cpaValue);
+  
+        student.status = status;
+  
+        student.total_creadits = credits;
+  
+      await student.save();       
+    }
+
+    return courses;
+    
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   addCourseService,
   getCourseService,
   editCourseService,
   deleteCourseService,
-  getCourseDetailsService
+  getCourseDetailsService,
+  importCoursesExcel
 };

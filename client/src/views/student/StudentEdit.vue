@@ -26,7 +26,7 @@
               />
             </a-form-item>
 
-            <a-form-item
+            <!-- <a-form-item
               ref="_class"
               label="Lớp"
               name="_class"
@@ -36,7 +36,46 @@
                 v-model:value="formState._class"
                 placeholder="Nhập lớp"
               />
-            </a-form-item>
+            </a-form-item> -->
+
+            <a-form
+    ref="formRef"
+    name="dynamic_form_item"
+    :model="dynamicValidateForm"
+    v-bind="formItemLayoutWithOutLabel"
+  >
+    <a-form-item
+      v-for="(domain, index) in dynamicValidateForm.domains"
+      :key="domain.key"
+      v-bind="index === 0 ? formItemLayout : {}"
+      :label="index === 0 ? 'Domains' : ''"
+      :name="['domains', index, 'name']"
+      :rules="{
+        required: true,
+        message: 'domain can not be null',
+        trigger: 'change',
+      }"
+    >
+      <a-input
+        v-model:value="domain.name"
+        placeholder="please input domain"
+        style="width: 60%; margin-right: 8px"
+      />
+      <MinusCircleOutlined
+        v-if="dynamicValidateForm.domains.length > 1"
+        class="dynamic-delete-button"
+        :disabled="dynamicValidateForm.domains.length === 1"
+        @click="removeDomain(domain)"
+      />
+    </a-form-item>
+    <a-form-item v-bind="formItemLayoutWithOutLabel">
+      <a-button type="dashed" style="width: 60%" @click="addDomain">
+        <PlusOutlined />
+        Add field
+      </a-button>
+    </a-form-item>
+    
+  </a-form>
 
             <a-form-item label="Vai trò" name="role" class="form-item block">
               <a-select
@@ -163,7 +202,7 @@ import { format, parseISO } from "date-fns";
 import dayjs from "dayjs";
 import NavTitle from "../base/NavBar/NavTitle.vue";
 import ChartCredits from "../chart/ChartCredits.vue";
-
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
   setup() {
@@ -179,6 +218,7 @@ export default defineComponent({
       phone: "",
       role: "",
       _class: "",
+      class: "", 
       address: "",
     });
     const rules = {
@@ -273,6 +313,56 @@ export default defineComponent({
         },
       ],
     };
+
+    const formItemLayout = {
+      labelCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 4,
+        },
+      },
+      wrapperCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 20,
+        },
+      },
+    };
+    const formItemLayoutWithOutLabel = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 20,
+          offset: 4,
+        },
+      },
+    };
+
+    const dynamicValidateForm = reactive({
+      domains: [],
+    });
+
+    const removeDomain = item => {
+      let index = dynamicValidateForm.domains.indexOf(item);
+      if (index !== -1) {
+        dynamicValidateForm.domains.splice(index, 1);
+      }
+    };
+    const addDomain = () => {
+      dynamicValidateForm.domains.push({
+        name: '',
+        key: Date.now(),
+      });
+      console.log(dynamicValidateForm.domains);
+    };
+
     const useStudent = useStudentStore();
     const studentId = useRoute().params.id;
      
@@ -282,6 +372,8 @@ export default defineComponent({
         .validate()
         .then(() => {
           console.log("values", formState);
+          formState.class = dynamicValidateForm.domains;
+          console.log(formState.class);
           useStudent.updateStudent(studentId, formState);
         })
         .catch((error) => {
@@ -306,13 +398,13 @@ export default defineComponent({
       formState.role = response.role;
       formState.emailAddress = response.emailAddress;
       formState.phone = response.phone;
-      formState._class = response._class;
+      const classData = response._class.map((c) => ({ name: c.name, key: c._id }));
+      dynamicValidateForm.domains.push(...classData);
+      console.log(dynamicValidateForm.domains);
+      console.log(response._class);
       formState.address = response.address;
       formState.birthdate = dayjs(response.birthdate);
        
-      const formattedDate = dayjs(response.birthdate).utcOffset(7).format('YYYY-MM-DD');
-
-console.log(formattedDate)
 
     });
 
@@ -330,15 +422,21 @@ console.log(formattedDate)
       onSubmit,
       resetForm,
       pageTitle,
+      formItemLayout,
+      formItemLayoutWithOutLabel,
+      dynamicValidateForm,
+      removeDomain,
+      addDomain,
     };
   },
-  components: { NavTitle, ChartCredits },
+  components: { NavTitle, ChartCredits, MinusCircleOutlined, PlusOutlined },
 });
 </script>
 
 <style scoped>
 .add-form {
   height: 400px;
+  overflow: auto;
 }
 
 .form-item :deep .ant-col-14 {
@@ -347,5 +445,10 @@ console.log(formattedDate)
 
 .form-item :deep .ant-col-4 {
   max-width: 100% !important;
+}
+
+:deep(.ant-col-sm-4) {
+  flex: 0 0 28.666667%;
+  max-width: 31%;
 }
 </style>

@@ -1,7 +1,12 @@
 <template>
     <div class="mb-4 px-2 flex justify-center items-center">
       <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> -->
-  
+      <div class="flex items-start">
+        <router-link   :to="{ path: '/consultant/onegate'}" >
+      <button class="bg-[#ef1419] rounded text-[#ffffff] ml-6 my-2 p-2">Quay lại</button>
+              </router-link>
+      </div>
+       
       <form @submit.prevent="submitForm" class="add--course m-6 bg-[#fff] p-4">
         <div class="task-title text-center">
           <h2>Update status</h2>

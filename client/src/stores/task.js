@@ -40,7 +40,7 @@ export const useTaskStore = defineStore({
         console.log(error);
       }
     },
-    async assignTasks(taskDetails) {
+    async assignTasks(_class, taskDetails) {
       try {
         const config = getAccessToken();
          const task = await axiosIns.post(
@@ -53,7 +53,7 @@ export const useTaskStore = defineStore({
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
         const page = 1;
-        this.getTasksPerPage(page); 
+        this.getTasksPerPage(_class, page); 
       } catch (error) {
         console.log(error);
         this.errorMsg = true;
@@ -130,7 +130,7 @@ export const useTaskStore = defineStore({
         setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
-    async deleteTask(id) {
+    async deleteTask(_class, id) {
       try {
         const config = getAccessToken();
 
@@ -140,20 +140,19 @@ export const useTaskStore = defineStore({
         );
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
-        this.getTasksPerPage();          
+        this.getTasksPerPage(_class);          
       } catch (error) {
         console.log(error);
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
-    async getTasksPerPage(page) {
+    async getTasksPerPage(_class, page) {
       try {
         const config = getAccessToken();
-        const createdBy = getId();
-        console.log(page);
+         console.log(page);
         const res = await axiosIns.get(
-          API_ENDPOINTS.getTasksPerPage + createdBy + `?page=${page}`,
+          API_ENDPOINTS.getTasksPerPage + _class + `?page=${page}`,
           config
         );
         console.log(res.data.tasks);

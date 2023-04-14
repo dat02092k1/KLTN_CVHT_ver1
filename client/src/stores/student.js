@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { getAccessToken } from "../utils/config.js";
-import { getClass } from "../utils/getInfoUser";
+import { getClass, getId } from "../utils/getInfoUser";
 import { axiosIns } from "../api/axios.js";
 
 export const useStudentStore = defineStore({
@@ -36,20 +36,16 @@ export const useStudentStore = defineStore({
     showErrorMsg: (state) => state.errorMsg,
   },
   actions: {
-    async getData() {
+    async getData(_class) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-
-        const config = {
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        };
+        console.log('class ' + _class)
+        const config = getAccessToken();
 
         const response = await axiosIns.get(
-          `http://localhost:8000/student/getAll/${this._class}`,
+          `http://localhost:8000/student/getAll/${_class}`,
           config
         );
+         
         this.data = response.data.allStudent;
 
         return response.data.allStudent;
@@ -59,13 +55,8 @@ export const useStudentStore = defineStore({
     },
     async postData() {
       try {
-        const accessToken = window.localStorage.getItem("token");
-        console.log(accessToken);
-        const config = {
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        };
+        const config = getAccessToken();
+         
         const response = await axiosIns.post(
           "http://localhost:8000/student/create",
           this.student,
@@ -100,13 +91,8 @@ export const useStudentStore = defineStore({
     },
     async updateStudent(id, details) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-        console.log(accessToken);
-        const config = {
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        };
+        const config = getAccessToken();
+         
         const response = await axiosIns.patch(
           `http://localhost:8000/student/update/${id}`,
           details,
@@ -136,7 +122,7 @@ export const useStudentStore = defineStore({
           config
         );
         this.studentDetails = response.data.details;
-        console.log(response.data.details);
+        console.log(response.data.details._class);
         return response.data.details;
          
       } catch (error) {
@@ -168,10 +154,10 @@ export const useStudentStore = defineStore({
         setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
-    async getStudentStatus(status) {
+    async getStudentStatus(_class, status) {
       try {
         const config = getAccessToken();
-        const res = await axiosIns.get(`http://localhost:8000/student/status/${this._class}?status=${status}`, config);
+        const res = await axiosIns.get(`http://localhost:8000/student/status/${_class}?status=${status}`, config);
 
         console.log(res.data.students);
 
@@ -180,6 +166,19 @@ export const useStudentStore = defineStore({
         console.log(error);
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);
+      }
+    },   
+    async getStudentsInClass() {
+      try {
+        const config = getAccessToken();
+        const id = getId();
+        const res = await axiosIns.get(`http://localhost:8000/student/in-class/${id}`, config);
+
+        console.log(res.data.students);
+
+         return res.data.students;
+      } catch (error) {
+        console.log(error);
       }
     }
   },

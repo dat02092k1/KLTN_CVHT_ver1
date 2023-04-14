@@ -4,7 +4,7 @@ var userAuthenticate = require('../../middleware/authentication.js')
 const router = express.Router();
 
 // get tasks
-router.get('/student/get-task-all', userAuthenticate.verifyToken, taskController.getTaskController);
+router.get('/student/get-task-all/:class', userAuthenticate.verifyToken, taskController.getTaskController);
 // create tasks 
 router.post('/student/assign-task', userAuthenticate.isAdminAuthentication, taskController.createTaskController);
 // edit task
@@ -18,6 +18,6 @@ router.get('/student/task/get-task/:taskId', userAuthenticate.verifyToken, taskC
 // get task of student
 router.get('/student/task/get-tasks/:studentId', userAuthenticate.studentIdAuthentication, taskController.getTasksofStudentController);
 // get task pagination
-router.get('/student/get/tasks-page/:username', userAuthenticate.verifyToken, taskController.getTasksPerPageController);
+router.get('/student/get/tasks-page/:_class', userAuthenticate.verifyToken, taskController.getTasksPerPageController);
 
 module.exports = router;       

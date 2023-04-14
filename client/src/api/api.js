@@ -30,7 +30,9 @@ const API_ENDPOINTS = {
     deleteForm: BASE_URL + 'form/delete/', // + formId  
     editForm: BASE_URL + 'form/update/', // + formId    
     detailForm: BASE_URL + 'form/details/', // + formId   
-    getUserForms:  BASE_URL + 'form/student/', // + studentId 
+    getUserForms:  BASE_URL + 'form/student/', // + studentId    
+    getFormsByType:  BASE_URL + 'form/get-type/', // + studentId
+    getFormsRest: BASE_URL + 'form/get-rest/',
     /**
      * Course
      */
@@ -58,10 +60,12 @@ const API_ENDPOINTS = {
     deleteStudent: BASE_URL + 'student/remove/', // + studentId
     getStudentStatus: BASE_URL + 'student/status/', // + class
     importManyStudents: BASE_URL + 'student/import-excel',
+    getStudentsinClass: BASE_URL + 'student/in-class/', // + studentId
     /**
      * FORUM
      */
     getListPostByClass: BASE_URL + 'post/list/', // + class
+    getPostsPerPage: BASE_URL + 'posts/per-page', // + _class + query page
     createPost: BASE_URL + 'post/create',
     editPost: BASE_URL + 'post/edit/', // + postId 
     deletePost: BASE_URL + 'post/delete/', // + postId 
@@ -84,6 +88,14 @@ const API_ENDPOINTS = {
     uploadImg: BASE_URL + 'upload', // upload image 
     uploadDocs: BASE_URL + 'upload-doc', // upload single file 
     uploadMultiDocs: BASE_URL + 'upload-docs', // upload multiple files 
+    /**
+     * NOTICE
+     */
+    addNotice: BASE_URL + 'notice/add',
+    getNoticeList: BASE_URL + 'notice/get/',  // + _class
+    deleteNotice: BASE_URL + 'notice/delete/', // + noticeId
+    detailsNotice: BASE_URL + 'notice/details/', // + noticeId
+    editNotice: BASE_URL + 'notice/edit/', // + noticeId
   };  
   
   export default API_ENDPOINTS;   

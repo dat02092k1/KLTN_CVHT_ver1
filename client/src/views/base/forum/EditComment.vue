@@ -25,7 +25,7 @@
       </a-form>
 
       <a-alert v-show="useForum.successMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
-    <a-alert v-show="useForum.useTask.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
+    <a-alert v-show="useForum.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
     </div>
   </template>
   <script>

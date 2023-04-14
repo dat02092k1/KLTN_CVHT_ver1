@@ -6,7 +6,7 @@ const { ClientError } = require("../error/error.js");
 
 var createFormService = async (req) => {
   try {
-    const { student, fileUrl, type } = req.body;
+    const { student, fileUrl, type, _class } = req.body;
 
     const getUser = await userModel.findById(student);
     if (!getUser) throw new ClientError("User not found", 404);
@@ -14,7 +14,7 @@ var createFormService = async (req) => {
     const newForm = new formModel({
       student,
       username: getUser.studentId,
-      _class: getUser._class,
+      _class,                         
       type,
       fileUrl,
     });
@@ -27,14 +27,13 @@ var createFormService = async (req) => {
     throw error;
   }
 };
-
+   
 var getFormsService = async (req) => {
   try {
     const _class = req.params.class;
-    const type = req.query.type;
 
     console.log(_class);
-    const forms = await formModel.find({ _class, type });
+    const forms = await formModel.find({ _class });
 
     if (!forms) throw new ClientError("forms not found", 404);
 
@@ -100,11 +99,40 @@ var getFormsOfUserService = async (studentId) => {
   }
 };
 
+var getFormsByTypeService = async (req) => {
+  try {
+    const type = req.query.type;
+    const studentId = req.params.id;
+
+    console.log(type); 
+    const forms = await formModel.find({ student: studentId, type: type });
+    if (!forms) throw new ClientError("cant find forms", 404);
+
+    return forms;
+  } catch (error) {
+    throw error;
+  }
+};
+
+var getFormsRestService = async (studentId) => {
+  try {
+     const excludedTypes = ['Phiếu đánh giá kết quả rèn luyện', 'Kế hoạch học tập', 'Biên bản họp lớp'];
+
+    const forms = await formModel.find({ student: studentId, type: { $nin: excludedTypes } });
+    if (!forms) throw new ClientError("cant find forms", 404);
+
+    return forms;
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   createFormService,
   getFormsService,
   deleteFormService,
   updateFormService,
   getDetailsFormService,
-  getFormsOfUserService
+  getFormsOfUserService,
+  getFormsByTypeService,
+  getFormsRestService
 };

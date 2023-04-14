@@ -7,9 +7,11 @@ const logger = require("../../logger/logger.js");
 const mongoose = require("mongoose");
 const { ClientError } = require("../error/error.js");
 
-var getPostListService = async (_class) => {
+var getPostListService = async (req) => {
   try {
-    const post = await postModel.find({ class: _class });
+    const _class = req.params.class; 
+ 
+    const post = await postModel.find({ _class: _class });
     if (!post) throw new ClientError("There're no posts", 404);
     return post.reverse();
   } catch (error) {
@@ -23,7 +25,7 @@ var createPostService = async (postDetails) => {
       user,
       title,
       content,
-      // _class,
+      _class,
       imageUrl,
     } = postDetails;
 
@@ -33,8 +35,7 @@ var createPostService = async (postDetails) => {
 
     console.log(getUser);
     const username = getUser.studentId;
-    const _class = getUser._class;
-
+ 
     const newPost = new postModel({
       userId: user,
       username,
@@ -48,7 +49,7 @@ var createPostService = async (postDetails) => {
 
     const users = await userModel.find({
       _id: { $ne: newPost.userId },
-      _class: newPost._class,
+      '_class.name': newPost._class,
     });
 
     const notification = users.map((user) => ({
@@ -108,36 +109,31 @@ var deletePostService = async (id) => {
   }
 };
 
-var listPostOfUser = async (req) => {
+var listPostsPerPageService = async (req) => {
   try {
-    const id = req.params.id
-    // const username = req.params.username
-    const page = parseInt(req.query.page) || 1;
-    const perPage = 5;
+    const _class = req.params.class; 
+     console.log(_class);
+    const page = req.query.page || 1;
     console.log(page);
-    const totalPosts = await postModel.countDocuments();
-     
+    const perPage = 5;
+    const skip = (page - 1) * perPage;    
+    
+    const totalPosts = await postModel.countDocuments({ _class: _class });
+    const totalPages = Math.ceil(totalPosts / 5);
 
     const posts = await postModel
-      .find({ userId: id })
-      .skip((page - 1) * perPage)
+      .find({ _class: _class })
       .sort({ createdAt: -1 })
+      .skip(skip)
       .limit(perPage);
 
-      if (!posts) throw new ClientError("There're no posts", 404);
-       console.log(posts);
-      const totalPages = Math.ceil(posts.length / perPage);
-
+    if (!posts) throw new ClientError("There're no posts", 404);
+ 
     return {
-      currentPage: page,
       totalPages: totalPages,
       posts: posts,
     };
-    // const listPost = await postModel.find({ username: username});
 
-    // if (!listPost) throw new ClientError("There're no posts", 404);
-
-    // else return listPost;
   } catch (error) {
     throw error;
   }
@@ -148,5 +144,5 @@ module.exports = {
   createPostService,
   updatePostService,
   deletePostService,
-  listPostOfUser,
+  listPostsPerPageService,
 };

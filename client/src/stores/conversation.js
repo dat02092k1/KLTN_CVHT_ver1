@@ -66,10 +66,9 @@ export const useChatStore = defineStore({
             console.log(error);
         }
     },
-    async getListUser() {
+    async getListUser(_class) {
       try {
         const config = getAccessToken();
-        const _class = getClass();
          
         const users = await axiosIns.get(`http://localhost:8000/student/names/${_class}`, config)
 

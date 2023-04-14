@@ -1,7 +1,10 @@
 <template>
-    <div class="task-form mb-4 px-2 mx-auto flex justify-center items-center">
+    <div class="task-form mb-4 px-2 mx-auto flex justify-center items-center relative">
       <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> -->
-  
+      <router-link class="absolute top-3 left-4"  :to="{ path: '/consultant/task'}" >
+      <button class="bg-[#ef1419] rounded text-[#ffffff] p-2">Quay lại</button>
+              </router-link>
+              
       <form @submit.prevent="submitForm" class="add--course m-6 p-3 bg-[#fff]">
         <div class="task flex">
           <div

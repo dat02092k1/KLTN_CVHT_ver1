@@ -15,6 +15,7 @@
         <tr>
         <th>STT</th>
           <th>Sinh viên</th>
+          <th>Loại biểu mẫu</th>
           <th>File</th>
           <th>Status</th>
           <th>Hành động</th>
@@ -24,6 +25,9 @@
         <tr v-for="(item, index) in useForm.listForms" :key="index">
             <td>{{ index + 1 }}</td>
           <td class="text-[#7bb2ff]">{{ item.username }}</td>
+          <td>
+            {{ item.type }}
+          </td>
           <td>
             <button @click="downloadFile(item.fileUrl)">file</button>
           </td>
@@ -69,20 +73,27 @@ import { ref, onMounted } from 'vue';
 import { Select } from 'ant-design-vue';
 import NavTitle from "../NavBar/NavTitle.vue";
 import { useFormStore } from '../../../stores/form.js';
+import { getClass } from '../../../utils/getInfoUser.js';
+
 import { message } from "ant-design-vue";
 
 export default {
   name: 'MyComponent',
   components: { Select, NavTitle },
   setup() {
-    const selectedOption = ref('Phiếu đánh giá kết quả rèn luyện');
-    const options = [
+     
+    const userClass = getClass();
+    const selectedOption = ref(userClass[0]);
+    const optionsWithValueAndLabel = [
       { value: 'Phiếu đánh giá kết quả rèn luyện', label: 'Phiếu đánh giá kết quả rèn luyện' },
       { value: 'Kế hoạch học tập', label: 'Kế hoạch học tập' },
       { value: 'Biên bản họp lớp', label: 'Biên bản họp lớp' },
     ];
     
-    const pageTitle = 'Danh sách biểu mẫu sinh viên';
+    const options = userClass.map((className) => {
+  return { value: className, label: className };
+});
+     const pageTitle = 'Danh sách biểu mẫu sinh viên';
 
     const useForm = useFormStore();
 

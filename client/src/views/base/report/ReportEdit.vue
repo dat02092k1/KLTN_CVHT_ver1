@@ -2,7 +2,7 @@
     <div>
         <NavTitle :title="pageTitle"/>
 
-        <router-link class="" :to="{ path: '/consultant/reports'}" >
+        <router-link class="" :to="{ path: '/consultant/progress'}" >
       <button class="bg-[#ef1419] rounded text-[#ffffff] ml-6 my-2 p-2">Quay lại</button>
               </router-link>
         <div class="post h-[350px] overflow-auto">

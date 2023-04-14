@@ -12,6 +12,9 @@ var taskSchema = new Schema({
   duration: {
     type: Date,
   },
+  _class: {
+    type: String,
+  },
   assignedStudents: [
     {
       student: {

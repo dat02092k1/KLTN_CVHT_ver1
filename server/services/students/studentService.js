@@ -13,11 +13,11 @@ const { ClientError } = require('../error/error.js');
 
 const mongoose = require("mongoose");
 
-var studentServiceGetAll = async (username, _class) => {
+var studentServiceGetAll = async (_class) => {
   try {
      
-    const data = await studentModel.find({ _class: _class, role: "student" });
-
+    const data = await studentModel.find({ '_class.name': _class, role: "student" });
+    console.log(data); 
     if (!data) throw new ClientError('data not found', 404)
 
     return data;
@@ -46,6 +46,7 @@ var createStudentService = async (studentDetail) => {
       paidFee,
     } = studentDetail;
 
+    console.log(_class); 
     const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
 
     // mã hóa password
@@ -76,60 +77,114 @@ var updateStudentService = async (id, studentDetail, role) => {
   try {
     const objectId = mongoose.Types.ObjectId(id);
     
-    const { studentId, _class } = studentDetail;
-
+    const { studentId } = studentDetail;
+     const formattedClass = studentDetail.class.map(c => ({ name: c.name }));
+     
     const student = await studentModel.findByIdAndUpdate(
       objectId,
-      studentDetail,
-      { new: true }
+      { ...studentDetail, _class: formattedClass },
+      // { new: true }
     );
-
+      console.log('flag');
+      console.log(formattedClass);
     if (!student) {
       
       throw new ClientError(`No student found with id: ${id}`, 404);
     }
+    const originStudentClass = student._class.map(c => ({ name: c.name }));
+    console.log(originStudentClass);
+    
+    if (
+      student.studentId !== studentId ||
+      formattedClass.length !== originStudentClass.length ||
+      !formattedClass.every((c) => originStudentClass.some((fc) => fc.name === c.name))
+    ) {
+      console.log("false");
 
-    if (student.studentId !== studentId || student._class !== _class) {
-      await postModel.updateMany({
-        userId: id
-      }, {
-        $set: {
-          username: student.studentId,
-          _class: student._class
-        }
-      });
+      // await postModel.updateMany({
+      //   userId: id,
+      //   _class: formattedClass
+      // }, {
+      //   $set: {
+      //     username: student.studentId,
+      //     _class: student._class.name
+      //   }
+      // });
   
-      await commentModel.updateMany({
-        userId: id
-      }, {
-        $set: {
-          username: student.studentId
-        }
-      })
+      // await commentModel.updateMany({
+      //   userId: id
+      // }, {
+      //   $set: {
+      //     username: student.studentId
+      //   }
+      // })
 
-      await taskModel.updateMany(
-        { "assignedStudents.student": student._id },
-        { $set: { "assignedStudents.$.studentId": student.studentId } }
-      );
+      // await taskModel.updateMany(
+      //   { "assignedStudents.student": student._id },
+      //   { $set: { "assignedStudents.$.studentId": student.studentId } }
+      // );
 
-      await formModel.updateMany({
-        student: id
-      }, {
-        $set: {
-          username: student.studentId,
-          _class: student._class           
-        }
-      });
+      // await formModel.updateMany({
+      //   student: id
+      // }, {
+      //   $set: {
+      //     username: student.studentId,
+      //     _class: student._class           
+      //   }
+      // });
 
-      await reportModel.updateMany({
-        userId: id
-      }, {
-        $set: {
-          username: student.studentId,
-        }
-      });
+      // await reportModel.updateMany({
+      //   userId: id
+      // }, {
+      //   $set: {
+      //     username: student.studentId,
+      //   }
+      // });
+    } else {
+      console.log("true");
+    }
+  //   if (student.studentId !== studentId || student._class !== formattedClass) {
+      // await postModel.updateMany({
+      //   userId: id,
+      //   _class: formattedClass
+      // }, {
+      //   $set: {
+      //     username: student.studentId,
+      //     _class: student._class.name
+      //   }
+      // });
+  
+      // await commentModel.updateMany({
+      //   userId: id
+      // }, {
+      //   $set: {
+      //     username: student.studentId
+      //   }
+      // })
+
+      // await taskModel.updateMany(
+      //   { "assignedStudents.student": student._id },
+      //   { $set: { "assignedStudents.$.studentId": student.studentId } }
+      // );
+
+      // await formModel.updateMany({
+      //   student: id
+      // }, {
+      //   $set: {
+      //     username: student.studentId,
+      //     _class: student._class           
+      //   }
+      // });
+
+      // await reportModel.updateMany({
+      //   userId: id
+      // }, {
+      //   $set: {
+      //     username: student.studentId,
+      //   }
+      // });
       
-  }
+  // }
   
 
     return student;
@@ -172,8 +227,8 @@ var deleteStudentService = async (id) => {
 
 var getNameStudentService = async (_class) => {
   try {
-    const getName = await studentModel.find({ class: _class }, "studentId");
-
+    const getName = await studentModel.find({ '_class.name': _class }, "studentId");
+    console.log(_class);
     if (!getName) throw new ClientError(`Cant find students of class ${_class}`, 404);
 
     return getName;
@@ -204,10 +259,50 @@ var uploadStudentsService = async (req) => {
     throw new ClientError(`duplicate ${errors}`, 404); 
 }
 
-    const newStudents = await studentModel.insertMany(data);
-    
-    return newStudents;
-  } catch (error) {
+  const students = [];
+  const consultants = [];
+
+  for (const row of data) {
+       
+    const commonProps = {
+      studentId: row.studentId,
+      password: row.password,
+      name: row.name,
+      role: row.role,
+      birthdate: row.birthdate,
+      address: row.address,
+      emailAddress: row.emailAddress,
+      phone: row.phone,
+      gender: row.gender
+      };  
+
+      const _class = row.class.split(',');
+      console.log(_class);
+
+      if (row.role === 'student') {
+        const student = new studentModel({
+          ...commonProps,
+          _class: _class.map(className => ({ name: className.trim() }))
+        });
+
+        students.push(student);
+        console.log(students);
+      }
+      else if (row.role === 'consultant') {
+        const consultant = new studentModel({
+          ...commonProps,
+          _class: _class.map(className => ({ name: className.trim() }))
+        });
+        consultants.push(consultant);
+        console.log(consultants);
+      }
+    }
+    return Promise.all([
+      studentModel.insertMany(students),
+      studentModel.insertMany(consultants)
+    ]);
+  }
+  catch (error) {
     throw error;
   }
 };
@@ -219,7 +314,7 @@ var getStudentStatusService = async (req) => {
     const status = req.query.status; 
 
     console.log(_class, req.query.status);
-    const students = await studentModel.find({ _class: _class, status: status, role: "student" });
+    const students = await studentModel.find({ '_class.name': _class, status: status, role: "student" });
 
     if (!students) throw new ClientError(`Cant find students`, 404);
 
@@ -246,6 +341,63 @@ var getStudentDetailsService = async (username) => {
     throw error;
   }
 };
+
+var getStudentsInClassService = async (id) => {
+  try {
+    if (!id) {
+      throw new ClientError("id is required", 400);
+    }
+
+    const student = await studentsModel.findById(id);
+
+    if (!student) {
+      throw new ClientError(`No student found with id: ${id}`, 404);
+    }
+
+    const classes = student._class.map((item) => item.name);
+
+    const students = await studentsModel.find({ '_class.name': { $in: classes }, role: 'student' });
+
+    return students;
+  } catch (error) {
+    throw error;
+  }
+};
+
+var getAllClassService = async () => {
+  try {
+    const results = await studentsModel.aggregate([
+      { $unwind: "$_class" },
+      { $group: {
+          _id: "$_class.name",
+          count: { $sum: 1 }
+        }
+      },
+      { $match: {
+          count: { $gt: 1 }
+        }
+      },
+      { $group: {
+          _id: null,
+          classes: { $push: "$_id" }
+        }
+      },
+      { $project: {
+          _id: 0,
+          classes: 1
+        }
+      }
+    ]); 
+
+    const classNames = results
+        .filter(result => result._id !== null)
+        .map(result => result._id);
+        console.log(classNames);
+      return results;
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   studentServiceGetAll,
   createStudentService,
@@ -255,5 +407,7 @@ module.exports = {
   getNameStudentService,
   uploadStudentsService,
   getStudentStatusService,
-  getStudentDetailsService
+  getStudentDetailsService,
+  getStudentsInClassService,
+  getAllClassService
 };

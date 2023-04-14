@@ -93,6 +93,7 @@
 
 <script>
 import { useChatStore } from "../../../stores/conversation.js";
+import { useStudentStore } from "../../../stores/student.js";
 import { getUsername } from "../../../utils/getInfoUser.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import axios from "axios";
@@ -117,11 +118,12 @@ export default {
       isLoading: true,  
       msgNoti: false,
       currentUser: getUsername(),
-      names: undefined
+      names: undefined,
+      useStudent: useStudentStore()  
     };
   },
   async mounted() {
-    this.users = await this.useChat.getListUser();
+    this.users = await this.useStudent.getStudentsInClass();
 
     const username = window.localStorage.getItem("username");
 

@@ -1,8 +1,11 @@
 <template>
   <div>
-    <NavTitle :title="pageTitle"/>
+    <NavTitle :title="pageTitle" class="mb-1"/>
     <div class="max-w-[80%]">
-      <div class="post flex" v-if="useForum.post">
+      <router-link class="mx-6 my-1"  :to="{ path: '/student/forum/posts'}" >
+      <button class="bg-[#ef1419] rounded text-[#ffffff] p-2">Quay lại</button>
+              </router-link>
+      <div class="post flex mt-3" v-if="useForum.post">
         <div class="forum-item w-[80%] rounded-md mx-auto">
           <div>
             <h2 class="font-bold text-2xl text-center">

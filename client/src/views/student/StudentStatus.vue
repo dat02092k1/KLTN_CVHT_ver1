@@ -43,7 +43,7 @@
               {{ item.CPA }}
             </td>
             <td>
-              {{ item._class }}
+              {{ item._class[0].name }}
             </td>
             <td>
               <span>
@@ -69,6 +69,7 @@ import { useStudentStore } from "../../stores/student.js";
 import { message } from "ant-design-vue";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { RouterLink, RouterView, useRoute } from "vue-router";
 
 export default {
   name: "MyComponent",
@@ -86,20 +87,20 @@ export default {
 
     const pageTitle = "Danh sách sinh viên";
 
+    const _class = useRoute().params.class;
     const useStudent = useStudentStore();
     const students = ref([]);
 
     const handleSelectChange = async () => {
       if (selectedOption.value) {
-        students.value = await useStudent.getStudentStatus(
-          selectedOption.value
-        );
+        students.value = await useStudent.getStudentStatus(_class, selectedOption.value);
       }
     };
 
     onMounted(async () => {
       const status = selectedOption.value;
-      students.value = await useStudent.getStudentStatus(status);
+      console.log(_class);
+      students.value = await useStudent.getStudentStatus(_class, status);
     });
 
     const exportToPdf = () => {

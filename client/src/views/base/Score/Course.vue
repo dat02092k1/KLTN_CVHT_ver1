@@ -46,7 +46,10 @@
   <div class="consultant-container mx-6 bg-[#ffffff]" v-else>
    <div class="ml-9 my-3">
     <h2>Danh sách sinh viên</h2>
-    <h3>Lớp: <span class="font-bold"> {{ userClass }} </span></h3>
+    <h3>Lớp: <select v-model="selectedClass">
+      <option v-for="className in userClass" :value="className">{{ className }}</option>
+    </select> </h3>
+     
    </div>
     <table class="student-table">
       <thead>
@@ -114,8 +117,14 @@ export default {
       userClass: getClass(),
       students: [],
       studentCpa: '',
-      isShowSpinner: true
+      isShowSpinner: true,
+      selectedClass: ""
     };
+  },
+  watch: {
+    async selectedClass(newVal) {
+      this.students = await this.useStudent.getData(newVal);
+     },
   },
   async mounted() {
     if (this.userRole === 'student') {
@@ -125,7 +134,8 @@ export default {
     this.isShowSpinner = false;
     }
     else {
-      this.students = await this.useStudent.getData();  
+      this.selectedClass = this.userClass[0];
+      this.students = await this.useStudent.getData(this.selectedClass);  
       console.log(this.students);
       this.isShowSpinner = false;
     }

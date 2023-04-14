@@ -20,8 +20,11 @@ var notification = require("./routes/notification/notification.js");
 var announcement = require("./routes/announcement/announcement.js");
 var form = require("./routes/form/form.js");
 var report = require("./routes/report/report.js");
+var notice = require("./routes/notice/notice.js");
 
 var logger = require("./logger/logger.js");
+const cronJob = require('./utils/cronjob.js');
+
 var cookieParser = require("cookie-parser");
 var io = require("socket.io")(9000, {
   cors: {
@@ -154,6 +157,7 @@ app.use("/api", notification);
 app.use("/api", announcement);         
 app.use("/api", form);                
 app.use("/api", report);                
+app.use("/api", notice);                
 
 app.listen(PORT, (err) => {
   if (err) console.log("error");

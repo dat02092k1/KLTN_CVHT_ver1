@@ -72,7 +72,21 @@ var getCourseDetailsController = async (req, res) => {
         }
     }
 }
+
+var importCoursesExcel = async (req, res) => {
+    try {
+        var courses = await courseService.importCoursesExcel(req);
+        res.status(200).json({ success: true, courses });
+    } catch (error) {
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
+    }
+}
 module.exports = { addCourseController, getCourseController,
                     editCourseController, deleteCourseController,
-                    getCourseDetailsController } ;         
+                    getCourseDetailsController, importCoursesExcel } ;         
 

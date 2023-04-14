@@ -11,6 +11,9 @@ var courseSchema = new Schema({
         ref: 'students',
         index: true
     },
+    studentId: { 
+      type: String
+    },
     subjects: [{
         name: {
           type: String,

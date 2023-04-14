@@ -4,11 +4,10 @@ const { ClientError } = require("../error/error.js");
 
 const mongoose = require("mongoose");
 
-var getTaskService = async (req) => {
+var getTaskService = async (_class) => {
   try {
-    const { createdBy } = req.query;
-
-    const tasks = await taskModel.find({ createdBy: createdBy }).sort({ createdAt: -1 });
+    console.log(_class);
+    const tasks = await taskModel.find({ _class: _class}).sort({ createdAt: -1 });
     if (!tasks) throw new ClientError(`tasks not found`, 404);
 
     return tasks;
@@ -19,7 +18,7 @@ var getTaskService = async (req) => {
 
 var createTaskService = async (taskDetail) => {
   try {
-    const { task, description, assignedStudents, createdBy, duration } = taskDetail;
+    const { task, description, assignedStudents, createdBy, duration, _class } = taskDetail;
 
     console.log(taskDetail);
     for (const item of assignedStudents) {
@@ -40,6 +39,7 @@ var createTaskService = async (taskDetail) => {
       assignedStudents,
       duration,
       createdBy,
+      _class
     });
 
     await newTask.save();
@@ -151,16 +151,16 @@ var getTasksofStudentService = async (id) => {
 
 var getTasksPerPageService = async (req) => {
   try {
-    const createdBy = req.params.username; 
-     
+    const _class = req.params._class; 
+     console.log(_class);
     const page = req.query.page || 1;
     console.log(page);
     const pageSize = 3;
     const skip = (page - 1) * pageSize;                
 
-    const totalTask = await taskModel.find({ createdBy: createdBy });
+    const totalTask = await taskModel.find({ _class: _class });
 
-    const tasks = await taskModel.find({ createdBy: createdBy })
+    const tasks = await taskModel.find({ _class: _class })
                                    .sort({ createdAt: -1 })
                                    .skip(skip)
                                    .limit(pageSize);

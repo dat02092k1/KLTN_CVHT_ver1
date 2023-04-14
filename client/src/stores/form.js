@@ -17,12 +17,11 @@ export const useFormStore = defineStore({
   }),
   getters: {},
   actions: {
-    async getListForm(type) {
+    async getListForm(_class) {
       try {
         const config = getAccessToken();
-        const _class = getClass();
-
-        const res = await axiosIns.get(API_ENDPOINTS.getForm + _class + `?type=${type}`, config);
+ 
+        const res = await axiosIns.get(API_ENDPOINTS.getForm + _class, config);
 
         console.log(res.data);
         this.listForms = res.data.forms;
@@ -115,5 +114,29 @@ export const useFormStore = defineStore({
         console.log(error);
       }
     },
+    async getFormsByType(id, type) {
+      try {
+        const config = getAccessToken();
+
+        const res = await axiosIns.get(API_ENDPOINTS.getFormsByType + id + `?type=${type}`, config);
+
+        console.log(res.data);
+        return res.data.forms;
+      } catch (error) {
+        console.log(error);
+      } 
+    },
+    async getFormsRest(id) {
+      try {
+        const config = getAccessToken();
+
+        const res = await axiosIns.get(API_ENDPOINTS.getFormsRest + id, config);
+
+        console.log(res.data);
+        return res.data.forms;
+      } catch (error) {
+        console.log(error);
+      } 
+    }
   },
 });

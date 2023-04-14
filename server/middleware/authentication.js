@@ -32,7 +32,7 @@ const roleAuthentication = (req, res, next) => {
 
 const onlyOwner = (req, res, next) => {
   verifyToken(req, res, () => {
-       
+
     if (req.user.id == req.body.userId || req.user.username == req.params.username || req.user.id == req.params.id) {
       next();
     } else {

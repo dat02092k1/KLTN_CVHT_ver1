@@ -9,7 +9,7 @@ const router = express.Router();
 // Students 
 router.get('/student/getAll/:class', userAuthenticate.isAdminAuthentication, studentController.getDataStudentControllerfn);
 // get all students
-router.post('/student/create', userAuthenticate.roleAuthentication ,studentController.createStudentControllerfn);
+router.post('/student/create', userAuthenticate.roleAuthentication, studentController.createStudentControllerfn);
 // create student
 router.patch('/student/update/:id', userAuthenticate.roleAuthentication, studentController.updateStudentControllerfn);
 // edit student
@@ -23,7 +23,10 @@ router.post('/student/import-excel', userAuthenticate.isAdminAuthentication, upl
 // import studnets by excel
 router.get('/student/status/:class', userAuthenticate.isAdminAuthentication, studentController.getStudentStatusController);
 // get students by class and status
-
+router.get('/student/in-class/:id', userAuthenticate.isAdminAuthentication, studentController.getStudentsInClass);
+// get students in class 
+router.get('/student/all-class', studentController.getAllClass);
+// get all classes
 /**
  * for test function
  */

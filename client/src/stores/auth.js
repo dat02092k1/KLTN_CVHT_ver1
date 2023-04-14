@@ -40,7 +40,9 @@ export const useAuthStore = defineStore({
         localStorage.setItem("_id", this.user._id);
         localStorage.setItem("username", this.user.studentId);
         localStorage.setItem("role", this.user.role);
-        localStorage.setItem("class", this.user._class);
+        const classNames = this.user._class.map((c) => c.name); 
+        console.log(classNames);
+        localStorage.setItem("class", JSON.stringify(classNames));
         localStorage.setItem("refreshToken", user.data.refreshToken);
 
         this.accessToken = user.data;
@@ -50,8 +52,9 @@ export const useAuthStore = defineStore({
 
         if (user.status === 200) {
           this.userClass = getClass();
-          console.log(this.userClass);
-          joinRoom(this.userClass);
+          for (const item of this.userClass) {
+          joinRoom(item);
+          }
           router.push("/");
         } else {
           console.log(this.errorMsg);

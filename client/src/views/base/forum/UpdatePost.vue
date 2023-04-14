@@ -1,8 +1,13 @@
 <template>
     <div>
       <NavTitle :title="pageTitle"/>
+      
       <div>
-        <div class="post" v-if="useForum.post">
+        <div class="post flex" v-if="useForum.post">
+          <router-link class="mx-6 my-1"  :to="{ path: '/student/forum/posts'}" >
+      <button class="bg-[#ef1419] rounded text-[#ffffff] p-2">Quay lại</button>
+              </router-link>
+         <div class="flex-1">
           <div class="forum-item w-[80%] rounded-md mx-auto bg-[#fff]">
             <div class="flex flex-col my-3">
               <label class="font-medium text-base" for="">Tiêu đề:</label>
@@ -39,6 +44,7 @@
           <div class="text-center">
             <button @click="editPost" class="bg-[#324f90] text-[#fff] rounded m-2 p-2">Lưu</button>
           </div>
+         </div>
         </div>
         <div v-else>error</div>
       </div>
@@ -59,7 +65,7 @@
         useForum: useForumStore(),
         id: useRoute().params.id,
         post: {
-         userId: "",
+         userId: getId(),
          title: "",
          content: "",
          username: "",    
@@ -73,10 +79,9 @@
     async mounted() {
       await this.useForum.getPostAndComment(this.id);
       this.post = this.useForum.post;
-      
+      this.post.userId = getId();
       // this.post._class = getClass(); 
-      console.log(this.post);
-    },
+     },
     methods: {
       editPost() {
         console.log(this.post);

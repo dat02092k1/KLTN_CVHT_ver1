@@ -10,6 +10,7 @@
           <th>Mẫu đơn</th>
           <th>File</th>
           <th>Status</th>
+          <th>Thời gian</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -20,6 +21,7 @@
           <td>
             <button @click="downloadFile(item.fileUrl)">file</button>
           </td>
+           
           <td>
             <span v-if="item.status === 'pending'" class="text-[#e9990c]" title="Pending">
                   <i class="fa-regular fa-circle-question"></i>
@@ -30,6 +32,11 @@
       <span v-else  title="Successful" class="text-[#38af48]">
         <i class="fa-regular fa-circle-check"></i>
       </span>
+          </td>
+          <td>
+           <span>
+            {{ formatDate(item.updatedAt) }}
+           </span>
           </td>
           <td>
             <div class="flex justify-center gap-2">
@@ -91,7 +98,18 @@ export default {
       console.log(e);
       message.error('Click on No');
     };
-    return { pageTitle, useForm, downloadFile, confirm, cancel, forms };
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+  return `${day}/${month}/${year} ${hour}:${minute}`;
+}
+
+    return { pageTitle, useForm, downloadFile, confirm, cancel, forms, formatDate };
   },
 };
 </script>
