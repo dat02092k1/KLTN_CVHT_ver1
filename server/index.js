@@ -93,10 +93,10 @@ io.on("connection", (socket) => {
     console.log(receiverName);
     const user = getUser(receiverName);
     console.log("flag user");
-     
+     console.log(user);
     if (user) {
       console.log('onl')
-      console.log(io.connection);
+      console.log('send msg flagging');
       io.to(user.socketId).emit("getMessage", {
         username,
         content,

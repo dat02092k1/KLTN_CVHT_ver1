@@ -7,8 +7,8 @@ const mongoose = require("mongoose");
 
 var addCourseService = async (req, res) => {
   try {
-    const { semester, studentId, subjects } = req.body;
-
+    const { semester, semesterCode, studentId, subjects } = req.body;
+ 
     const student = await studentsModel.findById(studentId);
     if (!student) throw new ClientError(`Student not found`, 404);
 
@@ -21,6 +21,7 @@ var addCourseService = async (req, res) => {
       semester,
       student: student._id,
       subjects,
+      semesterCode
     });
 
     let totalScore = 0;
@@ -83,7 +84,7 @@ var addCourseService = async (req, res) => {
 
 var getCourseService = async (studentId) => {
   try {
-    const course = await courseModel.find({ student: studentId });
+    const course = await courseModel.find({ student: studentId }).sort({ semesterCode: -1 });
 
     if (!course) throw new ClientError("There're no courses in history", 404);
 
@@ -257,13 +258,13 @@ var importCoursesExcel = async (req) => {
     for (let i = 0; i < data.length; i++) {
       console.log('data[i] ' + data[i]);
       const {
-        semester, studentId, subjectName, subjectScore, subjectCredits
+        semester, studentId, subjectName, subjectScore, subjectCredits, semesterCode 
       } = data[i];
  
       const student = await studentsModel.find({ studentId: studentId });
       if (!student) throw new ClientError(`Student not found`, 404); 
 
-      const getCourse = await courseModel.findOne({ semester, studentId }); 
+      const getCourse = await courseModel.findOne({ semesterCode, studentId }); 
 
       if (getCourse) throw new ClientError(`Course existed`, 400); 
       
@@ -279,7 +280,7 @@ var importCoursesExcel = async (req) => {
       });
       console.log(course);
       if (!course) {
-        course = new courseModel({ semester, student: Sid, studentId: studentId });
+        course = new courseModel({ semester, student: Sid, studentId: studentId, semesterCode });
         courses.push(course);
       }
       course.subjects.push(subject);
@@ -296,6 +297,7 @@ var importCoursesExcel = async (req) => {
       for (const subject of course.subjects) {
         totalScore += (grades.convertGradeByRand4(subject.score) * subject.credits);
         total_credits += subject.credits;
+        subject.grade = grades.calculateGrade(subject.score);  
       }
 
       const gpaRaw = totalScore / total_credits;

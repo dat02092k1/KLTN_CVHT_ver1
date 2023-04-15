@@ -3,6 +3,7 @@ const Joi = require('joi');
 
 const courseSchema = Joi.object().keys({
     semester: Joi.required(),
+    semesterCode: Joi.required(),
     studentId: Joi.required(),
     subjectName: Joi.string().required(),
     subjectScore: Joi.required(),

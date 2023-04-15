@@ -95,97 +95,27 @@ var updateStudentService = async (id, studentDetail, role) => {
     console.log(originStudentClass);
     
     if (
-      student.studentId !== studentId ||
-      formattedClass.length !== originStudentClass.length ||
-      !formattedClass.every((c) => originStudentClass.some((fc) => fc.name === c.name))
+      student.studentId !== studentId
     ) {
       console.log("false");
+      await postModel.updateMany({
+        userId: id,
+      }, {
+        $set: {
+          username: studentId,
+        }
+      });
 
-      // await postModel.updateMany({
-      //   userId: id,
-      //   _class: formattedClass
-      // }, {
-      //   $set: {
-      //     username: student.studentId,
-      //     _class: student._class.name
-      //   }
-      // });
-  
-      // await commentModel.updateMany({
-      //   userId: id
-      // }, {
-      //   $set: {
-      //     username: student.studentId
-      //   }
-      // })
-
-      // await taskModel.updateMany(
-      //   { "assignedStudents.student": student._id },
-      //   { $set: { "assignedStudents.$.studentId": student.studentId } }
-      // );
-
-      // await formModel.updateMany({
-      //   student: id
-      // }, {
-      //   $set: {
-      //     username: student.studentId,
-      //     _class: student._class           
-      //   }
-      // });
-
-      // await reportModel.updateMany({
-      //   userId: id
-      // }, {
-      //   $set: {
-      //     username: student.studentId,
-      //   }
-      // });
+      await commentModel.updateMany({
+        userId: id
+      }, {
+        $set: {
+          username: student.studentId
+        }
+      })
     } else {
       console.log("true");
     }
-  //   if (student.studentId !== studentId || student._class !== formattedClass) {
-      // await postModel.updateMany({
-      //   userId: id,
-      //   _class: formattedClass
-      // }, {
-      //   $set: {
-      //     username: student.studentId,
-      //     _class: student._class.name
-      //   }
-      // });
-  
-      // await commentModel.updateMany({
-      //   userId: id
-      // }, {
-      //   $set: {
-      //     username: student.studentId
-      //   }
-      // })
-
-      // await taskModel.updateMany(
-      //   { "assignedStudents.student": student._id },
-      //   { $set: { "assignedStudents.$.studentId": student.studentId } }
-      // );
-
-      // await formModel.updateMany({
-      //   student: id
-      // }, {
-      //   $set: {
-      //     username: student.studentId,
-      //     _class: student._class           
-      //   }
-      // });
-
-      // await reportModel.updateMany({
-      //   userId: id
-      // }, {
-      //   $set: {
-      //     username: student.studentId,
-      //   }
-      // });
-      
-  // }
-  
 
     return student;
   } catch (error) {
@@ -263,10 +193,12 @@ var uploadStudentsService = async (req) => {
   const consultants = [];
 
   for (const row of data) {
-       
+    const password = row.password;
+    const hashPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
     const commonProps = {
       studentId: row.studentId,
-      password: row.password,
+      password: hashPassword,
       name: row.name,
       role: row.role,
       birthdate: row.birthdate,

@@ -50,7 +50,7 @@ export const useScoreStore = defineStore({
     async editCourse(courseId, courseDetails) {
       try {
         const config = getAccessToken();
-
+        console.log(courseDetails);
         const course = await axiosIns.put(
           `http://localhost:8000/api/student/edit-course/${courseId}`,
           courseDetails,

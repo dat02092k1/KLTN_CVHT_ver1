@@ -17,7 +17,7 @@ async function cronJob() {
     for (const { student, studentId } of uncompletedStudents) {
       // Send emails in parallel using Promise.all
       const html = `<div>
-      Nhắc nhớ: Bạn chưa hoàn thành nhiệm vụ được giao ${task.task}, hạn nộp là ngày ${task.duration.toDateString()})
+      Nhắc nhớ: Bạn chưa hoàn thành nhiệm vụ được giao: ${task.task}, hạn nộp ngày: ${task.duration.toDateString()})
  </div>`;
         const subject = "Nhiệm vụ sắp hết hạn";
 

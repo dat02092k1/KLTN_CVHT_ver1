@@ -19,6 +19,24 @@
             />
           </div>
         </div>
+
+        <div class="semester flex">
+          <div
+            class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
+          >
+            Mã kỳ học
+          </div>
+          <div class="">
+            <input
+              id="pretext-input"
+              v-model="this.useScore.courseDetails.semesterCode"
+              class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
+              type="text"
+              placeholder="Mã kỳ học"
+            />
+          </div>
+        </div> 
+
         <div
           class="subject flex"
           v-for="(subject, index) in this.useScore.courseDetails.subjects" :key="index"
@@ -103,6 +121,7 @@
       addSubject() {
         console.log(this.useScore.courseDetails.subjects)
         this.useScore.courseDetails.subjects.push({ name: "", credits: "", score: "" });
+       
       },
       removeSubject(index) {
         if (index == 0) { alert('cant remove anymore'); }
@@ -115,6 +134,7 @@
         semester: this.useScore.courseDetails.semester,
         studentId: this.useScore.courseDetails.student,
         subjects: this.useScore.courseDetails.subjects,
+        semesterCode: this.useScore.courseDetails.semesterCode
       };
 
       this.useScore.editCourse(this.courseId, course); 

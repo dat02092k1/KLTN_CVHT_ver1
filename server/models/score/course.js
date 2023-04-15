@@ -6,6 +6,10 @@ var courseSchema = new Schema({
         type: String,
         required: true              
     },
+    semesterCode: {
+      type: Number,
+        required: true 
+    },
     student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'students',

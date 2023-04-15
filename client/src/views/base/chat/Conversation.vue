@@ -125,11 +125,11 @@ export default {
   async mounted() {
     this.users = await this.useStudent.getStudentsInClass();
 
-    const username = window.localStorage.getItem("username");
-
+    // const username = window.localStorage.getItem("username");
+    const username = getUsername();
     this.socket = io("http://localhost:9000");
     this.useChat.getConversation(username);
-    this.getUsername = username;
+    this.getUsername = getUsername();
     this.isLoading = false;
     this.socket.on("welcome", (msg) => console.log(msg));
 
@@ -137,7 +137,8 @@ export default {
     this.socket.on("getUsers", (users) => console.log(users));
 
     this.socket.on("getMessage", (data) => {
-      console.log(data);
+      console.log(data + ' data');
+      console.log('flag members + cvId: ' + this.members);
        console.log(this.conversationId);
       if (this.members.includes(data.username) && this.members.includes(this.getUsername)) {
         this.useChat.messages.push(data);
@@ -302,12 +303,15 @@ export default {
 <style scoped>
 .chat-zone {
   height: 400px;
-  overflow-y: scroll;
 }
 
+.conversation {
+  height: 400px;
+  overflow-y: auto;
+}
 .message-area {
   height: 450px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .user-message {

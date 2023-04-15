@@ -12,6 +12,7 @@
         >
           Học kỳ
         </div>
+        
         <div class="">
           <input
             id="pretext-input"
@@ -19,11 +20,30 @@
             class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
             type="text"
             placeholder="Học kỳ"
-            pattern="^[1-4]\.[1-2]$"
+             required
+          />
+        </div>
+      </div>
+       
+      <div class="semester flex">
+        <div
+          class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
+        >
+          Mã kỳ học
+        </div>
+        
+        <div class="">
+          <input
+            id="pretext-input"
+            v-model="semesterCode"
+            class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
+            type="text"
+            placeholder="Mã học kỳ"
             required
           />
         </div>
       </div>
+
       <div
         class="subject flex"
         v-for="(subject, index) in subjects" :key="index"
@@ -100,7 +120,8 @@ export default {
       semester: "",
       subjects: [{ name: "", credits: "", score: "" }],
       studentId: useRoute().params.id,
-      useScore: useScoreStore()
+      useScore: useScoreStore(),
+      semesterCode: null
     };
   },
   methods: {
@@ -118,6 +139,7 @@ export default {
         semester: this.semester,
         studentId: this.studentId,
         subjects: this.subjects,
+        semesterCode: this.semesterCode
       };
 
       this.useScore.addCourses(course);

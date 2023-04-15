@@ -34,6 +34,7 @@ var uploadDocsController = async (req, res) => {
 
   cloudinary.uploader.upload(file.path, {
     folder: 'File_docs_CVHT_UET',
+    use_filename: true,
     resource_type: 'raw',
     format: fileExtension
   }, (error, result) => {
