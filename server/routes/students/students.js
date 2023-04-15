@@ -23,7 +23,7 @@ router.post('/student/import-excel', userAuthenticate.isAdminAuthentication, upl
 // import studnets by excel
 router.get('/student/status/:class', userAuthenticate.isAdminAuthentication, studentController.getStudentStatusController);
 // get students by class and status
-router.get('/student/in-class/:id', userAuthenticate.isAdminAuthentication, studentController.getStudentsInClass);
+router.get('/student/in-class/:id', userAuthenticate.verifyToken, studentController.getStudentsInClass);
 // get students in class 
 router.get('/student/all-class', studentController.getAllClass);
 // get all classes

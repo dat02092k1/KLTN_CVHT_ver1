@@ -288,7 +288,7 @@ var getStudentsInClassService = async (id) => {
 
     const classes = student._class.map((item) => item.name);
 
-    const students = await studentsModel.find({ '_class.name': { $in: classes }, role: 'student' });
+    const students = await studentsModel.find({ '_class.name': { $in: classes },  _id: { $ne: id } });
 
     return students;
   } catch (error) {
