@@ -391,4 +391,9 @@ export default defineComponent({
 .active {
   font-weight: bold;
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
 </style>

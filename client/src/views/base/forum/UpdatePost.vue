@@ -38,7 +38,7 @@
               <input type="file" @change="uploadImage">
 
             </div>
-            
+            <Spinner v-show="useImg.loading" />
           </div>
 
           <div class="text-center">
@@ -55,7 +55,7 @@
   import NavTitle from "../NavBar/NavTitle.vue";
   import { useForumStore } from "../../../stores/forum.js";
   import { useUploadStore } from "../../../stores/upload.js";
-
+  import Spinner from '../Spinner/Spinner.vue';
   import { RouterLink, RouterView, useRoute } from "vue-router";
   import { getId, getUsername, getClass } from "../../../utils/getInfoUser";
 
@@ -99,7 +99,7 @@
         this.post.imageUrl = "";
       }
     },
-    components: { NavTitle },
+    components: { NavTitle, Spinner },
   };
   </script>
   

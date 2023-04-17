@@ -2,7 +2,7 @@
     <div class="mb-4 px-2 flex justify-center items-center">
       <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> -->
   
-      <form @submit.prevent="submitForm" class="add--course m-6 bg-[#fff]">
+      <form @submit.prevent="submitForm" class="add--course m-6 p-3 bg-[#fff]">
         <div class="semester flex">
           <div
             class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
@@ -83,8 +83,8 @@
               v-model.number="subject.credits" type="text"
             />
           </div>
-          <button @click.prevent="removeSubject(index)">
-            <i class="fa-solid fa-minus"></i>
+          <button class="mx-3" @click.prevent="removeSubject(index)">
+            <i class="fa-solid fa-square-minus"></i>
           </button>
         </div>
   

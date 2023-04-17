@@ -65,8 +65,8 @@
         value-format="YYYY-MM-DD HH:mm:ss"
       />
         </div>
-        <div class="flex flex-col  ">
-        <button class="flex" type="submit">Lưu</button>
+        <div class="flex flex-col items-center my-2">
+        <button class="flex p-2 rounded text-[#fff] bg-[#324f90]" type="submit">Lưu</button>
         </div>
       </form>
 
@@ -121,8 +121,9 @@
     },
     async mounted() { 
         this.task = await this.useTask.getTaskDetails(this.taskId);
-        this.students = await this.useStudent.getData(); 
-
+        console.log(this.task);
+        this.students = await this.useStudent.getData(this.task._class); 
+        
         console.log(this.useTask.tasks.assignedStudents);
         const completedStudents = this.task.assignedStudents.filter(student => student.isCompleted === true);
 
@@ -213,5 +214,15 @@
     height: 450px;
     overflow-y: scroll;
   }
+
+  .add--course {
+    height: 320px;
+    width: 400px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
   </style>
   

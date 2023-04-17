@@ -17,7 +17,7 @@
         </a-select-option>
       </a-select>
 
-      <div>
+      <div class="p-2 text-[#fff] font-medium bg-[#f16a99] rounded">
         <button @click="exportToPdf">Export to PDF</button>
       </div>
     </div>
@@ -28,6 +28,7 @@
           <tr>
             <th>STT</th>
             <th>MSSV</th>
+            <th>Họ tên</th>
             <th>GPA</th>
             <th>Class</th>
             <th>Status</th>
@@ -38,6 +39,9 @@
             <td>{{ index + 1 }}</td>
             <td>
               {{ item.studentId }}
+            </td>
+            <td>
+              {{ item.name }}
             </td>
             <td>
               {{ item.CPA }}
@@ -69,6 +73,7 @@ import { useStudentStore } from "../../stores/student.js";
 import { message } from "ant-design-vue";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import unorm from "unorm";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 
 export default {
@@ -101,21 +106,53 @@ export default {
       const status = selectedOption.value;
       console.log(_class);
       students.value = await useStudent.getStudentStatus(_class, status);
+      console.log(students.value);
     });
 
+    function normalizeName(name) {
+      // Remove diacritical marks (accents)
+  name = unorm.nfd(name).replace(/[\u0300-\u036f]/g, "");
+
+// Remove excess spaces
+name = name.replace(/\s+/g, " ").trim();
+
+// Split name into words
+const words = name.split(" ");
+
+// Normalize each word
+const normalizedWords = words.map((word) => {
+  if (word.length === 1) {
+    return word.toUpperCase();
+  } else {
+    // Capitalize the first letter
+    word = word.charAt(0).toUpperCase() + word.slice(1);
+
+    // Convert the remaining letters to lowercase
+    word = word.replace(/([^\W_]+[^\s-]*) */g, (txt) =>
+      txt.charAt(0) + txt.substr(1).toLowerCase()
+    );
+
+    return word;
+  }
+});
+
+// Join the words back together
+return normalizedWords.join(" ");
+    }
     const exportToPdf = () => {
       const doc = new jsPDF();
 
       // Add table headers
-      const headers = [["STT", "MSSV", "Class", "Status"]];
+      const headers = [["STT", "MSSV", "Name", "CPA", "Class", "Status"]];
 
       // Add table data
       const data = students.value.map((item, index) => [
         index + 1,
         item.studentId,
+        normalizeName(item.name),
         item.CPA,
-        item._class,
-        item.status,
+        item._class[0].name,
+        normalizeName(item.status),
       ]);
 
       doc.autoTable({

@@ -108,6 +108,14 @@ var updateStudentService = async (id, studentDetail, role) => {
         await conversation.save();
       }
 
+      await courseModel.updateMany({
+        userId: id,
+      }, {
+        $set: {
+          username: studentId,
+        }
+      });
+
       await postModel.updateMany({
         userId: id,
       }, {
