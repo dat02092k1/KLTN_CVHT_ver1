@@ -2,7 +2,7 @@
     <div>
         <NavTitle :title="pageTitle" />
 
-        <div class="table-container">
+        <div class="table-container p-4">
     <table>
       <thead>
         <tr>

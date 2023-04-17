@@ -6,6 +6,7 @@
         <div class="forum-list bg-[#fff] p-[1.5rem] mx-6 rounded">
           <div class="flex justify-end">
             <a-button
+            v-show="userRole === 'manager'"
               class="bg-[#324f90] rounded"
               type="primary"
               @click="visible = true"
