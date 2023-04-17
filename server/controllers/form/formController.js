@@ -48,7 +48,7 @@ var deleteFormController = async (req, res) => {
 
 var updateFormController = async (req, res) => {
   try {
-    var form = await formService.updateFormService(req.params.id, req);
+    var form = await formService.updateFormService(req.params.id, req.body);
     res.status(200).json({ success: true, form });
   } catch (error) {
     console.log(error);

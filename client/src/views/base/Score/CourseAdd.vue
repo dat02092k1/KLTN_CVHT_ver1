@@ -2,7 +2,7 @@
   <div class="mb-4 px-2 flex flex-col">
     <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> -->
 
-    <router-link class="" :to="{ path: '/student/course'}" >
+    <router-link class="" :to="getCoursePath()" >
       <button class="bg-[#ef1419] rounded text-[#ffffff] ml-6 my-2 p-2">Quay lại</button>
               </router-link>
     <form @submit.prevent="submitForm" class="add--course m-6 bg-[#fff]">
@@ -113,6 +113,8 @@
 <script>
   import { RouterLink, RouterView, useRoute } from "vue-router";
   import { useScoreStore } from "../../../stores/score.js";
+  import { useStudentStore } from "../../../stores/student.js";
+  import { getRole } from "../../../utils/getInfoUser.js";
 
 export default {
   data() {
@@ -121,7 +123,10 @@ export default {
       subjects: [{ name: "", credits: "", score: "" }],
       studentId: useRoute().params.id,
       useScore: useScoreStore(),
-      semesterCode: null
+      useStudent: useStudentStore(),
+      semesterCode: null,
+      student: [],
+      userRole: getRole()
     };
   },
   methods: {
@@ -145,8 +150,14 @@ export default {
       this.useScore.addCourses(course);
 
       console.log(course);
+    },
+    getCoursePath() {
+      return { path: "/student/course/" + this.studentId };
     }
   },
+  async mounted() {
+    this.student = await this.useStudent.getStudentDetails(this.studentId);
+  }
 };
 </script>
 

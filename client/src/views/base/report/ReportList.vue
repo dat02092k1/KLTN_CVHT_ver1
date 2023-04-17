@@ -79,3 +79,10 @@
     },
   });
   </script>
+
+  <style scoped>
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+  </style>

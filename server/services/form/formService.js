@@ -55,18 +55,16 @@ var deleteFormService = async (formId) => {
   }
 };
 
-var updateFormService = async (formId, req) => {
+var updateFormService = async (formId, formDetails) => {
   try {
-    const { status } = req.body;
+    const { status } = formDetails;
 
-    console.log(status);
-    const formExist = await formModel.findById(formId);
+    console.log(formDetails);
+    const formExist = await formModel.findByIdAndUpdate(formId, formDetails, { new: true});
+
     if (!formExist) throw new ClientError("cant find form", 404);
+
     console.log(formExist);
-
-    formExist.status = status;
-
-    await formExist.save();
 
     return formExist;
   } catch (error) {

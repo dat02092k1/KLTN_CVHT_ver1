@@ -1,81 +1,322 @@
 <template>
-    <div class="flex flex-col items-center  h-[500px]"> 
-
-      <div class="flex flex-col my-7">
-        <input type="text" placeholder="username" v-model="this.username">
-        <input type="text" placeholder="room" v-model="this.room">
-        <button class="bg-blue-500" @click="heh">Send</button>
+  <div class="chat-container p-6">
+    <div
+      class="chat-room flex justify-between bg-[#007aff] text-[#fff] p-3 rounded"
+    >
+      <div>
+        <h2 class="text-[#fff] text-base">Chat Room</h2>
       </div>
-
-
-      <ul id="messages" v-for="message in messages" :key="message.id">
-        <li>
-          {{ message }}
-        </li>
-      </ul>
-
-      <div class="msg-send" v-show="showMsg">
-        <input type="text" placeholder="message" v-model="this.msg">
-        <button class="bg-blue-500" @click="sendMsg">Send</button>
+      <div>
+        <button>UET chat</button>
       </div>
-      
     </div>
-  </template>
+    <div class="chat-zone grid grid-cols-12 gap-4">
+      <div class="conversation col-span-4 text-[#ffffff] bg-[#3596ff] rounded">
+        <div class="flex justify-center">
+          <div class="m-2">
+            <button @click="getConversations(currentUser)">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </button>
+          </div>
+          <div class="m-2">
+            <button @click="selectedOption = 2">
+              <i class="fa-regular fa-user"></i>
+            </button>
+          </div>
+        </div>
+
+        <div v-if="selectedOption === 1">
+          <div class="text-center"><h2 class="text-[#fff] text-xs">Trò chuyện gần đây</h2></div>
+
+          <ul v-for="(user, index) in useChat.conversation" :key="index">
+            <li
+              @click="getMessage(user._id, user.members)"
+              class="my-3 text-center p-1 cursor-pointer hover:bg-[#5b6ed8]"
+            >
+               {{ filterDuplicate(user.members, getUsername) }}
+              {{ this.userNames[filterDuplicate(user.members, getUsername)] }}   
+            </li>
+          </ul>
+        </div>
+
+        <div v-show="selectedOption === 2">
+          Sinh viên trong lớp:
+          <div v-for="(user, index) in users" :key="index">
+            <div
+              @click="handleConversation(user.studentId)"
+              class="text-center my-2 cursor-pointer hover:bg-[#2064ad] p-1"
+            >
+              {{ user.name }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ref="scrollArea" class="message-area col-span-8 rounded" @scroll="onScroll">
+        <div class="text-center">
+          <h2>{{ this.receiver }}</h2>
+        </div>
+        <div
+          class="flex flex-col"
+          v-for="message in useChat.messages"
+          :key="message._id"
+        >
+          <div
+            :class="{
+              'user-message': message.sender === getUsername,
+              'receiver-message': message.sender !== getUsername,
+            }"
+          >
+            <div>{{ message.content }}</div>
+          </div>
+          
+        </div>
+        <div>
+          <textarea
+            name=""
+            id=""
+            cols="60"
+            rows="3"
+            v-model="this.content"
+            placeholder="Nhập tin nhắn"
+          ></textarea>
+          <button @click="sendMessage">Gửi</button>
+        </div>
+      </div>
+    </div>
+    <a-alert v-show="this.msgNoti === 'true'" message="Có tin nhắn mới" type="info" show-icon />
+
+    <Spinner v-show="this.isLoading"/>
+  </div>
   
-  <script>
-import { io, Socket } from 'socket.io-client'
-  import { RouterLink, RouterView } from "vue-router";
+  
+</template>
 
-  export default {
-    data() {
-      return {
-         socket: null, 
-         msg: '',
-         username: '',
-         room: '',
-         id: '',
-         showMsg: false,
-         messages: []
+<script>
+import { useChatStore } from "../../../stores/conversation.js";
+import { useStudentStore } from "../../../stores/student.js";
+import { addUser, welcome, getUsersOnl, offlineUser, getMessages, sendMessage } from "../../../socket/socket-client.js";
+import { getUsername } from "../../../utils/getInfoUser.js";
+import { RouterLink, RouterView, useRoute } from "vue-router";
+import axios from "axios";
+import Spinner from "../Spinner/Spinner.vue";
+import { notification } from 'ant-design-vue';
+import { h } from 'vue';
+import { SmileOutlined } from '@ant-design/icons-vue';
+
+export default {
+  data() {
+    return {
+      useChat: useChatStore(),
+      getUsername: null,
+      content: "",
+      conversationId: "",
+      socket: null,
+      members: [],
+      receiver: "Username",
+      selectedOption: 1,
+      users: [],
+      currentPage: null,
+      pageSize: 10,
+      isLoading: true,  
+      msgNoti: false,
+      currentUser: getUsername(),
+      names: undefined,
+      useStudent: useStudentStore(),
+      userNames: {}
+    };
+  },
+  async mounted() {
+    this.users = await this.useStudent.getStudentsInClass();
+    
+    // const username = window.localStorage.getItem("username");
+     welcome();
+    // this.useChat.getConversation(username);
+    this.getUsername = getUsername();
+    this.isLoading = false;
+
+    this.getConversations(this.getUsername);
+     
+    getUsersOnl();
+
+    getMessages(() => this.members, this.getUsername, () => this.useChat.messages, data => this.openNotification(data));
+
+    offlineUser((data) => console.log(data)); 
+  },
+  methods: {
+    filterDuplicate(arr, username) {
+      const otherUsername = arr.find((another) => another !== username);
+      return otherUsername;
+    },
+    getMessage(id, mem) {
+      this.conversationId = id;
+      this.members = mem;
+      console.log(this.members);
+      this.currentPage = 2;
+      this.receiver = this.filterDuplicate(mem, this.getUsername);
+
+      console.log(this.conversationId, this.receiver);
+      console.log(id);
+      this.useChat.getMessages(id);
+    },
+    sendMessage() {
+      console.log("flag");
+      console.log(this.conversationId);
+      const message = {
+        conversationId: this.conversationId,
+        sender: this.getUsername,
+        content: this.content,
+      };
+
+      const receiver = this.members.find(
+        (another) => another !== this.getUsername
+      );
+
+      console.log(receiver);
+      sendMessage(this.getUsername, receiver, this.content);
+
+      try {
+        this.useChat.sendMessage(message);
+        this.useChat.messages.push({
+          sender: this.getUsername,
+          content: this.content,
+        });
+        this.content = "";
+      } catch (error) {
+        console.log(error);
       }
     },
-    methods: {    
-      heh() {
-         this.socket.emit("join room", {
-          username: this.username,
-          roomName: this.room
-         })
-        // this.socket.emit("message", this.msg);
+    async conversationInfo(sender, receiver) {
+      const conversation = await this.useChat.createConversation(
+        sender,
+        receiver
+      );
+      return conversation;
+    },
+    async handleConversation(receiver) {
+      try {
+        const conversation = await this.useChat.handleConversation(this.getUsername, receiver);
          
-        this.room = '';
-        this.showMsg = true;
-      },
-      sendMsg() {
-        this.socket.emit("chat message", {
-          user: this.username,
-          message: this.msg
-        })
+        const conversationId = conversation._id;
+        const conversationMembers = conversation.members;
 
-        this.msg = '';                  
-      },
-      noti(message) {
-        this.messages.push(message);
-         
+      console.log(conversationId, conversationMembers);
+
+      this.getMessage(conversationId, conversationMembers)
+      } catch (error) {
+        console.log(error);
       }
     },
-    created() {
-      this.socket = io('http://localhost:9000');
+    findConversation(conversations, sender, receiver) {
+      try {
+        for (let i = 0; i < conversations.length; i++) {
+          const members = conversations[i].members || [];
 
-      this.socket.on('send data', (data) => {
-       this.id = data.id;
-      console.log(this.id);
-      });
+          if (members.includes(sender) && members.includes(receiver)) {
+            return conversations[i]._id;
+          }
+        }
+        return null;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    onScroll() {       
+      const scrollArea = this.$refs.scrollArea;
+        const isTop = scrollArea.scrollTop === 0;
+      if (isTop && !this.isLoading) {
+        this.isLoading = true;
+        this.loadMessages();
+      }
+    },
+    async loadMessages() {
+      const response = await this.useChat.loadMessage(this.conversationId, this.currentPage, this.pageSize) ;
+      this.currentPage++;
+      this.isLoading = false;
+    },
+    async getConversations(username) {
+      await this.useChat.getConversation(username);
+      this.selectedOption = 1;
+      this.names = await this.getUserNames(this.useChat.conversation, username);
+      console.log(this.names);
+    },
+    // Function to get names for all unique usernames in an array of conversations
+    async getUserNames(conversations, currentUser) {
+      console.log(currentUser);
+  const usernames = new Set();
 
-      this.socket.on('chat message', (data) => {
-        console.log(data);
-        
-        this.noti(data.data.message);
-      })
+  conversations.forEach((conversation) => {
+    conversation.members.forEach((member) => {
+      if (member !== currentUser) {
+        usernames.add(member);
+      }
+    });
+  });
+
+  // const names = {};
+
+  for (const username of usernames) {
+    try {
+      const response = await axios.get(`http://localhost:8000/student/get-details/${username}`);
+
+      const user = response.data.students;
+      
+      this.userNames[user.studentId] = user.name;
+    } catch (error) {
+      console.error(error);
     }
   }
-  </script>
-  
+    
+    },
+    popupMsg(data) {
+      notification.open({
+        message: 'Tin nhắn mới',
+        description: data,
+        icon: () => h(SmileOutlined, {
+          style: 'color: #108ee9',
+        }),
+      });
+    }
+  },
+  components: {
+    Spinner
+  }
+};
+</script>
+<style scoped>
+.chat-zone {
+  height: 400px;
+}
+
+.conversation {
+  height: 400px;
+  overflow-y: auto;
+}
+.message-area {
+  height: 400px;
+  overflow-y: auto;
+}
+
+.user-message {
+  color: #fff;
+  text-align: right;
+  padding: 8px;
+  background-color: #0084ff;
+  border-radius: 4px;
+  margin: 10px;
+  max-width: 60%;
+  align-self: flex-end;
+}
+
+.receiver-message {
+  color: black;
+  text-align: left;
+  padding: 8px;
+  background-color: #eaeaea;
+  display: inline-block;
+  border-radius: 4px;
+  margin: 10px;
+  max-width: 60%;
+  align-self: flex-start;
+
+}
+</style>

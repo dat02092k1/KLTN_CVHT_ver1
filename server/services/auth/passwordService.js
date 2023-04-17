@@ -1,6 +1,5 @@
 var userModel = require('../../models/students/studentsModel');
 const email = require('../../utils/email.js');
-const pw = require("../../utils/users.js");
 const { ClientError } = require("../error/error.js");
 const jwt = require('jsonwebtoken');
 require('dotenv').config();

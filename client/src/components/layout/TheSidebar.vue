@@ -8,7 +8,7 @@
           alt=""
         />
         <h1 class="text-[#fff] font-semibold leading-[50px] text-[14px]">
-          UET Portal
+          UET Consultant
         </h1>
       </a>
     </div>
@@ -46,9 +46,9 @@
         >
           <a href="">
             <li>
-              <router-link to="/student/add" class="px-5">
+              <router-link to="/manager" class="px-5">
                 <i class="fa-solid fa-list mr-4"></i>
-                <span>Thêm người dùng</span>
+                <span>Quản lý sinh viên</span>
               </router-link>
             </li>
           </a>
@@ -115,6 +115,17 @@
         <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole !== 'manager'">
           <a href="">
             <li>
+              <router-link to="/consultant/notice" class="px-5">
+                <i class="fa-solid fa-bullhorn mr-4"></i>
+                <span>Thông báo</span>
+              </router-link>
+            </li>
+          </a>
+        </div>
+
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole !== 'manager'">
+          <a href="">
+            <li>
               <router-link :to="getRole === 'student' ? '/student/onegate' : '/consultant/onegate'" class="px-5">
                 <i class="fa-solid fa-file-waveform mr-4"></i>  
                 <span>Biểu mẫu</span>
@@ -134,10 +145,10 @@
           </a>
         </div>
 
-        <div class="h-12 hover:bg-[#2d3c50] flex items-center">
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole !== 'manager'">
           <a href="">
             <li>
-              <router-link to="/student/forum/posts" class="px-5">
+              <router-link :to="getForumPath()" class="px-5">
                 <i class="fa-regular fa-circle-question mr-4"></i>
                 <span>Diễn đàn</span>
               </router-link>
@@ -148,7 +159,7 @@
         <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole !== 'manager'">
           <a href="">
             <li>
-              <router-link to="/student/conversation" class="px-5">
+              <router-link to="/user/chat" class="px-5">
                 <i class="fa-regular fa-message mr-4"></i>
                 <span>Trò chuyện</span>
               </router-link>
@@ -182,6 +193,15 @@ export default {
     }
     };
   },
+  computed: {
+    forumPath() {
+      if (this.userRole === 'consultant') {
+        return "/consultant/forum/posts"
+      } else if (this.userRole === 'student') {
+        return '/student/forum/posts'
+      }
+    }
+  },
   methods: {
     toggleSidebar() {
       this.isOpen = !this.isOpen;
@@ -196,6 +216,14 @@ export default {
         state.openKeys = openKeys;
       } else {
         state.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      }
+    },
+    getForumPath() {
+      if (this.userRole === 'consultant') {
+        return "/consultant/forum/posts"
+      }
+      else if (this.userRole === 'student') {
+        return '/student/forum/posts'
       }
     }
   },
@@ -216,10 +244,10 @@ export default {
   height: 100vh;
   background-color: #304156;
   box-sizing: border-box;
-
   flex-direction: column;
   flex-wrap: nowrap;
   color: #fff;
+  overflow-y: auto;
 }
 
 .item__list {
@@ -244,5 +272,10 @@ export default {
 .active4 {
   background-color: #2d3c50;
   color: #409eff;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 </style>

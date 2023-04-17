@@ -74,6 +74,21 @@ export const useUploadStore = defineStore({
         console.log(error);        
           this.loading = false; 
       }      
+    },
+    async uploadMultiCourses(data) {
+      try {
+        const config = getAccessToken();
+
+        const upload = await axiosIns.post("http://localhost:8000/api/student/course/import", data, config); 
+             
+        console.log(upload);    
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000); 
+      } catch (error) {
+        console.log(error);
+        this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);
+      }
     }
   },
 });

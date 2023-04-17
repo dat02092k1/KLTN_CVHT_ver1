@@ -44,8 +44,9 @@ const onlyOwner = (req, res, next) => {
 const studentIdAuthentication = (req, res, next) => {
     
   verifyToken(req, res, () => {
-     
-    if (req.user.id == req.params.studentId || req.user.role === "consultant") {
+     console.log(typeof(req.params.studentId));
+     console.log(typeof(req.user.id));
+    if (req.user.id === req.params.studentId || req.user.role === "consultant" || req.user.role === "manager") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");
@@ -81,7 +82,7 @@ const isManagerAuth = (req, res, next) => {
 const isAdminAuthentication = (req, res, next) => {
   verifyToken(req, res, () => {
      
-    if (req.user.role === "consultant") {
+    if (req.user.role === "consultant" || req.user.role === "manager") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");

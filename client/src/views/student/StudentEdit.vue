@@ -372,8 +372,8 @@ export default defineComponent({
         .validate()
         .then(() => {
           console.log("values", formState);
-          formState.class = dynamicValidateForm.domains;
-          console.log(formState.class);
+          formState._class = dynamicValidateForm.domains;
+          console.log(formState._class);
           useStudent.updateStudent(studentId, formState);
         })
         .catch((error) => {

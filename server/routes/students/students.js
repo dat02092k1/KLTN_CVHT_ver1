@@ -11,21 +11,24 @@ router.get('/student/getAll/:class', userAuthenticate.isAdminAuthentication, stu
 // get all students
 router.post('/student/create', userAuthenticate.roleAuthentication, studentController.createStudentControllerfn);
 // create student
-router.patch('/student/update/:id', userAuthenticate.roleAuthentication, studentController.updateStudentControllerfn);
+router.patch('/student/update/:id', userAuthenticate.isManagerAuth, studentController.updateStudentControllerfn);
 // edit student
-router.get('/student/details/:id', userAuthenticate.verifyToken, userAuthenticate.roleAuthentication ,studentController.getDetailStudentfn);
+router.get('/student/details/:id', userAuthenticate.verifyToken, studentController.getDetailStudentfn);
 // details of student
 router.delete('/student/remove/:id', userAuthenticate.verifyToken, userAuthenticate.roleAuthentication ,studentController.deleteStudentControllerfn);
 // delete student
 router.get('/student/names/:class', userAuthenticate.verifyToken, studentController.getNameStudentController);
 // get students by class
-router.post('/student/import-excel', userAuthenticate.isAdminAuthentication, upload.single('file'), validate.validateFieldsMiddleware, studentController.uploadStudentsController);
+router.post('/student/import-excel', userAuthenticate.isManagerAuth, upload.single('file'), validate.validateFieldsMiddleware, studentController.uploadStudentsController);
 // import studnets by excel
 router.get('/student/status/:class', userAuthenticate.isAdminAuthentication, studentController.getStudentStatusController);
 // get students by class and status
 router.get('/student/in-class/:id', userAuthenticate.verifyToken, studentController.getStudentsInClass);
 // get students in class 
-router.get('/student/all-class', studentController.getAllClass);
+router.get('/student/all-class', userAuthenticate.isManagerAuth, studentController.getAllClass);
+// get all classes
+router.get('/users/in/:class', userAuthenticate.isManagerAuth, studentController.getUsersInClass);
+
 // get all classes
 /**
  * for test function

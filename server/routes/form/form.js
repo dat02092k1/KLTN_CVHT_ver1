@@ -9,13 +9,13 @@ router.post('/form/add', userAuthenticate.verifyToken, formController.createForm
 // get list of forms submit by type
 router.get('/form/get/:class', userAuthenticate.isAdminAuthentication, formController.getFormsController);
 // delete form 
-router.delete('/form/delete/:id', userAuthenticate.roleAuthentication, formController.deleteFormController);
+router.delete('/form/delete/:id', userAuthenticate.verifyToken, formController.deleteFormController);
 // edit form status
-router.put('/form/update/:id', userAuthenticate.isAdminAuthentication, formController.updateFormController);
+router.put('/form/update/:id', userAuthenticate.verifyToken, formController.updateFormController);
 // get details form
-router.get('/form/details/:id', userAuthenticate.isAdminAuthentication, formController.getDetailsFormController);
+router.get('/form/details/:id', userAuthenticate.verifyToken, formController.getDetailsFormController);
 // get forms of users
-router.get('/form/student/:id', userAuthenticate.roleAuthentication, formController.getFormsUserController);
+router.get('/form/student/:id', userAuthenticate.verifyToken, formController.getFormsUserController);
 // get forms by type
 router.get('/form/get-type/:id', userAuthenticate.roleAuthentication, formController.getFormsByType);
 // get forms rest

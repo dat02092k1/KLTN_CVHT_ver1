@@ -157,7 +157,7 @@ import Loading from '../Spinner/Loading.vue';
 import Spinner from '../Spinner/Spinner.vue';
 import { RouterLink, RouterView } from "vue-router";
 import { getClass, getId, getRole, getUsername } from "../../../utils/getInfoUser";
-import { sendNoti } from "../../../socket/socket.js";
+import { sendNoti } from "../../../socket/socket-client.js";
 import { message } from "ant-design-vue";
 import { useForumStore } from "../../../stores/forum.js";
 import { useUploadStore } from "../../../stores/upload.js";
@@ -323,5 +323,10 @@ export default defineComponent({
 .forum-item {
   border: 1px solid #85bde5;
   padding: 20px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 </style>

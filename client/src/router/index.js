@@ -15,19 +15,24 @@ import ResetPassword from "../views/login/ResetPassword.vue";
 import ChartGpa from "../views/chart/ChartGpa.vue";
 import ChartCredits from "../views/chart/ChartCredits.vue";
 import PostList from "../views/base/forum/PostList.vue";
+import StudentForum from "../views/base/forum/StudentForum.vue";
 import PostDetails from "../views/base/forum/PostDetails.vue";
 import Loading from "../views/base/Spinner/Loading.vue";
 import Test from "../views/base/Test.vue";
 import AddPost from "../views/base/forum/AddPost.vue";
 import UpdatePost from "../views/base/forum/UpdatePost.vue";
 import EditComment from "../views/base/forum/EditComment.vue";
-import Chat from "../views/base/chat/Chat.vue";
 import Conversation from "../views/base/chat/Conversation.vue";
+import Chat from "../views/base/chat/Chat.vue";
 import Login from "../views/login/Login.vue";
 import Course from "../views/base/Score/Course.vue";
 import CourseDetails from "../views/base/Score/CourseDetails.vue";
 import CourseAdd from "../views/base/Score/CourseAdd.vue";
 import CourseEdit from "../views/base/Score/CourseEdit.vue";
+import CourseManager from "../views/base/Score/CourseManager.vue";
+import ClassCourse from "../views/base/Score/ClassCourse.vue";  
+import ImportCourses from "../views/base/Score/ImportCourses.vue";  
+import ManageStudent from "../views/student/ManageStudent.vue";
 import TaskList from "../views/base/task/TaskList.vue";
 import TaskStudent from "../views/base/task/TaskStudent.vue";
 import TaskEdit from "../views/base/task/TaskEdit.vue";
@@ -75,7 +80,13 @@ const router = createRouter({
       path: "/student/import-excel",
       name: "students import",
       component: ImportExcel,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresManager: true },
+    },
+    {
+      path: "/student/import-courses/:id",
+      name: "courses import",
+      component: ImportCourses,
+      meta: { requiresAuth: true, requiresManager: true },
     },
     {
       path: "/student/status/:class",
@@ -102,9 +113,15 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/student/forum/posts",
-      name: "list posts",
+      path: "/consultant/forum/posts",
+      name: "list posts consultant",
       component: PostList,
+      meta: { requiresAuth: true, requiresConsultant: true },
+    },
+    {
+      path: "/student/forum/posts",
+      name: "list posts student",
+      component: StudentForum,
       meta: { requiresAuth: true },
     },
     {
@@ -161,15 +178,15 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/student/chat",
-      name: "chat",
-      component: Chat,
-      meta: { requiresAuth: true },
-    },
-    {
       path: "/student/conversation",
       name: "Conversation",
       component: Conversation,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/user/chat",
+      name: "chat",
+      component: Chat,
       meta: { requiresAuth: true },
     },
     {
@@ -195,6 +212,24 @@ const router = createRouter({
       name: "course edit",
       component: CourseEdit,
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/manager",
+      name: "manager course",
+      component: CourseManager,
+      meta: { requiresAuth: true, requiresManager: true },
+    },
+    {
+      path: "/manager/student/:class",
+      name: "manager student",
+      component: ManageStudent,
+      meta: { requiresAuth: true, requiresManager: true },
+    },
+    {
+      path: "/manager/course/:class",
+      name: "manager course class",
+      component: ClassCourse,
+      meta: { requiresAuth: true, requiresManager: true },
     },
     {
       path: "/student/add",
@@ -249,7 +284,7 @@ const router = createRouter({
       name: "edit announcement",
       component: AnnouncementEdit,
       meta: { requiresAuth: true,
-        requiresConsultant: true },
+        requiresManager: true },
     },
     {
       path: "/student/onegate",
@@ -324,7 +359,7 @@ const router = createRouter({
       path: "/consultant/notice",
       name: "notice list",
       component: Notice,
-      meta: { requiresAuth: true, requiresConsultant: true },
+      meta: { requiresAuth: true },
     },
     {
       path: "/consultant/notice/edit/:id",

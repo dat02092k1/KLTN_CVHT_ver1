@@ -1,34 +1,45 @@
 <template>
-    <div class="flex">
-        <h2>Thông báo</h2>
-        <div>
-            <div class="notification-icon"  @click="showNotifications" :class="{ active: displayNotifications }">
-                <i class="fa-solid fa-bell"></i>
-                <span v-if="notificationCount" class="badge">{{ notificationCount }}</span>
-        </div>
+  <div class="flex items-center gap-1">
+    <h2>Thông báo</h2>
+    <div>
+      <div
+        class="notification-icon"
+        @click="showNotifications"
+        :class="{ active: displayNotifications }"
+      >
+        <i class="fa-solid fa-bell"></i>
+        <span v-if="notificationCount" class="badge">{{
+          notificationCount
+        }}</span>
+      </div>
 
-        <ul v-if="displayNotifications" class="bg-[#ffffff] p-2">
-            <h2 class="font-bold">Thông báo</h2>
-      <li v-for="notification in notifications" :key="notification._id">
-        <div class="noti_item hover:bg-[#e4e6eb] flex flex-col">
+      <ul
+        v-if="displayNotifications"
+        class="bg-[#ffffff] p-2 h-[300px] overflow-y-auto absolute"
+      >
+        <h2 class="font-bold">Thông báo</h2>
+        <li v-for="notification in notifications" :key="notification._id">
+          <div class="noti_item hover:bg-[#e4e6eb] flex flex-col">
             <span>{{ notification.message }}</span>
-          
-                  <button class="text-xs text-end" @click="markAsRead(notification._id)">
-                    <router-link v-if="notification.postId?._id"
-  :to="{ path: '/student/forum/post/' + notification.postId._id }"
->Mark as read</router-link>
+
+            <button
+              class="text-xs text-end"
+              @click="markAsRead(notification._id)"
+            > Mark as read
             </button>
-                   
-        </div>
-      </li>
-    </ul>
-        </div>
+            <router-link v-if="notification.postId" :to="'/student/forum/post/' + notification.postId._id">xem bài đăng</router-link>
+            <router-link v-if="notification.noticeId" :to="'/consultant/notice/' + notification.noticeId">Xem thông báo</router-link>
+
+          </div>
+        </li>
+      </ul>
     </div>
+  </div>
 </template>
 
 <script>
-import { axiosIns } from '../../../api/axios.js';
-import { useNotiStore } from '../../../stores/notification.js'
+import { axiosIns } from "../../../api/axios.js";
+import { useNotiStore } from "../../../stores/notification.js";
 import { RouterLink, RouterView } from "vue-router";
 
 export default {
@@ -36,7 +47,7 @@ export default {
     return {
       notifications: [],
       useNoti: useNotiStore(),
-      displayNotifications: false
+      displayNotifications: false,
     };
   },
   async mounted() {
@@ -47,25 +58,25 @@ export default {
   },
   computed: {
     notificationCount() {
-      return this.notifications.length
+      return this.notifications.length;
     },
   },
   methods: {
     async markAsRead(notificationId) {
-    //   await axios.patch(`/api/notifications/${notificationId}`);
-    //   this.notifications = this.notifications.filter(
-    //     (notification) => notification._id !== notificationId
-    //   );
-    this.useNoti.readNotification(notificationId);
+      //   await axios.patch(`/api/notifications/${notificationId}`);
+      //   this.notifications = this.notifications.filter(
+      //     (notification) => notification._id !== notificationId
+      //   );
+      this.useNoti.readNotification(notificationId);
     },
     showNotifications() {
-        this.displayNotifications = !this.displayNotifications;
-    }
+      this.displayNotifications = !this.displayNotifications;
+    },
   },
 };
 </script>
 
-<style scoped> 
+<style scoped>
 .active {
   color: #1876f2;
 }

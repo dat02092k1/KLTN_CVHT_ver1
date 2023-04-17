@@ -180,6 +180,35 @@ export const useStudentStore = defineStore({
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+    async getAllClasses() {
+      try {
+        const config = getAccessToken();
+
+        const res = await axiosIns.get(`http://localhost:8000/student/all-class`, config);
+
+        console.log(res.data.classes);
+
+         return res.data.classes;
+      } catch (error) {
+        throw error;
+      }
+    },
+    async getUsersInClass(_class) {
+      try {
+        const config = getAccessToken();
+
+        const response = await axiosIns.get(
+          `http://localhost:8000/users/in/${_class}`,
+          config
+        );
+         
+        this.data = response.data.allStudent;
+
+        return response.data.allStudent;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 });

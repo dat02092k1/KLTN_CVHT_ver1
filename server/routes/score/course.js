@@ -12,12 +12,12 @@ router.post('/student/add-course', userAuthenticate.roleAuthentication, courseCo
 // get courses
 router.get('/student/get-course/:studentId', userAuthenticate.studentIdAuthentication, courseController.getCourseController);
 // edit course
-router.put('/student/edit-course/:courseId', userAuthenticate.roleAuthentication, courseController.editCourseController);
+router.put('/student/edit-course/:courseId', userAuthenticate.isManagerAuth, courseController.editCourseController);
 // delete course  
-router.delete('/student/delete-course/:courseId', userAuthenticate.roleAuthentication, courseController.deleteCourseController);
+router.delete('/student/delete-course/:courseId', userAuthenticate.isManagerAuth, courseController.deleteCourseController);
 // get course details
-router.get('/student/course/:courseId', userAuthenticate.roleAuthentication, courseController.getCourseDetailsController);
+router.get('/student/course/:courseId', userAuthenticate.isAdminAuthentication, courseController.getCourseDetailsController);
 // import courses by excel
-router.post('/student/course/import', upload.single('file'), validate.validateCourse, courseController.importCoursesExcel);
+router.post('/student/course/import', userAuthenticate.isManagerAuth, upload.single('file'), validate.validateCourse, courseController.importCoursesExcel);
 
 module.exports = router;       

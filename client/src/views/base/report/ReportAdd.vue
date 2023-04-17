@@ -122,7 +122,7 @@ import { message } from "ant-design-vue";
 
 export default defineComponent({
   setup() {
-    const pageTitle = "Báo cáo tiến bịp";
+    const pageTitle = "Báo cáo tiến độ";
     const showLoading = ref(false);
 
     const visible = ref(false);
@@ -237,5 +237,10 @@ export default defineComponent({
 
 :deep(.ant-btn) {
   background-color: #1890ff;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 </style>

@@ -112,7 +112,7 @@
   import Loading from '../Spinner/Loading.vue';
   import { RouterLink, RouterView } from "vue-router";
   import { getClass, getId, getRole } from "../../../utils/getInfoUser";
-  import { sendNoti } from "../../../socket/socket.js";
+  import { sendNoti } from "../../../socket/socket-client.js";
   import { message } from "ant-design-vue";
   import { useAnnouncementStore } from "../../../stores/announcement.js";
   import { useUploadStore } from "../../../stores/upload.js";

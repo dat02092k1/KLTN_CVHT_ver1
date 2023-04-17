@@ -49,7 +49,7 @@ var updateStudentControllerfn = async (req, res) => {
 var getDetailStudentfn = async (req, res) => {
     try {
         var details = await studentService.getStudentDetailService(req.params.id);
-
+        console.log(details);
          res.status(200).json({ success: true, details });
     } catch (error) {
         if (error instanceof ClientError) {
@@ -160,10 +160,25 @@ var getAllClass = async (req, res) => {
     }
 }
 
+var getUsersInClass = async (req, res) => { 
+    try {
+         
+        var allStudent = await studentService.getUsersInClassService(req.params.class);
+        res.status(200).json({ success: true, allStudent });
+    } catch (error) {
+        console.log(error);
+        if (error instanceof ClientError) {
+            res.status(error.status).send({ message: error.message });
+        } else {
+            console.log(error);
+            res.status(500).send({ message: "Internal server error" });
+        }
+    }
+}
 module.exports = { getDataStudentControllerfn, createStudentControllerfn, 
      getDetailStudentfn, updateStudentControllerfn,
     deleteStudentControllerfn, getNameStudentController, 
     uploadStudentsController, getStudentStatusController,
     getStudentDetails, getStudentsInClass,
-    getAllClass } ;         
+    getAllClass, getUsersInClass } ;         
 

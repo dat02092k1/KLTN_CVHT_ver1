@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="chat-container p-6">
     <div
       class="chat-room flex justify-between bg-[#007aff] text-[#fff] p-3 rounded"
@@ -31,10 +31,9 @@
           <ul v-for="(user, index) in useChat.conversation" :key="index">
             <li
               @click="getMessage(user._id, user.members)"
-              class="my-3 text-center cursor-pointer hover:bg-[#5b6ed8]"
+              class="my-3 text-center p-1 cursor-pointer hover:bg-[#5b6ed8]"
             >
-              <!-- {{ names[filterDuplicate(user.members, getUsername)] }} -->
-              {{ filterDuplicate(user.members, getUsername) }}
+               {{ names[filterDuplicate(user.members, getUsername)] }} 
             </li>
           </ul>
         </div>
@@ -44,9 +43,9 @@
           <div v-for="(user, index) in users" :key="index">
             <div
               @click="handleConversation(user.studentId)"
-              class="text-center my-2 cursor-pointer hover:bg-[#2064ad]"
+              class="text-center my-2 cursor-pointer hover:bg-[#2064ad] p-1"
             >
-              {{ user.studentId }}
+              {{ user.name }}
             </div>
           </div>
         </div>
@@ -124,7 +123,7 @@ export default {
   },
   async mounted() {
     this.users = await this.useStudent.getStudentsInClass();
-
+    
     // const username = window.localStorage.getItem("username");
     const username = getUsername();
     this.socket = io("http://localhost:9000");
@@ -132,7 +131,7 @@ export default {
     this.getUsername = getUsername();
     this.isLoading = false;
     this.socket.on("welcome", (msg) => console.log(msg));
-
+    this.getConversations(this.getUsername);
     this.socket.emit("addUser", this.getUsername);
     this.socket.on("getUsers", (users) => console.log(users));
 
@@ -156,7 +155,6 @@ export default {
   created() {},
   methods: {
     filterDuplicate(arr, username) {
-      console.log(username);
       const otherUsername = arr.find((another) => another !== username);
       return otherUsername;
       // const res = await axios.get(`http://localhost:8000/student/get-details/${otherUsername}`)
@@ -184,7 +182,6 @@ export default {
         content: this.content,
       };
 
-      console.log(message);
       const receiver = this.members.find(
         (another) => another !== this.getUsername
       );
@@ -242,12 +239,8 @@ export default {
         console.log(error);
       }
     },
-    onScroll() {
-       
+    onScroll() {       
       const scrollArea = this.$refs.scrollArea;
-      // scrollArea.scrollTop = scrollArea.scrollHeight - scrollArea.clientHeight;
-      // console.log(scrollArea.scrollTop);
-      // const isAtBottom =  Math.round(scrollArea.scrollTop + scrollArea.clientHeight) === scrollArea.scrollHeight;
         const isTop = scrollArea.scrollTop === 0;
       if (isTop && !this.isLoading) {
         this.isLoading = true;
@@ -255,7 +248,6 @@ export default {
       }
     },
     async loadMessages() {
-      console.log('load messages');
       const response = await this.useChat.loadMessage(this.conversationId, this.currentPage, this.pageSize) ;
       this.currentPage++;
       this.isLoading = false;
@@ -286,7 +278,6 @@ export default {
 
       const user = response.data.students;
       names[user.studentId] = user.name;
-      console.log(names); 
     } catch (error) {
       console.error(error);
     }
@@ -309,8 +300,14 @@ export default {
   height: 400px;
   overflow-y: auto;
 }
+
+.conversation ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;  
+}
+
 .message-area {
-  height: 450px;
+  height: 400px;
   overflow-y: auto;
 }
 
@@ -337,4 +334,10 @@ export default {
   align-self: flex-start;
 
 }
-</style>
+</style> -->
+
+<template>
+  <div>
+    conversation
+  </div>
+</template>

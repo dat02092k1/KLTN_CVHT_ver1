@@ -80,12 +80,10 @@ export const useFormStore = defineStore({
         console.log(error);
       }
     },
-    async editForm(id, status) {
+    async editForm(id, form) {
       try {
         const config = getAccessToken();
-        const form = {
-          status: status
-        }
+        
         console.log(id, form);
         const res = await axiosIns.put(
           API_ENDPOINTS.editForm + id,

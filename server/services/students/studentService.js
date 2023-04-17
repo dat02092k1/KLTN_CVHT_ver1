@@ -78,15 +78,15 @@ var updateStudentService = async (id, studentDetail, role) => {
     const objectId = mongoose.Types.ObjectId(id);
     
     const { studentId } = studentDetail;
-     const formattedClass = studentDetail.class.map(c => ({ name: c.name }));
-     
+    console.log(studentDetail)
+     const formattedClass = studentDetail._class.map(c => ({ name: c.name }));
+     console.log('class flag')
     const student = await studentModel.findByIdAndUpdate(
       objectId,
       { ...studentDetail, _class: formattedClass },
       // { new: true }
     );
       console.log('flag');
-      console.log(formattedClass);
     if (!student) {
       
       throw new ClientError(`No student found with id: ${id}`, 404);
@@ -98,6 +98,16 @@ var updateStudentService = async (id, studentDetail, role) => {
       student.studentId !== studentId
     ) {
       console.log("false");
+      const conversationFilter = { members: { $elemMatch: { $eq: student.studentId } } };
+
+      const conversations = await conversationModel.find(conversationFilter);
+
+      for (const conversation of conversations) {
+        const index = conversation.members.indexOf(student.studentId);
+        conversation.members[index] = studentId;
+        await conversation.save();
+      }
+
       await postModel.updateMany({
         userId: id,
       }, {
@@ -298,34 +308,27 @@ var getStudentsInClassService = async (id) => {
 
 var getAllClassService = async () => {
   try {
-    const results = await studentsModel.aggregate([
-      { $unwind: "$_class" },
-      { $group: {
-          _id: "$_class.name",
-          count: { $sum: 1 }
-        }
-      },
-      { $match: {
-          count: { $gt: 1 }
-        }
-      },
-      { $group: {
-          _id: null,
-          classes: { $push: "$_id" }
-        }
-      },
-      { $project: {
-          _id: 0,
-          classes: 1
-        }
-      }
-    ]); 
+   const res = await studentModel.find({ role: 'consultant'})
+    if (!res) throw new Error;
 
-    const classNames = results
-        .filter(result => result._id !== null)
-        .map(result => result._id);
-        console.log(classNames);
-      return results;
+    const classes = res.map((user) => {
+      return user._class;
+    })
+    
+   return classes.flat();
+  } catch (error) {
+    throw error;
+  }
+};
+
+var getUsersInClassService = async (_class) => {
+  try {
+     
+    const data = await studentModel.find({ '_class.name': _class });
+    console.log(data); 
+    if (!data) throw new ClientError('data not found', 404)
+
+    return data;
   } catch (error) {
     throw error;
   }
@@ -341,5 +344,6 @@ module.exports = {
   getStudentStatusService,
   getStudentDetailsService,
   getStudentsInClassService,
-  getAllClassService
+  getAllClassService,
+  getUsersInClassService
 };

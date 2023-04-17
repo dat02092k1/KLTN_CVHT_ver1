@@ -1,5 +1,6 @@
 const noticeModel = require("../../models/notices/notice.js");
 const userModel = require("../../models/students/studentsModel.js");
+const notiModel = require("../../models/notifications/notifications.js");
 const email = require('../../utils/email.js');
 
 const { ClientError } = require("../error/error.js");
@@ -41,6 +42,13 @@ const createNoticeService = async (req) => {
 
     await Promise.all(sendEmails);
     
+    const notification = getUsers.map((user) => ({
+        userId: user._id,
+        noticeId: notice._id,
+        message: `Thông báo mới: ${notice.subject} trong lớp của bạn`,
+      }));
+
+      await notiModel.insertMany(notification);
     return notice;
   } catch (error) {
     throw error;
@@ -50,6 +58,11 @@ const createNoticeService = async (req) => {
 const deleteNoticeService = async (id) => {
     try {
         console.log(id);
+
+        const notiRelated = await notiModel.deleteMany({ noticeId: id });
+
+        if (!notiRelated) throw new ClientError(`cound not find notification related to this post`, 404);
+
         const notice = await noticeModel.findByIdAndDelete(id);
 
         if (!notice) throw new ClientError('cant find notice', 404);

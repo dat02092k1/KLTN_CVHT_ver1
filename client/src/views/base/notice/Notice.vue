@@ -15,6 +15,7 @@
             </div>
   
             <a-button
+            v-show="userRole === 'consultant'"
               class="bg-[#324f90] rounded"
               type="primary"
               @click="visible = true"
@@ -119,8 +120,8 @@
   import Loading from '../Spinner/Loading.vue';
   import Spinner from '../Spinner/Spinner.vue';
   import { RouterLink, RouterView } from "vue-router";
-  import { getClass, getId, getRole, getUsername } from "../../../utils/getInfoUser";
-  import { sendNoti } from "../../../socket/socket.js";
+  import { getClass, getId, getRole, getUsername, getStudentClass } from "../../../utils/getInfoUser";
+  import { sendNoti } from "../../../socket/socket-client.js";
   import { message } from "ant-design-vue";
   import { useNoticeStore } from "../../../stores/notice.js";
   import { useUploadStore } from "../../../stores/upload.js";
@@ -132,7 +133,13 @@
       const successMsg = ref(false);
       const errorMsg = ref(false);
       const userClass = getClass();
-      const selectedOption = ref(userClass[0]);
+      const selectedOption = ref('');
+      if (getRole === 'consultant') {
+        selectedOption.value = (userClass[0]);
+      } 
+      else {
+        selectedOption.value = (getStudentClass());
+      }
       const formState = reactive({
         user: getId(),
         message: "",
@@ -179,7 +186,7 @@
       const useImg = useUploadStore();
       const showOptions = reactive([]);
        const showLoading = ref(true);
-      const pageTitle = ("Diễn đàn FAQ");
+      const pageTitle = ("Thông báo");
       const username = getUsername();
       const userRole = getRole();
        
@@ -243,5 +250,10 @@
     border: 1px solid #85bde5;
     padding: 20px;
   }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
   </style>
   

@@ -24,6 +24,7 @@
             <RouterLink
               class="bg-[#324f90] text-[#fff] p-2 rounded"
               to="/student/add"
+              v-show="userRole === 'manager'"
             >
               Thêm người dùng 
             </RouterLink>
@@ -33,6 +34,14 @@
               :to="{ path: '/student/status/' + selectedClass }"
             >
               Danh sách sinh viên theo trạng thái
+            </RouterLink>
+
+            <RouterLink
+              class="bg-[#324f90] text-[#fff] p-2 rounded"
+              to="/student/import-excel"
+              v-show="userRole === 'manager'"
+            >
+              Import excel 
             </RouterLink>
           </div>
         </div>
@@ -322,6 +331,8 @@ input:focus {
   border: 1px solid #324f90;
   outline: none;
 }
+
+
 /* #table-course {
   border: 1px solid #dcdfe6;
   border-collapse: collapse;

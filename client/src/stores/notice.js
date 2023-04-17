@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
  import API_ENDPOINTS from "../api/api.js";
  import { getAccessToken } from "../utils/config.js";
  import { getId } from "../utils/getInfoUser.js";
- import { sendNoti } from "../socket/socket.js";
 
 export const useNoticeStore = defineStore({
   id: "notice",

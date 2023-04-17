@@ -45,32 +45,75 @@
   </a-popconfirm>
             
             
-              <router-link :to="{ path: '/consultant/onegate/status/' + item._id}" >
+              <button @click="showModal(item._id)">
                 <span>
                 <i class="fa-regular fa-pen-to-square"></i>
             </span>
-              </router-link>
+              </button>
                  
             </div>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <a-modal
+            v-model:visible="visible"
+            title="Thêm bài đăng mới"
+            ok-text="Create"
+            cancel-text="Cancel"
+            @ok="onOk"
+          >
+            <a-form
+              ref="formRef"
+              :model="formState"
+              layout="vertical"
+              name="form_in_modal"
+            >
+              <a-form-item
+                name="type"
+                label="Type"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'Chưa điền tên biểu mẫu!',
+                  },
+                ]"
+              >
+                <a-input v-model:value="formState.type" />
+              </a-form-item>
+
+
+              <a-form-item name="file" label="File"
+              >
+                <a-input v-model:value="formState.fileUrl" class="my-1" />
+                <input class="mt-1" type="file" @change="uploadDocs">
+              </a-form-item>
+            </a-form>
+            <Spinner v-show="useUpload.loading" />
+          </a-modal>
   </div>
     </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive, toRaw } from 'vue';
 import { Select } from 'ant-design-vue';
 import NavTitle from "../NavBar/NavTitle.vue";
 import { useFormStore } from '../../../stores/form.js';
+import { useUploadStore } from "../../../stores/upload.js";
 import { message } from "ant-design-vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
+import {
+  getStudentClass,
+  getId,
+  getRole,
+} from "../../../utils/getInfoUser";
+import Spinner from "../Spinner/Spinner.vue";
 
 export default {
   name: 'MyComponent',
-  components: { Select, NavTitle },
+  components: { Select, NavTitle, Spinner },
   setup() {
     const pageTitle = 'Danh sách biểu mẫu đã nộp';
 
@@ -80,6 +123,19 @@ export default {
 
     const forms = ref ([]);
 
+    const formRef = ref();
+    const visible = ref(false);
+    const useUpload = useUploadStore();
+
+    const formState = reactive({
+      student: getId(),
+      type: "",
+      fileUrl: "",
+      _class: getStudentClass(),
+      formId: "",
+      username: "",
+    });    
+
     onMounted(async () => {
         forms.value = await useForm.getUserForms(studentId); 
     })
@@ -88,16 +144,55 @@ export default {
     window.open(fileUrl, '_blank');
   }
 
+  const uploadDocs = async (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('doc', file);
+        const docs = await useUpload.uploadDocs(formData);
+        formState.fileUrl = docs;
+        console.log(formState.fileUrl);
+      }
+
+  const onOk = () => {
+      formRef.value
+        .validateFields()
+        .then(async (values) => {
+          if (!formState.fileUrl) {
+            alert('Chưa nhập file');
+            return;
+          }
+          console.log("formState: ", toRaw(formState));
+          const form = toRaw(formState);
+
+          useForm.editForm(formState.formId, form);
+          forms.value = await useForm.getUserForms(studentId);
+          visible.value = false;
+          formRef.value.resetFields();
+          console.log("reset formState: ", toRaw(formState));
+        })
+        .catch((info) => {
+          console.log("Validate Failed:", info);
+        });
+    };
+
   const confirm = async (id, type) => {
      
         useForm.deleteForm(id, type); 
-        await useForm.getUserForms(studentId);
+        forms.value = await useForm.getUserForms(studentId);
     };
 
     const cancel = e => {
       console.log(e);
       message.error('Click on No');
     };
+
+    const showModal = async (formId) => {
+      visible.value = true;
+      const data = await useForm.getDetailsForm(formId);
+      formState.type = data.type;
+      formState.fileUrl = data.fileUrl;
+      formState.formId = data._id;
+    }
 
     function formatDate(dateString) {
       const date = new Date(dateString);
@@ -109,7 +204,11 @@ export default {
   return `${day}/${month}/${year} ${hour}:${minute}`;
 }
 
-    return { pageTitle, useForm, downloadFile, confirm, cancel, forms, formatDate };
+    return { pageTitle, useForm, uploadDocs,
+      downloadFile, confirm, cancel, 
+      forms, formatDate, showModal, 
+      formState, formRef, visible, 
+      onOk, useUpload };
   },
 };
 </script>

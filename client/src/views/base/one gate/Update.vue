@@ -72,8 +72,10 @@
     methods: {
       async submitForm() {
         const status = this.selectedOption;        
-  
-          await this.useForm.editForm(this.formId, status);
+        const form = {
+          status: status
+        }
+          await this.useForm.editForm(this.formId, form);
       },
       handleSelectChange(value) {
         console.log(value);

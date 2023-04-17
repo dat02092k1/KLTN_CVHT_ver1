@@ -12,7 +12,7 @@ router.patch('/notice/edit/:id', userAuthenticate.isAdminAuthentication, notice.
 // edit notice
 router.get('/notice/details/:id', userAuthenticate.isAdminAuthentication, notice.getNoticeDetailsController);
 // details notice
-router.get('/notice/get/:_class', userAuthenticate.isAdminAuthentication, notice.getNoticeController);
+router.get('/notice/get/:_class', userAuthenticate.verifyToken, notice.getNoticeController);
 // get notice by class name
 
 module.exports = router;       

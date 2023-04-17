@@ -9,6 +9,15 @@ const formatBirthdate = (date) => {
 }
 
 const validateFieldsMiddleware = (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file was uploaded' });
+  }
+
+  // Check if the uploaded file is an xlsx file
+  if (req.file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    return res.status(400).json({ message: 'Invalid file type. Only xlsx files are allowed' });
+  }
+
   const workbook = xlsx.readFile(req.file.path);
   // , { cellDates: true }
    
@@ -55,6 +64,15 @@ const validateFieldsMiddleware = (req, res, next) => {
 };
 
 const validateCourse = (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file was uploaded' });
+  }
+
+  // Check if the uploaded file is an xlsx file
+  if (req.file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    return res.status(400).json({ message: 'Invalid file type. Only xlsx files are allowed' });
+  }
+  
   const workbook = xlsx.readFile(req.file.path);
   // , { cellDates: true }
   const sheetName = workbook.SheetNames[0];

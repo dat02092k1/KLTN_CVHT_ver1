@@ -129,7 +129,7 @@ import {
   getRole,
   getUsername,
 } from "../../../utils/getInfoUser";
-import { sendNoti } from "../../../socket/socket.js";
+import { sendNoti } from "../../../socket/socket-client.js";
 import { message } from "ant-design-vue";
 import { useFormStore } from "../../../stores/form.js";
 import { useUploadStore } from "../../../stores/upload.js";
@@ -164,6 +164,11 @@ export default defineComponent({
       formRef.value
         .validateFields()
         .then((values) => {
+          if(!formState.fileUrl) {
+            alert("Chưa chọn file");
+            return;
+          }
+          
           console.log("formState: ", toRaw(formState));
           const form = toRaw(formState);
 

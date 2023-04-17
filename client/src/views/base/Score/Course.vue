@@ -4,43 +4,49 @@
 
   <div class="" v-if="userRole === 'student'">
     <div class="table-container mx-3 bg-[#ffffff]">
-      <table style="width: 80%;">
-        <thead>
-          <tr>
-            <td colspan="3" class="semester">HỌC KỲ 1 - NĂM HỌC 2022-2023</td>
-          </tr>
-          <tr class="bg-[#f2f2f2]"> 
-            <th>STT</th>
-            <div class="grid grid-cols-12">
-              <th class="subject col-span-3" colspan="2" >Môn học</th>
-              <th class="col-span-3">Số tín</th>
-            <th class="col-span-3">Điểm</th>
-            <th class="col-span-3">Điểm chữ</th>
-            </div>
-             
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(course, index) in courses" :key="index">
-            <td>{{ index + 1 }}</td>
-            <div class="grid grid-cols-12 " v-for="(item, index) in course.subjects" :key="index">
-              <td class="subject col-span-3 text-center" >{{ item.name }}</td>
-              <td class="text-center col-span-3" >{{ item.credits }}</td>
-              <td class="text-center col-span-3">{{ item.score }}</td>
-              <td class="text-center col-span-3">{{ item.grade }}</td>
-            </div>  
 
-            
-            
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container mx-3">
+        <table v-for="(course, index) in courses" :key="index" class="w-[80%] m-3">
+          <thead class="bg-[#efefef]">
+            <tr></tr>
+            <tr>
+              <th>STT</th>
+              <th>Môn học</th>
+              <th>Số tín</th>
+              <th>Điểm số</th>
+              <th>Điểm chữ</th>
+            </tr>
 
+            <tr class="bg-[#fff]">
+              <th class="semester" colspan="5">{{ course.semester }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in course.subjects" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.credits }}</td>
+              <td>{{ item.score }}</td>
+              <td>{{ item.grade }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr />
+      </div>
        
     </div>
 
-    <div>Tổng trung bình tích lũy: </div>
+    <div class="font-bold mx-6 my-2">
+      <div class="flex gap-1">
+        <div>Tổng trung bình tích lũy: </div>
     <span>{{ studentCpa.CPA }}</span>
+      </div>
+    <div class="flex gap-1">
+      <div>Tổng số tín chỉ tích lũy: </div>
+    <span>{{ studentCpa.total_creadits }}</span>
+    </div>
+    </div>
   </div>
 
   <div class="consultant-container mx-6 bg-[#ffffff]" v-else>
@@ -130,7 +136,7 @@ export default {
     if (this.userRole === 'student') {
     this.courses = await this.useScore.getCourses(this.studentId); 
     this.studentCpa = await this.useStudent.getStudentDetails(this.studentId);
-    console.log(this.courses, this.studentCpa.CPA);
+    console.log(this.studentCpa);
     this.isShowSpinner = false;
     }
     else {
@@ -151,8 +157,8 @@ export default {
 
 <style scoped>
   .table-container {
-    height: 200px;
-    overflow-y: scroll;
+    height: 400px;
+    overflow-y: auto;
     margin: 0 26px;
   }
  

@@ -1,11 +1,10 @@
 import { defineStore } from "pinia";
-import axios from "axios";
 import { getAccessToken } from '../utils/config.js'
-import { getRefreshToken } from '../utils/getInfoUser.js'
+import { getRefreshToken, getUsername } from '../utils/getInfoUser.js'
 import { useStudentStore } from "./student.js";
 import { axiosIns } from "../api/axios.js";
 import API_ENDPOINTS from "../api/api.js";
-import { joinRoom ,getUsersOnl, logOut } from "../socket/socket.js";
+import { joinRoom ,getUsersOnl, logOut, addUser } from "../socket/socket-client.js";
 import { getClass } from "../utils/getInfoUser.js";
 
 import router from "../router/index.js";
@@ -40,6 +39,7 @@ export const useAuthStore = defineStore({
         localStorage.setItem("_id", this.user._id);
         localStorage.setItem("username", this.user.studentId);
         localStorage.setItem("role", this.user.role);
+        console.log(this.user._class);
         const classNames = this.user._class.map((c) => c.name); 
         console.log(classNames);
         localStorage.setItem("class", JSON.stringify(classNames));
@@ -52,9 +52,8 @@ export const useAuthStore = defineStore({
 
         if (user.status === 200) {
           this.userClass = getClass();
-          for (const item of this.userClass) {
-          joinRoom(item);
-          }
+          joinRoom(this.userClass);
+          addUser(getUsername());
           router.push("/");
         } else {
           console.log(this.errorMsg);

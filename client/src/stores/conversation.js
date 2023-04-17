@@ -36,13 +36,10 @@ export const useChatStore = defineStore({
       // console.log(this.conversation) 
       const membersArr = this.conversation.map((obj) => obj.members);
        
-      console.log(this.conversation);
       const friends = membersArr
         .flatMap((friend) => friend)
         .filter((friend) => friend !== username);
-      this.friends = friends;
-      // console.log(this.friends);
-       
+      this.friends = friends;       
     },
     async getMessages(conversationId) {
         try {
@@ -51,7 +48,6 @@ export const useChatStore = defineStore({
             const messages = await axiosIns.get(`http://localhost:8000/api/message-limit/${conversationId}`, config);
             console.log(messages);
             this.messages = messages.data.messages;
-            // console.log(this.messages); 
         } catch (error) {
             console.log(error);   
         }

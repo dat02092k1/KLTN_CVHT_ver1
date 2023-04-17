@@ -10,14 +10,14 @@
           <button class="p-2 bg-[#2196f3] rounded text-[#fff]" type="button" @click="uploadFile">Upload</button>
         </div>
       </form>
-      <a-alert v-show="useUpload.successMsg === true" message="Thêm mới sinh viên thành công" type="success" show-icon />
-          <a-alert v-show="useUpload.errorMsg === true" message="Thêm mới sinh viên thất bại" type="error" show-icon />
+      <a-alert v-show="useUpload.successMsg === true" message="Thêm mới kết quả học tập thành công" type="success" show-icon />
+          <a-alert v-show="useUpload.errorMsg === true" message="Thêm mới kết quả học tập thất bại" type="error" show-icon />
     </div>
   </template>
   
   <script>
-  import { useUploadStore } from '../../stores/upload.js';
-  import NavTitle from "../base/NavBar/NavTitle.vue";
+  import { useUploadStore } from '../../../stores/upload.js';
+  import NavTitle from "../NavBar/NavTitle.vue";
 
   export default {
     name: 'UploadExcel',
@@ -26,7 +26,7 @@
       return {
         selectedFile: null,
         useUpload: useUploadStore(),
-        pageTitle: 'Thêm nhiều sinh viên'
+        pageTitle: 'Import môn học'
       }
     },
     methods: {
@@ -38,7 +38,7 @@
         const formData = new FormData();
         formData.append('file', this.selectedFile);
   
-        this.useUpload.uploadExcel(formData);
+        this.useUpload.uploadMultiCourses(formData);
         
       }
     }
