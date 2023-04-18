@@ -4,7 +4,7 @@ import { getRefreshToken, getUsername } from '../utils/getInfoUser.js'
 import { useStudentStore } from "./student.js";
 import { axiosIns } from "../api/axios.js";
 import API_ENDPOINTS from "../api/api.js";
-import { joinRoom ,getUsersOnl, logOut, addUser } from "../socket/socket-client.js";
+import { joinRoom , leaveRoom, getUsersOnl, logOut, addUser } from "../socket/socket-client.js";
 import { getClass } from "../utils/getInfoUser.js";
 
 import router from "../router/index.js";

@@ -4,7 +4,7 @@ import TheHeader from './components/layout/TheHeader.vue'
 import TheSidebar from './components/layout/TheSidebar.vue'
 import TheMain from './components/layout/TheMain.vue'
 import StudentDetails from './views/student/StudentDetails.vue'
-import { onMounted, onUpdated } from 'vue'
+import { onBeforeUnmount, onMounted, onUpdated, onUnmounted } from 'vue'
 import axios from "axios";
 import { receiveNoti, getUsersOnl, joinRoom, addUser, getMessages } from "./socket/socket-client.js";
 import { getClass, getUsername } from "./utils/getInfoUser.js";
@@ -23,7 +23,6 @@ onMounted(() => {
     addUser(username);
   // receiveNoti(noti => alert('post new: ' + noti));
   receiveNoti(noti => openNotification(noti));
-
   getMessages(() => members, username, () => msg, data => popupMsg(data));
   // getUsersOnl() 
     });
@@ -38,7 +37,7 @@ onMounted(() => {
       });
     };
 
-    const popupMsg = (data) => {
+    function popupMsg(data) {
       notification.open({
         message: 'Tin nhắn mới',
         description: data,
@@ -47,6 +46,7 @@ onMounted(() => {
         }),
       });
     };
+     
 
 </script>
 

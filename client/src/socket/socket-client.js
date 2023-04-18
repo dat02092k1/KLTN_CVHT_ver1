@@ -23,8 +23,10 @@ export const leaveRoom = (roomId) => {
   socket.emit('leave-room', roomId);
 };
 
-export const logOut = (roomId) => {
-  socket.emit('logout', roomId);
+export const logOut = (roomIds) => {
+  roomIds?.forEach((roomId) => {
+    socket.emit('logout', roomId);
+  });
 };
 
 // return list of users online
@@ -38,20 +40,29 @@ export const welcome = () => {
 
 // get messages from another user
 export const getMessages = (getMembers, username, getMsg, callback) => {
+    // socket.off("getMessage");
     socket.on("getMessage", (data) => {
       const members = getMembers(); 
       const messages = getMsg(); 
 
-      console.log(`members" ${members} ---- messages: ${messages}`);
+      console.log(`msg: ` + members);
         if (members.includes(data.username) && members.includes(username)) {
+          console.log('onl');
             messages.push(data);
         }
         else {
+          console.log('off');
           console.log('msg from username: ' + data.username);
           callback(data.username);
         }
       });
 }
+
+export const removeListener = () => {
+  // remove listener
+  socket.off("getMessage");
+}
+
 
 // send message to specified user
 export const sendMessage = (sender, receiver, content) => {

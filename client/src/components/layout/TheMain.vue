@@ -148,7 +148,8 @@ import Spinner from "../../views/base/Spinner/Spinner.vue";
 import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
 import { createVNode, defineComponent } from "vue";
 import { Modal } from "ant-design-vue";
-import { getRole, getClass } from "../../utils/getInfoUser.js";
+import { getRole, getClass, getUsername } from "../../utils/getInfoUser.js";
+
 import {
   format, parseISO
 } from "date-fns";
@@ -199,6 +200,7 @@ export default {
      
     this.isShowSpinner = false;
     console.log(this.students);
+     
   },
   watch: {
     async selectedClass(newVal) {

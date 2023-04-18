@@ -78,6 +78,7 @@
             rows="3"
             v-model="this.content"
             placeholder="Nhập tin nhắn"
+            @keyup.enter="sendMessage"
           ></textarea>
           <button @click="sendMessage">Gửi</button>
         </div>
@@ -94,7 +95,7 @@
 <script>
 import { useChatStore } from "../../../stores/conversation.js";
 import { useStudentStore } from "../../../stores/student.js";
-import { addUser, welcome, getUsersOnl, offlineUser, getMessages, sendMessage } from "../../../socket/socket-client.js";
+import { addUser, welcome, getUsersOnl, offlineUser, getMessages, sendMessage, removeListener } from "../../../socket/socket-client.js";
 import { getUsername } from "../../../utils/getInfoUser.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import axios from "axios";
@@ -122,12 +123,13 @@ export default {
       currentUser: getUsername(),
       names: undefined,
       useStudent: useStudentStore(),
-      userNames: {}
+      userNames: {},
+      isConnected: false,
     };
   },
   async mounted() {
     this.users = await this.useStudent.getStudentsInClass();
-    
+    this.isConnected = true;
     // const username = window.localStorage.getItem("username");
      welcome();
     // this.useChat.getConversation(username);
@@ -137,10 +139,22 @@ export default {
     this.getConversations(this.getUsername);
      
     getUsersOnl();
-
-    getMessages(() => this.members, this.getUsername, () => this.useChat.messages, data => this.openNotification(data));
+    console.log(this.members);
+    // getMessages(() => this.members, this.getUsername, () => this.useChat.messages, data => this.popupMsg(data));
 
     offlineUser((data) => console.log(data)); 
+  },
+  beforeUnmount() {
+    this.isConnected = false;
+    removeListener();
+  },
+  watch: {
+    isConnected(newVal) {
+      if (newVal) {
+        console.log(newVal);
+      getMessages(() => this.members, this.getUsername, () => this.useChat.messages, data => console.log(data));
+    }
+    }
   },
   methods: {
     filterDuplicate(arr, username) {

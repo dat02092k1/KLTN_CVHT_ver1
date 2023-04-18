@@ -1,6 +1,7 @@
 <template>
-    <div v-if="isAdmin" class="bg-[#fff]">
-      <div class="row font-bold flex items-center">
+    <div class="main">
+      <div v-if="isAdmin" class="bg-[#fff] h-full">
+      <div class="row font-bold flex items-center ml-3">
             <label class="text-[14px] text-[#606266] leading-10" for=""
               >Lớp học:</label
             >
@@ -9,8 +10,11 @@
     </select>
   </div> 
       <!-- <Bar v-if="loaded" :data="chartData" /> -->
-      <Line v-if="loaded" :data="chartData" :options="chartOptions"/>
+      <div class="h-[450px] overflow-y-auto">
+        <Line v-if="loaded" :data="chartData" :options="chartOptions"/>
+      </div>
       <Loading v-if="isShowSpinner" />
+    </div>
     </div>
   </template>
   
@@ -126,3 +130,16 @@
     }
   }
   </script>
+
+<style scoped>
+.main {
+  padding: 14px 20px;
+  width: calc(100% - 250px);
+  height: calc(100% - 70px);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+  /* overflow-y: hidden; */
+}
+</style>

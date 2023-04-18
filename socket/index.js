@@ -83,7 +83,7 @@ io.on("connection", (socket) => {
   // log out
   socket.on("logout", (roomId) => {
     console.log(users);
-    console.log(socket.id);
+    console.log(roomId);
     removeUser(socket.id); 
     socket.leave(roomId);
     console.log(users);
