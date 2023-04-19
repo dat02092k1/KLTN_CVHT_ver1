@@ -75,24 +75,33 @@ var createStudentService = async (studentDetail) => {
 
 var updateStudentService = async (id, studentDetail, role) => {
   try {
+     
     const objectId = mongoose.Types.ObjectId(id);
-    
+     
     const { studentId } = studentDetail;
-    console.log(studentDetail)
-     const formattedClass = studentDetail._class.map(c => ({ name: c.name }));
+    console.log(studentDetail);
+    
+    const findUser = await studentModel.findById(id);
+
+    if (findUser.role === 'manager') {
+      const user = await studentModel.findByIdAndUpdate(objectId, studentDetail);
+
+      if (!user) throw new ClientError('cant find user with id ' + objectId, 404);
+
+      return user;
+    }
+
+     const formattedClass = studentDetail._class?.map(c => ({ name: c.name }));
      console.log('class flag')
     const student = await studentModel.findByIdAndUpdate(
       objectId,
       { ...studentDetail, _class: formattedClass },
       // { new: true }
     );
-      console.log('flag');
-    if (!student) {
-      
+       
+    if (!student) { 
       throw new ClientError(`No student found with id: ${id}`, 404);
     }
-    const originStudentClass = student._class.map(c => ({ name: c.name }));
-    console.log(originStudentClass);
     
     if (
       student.studentId !== studentId
@@ -107,30 +116,13 @@ var updateStudentService = async (id, studentDetail, role) => {
         conversation.members[index] = studentId;
         await conversation.save();
       }
+      
+      await Promise.all([
+        courseModel.updateMany({ userId: id }, { $set: { username: studentId } }),
+        postModel.updateMany({ userId: id }, { $set: { username: studentId } }),
+        commentModel.updateMany({ userId: id }, { $set: { username: student.studentId } })
+      ]);
 
-      await courseModel.updateMany({
-        userId: id,
-      }, {
-        $set: {
-          username: studentId,
-        }
-      });
-
-      await postModel.updateMany({
-        userId: id,
-      }, {
-        $set: {
-          username: studentId,
-        }
-      });
-
-      await commentModel.updateMany({
-        userId: id
-      }, {
-        $set: {
-          username: student.studentId
-        }
-      })
     } else {
       console.log("true");
     }

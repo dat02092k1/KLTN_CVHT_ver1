@@ -101,7 +101,7 @@
           </a>
         </div>
 
-        <div class="h-12 hover:bg-[#2d3c50] flex items-center">
+        <div class="h-12 hover:bg-[#2d3c50] flex items-center" v-if="userRole !== 'manager'">
           <a href="">
             <li>
               <router-link to="/student/course" class="px-5">

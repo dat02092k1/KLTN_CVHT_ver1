@@ -57,8 +57,7 @@ const studentSchema = new Schema({
     _class: [
         {
             name: { 
-                type: String,
-                required: true
+                type: String
             }
         }
     ],

@@ -11,19 +11,20 @@ var changePassword = async (oldPassword, newPassword, userId) => {
         if (!oldPassword || !newPassword) {
           throw new ClientError('Old password and new password are required', 400);
         }          
- 
+        console.log(userId);
         const user = await userModel.findById(userId);
         if (!user) {
           throw new ClientError('User not found', 404);
         }
-    
+        console.log(user);
         const isMatch = await bcrypt.compare(oldPassword, user.password);
         if (!isMatch) {
           throw new ClientError('Old password is incorrect', 402);
         }
-    
+        console.log(isMatch);
         const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
         user.password = hashedPassword;
+        console.log(hashedPassword);
         const updatedUser = await user.save();
         if (!updatedUser) {
           throw new Error('Failed to update user password');

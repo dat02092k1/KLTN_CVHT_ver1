@@ -173,7 +173,7 @@
         </div>
 
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-          <router-link class="" :to="{ path: '/student/list'}" >
+          <router-link class="" :to="{ path: '/manager'}" >
       <button class="bg-[#ef1419]  text-[#ffffff] mx-2 my-2 p-1">Quay lại</button>
               </router-link>
           <a-button type="primary" @click="onSubmit" class="bg-[#324f90]"

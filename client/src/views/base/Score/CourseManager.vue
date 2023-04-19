@@ -33,9 +33,6 @@
                 </span>
               </router-link>
         </a-menu-item>
-        <a-menu-item>
-          <a href="javascript:;">3rd menu item</a>
-        </a-menu-item>
       </a-menu>
     </template>
   </a-dropdown>

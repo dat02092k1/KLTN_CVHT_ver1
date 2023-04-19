@@ -9,6 +9,16 @@
         <div class="flex justify-start my-2">
           <button class="p-2 bg-[#2196f3] rounded text-[#fff]" type="button" @click="uploadFile">Upload</button>
         </div>
+
+        <div>
+          <div>
+            <div>
+              <h2><span class="text-red-600">*</span><b>Lưu ý:</b> </h2>
+            </div>
+            <p><i>Import file excel với các trường, cột giống file sample bên dưới (dạng xlsx) để đảm bảo tính năng hoạt động đúng</i></p>
+            <a href="https://res.cloudinary.com/dpnjutbws/raw/upload/v1681841462/course_qnwlee.xlsx">sample_courses_file.xlsx</a>
+          </div>
+        </div>
       </form>
       <a-alert v-show="useUpload.successMsg === true" message="Thêm mới kết quả học tập thành công" type="success" show-icon />
           <a-alert v-show="useUpload.errorMsg === true" message="Thêm mới kết quả học tập thất bại" type="error" show-icon />

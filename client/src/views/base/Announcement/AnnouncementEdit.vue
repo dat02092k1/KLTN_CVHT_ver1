@@ -27,7 +27,7 @@
               <input type="file" @change="uploadDocs">
 
             </div>
-            
+            <Loading v-show="useUpload.loading" />
           </div>
 
           <div class="text-center">
@@ -42,7 +42,7 @@
   import NavTitle from "../NavBar/NavTitle.vue";
   import { useAnnouncementStore } from "../../../stores/announcement.js";
   import { useUploadStore } from "../../../stores/upload.js";
-
+  import Loading from '../Spinner/Loading.vue';
   import { RouterLink, RouterView, useRoute } from "vue-router";
   import { getId, getUsername, getClass } from "../../../utils/getInfoUser";
 
@@ -80,7 +80,7 @@
         this.announcement.fileUrl = "";
       }
     },
-    components: { NavTitle },
+    components: { NavTitle, Loading },
   };
   </script>
   
