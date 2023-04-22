@@ -1,5 +1,5 @@
 const postModel = require('../../models/posts/post.js');
-const userModel = require('../../models/students/studentsModel.js');
+const userModel = require('../../models/students/userModel.js');
 const notificationModel = require('../../models/notifications/notifications.js');
 
 const logger = require('../../logger/logger.js')

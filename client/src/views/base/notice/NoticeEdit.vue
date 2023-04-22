@@ -44,7 +44,7 @@
                 <a-form-item :wrapper-col="{ span: 14, offset: 4 }" class="flex gap-1">
               
           <a-button type="primary" @click="onSubmit" class="bg-[#324f90]"
-            >Create</a-button
+            >Lưu</a-button
           >
           <a-button style="margin-left: 10px" @click="resetForm"
             >Reset</a-button

@@ -10,9 +10,12 @@
       <div class="task-content">
         <div class="flex justify-between my-2">
           <h3 class="mr-4">Task</h3>
-          <span class="ml-4">
+          <div class="bg-[#f1f3f7] p-2">
+            <span class="ml-4">
             {{ useTask.tasks.task }}
           </span>
+          </div>
+          
         </div>
 
         <div class="grid grid-cols-2 w-[500px] my-2">
@@ -42,8 +45,8 @@
       </div>
     </form>
 
-    <a-alert v-show="useTask.successMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
-    <a-alert v-show="useTask.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
+    <a-alert v-show="useTask.successMsg === true" message="Cập nhật thành công" type="success" show-icon />
+    <a-alert v-show="useTask.errorMsg === true" message="Cập nhật thất bại" type="error" show-icon />
   </div>
 </template>
 

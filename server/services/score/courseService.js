@@ -1,5 +1,5 @@
 const courseModel = require("../../models/score/course.js");
-const studentsModel = require("../../models/students/studentsModel.js");
+const userModel = require("../../models/students/userModel.js");
 const grades = require("../../utils/grade.js");
 const { ClientError } = require('../error/error.js');
 
@@ -8,8 +8,8 @@ const mongoose = require("mongoose");
 var addCourseService = async (req, res) => {
   try {
     const { semester, semesterCode, studentId, subjects } = req.body;
- 
-    const student = await studentsModel.findById(studentId);
+    console.log(subjects); 
+    const student = await userModel.findById(studentId);
     if (!student) throw new ClientError(`Student not found`, 404);
 
     for (const subject of subjects) {
@@ -73,7 +73,7 @@ var addCourseService = async (req, res) => {
 
       student.status = status;
 
-      student.total_creadits = credits;
+      student.total_credits = credits;
 
     await student.save();
     return { Course: course, Student: student };     
@@ -129,7 +129,7 @@ var editCourseService = async (courseId, courseDetails) => {
       throw new ClientError(`No course found with id: ${courseId}`, 404);
     }
     console.log(updateCourse.student);
-    const student = await studentsModel.findById(updateCourse.student);  
+    const student = await userModel.findById(updateCourse.student);  
 
     if (!student) throw new ClientError(`Student not found`, 404);
 
@@ -165,7 +165,7 @@ var editCourseService = async (courseId, courseDetails) => {
 
       student.status = status;
 
-      student.total_creadits = credits;
+      student.total_credits = credits;
 
     console.log(student);
     
@@ -187,7 +187,7 @@ var deleteCourseService = async (courseId, studentId) => {
 
     if (deleteCourse) {
 
-      const student = await studentsModel.findById(studentId);  
+      const student = await userModel.findById(studentId);  
 
     if (!student) throw new ClientError(`Student not found`, 404);
 
@@ -223,7 +223,7 @@ var deleteCourseService = async (courseId, studentId) => {
 
       student.status = status;
 
-      student.total_creadits = totalCredits;
+      student.total_credits = totalCredits;
 
       await student.save();
 
@@ -258,10 +258,10 @@ var importCoursesExcel = async (req) => {
     for (let i = 0; i < data.length; i++) {
       console.log('data[i] ' + data[i]);
       const {
-        semester, studentId, subjectName, subjectScore, subjectCredits, semesterCode 
+        semester, studentId, subjectName, subjectCode, subjectScore, subjectCredits, semesterCode 
       } = data[i];
  
-      const student = await studentsModel.find({ studentId: studentId });
+      const student = await userModel.find({ userId: studentId });
       if (!student) throw new ClientError(`Student not found`, 404); 
 
       const getCourse = await courseModel.findOne({ semesterCode, studentId }); 
@@ -270,7 +270,7 @@ var importCoursesExcel = async (req) => {
       
       const Sid = student[0]._id;
         console.log(typeof(Sid))
-      const subject = { name: subjectName, score: subjectScore, credits: subjectCredits };
+      const subject = { name: subjectName, code: subjectCode, score: subjectScore, credits: subjectCredits };
       console.log('courses ' + courses);
       let course = courses.find(c => {
         const isTrue = (c.semester === semester.toString());
@@ -278,7 +278,7 @@ var importCoursesExcel = async (req) => {
          
         return c.semester === semester.toString() && c.student.toString() === Sid.toString();
       });
-      console.log(course);
+      console.log(studentId);
       if (!course) {
         course = new courseModel({ semester, student: Sid, studentId: studentId, semesterCode });
         courses.push(course);
@@ -309,7 +309,7 @@ var importCoursesExcel = async (req) => {
       // Save course to database
       await course.save();
       console.log(course.student);
-      const student = await studentsModel.findById(course.student);
+      const student = await userModel.findById(course.student);
       console.log(student);
       const result = await courseModel.aggregate([
         { $match: { student: student._id } },
@@ -343,7 +343,7 @@ var importCoursesExcel = async (req) => {
   
         student.status = status;
   
-        student.total_creadits = credits;
+        student.total_credits = credits;
   
       await student.save();       
     }

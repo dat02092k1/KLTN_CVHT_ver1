@@ -38,7 +38,7 @@
           <tr v-for="(item, index) in this.students" :key="index">
             <td>{{ index + 1 }}</td>
             <td>
-              {{ item.studentId }}
+              {{ item.userId }}
             </td>
             <td>
               {{ item.name }}
@@ -148,7 +148,7 @@ return normalizedWords.join(" ");
       // Add table data
       const data = students.value.map((item, index) => [
         index + 1,
-        item.studentId,
+        item.userId,
         normalizeName(item.name),
         item.CPA,
         item._class[0].name,

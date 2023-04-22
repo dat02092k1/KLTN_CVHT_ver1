@@ -1,12 +1,15 @@
 <template>
-  <div class="mb-4 px-2 flex flex-col">
+  <div class="main">
+    <nav-title :title="pageTitle" class="p-4"/>
+
+    <div class="mb-4 px-2 flex flex-col">
     <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> -->
 
     <router-link class="" :to="getCoursePath()" >
       <button class="bg-[#ef1419] rounded text-[#ffffff] ml-6 my-2 p-2">Quay lại</button>
               </router-link>
-    <form @submit.prevent="submitForm" class="add--course m-6 bg-[#fff]">
-      <div class="semester flex">
+    <form @submit.prevent="submitForm" class="add--course m-6 p-2 bg-[#fff] h-[350px] overflow-y-auto">
+      <div class="semester flex my-1">
         <div
           class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
         >
@@ -25,7 +28,7 @@
         </div>
       </div>
        
-      <div class="semester flex">
+      <div class="semester flex my-1">
         <div
           class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
         >
@@ -45,10 +48,11 @@
       </div>
 
       <div
-        class="subject flex"
+        class="subject flex gap-1"
         v-for="(subject, index) in subjects" :key="index"
       >
-        <div
+        <div class="flex">
+          <div
           class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
         >
         {{ index + 1 }}
@@ -63,7 +67,28 @@
             required
           />
         </div>
-        <div
+        </div>
+        
+        <div class="flex">
+          <div
+          class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
+        >
+          Mã 
+        </div>
+        <div class="">
+          <input
+            id="pretext-input"
+            class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
+            type="text"
+            v-model.number="subject.code"
+            placeholder="Mã môn học"
+            required
+          />
+        </div>
+        </div>
+        
+        <div class="flex">
+          <div
           class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
         >
           Điểm
@@ -78,8 +103,11 @@
             required
           />
         </div>
-        <div
-          class="bg-gray-100 flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
+        </div>
+
+        <div class="flex">
+          <div
+          class="bg-gray-100 w-[110px] flex items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
         >
           Số tín
         </div>
@@ -93,21 +121,32 @@
             required
           />
         </div>
+        </div>
+
         <button @click.prevent="removeSubject(index)">
           <i class="fa-solid fa-minus"></i>
         </button>
       </div>
 
       <div class="flex flex-col  ">
-        <button class="flex" @click.prevent="addSubject">Thêm môn học</button>
+        <button class="flex" @click.prevent="addSubject">
+          <div class="flex gap-1">
+              <span>Thêm môn học</span> <span><i class="fa-solid fa-square-plus"></i></span> 
+            </div>
+          </button>
 
-      <button class="flex" type="submit">Lưu</button>
+          <div class="flex justify-center items-center">
+            <button class=" rounded p-2 bg-[#035e8c] text-[#fff] w-[50px]" type="submit">Lưu</button>
+          </div>
+       
       </div>
     </form>
 
     <a-alert v-show="useScore.successMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
     <a-alert v-show="useScore.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
   </div>
+  </div>
+  
 </template>
 
 <script>
@@ -115,23 +154,25 @@
   import { useScoreStore } from "../../../stores/score.js";
   import { useStudentStore } from "../../../stores/student.js";
   import { getRole } from "../../../utils/getInfoUser.js";
+  import NavTitle from "../NavBar/NavTitle.vue";
 
 export default {
   data() {
     return {
       semester: "",
-      subjects: [{ name: "", credits: "", score: "" }],
+      subjects: [{ name: "", code: "", credits: "", score: "" }],
       studentId: useRoute().params.id,
       useScore: useScoreStore(),
       useStudent: useStudentStore(),
       semesterCode: null,
       student: [],
-      userRole: getRole()
+      userRole: getRole(),
+      pageTitle: "Thêm kết quả học tập"
     };
   },
   methods: {
     addSubject() {
-      this.subjects.push({ name: "", credits: "", score: "" });
+      this.subjects.push({ name: "", code: "", credits: "", score: "" });
     },
     removeSubject(index) {
       if (index == 0) { alert('cant remove anymore'); }
@@ -157,11 +198,22 @@ export default {
   },
   async mounted() {
     this.student = await this.useStudent.getStudentDetails(this.studentId);
-  }
+  },
+  components: { NavTitle }
 };
 </script>
 
 <style scoped>
+.main {
+  padding: 14px 20px;
+  width: calc(100% - 250px);
+  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+}
+
 .subject {
   display: flex;
   align-items: center;

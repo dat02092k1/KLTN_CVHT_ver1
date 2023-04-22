@@ -24,7 +24,7 @@
            
               <h3>Status</h3>
              
-              <a-select class="p-6" v-model:value="selectedOption" @change="handleSelectChange">
+              <a-select class="px-6" v-model:value="selectedOption" @change="handleSelectChange">
     <a-select-option v-for="option in options" :key="option.value" :value="option.value">
       {{ option.label }}
     </a-select-option>  

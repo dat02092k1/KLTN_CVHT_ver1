@@ -16,7 +16,7 @@ router.put('/student/edit-course/:courseId', userAuthenticate.isManagerAuth, cou
 // delete course  
 router.delete('/student/delete-course/:courseId', userAuthenticate.isManagerAuth, courseController.deleteCourseController);
 // get course details
-router.get('/student/course/:courseId', userAuthenticate.isAdminAuthentication, courseController.getCourseDetailsController);
+router.get('/student/course/:courseId', userAuthenticate.studentIdAuthentication, courseController.getCourseDetailsController);
 // import courses by excel
 router.post('/student/course/import', userAuthenticate.isManagerAuth, upload.single('file'), validate.validateCourse, courseController.importCoursesExcel);
 

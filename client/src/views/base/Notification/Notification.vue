@@ -28,7 +28,7 @@
             > Mark as read
             </button>
             <router-link v-if="notification.postId" :to="'/student/forum/post/' + notification.postId._id">xem bài đăng</router-link>
-            <router-link v-if="notification.noticeId" :to="'/consultant/notice/' + notification.noticeId">Xem thông báo</router-link>
+            <router-link v-if="notification.noticeId" :to="'/consultant/notice/'">Xem thông báo</router-link>
 
           </div>
         </li>

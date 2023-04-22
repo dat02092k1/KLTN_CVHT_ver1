@@ -33,6 +33,7 @@
               label="Lớp"
               name="_class"
               class="form-item block"
+              v-show="userRole !== 'manager'"
             >
               <a-input
                 v-model:value="formState._class"
@@ -150,7 +151,7 @@ import { format, parseISO } from "date-fns";
 import dayjs from "dayjs";
 import NavTitle from "../base/NavBar/NavTitle.vue";
 import ChartCredits from "../chart/ChartCredits.vue";
-
+import { getRole } from "../../utils/getInfoUser.js";
 
 export default defineComponent({
   setup() {
@@ -167,6 +168,8 @@ export default defineComponent({
       _class: "",
       address: "",
     });
+
+    const userRole = getRole();
     const rules = {
       birthdate: [
         {
@@ -227,7 +230,7 @@ export default defineComponent({
 
     onMounted(async () => {
       const response = await useStudent.getStudentDetails(studentId);
-      formState.studentId = response.studentId;
+      formState.studentId = response.userId; 
       formState.name = response.name;
       formState.gender = response.gender;
       formState.role = response.role;
@@ -252,6 +255,7 @@ export default defineComponent({
       rules,
       onSubmit,
       pageTitle,
+      userRole
     };
   },
   components: { NavTitle, ChartCredits },

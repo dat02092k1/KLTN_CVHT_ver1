@@ -1,5 +1,5 @@
 const postModel = require("../../models/posts/post.js");
-const userModel = require("../../models/students/studentsModel.js");
+const userModel = require("../../models/students/userModel.js");
 const notiModel = require("../../models/notifications/notifications.js");
 const commentModel = require("../../models/comments/comment.js");
 
@@ -34,7 +34,7 @@ var createPostService = async (postDetails) => {
     const getUser = await userModel.findById(user);
 
     console.log(getUser);
-    const username = getUser.studentId;
+    const username = getUser.userId;
  
     const newPost = new postModel({
       userId: user,

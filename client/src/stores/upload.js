@@ -30,15 +30,18 @@ export const useUploadStore = defineStore({
     },
     async uploadExcel(data) {
       try {
+         
         const config = getAccessToken();
-
+        this.loading = true;
         const upload = await axiosIns.post("http://localhost:8000/student/import-excel", data, config); 
              
         console.log(upload);    
         this.successMsg = true;
+        this.loading = false;
         setTimeout(() => (this.successMsg = false), 3000); 
       } catch (error) {
         console.log(error);
+        this.loading = false;
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);  
       }
@@ -78,14 +81,17 @@ export const useUploadStore = defineStore({
     async uploadMultiCourses(data) {
       try {
         const config = getAccessToken();
-
+        this.loading = true;
         const upload = await axiosIns.post("http://localhost:8000/api/student/course/import", data, config); 
              
-        console.log(upload);    
+        console.log(upload);   
+        this.loading = false; 
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000); 
       } catch (error) {
         console.log(error);
+        alert('Error: '+ error.response.data.message);
+        this.loading = false;
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);
       }

@@ -1,7 +1,7 @@
-const studentsModel = require("../../models/students/studentsModel");
-var studentModel = require("../../models/students/studentsModel");
+var userModel = require("../../models/students/userModel.js");
 var postModel = require("../../models/posts/post.js");
 var commentModel = require("../../models/comments/comment.js");
+var courseModel = require("../../models/score/course.js");
 var taskModel = require("../../models/task/taskModel.js");
 var formModel = require("../../models/forms/form.js");
 var reportModel = require("../../models/reports/report.js");
@@ -16,7 +16,7 @@ const mongoose = require("mongoose");
 var studentServiceGetAll = async (_class) => {
   try {
      
-    const data = await studentModel.find({ '_class.name': _class, role: "student" });
+    const data = await userModel.find({ '_class.name': _class, role: "student" });
     console.log(data); 
     if (!data) throw new ClientError('data not found', 404)
 
@@ -30,7 +30,7 @@ var createStudentService = async (studentDetail) => {
   try {
     // Destructure student detail
     const {
-      studentId,
+      userId,
       password,
       name,
       role,
@@ -51,10 +51,10 @@ var createStudentService = async (studentDetail) => {
 
     // mã hóa password
     studentDetail.password = hashPassword;
-
-    var checkExisting = await studentModel.findOne({
+ 
+    var checkExisting = await userModel.findOne({
       $or: [
-        { studentId: studentDetail.studentId },
+        { userId: studentDetail.studentId },
         { emailAddress: studentDetail.emailAddress },
         { phone: studentDetail.phone },
       ]
@@ -64,7 +64,7 @@ var createStudentService = async (studentDetail) => {
     if (checkExisting) throw new ClientError("Student already exists", 404);
 
     // create student
-    const student = new studentModel(studentDetail);
+    const student = new userModel(studentDetail);
 
     await student.save();
     return student;
@@ -81,10 +81,10 @@ var updateStudentService = async (id, studentDetail, role) => {
     const { studentId } = studentDetail;
     console.log(studentDetail);
     
-    const findUser = await studentModel.findById(id);
+    const findUser = await userModel.findById(id);
 
     if (findUser.role === 'manager') {
-      const user = await studentModel.findByIdAndUpdate(objectId, studentDetail);
+      const user = await userModel.findByIdAndUpdate(objectId, studentDetail);
 
       if (!user) throw new ClientError('cant find user with id ' + objectId, 404);
 
@@ -93,7 +93,7 @@ var updateStudentService = async (id, studentDetail, role) => {
 
      const formattedClass = studentDetail._class?.map(c => ({ name: c.name }));
      console.log('class flag')
-    const student = await studentModel.findByIdAndUpdate(
+    const student = await userModel.findByIdAndUpdate(
       objectId,
       { ...studentDetail, _class: formattedClass },
       // { new: true }
@@ -104,23 +104,24 @@ var updateStudentService = async (id, studentDetail, role) => {
     }
     
     if (
-      student.studentId !== studentId
+      student.userId !== studentId
     ) {
       console.log("false");
-      const conversationFilter = { members: { $elemMatch: { $eq: student.studentId } } };
+      const conversationFilter = { members: { $elemMatch: { $eq: student.userId } } };
 
       const conversations = await conversationModel.find(conversationFilter);
 
       for (const conversation of conversations) {
-        const index = conversation.members.indexOf(student.studentId);
+        const index = conversation.members.indexOf(student.userId);
         conversation.members[index] = studentId;
         await conversation.save();
       }
       
       await Promise.all([
-        courseModel.updateMany({ userId: id }, { $set: { username: studentId } }),
+        courseModel.updateMany({ student: id }, { $set: { studentId: studentId } }),
         postModel.updateMany({ userId: id }, { $set: { username: studentId } }),
-        commentModel.updateMany({ userId: id }, { $set: { username: student.studentId } })
+        commentModel.updateMany({ userId: id }, { $set: { username: studentId } }),
+        taskModel.updateMany({ student: id }, { $set: { studentId: studentId } }),
       ]);
 
     } else {
@@ -139,7 +140,7 @@ var getStudentDetailService = async (id) => {
       throw new ClientError("ID is required", 404);
     }
 
-    const student = await studentsModel.findById(id);
+    const student = await userModel.findById(id);
 
     if (!student) {
       throw new ClientError(`No student found with id: ${id}`, 404);
@@ -153,7 +154,7 @@ var getStudentDetailService = async (id) => {
 
 var deleteStudentService = async (id) => {
   try {
-    const deleteStudent = await studentsModel.findByIdAndDelete(id);
+    const deleteStudent = await userModel.findByIdAndDelete(id);
 
     if (deleteStudent) {
       return "Deleted successfully!";
@@ -167,7 +168,7 @@ var deleteStudentService = async (id) => {
 
 var getNameStudentService = async (_class) => {
   try {
-    const getName = await studentModel.find({ '_class.name': _class }, "studentId");
+    const getName = await userModel.find({ '_class.name': _class }, "userId");
     console.log(_class);
     if (!getName) throw new ClientError(`Cant find students of class ${_class}`, 404);
 
@@ -183,17 +184,17 @@ var uploadStudentsService = async (req) => {
     
     // Kiểm tra xem email và tên người dùng đã tồn tại trong cơ sở dữ liệu hay chưa
    const existingUsers = await Promise.all([
-    studentModel.find({ studentId: { $in: data.map(item => item.studentId) } }, { studentId: 1 }),
-    studentModel.find({ emailAddress: { $in: data.map(item => item.emailAddress) } }, { emailAddress: 1 })
+    userModel.find({ userId: { $in: data.map(item => item.userId) } }, { userId: 1 }),
+    userModel.find({ emailAddress: { $in: data.map(item => item.emailAddress) } }, { emailAddress: 1 })
   ]);
    
   const duplicateEmails = data.filter(item => existingUsers[1].some(user => user.emailAddress === item.emailAddress));
-  const duplicateUsernames = data.filter(item => existingUsers[0].some(user => user.studentId === item.studentId));
+  const duplicateUserIds = data.filter(item => existingUsers[0].some(user => user.userId === item.userId));
 
-  if (duplicateEmails.length > 0 || duplicateUsernames.length > 0) {
+  if (duplicateEmails.length > 0 || duplicateUserIds.length > 0) {
     const errors = {
       duplicateEmails,
-      duplicateUsernames
+      duplicateUserIds
     };
 
     throw new ClientError(`duplicate ${errors}`, 404); 
@@ -207,7 +208,7 @@ var uploadStudentsService = async (req) => {
     const hashPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     const commonProps = {
-      studentId: row.studentId,
+      userId: row.userId,
       password: hashPassword,
       name: row.name,
       role: row.role,
@@ -222,7 +223,7 @@ var uploadStudentsService = async (req) => {
       console.log(_class);
 
       if (row.role === 'student') {
-        const student = new studentModel({
+        const student = new userModel({
           ...commonProps,
           _class: _class.map(className => ({ name: className.trim() }))
         });
@@ -231,7 +232,7 @@ var uploadStudentsService = async (req) => {
         console.log(students);
       }
       else if (row.role === 'consultant') {
-        const consultant = new studentModel({
+        const consultant = new userModel({
           ...commonProps,
           _class: _class.map(className => ({ name: className.trim() }))
         });
@@ -240,8 +241,8 @@ var uploadStudentsService = async (req) => {
       }
     }
     return Promise.all([
-      studentModel.insertMany(students),
-      studentModel.insertMany(consultants)
+      userModel.insertMany(students),
+      userModel.insertMany(consultants)
     ]);
   }
   catch (error) {
@@ -256,7 +257,7 @@ var getStudentStatusService = async (req) => {
     const status = req.query.status; 
 
     console.log(_class, req.query.status);
-    const students = await studentModel.find({ '_class.name': _class, status: status, role: "student" });
+    const students = await userModel.find({ '_class.name': _class, status: status, role: "student" });
 
     if (!students) throw new ClientError(`Cant find students`, 404);
 
@@ -272,7 +273,7 @@ var getStudentDetailsService = async (username) => {
       throw new ClientError("username is required", 404);
     }
 
-    const student = await studentsModel.findOne({ studentId: username});
+    const student = await userModel.findOne({ userId: username});
 
     if (!student) {
       throw new ClientError(`No student found with id: ${username}`, 404);
@@ -290,7 +291,7 @@ var getStudentsInClassService = async (id) => {
       throw new ClientError("id is required", 400);
     }
 
-    const student = await studentsModel.findById(id);
+    const student = await userModel.findById(id);
 
     if (!student) {
       throw new ClientError(`No student found with id: ${id}`, 404);
@@ -298,7 +299,7 @@ var getStudentsInClassService = async (id) => {
 
     const classes = student._class.map((item) => item.name);
 
-    const students = await studentsModel.find({ '_class.name': { $in: classes },  _id: { $ne: id } });
+    const students = await userModel.find({ '_class.name': { $in: classes },  _id: { $ne: id } });
 
     return students;
   } catch (error) {
@@ -308,7 +309,7 @@ var getStudentsInClassService = async (id) => {
 
 var getAllClassService = async () => {
   try {
-   const res = await studentModel.find({ role: 'consultant'})
+   const res = await userModel.find({ role: 'consultant'})
     if (!res) throw new Error;
 
     const classes = res.map((user) => {
@@ -324,7 +325,7 @@ var getAllClassService = async () => {
 var getUsersInClassService = async (_class) => {
   try {
      
-    const data = await studentModel.find({ '_class.name': _class });
+    const data = await userModel.find({ '_class.name': _class });
     console.log(data); 
     if (!data) throw new ClientError('data not found', 404)
 

@@ -4,10 +4,19 @@
   
   
     <div class="consultant-container mx-6 bg-[#ffffff]">
-     <div class="ml-9 my-3">
-      <h2>Danh sách sinh viên</h2>
+     <div class="ml-9 my-3 flex items-center justify-between">
+      <div>
+        <h2>Danh sách sinh viên</h2>
       <h3>Lớp: {{ this.className }} </h3>
+      </div>
        
+      <div>
+        <router-link class="mr-6" :to="{ path: '/student/import-courses/' + id }" >
+        <button class="bg-[#324f90] rounded text-[#ffffff] ml-6 my-2 p-2">
+          Import excel
+        </button>
+      </router-link>
+      </div>
      </div>
       <table class="student-table">
         <thead>
@@ -22,7 +31,7 @@
         <tbody>
           <tr v-for="(student, index) in students" :key="student.id">
             <td>{{ index + 1 }}</td>
-            <td>{{ student.studentId }}</td>
+            <td>{{ student.userId }}</td>
             <td>{{ student.name }}</td>
             <td class="text-center">{{ roundToTwoDecimalPlaces(student.CPA) }}</td>
             <td  class="flex items-center justify-center px-1">
@@ -106,10 +115,8 @@
       border: 1px solid #ddd;
       text-align: center;
       padding: 10px;
-    }
+    } 
     
-     
-  
     .student-table {
     border-collapse: collapse;
     border: 1px solid black;
@@ -127,7 +134,7 @@
   .student-table th:nth-child(3) {
     width: 200px;
   }
-    .consultant-container {
+  .consultant-container {
       height: 400px;
       overflow-y: scroll;
     }

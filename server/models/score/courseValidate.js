@@ -6,6 +6,7 @@ const courseSchema = Joi.object().keys({
     semesterCode: Joi.required(),
     studentId: Joi.required(),
     subjectName: Joi.string().required(),
+    subjectCode: Joi.required(),
     subjectScore: Joi.required(),
     subjectCredits: Joi.required()
 });

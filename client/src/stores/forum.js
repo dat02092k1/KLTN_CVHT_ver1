@@ -66,7 +66,7 @@ export const useForumStore = defineStore({
       try {
         const config = getAccessToken();
           
-        const deletePost = await axiosIns.delete(`http://localhost:8000/post/delete/${id}`, config)
+        const deletePost = await axiosIns.delete(`http://localhost:8000/post/delete/${id}?userId=${this.userId}`, config)
 
         console.log(deletePost); 
 

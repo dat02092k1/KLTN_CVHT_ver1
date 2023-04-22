@@ -6,7 +6,7 @@ const formSchema = new Schema(
   {
     student: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "students",
+      ref: "users",
       index: true,
     },
     username: {

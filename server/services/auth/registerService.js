@@ -1,14 +1,14 @@
-var userModel = require('../../models/students/studentsModel');
+var userModel = require('../../models/students/userModel');
 const bcrypt = require('bcryptjs');
 const SALT_ROUNDS = 10;
 
 var createStudentAccount = async (req, res, next) => {
-    const { studentId, password, role } = req.body;
-    console.log(studentId);
+    const { userId, password, role } = req.body;
+    console.log(userId);
     const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
-
+    console.log(hashPassword);
   const user = new userModel({ 
-    studentId: studentId,        
+    userId: userId,        
     password: hashPassword, 
     role: role });
   user.save(function (err) {

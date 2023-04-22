@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const notificationSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'students',
+    ref: 'users',
     required: true,
   },
   postId: {

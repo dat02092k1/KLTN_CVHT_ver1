@@ -197,7 +197,6 @@ export default defineComponent({
       duration: undefined,
       complete: null,
       assignedStudents: [],
-      createdBy: getId(),
       _class: ""
     });
 
@@ -272,8 +271,8 @@ export default defineComponent({
     onMounted(async () => {
       students.value = await useStudent.getData(selectedOption.value);
       formState._class = selectedOption.value;
-      studentsId.value = students.value.map(({ studentId, _id }) => ({
-        studentId,
+      studentsId.value = students.value.map(({ userId, _id }) => ({
+        userId,
         _id,
       }));
       console.log(studentsId.value);
@@ -312,12 +311,12 @@ export default defineComponent({
         console.log(
           students.value.map((student) => ({
             value: student._id,
-            label: student.studentId,
+            label: student.userId,
           }))
         );
         return students.value.map((student) => ({
           value: student._id,
-          label: student.studentId,
+          label: student.userId,
         }));
       } else {
         return [];

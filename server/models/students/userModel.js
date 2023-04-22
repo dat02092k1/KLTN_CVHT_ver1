@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const studentSchema = new Schema({
-    studentId: {
+const userSchema = new Schema({
+    userId: {
         type: String,
         required: true,
         unique: true,
@@ -50,7 +50,7 @@ const studentSchema = new Schema({
               ],
             default: "Không"
     },
-    total_creadits: {
+    total_credits: {
         type: Number,
         default: 0 
     },
@@ -60,12 +60,9 @@ const studentSchema = new Schema({
                 type: String
             }
         }
-    ],
-    paidFee: {
-        type: Boolean
-    }
+    ]
 })
 
-studentSchema.index({ studentId: 1 })
+userSchema.index({ userId: 1 })
 
-module.exports = mongoose.model('students', studentSchema);              
+module.exports = mongoose.model('users', userSchema);              

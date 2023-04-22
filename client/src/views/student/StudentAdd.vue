@@ -16,12 +16,12 @@
           <div class="mx-auto">
             <a-form-item
               class="form-item block"
-              ref="studentId"
+              ref="userId"
               label="Username"
-              name="studentId"
+              name="userId"
             >
               <a-input
-                v-model:value="formState.studentId"
+                v-model:value="formState.userId"
                 placeholder="Nhập tài khoản"
               />
             </a-form-item>
@@ -39,43 +39,42 @@
             </a-form-item>
 
             <a-form
-    ref="formRef"
-    name="dynamic_form_item"
-    :model="dynamicValidateForm"
-    v-bind="formItemLayoutWithOutLabel"
-  >
-    <a-form-item
-      v-for="(domain, index) in dynamicValidateForm.domains"
-      :key="domain.key"
-      v-bind="index === 0 ? formItemLayout : {}"
-      :label="index === 0 ? 'Lớp' : ''"
-      :name="['domains', index, 'name']"
-      :rules="{
-        required: true,
-        message: 'domain can not be null',
-        trigger: 'change',
-      }"
-    >
-      <a-input
-        v-model:value="domain.name"
-        placeholder="Nhập lớp"
-        style="width: 60%; margin-right: 8px"
-      />
-      <MinusCircleOutlined
-        v-if="dynamicValidateForm.domains.length > 1"
-        class="dynamic-delete-button"
-        :disabled="dynamicValidateForm.domains.length === 1"
-        @click="removeDomain(domain)"
-      />
-    </a-form-item>
-    <a-form-item v-bind="formItemLayoutWithOutLabel">
-      <a-button type="dashed" style="width: 60%" @click="addDomain">
-        <PlusOutlined />
-        Add field
-      </a-button>
-    </a-form-item>
-    
-  </a-form>
+              ref="formRef"
+              name="dynamic_form_item"
+              :model="dynamicValidateForm"
+              v-bind="formItemLayoutWithOutLabel"
+            >
+              <a-form-item
+                v-for="(domain, index) in dynamicValidateForm.domains"
+                :key="domain.key"
+                v-bind="index === 0 ? formItemLayout : {}"
+                :label="index === 0 ? 'Lớp' : ''"
+                :name="['domains', index, 'name']"
+                :rules="{
+                  required: true,
+                  message: 'domain can not be null',
+                  trigger: 'change',
+                }"
+              >
+                <a-input
+                  v-model:value="domain.name"
+                  placeholder="Nhập lớp"
+                  style="width: 60%; margin-right: 8px"
+                />
+                <MinusCircleOutlined
+                  v-if="dynamicValidateForm.domains.length > 1"
+                  class="dynamic-delete-button"
+                  :disabled="dynamicValidateForm.domains.length === 1"
+                  @click="removeDomain(domain)"
+                />
+              </a-form-item>
+              <a-form-item v-bind="formItemLayoutWithOutLabel">
+                <a-button type="dashed" style="width: 60%" @click="addDomain">
+                  <PlusOutlined />
+                  Add field
+                </a-button>
+              </a-form-item>
+            </a-form>
 
             <a-form-item label="Vai trò" name="role" class="form-item block">
               <a-select
@@ -167,10 +166,12 @@
         </div>
 
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-          <router-link class="" :to="{ path: '/student/list'}" >
-      <button class="bg-[#ef1419]  text-[#ffffff] mx-2 my-2 p-1">Quay lại</button>
-              </router-link>
-              
+          <router-link class="" :to="{ path: '/student/list' }">
+            <button class="bg-[#ef1419] text-[#ffffff] mx-2 my-2 p-1">
+              Quay lại
+            </button>
+          </router-link>
+
           <a-button type="primary" @click="onSubmit" class="bg-[#324f90]"
             >Create</a-button
           >
@@ -179,41 +180,49 @@
           >
         </a-form-item>
       </a-form>
-      
     </div>
 
-    <a-alert v-show="useStudent.showSuccessMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
-    <a-alert v-show="useStudent.showErrorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
-
+    <a-alert
+      v-show="useStudent.showSuccessMsg === true"
+      message="Thêm sinh viên thành công"
+      type="success"
+      show-icon
+    />
+    <a-alert
+      v-show="useStudent.showErrorMsg === true"
+      message="Thêm sinh viên thất bại"
+      type="error"
+      show-icon
+    />
   </div>
 </template>
 <script>
 import { defineComponent, reactive, ref, toRaw } from "vue";
 import { useStudentStore } from "../../stores/student.js";
 import NavTitle from "../base/NavBar/NavTitle.vue";
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons-vue";
 
 export default defineComponent({
   setup() {
     const formRef = ref();
     const pageTitle = ref("Thêm Sinh Viên");
     const formState = reactive({
-      studentId: "",
+      userId: "",
       password: "",
       name: "",
       gender: "",
       birthdate: undefined,
-      emailAddress: "", 
+      emailAddress: "",
       phone: "",
       role: "",
       _class: "",
       address: "",
     });
     const rules = {
-      studentId: [
+      userId: [
         {
           required: true,
-          message: "Chưa nhập studentId",
+          message: "Chưa nhập tài khoản",
           trigger: "blur",
         },
       ],
@@ -227,6 +236,18 @@ export default defineComponent({
           min: 6,
           max: 15,
           message: "Mật khẩu cần có độ dài từ 6 đến 15 kí tự",
+          trigger: "blur",
+        },
+        {
+          validator: (rule, value) => {
+            return new Promise((resolve, reject) => {
+              if (!/[a-z]/.test(value) || !/\d/.test(value)) {
+                reject(new Error("Mật khẩu cần chứa cả chữ cái và số"));
+              } else {
+                resolve();
+              }
+            });
+          },
           trigger: "blur",
         },
       ],
@@ -358,7 +379,7 @@ export default defineComponent({
       domains: [],
     });
 
-    const removeDomain = item => {
+    const removeDomain = (item) => {
       let index = dynamicValidateForm.domains.indexOf(item);
       if (index !== -1) {
         dynamicValidateForm.domains.splice(index, 1);
@@ -366,7 +387,7 @@ export default defineComponent({
     };
     const addDomain = () => {
       dynamicValidateForm.domains.push({
-        name: '',
+        name: "",
         key: Date.now(),
       });
       console.log(dynamicValidateForm.domains);
@@ -393,7 +414,7 @@ export default defineComponent({
       formItemLayoutWithOutLabel,
       dynamicValidateForm,
       removeDomain,
-      addDomain
+      addDomain,
     };
   },
   components: { NavTitle, MinusCircleOutlined, PlusOutlined },

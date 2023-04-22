@@ -10,7 +10,7 @@
         <button>UET chat</button>
       </div>
     </div>
-    <div class="chat-zone grid grid-cols-12 gap-4">
+    <div class="chat-zone grid grid-cols-12 gap-4 bg-[#fff]">
       <div class="conversation col-span-4 text-[#ffffff] bg-[#3596ff] rounded">
         <div class="flex justify-center">
           <div class="m-2">
@@ -33,8 +33,7 @@
               @click="getMessage(user._id, user.members)"
               class="my-3 text-center p-1 cursor-pointer hover:bg-[#5b6ed8]"
             >
-               {{ filterDuplicate(user.members, getUsername) }}
-              {{ this.userNames[filterDuplicate(user.members, getUsername)] }}   
+              {{ this.userNames[filterDuplicate(user.members, getUsername)] }} ({{ filterDuplicate(user.members, getUsername)}} )
             </li>
           </ul>
         </div>
@@ -43,7 +42,7 @@
           Sinh viên trong lớp:
           <div v-for="(user, index) in users" :key="index">
             <div
-              @click="handleConversation(user.studentId)"
+              @click="handleConversation(user.userId)"
               class="text-center my-2 cursor-pointer hover:bg-[#2064ad] p-1"
             >
               {{ user.name }}
@@ -66,11 +65,11 @@
               'receiver-message': message.sender !== getUsername,
             }"
           >
-            <div>{{ message.content }}</div>
+            <div class="break-all max-w-[150px]">{{ message.content }}</div>
           </div>
           
         </div>
-        <div>
+        <div class="flex gap-1 mx-2">
           <textarea
             name=""
             id=""
@@ -79,8 +78,10 @@
             v-model="this.content"
             placeholder="Nhập tin nhắn"
             @keyup.enter="sendMessage"
+            class="rounded p-1 w-full"
+            required
           ></textarea>
-          <button @click="sendMessage">Gửi</button>
+          <button @click="sendMessage"> <i class="fa-regular fa-paper-plane"></i> </button>
         </div>
       </div>
     </div>
@@ -173,6 +174,10 @@ export default {
       this.useChat.getMessages(id);
     },
     sendMessage() {
+      if (this.content === "") {
+        alert('Chưa điền tin nhắn');
+        return;
+      }
       console.log("flag");
       console.log(this.conversationId);
       const message = {
@@ -274,7 +279,7 @@ export default {
 
       const user = response.data.students;
       
-      this.userNames[user.studentId] = user.name;
+      this.userNames[user.userId] = user.name;
     } catch (error) {
       console.error(error);
     }

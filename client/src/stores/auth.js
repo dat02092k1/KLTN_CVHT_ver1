@@ -26,18 +26,19 @@ export const useAuthStore = defineStore({
   }),
   getters: {},
   actions: {
-    async login(studentId, password) {
+    async login(userId, password) {
       try {
+        console.log(userId);
         const user = await axiosIns.post("http://localhost:8000/api/user/login",
         {
-          studentId,
+          userId,
           password,
         });
 
         this.user = user.data.user;
         console.log(user.status);
         localStorage.setItem("_id", this.user._id);
-        localStorage.setItem("username", this.user.studentId);
+        localStorage.setItem("username", this.user.userId);
         localStorage.setItem("role", this.user.role);
         console.log(this.user._class);
         const classNames = this.user._class.map((c) => c.name); 

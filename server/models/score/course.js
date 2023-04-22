@@ -12,7 +12,7 @@ var courseSchema = new Schema({
     },
     student: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'students',
+        ref: 'users',
         index: true
     },
     studentId: { 
@@ -20,6 +20,10 @@ var courseSchema = new Schema({
     },
     subjects: [{
         name: {
+          type: String,
+          required: true
+        },
+        code: {
           type: String,
           required: true
         },

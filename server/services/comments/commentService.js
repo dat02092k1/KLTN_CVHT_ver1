@@ -1,6 +1,6 @@
 const commentModel = require('../../models/comments/comment.js');
 const postModel = require('../../models/posts/post.js');
-const studentModel = require('../../models/students/studentsModel.js');
+const userModel = require('../../models/students/userModel.js');
 
 const { ClientError } = require('../error/error.js');
 
@@ -14,9 +14,9 @@ var createCommentService = async (id, userId, commentDetails) => {
             } = commentDetails;
         console.log(id, userId, commentDetails); 
 
-        const getStudent = await studentModel.findById(userId);
+        const getStudent = await userModel.findById(userId);
          
-        const username = getStudent.studentId; 
+        const username = getStudent.userId; 
 
         const newComment = new commentModel({
             postId, 

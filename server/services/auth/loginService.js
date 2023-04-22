@@ -3,15 +3,15 @@ const jwt = require('jsonwebtoken');
 
 let refreshTokens = [];
 
-var userModel = require('../../models/students/studentsModel');
+var userModel = require('../../models/students/userModel');
 
 var createAccessToken = (user) => {
     console.log(user);
-    return jwt.sign({ id: user._id, username: user.studentId, role: user.role}, process.env.JWT_SECRET, { expiresIn: '500000' }); 
+    return jwt.sign({ id: user._id, username: user.userId, role: user.role}, process.env.JWT_SECRET, { expiresIn: '500000' }); 
 }
 
 var createRefreshToken = (user) => {
-    return jwt.sign({ id: user._id, username: user.studentId, role: user.role}, process.env.JWT_REFRESH, { expiresIn: '30d' }); 
+    return jwt.sign({ id: user._id, username: user.userId, role: user.role}, process.env.JWT_REFRESH, { expiresIn: '30d' }); 
 }
 
 var generateAccessToken = (user) => {
@@ -24,20 +24,20 @@ var generateRefreshToken = (user) => {
 
 var loginService = async (req, res, next) => {
       
-    const { studentId, password } = req.body;
+    const { userId, password } = req.body;
       
-
+    console.log(req.body); 
     try {
-        var user = await userModel.findOne( {studentId});
-         
+        var user = await userModel.findOne( {userId});
+         console.log(user);
         if (!user) return res.status(400).json({ message: 'Email or password is incorrect' });
 
         // check for password
          
-
+        console.log('flag'); 
         const isMatch = await bcrypt.compareSync(password, user.password);
         
-         
+         console.log(isMatch);
         if (!isMatch) 
         {
             return res.status(400).json({ message: 'Invalid credentials'});

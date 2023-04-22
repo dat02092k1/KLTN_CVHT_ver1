@@ -10,14 +10,14 @@
          <div class="flex-1">
           <div class="forum-item w-[80%] rounded-md mx-auto bg-[#fff]">
             <div class="flex flex-col my-3">
-              <label class="font-medium text-base" for="">Tiêu đề:</label>
+              <label class="font-medium text-base" for=""> <span class="text-red-600">*</span>Tiêu đề:</label>
               <span>
                 <input type="text" v-model="this.post.title" >
               </span>
             </div>
             
             <div>
-              <div class="font-medium text-base">Nội dung:</div>
+              <div class="font-medium text-base"><span class="text-red-600">*</span>Nội dung:</div>
               <div>
                <textarea name="" id="" cols="60" rows="5" v-model="this.post.content"></textarea>
               </div>
@@ -85,6 +85,10 @@
     methods: {
       editPost() {
         console.log(this.post);
+        if (this.post.content === "" || this.post.title === "") {
+          alert("Chưa điền các trường yêu cầu");
+          return;
+        }
         this.useForum.updatePost(this.id, this.post);
       },
       async uploadImage(event) {

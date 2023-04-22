@@ -65,7 +65,7 @@
                       class="filter-input h-8 text-[14px] leading-1 font-normal"
                       type="text"
                       placeholder="MSSV"
-                      v-model="this.filters.studentId"
+                      v-model="this.filters.userId"
                     />
                   </div>
                 </th>
@@ -93,7 +93,7 @@
                 :key="index"
               >
                 <td class="text-center">{{ index + 1 }}</td>
-                <td>{{ item.studentId }}</td>
+                <td>{{ item.userId }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.phone }}</td>
                 <td>
@@ -159,7 +159,7 @@ export default {
       data: [],
       useStudent: useStudentStore(),
       filters: {
-        studentId: "",
+        userId: "",
         name: "",
       },
       filterText: "",
@@ -175,16 +175,16 @@ export default {
   computed: {
     filteredStudents() {
       return this.students.filter((student) => {
-        const isMatchById = student.studentId
+        const isMatchById = student.userId
           .toString()
-          .includes(this.filters.studentId);
+          .includes(this.filters.userId);
 
         const isMatchByName =
           student.name && student.name.includes(this.searchName);
 
-        if (this.filters.studentId && this.searchName) {
+        if (this.filters.userId && this.searchName) {
           return isMatchById && isMatchByName;
-        } else if (this.filters.studentId) {
+        } else if (this.filters.userId) {
           return isMatchById;
         } else if (this.searchName) {
           return isMatchByName;

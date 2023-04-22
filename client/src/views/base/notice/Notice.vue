@@ -37,11 +37,11 @@
               >
                 <a-form-item
                   name="subject"
-                  label="subject"
+                  label="Tiêu đề"
                   :rules="[
                     {
                       required: true,
-                      message: 'Please input the subject of collection!',
+                      message: 'chưa điền tiêu đề!',
                     },
                   ]"
                 >
@@ -50,11 +50,11 @@
   
                 <a-form-item
                   name="message"
-                  label="message"
+                  label="Nội dung"
                   :rules="[
                     {
                       required: true,
-                      message: 'Please input the message of collection!',
+                      message: 'Vui lòng chọn nội dung!',
                     },
                   ]"
                 >
@@ -159,7 +159,7 @@
       const onOk = () => {
         formRef.value
           .validateFields()
-          .then((values) => {
+          .then(async (values) => {
             console.log("formState: ", toRaw(formState));
             const notice = toRaw(formState);
             const noti = {
@@ -169,6 +169,7 @@
             sendNoti(noti);  
              
             useNotice.addNotice(notice);
+            await useNotice.getListNotice(selectedOption.value);
             visible.value = false;
             formRef.value.resetFields();
             console.log("reset formState: ", toRaw(formState));

@@ -9,7 +9,7 @@
         </button>
       </router-link>
 
-      <div>
+      <div v-if="userRole === 'manager'">
         <router-link class="mr-6" :to="{ path: '/student/course/add/' + id }">
         <button class="bg-[#324f90] rounded text-[#ffffff] ml-6 my-2 p-2">
           Thêm điểm
@@ -51,19 +51,21 @@
             <tr>
               <th>STT</th>
               <th>Môn học</th>
+              <th>Mã môn học</th>
               <th>Số tín</th>
               <th>Điểm số</th>
               <th>Điểm chữ</th>
             </tr>
 
             <tr>
-              <th class="semester" colspan="5">{{ course.semester }}</th>
+              <th class="semester" colspan="6">{{ course.semester }} Mã kỳ học: {{ course.semesterCode }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in course.subjects" :key="index">
               <td>{{ index + 1 }}</td>
-              <td>{{ item.name }}</td>
+              <td class="w-[250px]">{{ item.name }}</td>
+              <td>{{ item.code }}</td>
               <td>{{ item.credits }}</td>
               <td>{{ item.score }}</td>
               <td>{{ item.grade }}</td>
@@ -82,7 +84,7 @@
       </div>
     <div class="flex gap-1 font-bold">
       <div>Tổng số tín chỉ tích lũy: </div>
-    <span>{{ this.student.total_creadits }}</span>
+    <span>{{ this.student.total_credits }}</span>
     </div>
     </div>
     
@@ -119,7 +121,7 @@ export default {
     this.courses = await this.useScore.getCourses(this.id);
     console.log(this.courses);
     this.student = await this.useStudent.getStudentDetails(this.id);
-    console.log(typeof this.student.CPA);
+    console.log(this.student);
     this.studentCpa = this.student.CPA;
     this.studentClass = this.student._class[0].name;
     console.log(this.studentClass);
@@ -207,10 +209,12 @@ th {
 
 tr td {
   background-color: #ffffff;
+
 }
 tr .semester {
   background-color: #ffffff;
   text-align: left;
+   
 }
 /* td.subject, th.subject {
     width: 50%;

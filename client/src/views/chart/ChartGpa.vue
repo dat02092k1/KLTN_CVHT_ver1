@@ -69,9 +69,9 @@
       const fetchData = this.userlist;
         this.isShowSpinner = false;
         
-        const gpa = fetchData.map(number => number.CPA);
-        const student = fetchData.map(number => number.studentId);
-        console.log(gpa);
+        const cpa = fetchData.map(number => number.CPA);
+        const student = fetchData.map(number => number.userId);
+        console.log(cpa);
         console.log(student);
         this.chartData = {
           labels: student,
@@ -79,7 +79,7 @@
           {
             label: `Thống kê điểm của sinh viên lớp ${this.selectedClass}`,
             backgroundColor: '#f87979',
-            data: gpa
+            data: cpa
           }
           ]
           }
@@ -95,6 +95,7 @@
        try {
         const role = getRole(); 
         this.selectedClass = this.userClass[0];
+        
         if (role === 'consultant') {
           this.isAdmin = true;
         } 
@@ -104,17 +105,17 @@
         const fetchData = this.userlist;
         this.isShowSpinner = false;
         
-        const gpa = fetchData.map(number => number.CPA);
-        const student = fetchData.map(number => number.studentId);
-        console.log(gpa);
+        const cpa = fetchData.map(number => number.CPA);
+        const student = fetchData.map(number => number.userId);
+        console.log(cpa);
         console.log(student);
         this.chartData = {
           labels: student,
           datasets: [
           {
-            label: 'Thống kê điểm của sinh viên lớp K64-C-CLC',
+            label: `Thống kê điểm của sinh viên lớp ${this.selectedClass}`,
             backgroundColor: '#f87979',
-            data: gpa
+            data: cpa
           }
           ]
           }

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 // verify token
 const verifyToken = (req, res, next) => {
   const token = req.headers.token;
+   
   if (token) {
     const accessToken = token.split(" ")[1];
     jwt.verify(accessToken, process.env.JWT_SECRET, (err, user) => {
@@ -22,7 +23,7 @@ const verifyToken = (req, res, next) => {
 const roleAuthentication = (req, res, next) => {
   verifyToken(req, res, () => {
      
-    if (req.user.id == req.params.id || req.user.role === "consultant") {
+    if (req.user.id == req.params.id || req.user.role === "manager") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");
@@ -32,8 +33,7 @@ const roleAuthentication = (req, res, next) => {
 
 const onlyOwner = (req, res, next) => {
   verifyToken(req, res, () => {
-
-    if (req.user.id == req.body.userId || req.user.username == req.params.username || req.user.id == req.params.id) {
+    if (req.user.id == req.body.userId || req.user.username == req.params.username || req.user.id == req.query.userId || req.user.id == req.params.id || req.user.role === "consultant") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");
@@ -44,9 +44,8 @@ const onlyOwner = (req, res, next) => {
 const studentIdAuthentication = (req, res, next) => {
     
   verifyToken(req, res, () => {
-     console.log(typeof(req.params.studentId));
-     console.log(typeof(req.user.id));
-    if (req.user.id === req.params.studentId || req.user.role === "consultant" || req.user.role === "manager") {
+     console.log(req.params);
+    if (req.user.id === req.params.studentId || req.user.id === req.params.id || req.user.role === "consultant" || req.user.role === "manager") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");

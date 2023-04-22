@@ -73,7 +73,6 @@
         description: "",
         complete: null,
         assignedStudents: [],
-        createdBy: getId(),
         // _class: getClass(),
       });
   
@@ -126,7 +125,7 @@
   </script>
   
   <style scoped>
-  ::v-deep .ant-switch-checked ant-switch {
+  :deep .ant-switch-checked ant-switch {
     background-color: #1890ff;
   }
   </style>

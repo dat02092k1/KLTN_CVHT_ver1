@@ -36,7 +36,7 @@
             >
               <a-form-item
                 name="title"
-                label="Title"
+                label="Tiêu đề"
                 :rules="[
                   {
                     required: true,
@@ -49,7 +49,7 @@
 
               <a-form-item
                 name="content"
-                label="Content"
+                label="Nội dung"
                 :rules="[
                   {
                     required: true,
@@ -191,18 +191,18 @@ export default defineComponent({
     const onOk = () => {
       formRef.value
         .validateFields()
-        .then((values) => {
+        .then(async (values) => {
           console.log("formState: ", toRaw(formState));
           const post = toRaw(formState);
           
-          useForum.addPost(post);
+          await useForum.addPost(post);
 
           const noti = {
           noti: post.title,
           room: post._class
         }
           sendNoti(noti);
-          useForum.getPostsPerPage(formState._class, 1);
+          await useForum.getPostsPerPage(formState._class, 1);
           console.log(formState._class);
           visible.value = false;
           formRef.value.resetFields();

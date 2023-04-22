@@ -8,7 +8,7 @@
       <form @submit.prevent="submitForm" class="add--course m-6 p-3 bg-[#fff]">
         <div class="task flex">
           <div
-            class="bg-gray-100  items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
+            class="items-center px-4 py-2 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
           >
             Task
           </div>
@@ -19,13 +19,14 @@
               class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
               type="text"
               placeholder="Học kỳ"
+              required
             />
           </div>
         </div>
 
         <div class="task flex mt-3">
           <div
-            class="bg-gray-100  items-center px-4 py-1 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
+            class="items-center px-4 py-1 border border-r-0 rounded-l text-sm font-medium text-gray-800 select-none"
           >
             Mô tả
           </div>
@@ -36,7 +37,8 @@
               class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
               type="text"
               placeholder="Mô tả"
-            />
+              @change="handleDes"
+            > </textarea>
           </div>
         </div>
         
@@ -57,6 +59,11 @@
               </a-form-item>
 
         <div>
+          <div
+            class="items-center px-1 py-1"
+          >
+            Thời hạn: 
+          </div>
           <a-date-picker
         v-model:value="this.useTask.tasks.duration"
         show-time
@@ -107,7 +114,6 @@
         useTask: useTaskStore(),
         useStudent: useStudentStore(),
         task: [],
-        createdBy: getId(),
         loaded: false,
       chartData: null,
       data: [],
@@ -124,7 +130,6 @@
         console.log(this.task);
         this.students = await this.useStudent.getData(this.task._class); 
         
-        console.log(this.useTask.tasks.assignedStudents);
         const completedStudents = this.task.assignedStudents.filter(student => student.isCompleted === true);
 
         const numCompletedStudents = completedStudents.length;
@@ -145,21 +150,22 @@
                     value: student.student,
                     label: student.studentId,
                 }));
-                console.log(this.formState.studentAssign);
+
+          this.studentIds = this.useTask.tasks.assignedStudents.map((student) => ({
+        student: student.student,
+      }));
+
+            console.log(this.formState.studentAssign);
+            console.log(this.studentIds);
           this.loaded = true
     },
     computed: {
       optionStudents() {
         if (this.students && this.students.length > 0) {
-            console.log(
-                this.students.map((student) => ({
-                    value: student._id,
-                    label: student.studentId,
-                }))
-            );
+            
             return this.students.map((student) => ({
                 value: student._id,
-                label: student.studentId,
+                label: student.userId,
             }));
         } else {
             return [];
@@ -168,12 +174,16 @@
     },
     methods: {
       submitForm() {
+        if (this.studentIds.length === 0) {
+          alert("Chưa chọn sinh viên");
+          return;
+        }
+
         const taskDetails = {
         task: this.useTask.tasks.task,
         description: this.useTask.tasks.description,
         duration: this.useTask.tasks.duration,
         assignedStudents: this.studentIds,
-        createdBy: this.useTask.tasks.createdBy
       };
 
       console.log(taskDetails);
@@ -181,20 +191,17 @@
        
       },
       handleChange(value) {
+        console.log(value);
         this.studentIds = value.map((studentId) => ({
         student: studentId,
       }));
       console.log(this.studentIds);
-    //     if (value) {
-    //       this.formState.studentAssign = value.map((student) => ({
-    //   student: student,
-    //   studentId: ''
-    //     }));
-    //     console.log(this.formState.studentAssign);
-    // } else {
-    //     console.error('Invalid value passed to handleChange:', value);
-    // }
-    }
+    },
+    handleDes() {
+      console.log(this.studentIds);
+      console.log(this.useTask.tasks.description);
+    },
+    
     },
   };
   </script>

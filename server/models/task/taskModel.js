@@ -19,7 +19,7 @@ var taskSchema = new Schema({
     {
       student: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "students",
+        ref: "users",
         required: true,
       },
       studentId: {
@@ -31,10 +31,6 @@ var taskSchema = new Schema({
       },
     },
   ],
-  createdBy: {
-    type: String,
-    required: true,
-  },
   createdAt: { 
     type: Date, 
     default: Date.now },  

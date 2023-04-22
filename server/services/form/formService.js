@@ -1,5 +1,5 @@
 const formModel = require("../../models/forms/form.js");
-const userModel = require("../../models/students/studentsModel.js");
+const userModel = require("../../models/students/userModel.js");
 
 const mongoose = require("mongoose");
 const { ClientError } = require("../error/error.js");
@@ -13,7 +13,7 @@ var createFormService = async (req) => {
 
     const newForm = new formModel({
       student,
-      username: getUser.studentId,
+      username: getUser.userId,
       _class,                         
       type,
       fileUrl,

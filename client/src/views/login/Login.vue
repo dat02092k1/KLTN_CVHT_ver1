@@ -19,7 +19,7 @@
     class="flex flex-col"
   >
     <a-form-item class="mb-5">
-      <a-input class="pt-3 pb-3 px-1 h-12 w-full" v-model:value="formState.studentId" placeholder="Username">
+      <a-input class="pt-3 pb-3 px-1 h-12 w-full" v-model:value="formState.userId" placeholder="Username">
         <template #prefix><UserOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
       </a-input>
     </a-form-item>
@@ -67,7 +67,7 @@ export default {
       password: '',   
       store: useAuthStore(),
       formState: {
-        studentId: '',
+        userId: '',
       password: '',
       },
       userClass: getClass()
@@ -79,7 +79,7 @@ export default {
   methods: {
     handleFinish(values) {
         console.log(values, this.formState);
-        this.store.login(this.formState.studentId, this.formState.password);
+        this.store.login(this.formState.userId, this.formState.password);
     },
     handleFinishFailed(errors) {
         console.log(errors);

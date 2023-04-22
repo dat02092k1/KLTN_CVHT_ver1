@@ -10,7 +10,16 @@
             <div class="flex flex-col my-3">
               <label class="font-medium text-base" for="">Tiêu đề:</label>
               <span>
-                <input type="text" v-model="report.title" >
+                <input class="p-3 w-[50%] border-solid border-black border-[1px]" type="text" v-model="report.title" >
+              </span>
+            </div>
+
+            <div class="flex flex-col my-3">
+              <label class="font-medium text-base" for="">Nội dung:</label>
+              <span> 
+                
+                <textarea class="p-3 w-[50%] border-solid border-black border-[1px]" name="" id="" cols="30" rows="3" v-model="report.content"></textarea>
+                 
               </span>
             </div>
 

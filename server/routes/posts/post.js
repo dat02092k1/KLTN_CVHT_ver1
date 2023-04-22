@@ -10,7 +10,7 @@ router.post('/post/create', userAuthenticate.verifyToken, postController.createP
 // create a post on forum
 router.put('/post/edit/:id', userAuthenticate.onlyOwner , postController.updatePostController);
 // edit post on forum
-router.delete('/post/delete/:id', userAuthenticate.roleAuthentication, postController.deletePostController);
+router.delete('/post/delete/:id', userAuthenticate.onlyOwner, postController.deletePostController);
 // delete post on forum
 router.get('/posts/per-page/:class', userAuthenticate.verifyToken, postController.listPostsPerPage);
 // get all post of a user with username 

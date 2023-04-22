@@ -175,9 +175,8 @@ export default {
         });
     };
 
-  const confirm = async (id, type) => {
-     
-        useForm.deleteForm(id, type); 
+  const confirm = async (id, type) => {  
+        await useForm.deleteForm(id, type); 
         forms.value = await useForm.getUserForms(studentId);
     };
 

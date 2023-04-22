@@ -1,5 +1,5 @@
 const noticeModel = require("../../models/notices/notice.js");
-const userModel = require("../../models/students/studentsModel.js");
+const userModel = require("../../models/students/userModel.js");
 const notiModel = require("../../models/notifications/notifications.js");
 const email = require('../../utils/email.js');
 

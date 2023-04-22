@@ -17,6 +17,7 @@
           <th>Sinh viên</th>
           <th>Loại biểu mẫu</th>
           <th>File</th>
+          <th>Thời gian nộp</th>
           <th>Status</th>
           <th>Hành động</th>
         </tr>
@@ -30,6 +31,9 @@
           </td>
           <td>
             <button @click="downloadFile(item.fileUrl)">file</button>
+          </td>
+          <td>
+            {{ formatDate(item.createdAt) }}
           </td>
           <td>
             <span v-if="item.status === 'pending'" class="text-[#e9990c]" title="Pending">
@@ -122,7 +126,18 @@ export default {
       console.log(e);
       message.error('Click on No');
     };
-    return { selectedOption, options, handleSelectChange, pageTitle, useForm, downloadFile, confirm, cancel };
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+  return `${day}/${month}/${year} ${hour}:${minute}`;
+}
+
+    return { selectedOption, options, handleSelectChange, pageTitle, useForm, downloadFile, confirm, cancel, formatDate };
   },
 };
 

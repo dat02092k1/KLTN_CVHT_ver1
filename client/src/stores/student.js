@@ -109,13 +109,7 @@ export const useStudentStore = defineStore({
     },
     async getStudentDetails(id) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-         
-        const config = {
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        };
+        const config = getAccessToken(); 
 
         const response = await axiosIns.get(
           `http://localhost:8000/student/details/${id}`,

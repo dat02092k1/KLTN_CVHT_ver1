@@ -8,7 +8,6 @@ import API_ENDPOINTS from "../api/api.js";
 export const useTaskStore = defineStore({
   id: "task",
   state: () => ({
-    createdBy: getId(),
     tasks: [],
     totalPage: null,
     successMsg: false,
@@ -25,10 +24,7 @@ export const useTaskStore = defineStore({
           },
         };
 
-        const tasks = await axiosIns.get(API_ENDPOINTS.getTasks, {
-          params: {
-            createdBy: this.createdBy,
-          },
+        const tasks = await axiosIns.get(API_ENDPOINTS.getTasks, { 
           headers: {
             token: `Bearer ${accessToken}`,
           },
@@ -69,8 +65,7 @@ export const useTaskStore = defineStore({
         );
 
         this.tasks = getTask.data.task;
-        console.log(this.tasks);
-        return getTask.data.task;
+         return getTask.data.task;
       } catch (error) {
         console.log(error);
       }

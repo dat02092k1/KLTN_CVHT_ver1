@@ -16,10 +16,11 @@
               <h2><span class="text-red-600">*</span><b>Lưu ý:</b> </h2>
             </div>
             <p><i>Import file excel với các trường, cột giống file sample bên dưới (dạng xlsx) để đảm bảo tính năng hoạt động đúng</i></p>
-            <a href="https://res.cloudinary.com/dpnjutbws/raw/upload/v1681841462/course_qnwlee.xlsx">sample_courses_file.xlsx</a>
+            <a href="https://res.cloudinary.com/dpnjutbws/raw/upload/v1682178432/course_gob3e9.xlsx">sample_courses_file.xlsx</a>
           </div>
         </div>
       </form>
+      <Loading v-show="useUpload.loading" />
       <a-alert v-show="useUpload.successMsg === true" message="Thêm mới kết quả học tập thành công" type="success" show-icon />
           <a-alert v-show="useUpload.errorMsg === true" message="Thêm mới kết quả học tập thất bại" type="error" show-icon />
     </div>
@@ -28,10 +29,11 @@
   <script>
   import { useUploadStore } from '../../../stores/upload.js';
   import NavTitle from "../NavBar/NavTitle.vue";
+  import Loading from "../Spinner/Loading.vue";
 
   export default {
     name: 'UploadExcel',
-    components: { NavTitle },
+    components: { NavTitle, Loading },
     data() {
       return {
         selectedFile: null,

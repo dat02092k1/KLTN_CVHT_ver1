@@ -1,4 +1,4 @@
-const studentModel = require("../../models/students/studentsModel.js");
+const userModel = require("../../models/students/userModel.js");
 const taskModel = require("../../models/task/taskModel");
 const { ClientError } = require("../error/error.js");
 
@@ -18,17 +18,17 @@ var getTaskService = async (_class) => {
 
 var createTaskService = async (taskDetail) => {
   try {
-    const { task, description, assignedStudents, createdBy, duration, _class } = taskDetail;
+    const { task, description, assignedStudents, duration, _class } = taskDetail;
 
     console.log(taskDetail);
     for (const item of assignedStudents) {
       console.log(item.student);
-      const studentAssign = await studentModel.findById(item.student);
+      const studentAssign = await userModel.findById(item.student);
 
       if (!studentAssign) {
         throw new ClientError("Không tìm thấy sinh viên", 404);
       }
-      item.studentId = studentAssign.studentId;
+      item.studentId = studentAssign.userId;
     }
 
     console.log(assignedStudents);
@@ -38,7 +38,6 @@ var createTaskService = async (taskDetail) => {
       description,
       assignedStudents,
       duration,
-      createdBy,
       _class
     });
 
@@ -65,12 +64,12 @@ var editTaskService = async (taskDetails, taskId) => {
      }
  
     for (const item of assignedStudents) {
-      const studentAssign = await studentModel.findById(item.student);
+      const studentAssign = await userModel.findById(item.student);
 
       if (!studentAssign) {
         throw new ClientError("Không tìm thấy sinh viên " + item.student , 404);
       }
-      item.studentId = studentAssign.studentId;
+      item.studentId = studentAssign.userId;
     }
     console.log(taskDetails);
 

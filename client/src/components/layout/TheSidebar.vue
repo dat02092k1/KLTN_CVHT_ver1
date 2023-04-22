@@ -166,8 +166,6 @@
             </li>
           </a>
         </div>
-
-         
       </ul>
     </div>
   </div>
@@ -252,26 +250,6 @@ export default {
 
 .item__list {
   color: var(--item-color);
-}
-
-.active1 {
-  background-color: #2d3c50;
-  color: #409eff;
-}
-
-.active2 {
-  background-color: #2d3c50;
-  color: #409eff;
-}
-
-.active3 {
-  background-color: #2d3c50;
-  color: #409eff;
-}
-
-.active4 {
-  background-color: #2d3c50;
-  color: #409eff;
 }
 
 ::-webkit-scrollbar {

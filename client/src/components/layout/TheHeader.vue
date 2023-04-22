@@ -94,7 +94,7 @@ export default {
     padding: 14px 20px;
 } 
 
-::v-deep .ant-dropdown-menu-title-content {
+:deep .ant-dropdown-menu-title-content {
     display: flex;
     align-items: center;
 }

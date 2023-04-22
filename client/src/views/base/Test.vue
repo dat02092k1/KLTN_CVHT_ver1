@@ -1,55 +1,73 @@
 <template>
   <div>
-    <button @click="openNoti(showNoti)">Open the notification box</button>
+    <div
+      v-for="(navItem, index) in navigationWithConditions"
+      :key="index"
+      :class="['h-12 hover:bg-[#2d3c50]', {'bg-red-500': navItem.active}]"
+      @click="navItemClick(navItem, index)"
+    >
+      <a href="">
+        <li>
+          <router-link :to="navItem.to" class="px-5">
+            <i :class="navItem.iconClass"></i>
+            <span>{{ navItem.title }}</span>
+          </router-link>
+        </li>
+      </a>
+    </div>
   </div>
 </template>
 
 <script>
-import { SmileOutlined } from '@ant-design/icons-vue';
-import { notification } from 'ant-design-vue';
-import { defineComponent, h, ref, watch } from 'vue';
-import axios from 'axios';
+import { getRole } from '../../utils/getInfoUser.js'
 
-export default defineComponent({
-  setup() {
-    const showNoti = ref(false);
-
-    const openNoti = (event) => {
-      showNoti.value = !showNoti.value;
-      console.log(showNoti.value);
-
-      notification.open({
-        message: 'Notification Title: ' + event,
-        description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-        icon: () => h(SmileOutlined, {
-          style: 'color: #108ee9',
-        }),
-      });
-    };
-
-    // Watch for changes in showNoti and display the notification if it becomes true
-    watch(showNoti, (newValue, oldValue) => {
-      if (newValue === true) {
-        openNoti();
-      }
-    });
-
-    // Call an API and set showNoti to true when the API returns a response
-    const callAPI = async () => {
-      // Call some API here
-      const response = await axios.get('https://example.com/api');
-      
-      // Set showNoti to true if the API call was successful
-      if (response.status === 200) {
-        showNoti.value = true;
-      }
-    };
-
+export default {
+  data() {
     return {
-      showNoti,
-      openNoti,
-      callAPI
+      navigation: [
+        {
+          title: "Trang chủ",
+          to: "/",
+          iconClass: "fa-solid fa-house mr-4",
+          clicked: false
+        },
+        {
+          title: "Danh sách sinh viên",
+          to: "/student/list",
+          iconClass: "fa-solid fa-list mr-4",
+          clicked: false
+        },
+        // ... other navigation items
+      ],
+      userRole: null
     };
   },
-});
+  computed: {
+    navigationWithConditions() {
+      return this.navigation.filter((navItem) => {
+        if (navItem.to === '/') {
+          return true; // Always show "Trang chủ" link
+        } else if (navItem.to.includes('/student/')) {
+          return this.userRole !== "manager";
+        } else if (navItem.to.includes('/consultant/')) {
+          return this.userRole === 'manager';
+        }
+      });
+    }
+  },
+  methods: {
+    navItemClick(index) {
+      this.navigationWithConditions.forEach((navItem) => {
+    navItem.active = false; // Set all items to inactive
+  });
+  this.navigationWithConditions[index].active = true; // Set click
+}
+  }
+}
 </script>
+
+<style>
+.clicked {
+  background-color: red;
+}
+</style>

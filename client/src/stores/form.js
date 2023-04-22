@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { axiosIns } from "../api/axios.js";
 import API_ENDPOINTS from "../api/api.js";
 import { getAccessToken } from "../utils/config.js";
-import { getId, getClass } from "../utils/getInfoUser.js";
+import { getId, getClass, getRole } from "../utils/getInfoUser.js";
 
 export const useFormStore = defineStore({
   id: "form",
@@ -14,6 +14,7 @@ export const useFormStore = defineStore({
     successMsg: false,
     errorMsg: false,
     loading: false,
+    userRole: getRole(),    
   }),
   getters: {},
   actions: {
@@ -51,14 +52,16 @@ export const useFormStore = defineStore({
         const config = getAccessToken();
 
         const res = await axiosIns.delete(
-          API_ENDPOINTS.deleteForm + id,
+          API_ENDPOINTS.deleteForm + id + `?userId=${this.userId}`,
           config
         );
 
         console.log(res);
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
-        this.getListForm(type);
+        if (this.userRole === 'consultant') {
+          this.getListForm(type); 
+        }
       } catch (error) {
         console.log(error);
         this.errorMsg = true;

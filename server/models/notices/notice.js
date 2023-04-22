@@ -6,7 +6,7 @@ const noticeSchema = new Schema(
     {
         userId: {
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'students'
+            ref: 'users'
         },
         subject: {
             type: String,

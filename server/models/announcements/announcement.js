@@ -6,7 +6,7 @@ const announcementSchema = new Schema(
     {
         userId: {
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'students'
+            ref: 'users'
         },
         title: {
             type: String,

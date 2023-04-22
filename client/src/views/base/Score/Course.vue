@@ -12,19 +12,21 @@
             <tr>
               <th>STT</th>
               <th>Môn học</th>
+              <th>Mã môn học</th>
               <th>Số tín</th>
               <th>Điểm số</th>
               <th>Điểm chữ</th>
             </tr>
 
             <tr class="bg-[#fff]">
-              <th class="semester" colspan="5">{{ course.semester }}</th>
+              <th class="semester" colspan="5">{{ course.semester }}  Mã kỳ học: {{ course.semesterCode }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in course.subjects" :key="index">
               <td>{{ index + 1 }}</td>
               <td>{{ item.name }}</td>
+              <td>{{ item.code }}</td>
               <td>{{ item.credits }}</td>
               <td>{{ item.score }}</td>
               <td>{{ item.grade }}</td>
@@ -44,7 +46,7 @@
       </div>
     <div class="flex gap-1">
       <div>Tổng số tín chỉ tích lũy: </div>
-    <span>{{ studentCpa.total_creadits }}</span>
+    <span>{{ studentCpa.total_credits }}</span>
     </div>
     </div>
   </div>
@@ -61,7 +63,7 @@
       <thead>
         <tr>
           <th>STT</th>
-          <th >MSSV</th>
+          <th>MSSV</th>
           <th>Sinh viên</th>
           <th>Điểm</th>
           <th>Hành động</th>
@@ -70,7 +72,7 @@
       <tbody>
         <tr v-for="(student, index) in students" :key="student.id">
           <td>{{ index + 1 }}</td>
-          <td>{{ student.studentId }}</td>
+          <td>{{ student.userId }}</td>
           <td>{{ student.name }}</td>
           <td class="text-center">{{ roundToTwoDecimalPlaces(student.CPA) }}</td>
           <td  class="flex items-center justify-center px-1">
@@ -83,15 +85,6 @@
               </router-link>
                
             </div>
-            <div>
-              <router-link :to="{ path: '/student/course/add/' + student._id }" >
-                <button class="flex items-center bg-[#ff733f] text-[#ffffff] rounded py-1 px-2">
-                  <i class="fa-regular fa-square-plus"></i>    
-                </button>
-              </router-link>
-               
-            </div>
-             
           </td>
         </tr>
       </tbody>

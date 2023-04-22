@@ -2,11 +2,11 @@
   <div>
     <NavTitle :title="pageTitle" class="mb-1"/>
     <div class="max-w-[80%]">
-      <router-link class="mx-6 my-1"  :to="{ path: '/student/forum/posts'}" >
+      <router-link class="mx-6 my-1"  :to="{ path: getPath()}" >
       <button class="bg-[#ef1419] rounded text-[#ffffff] p-2">Quay lại</button>
               </router-link>
       <div class="post flex mt-3" v-if="useForum.post">
-        <div class="forum-item w-[80%] rounded-md mx-auto">
+        <div class="forum-item max-w-[80%] rounded-md mx-auto">
           <div>
             <h2 class="font-bold text-2xl text-center">
               {{ useForum.post.title }}
@@ -33,7 +33,7 @@
           </div>
           <div>
             <div class="font-medium text-base">Nội dung:</div>
-            <div>
+            <div class="break-all">
               {{ useForum.post.content }}
             </div>
           </div>
@@ -56,7 +56,7 @@
                 <div class="font-medium text-base">
                 {{ item.username }}
               </div>
-              <div>
+              <div class="break-all">
                 {{ item.content }}
               </div>
 
@@ -87,7 +87,7 @@
                 class="p-3 w-[60%] hover:border-[#85bde5] cursor-pointer"
                 v-model="this.content"
                 id="content"
-
+                required
               ></textarea>
 
               <button
@@ -135,9 +135,12 @@ export default {
   mounted() {
     this.useForum.getPostAndComment(this.id);
   },
-  methods: {
-    
+  methods: { 
     postComment(id, content) {
+      if (this.content === "") {
+        alert("Chưa điền nội dung bình luận");
+        return;
+      }
       this.useForum.addComment(id, content);
       this.content = "";
     },
@@ -150,7 +153,14 @@ export default {
     formattedDate(date) {
       const dating = new Date(date);
       return format(dating, 'dd/MM/yyyy');
-
+    },
+    getPath() {
+      if (this.userRole === 'consultant') {
+        return '/consultant/forum/posts';
+      }
+      else {
+        return '/student/forum/posts';
+      }
     }
   },
   components: { NavTitle, EditComment },

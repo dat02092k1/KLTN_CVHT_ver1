@@ -1,4 +1,4 @@
-var userModel = require('../../models/students/studentsModel');
+var userModel = require('../../models/students/userModel');
 const email = require('../../utils/email.js');
 const { ClientError } = require("../error/error.js");
 const jwt = require('jsonwebtoken');

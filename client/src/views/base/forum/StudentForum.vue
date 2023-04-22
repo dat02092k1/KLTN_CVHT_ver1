@@ -28,7 +28,7 @@
               >
                 <a-form-item
                   name="title"
-                  label="Title"
+                  label="Tiêu đề"
                   :rules="[
                     {
                       required: true,
@@ -41,7 +41,7 @@
   
                 <a-form-item
                   name="content"
-                  label="Content"
+                  label="Nội dung"
                   :rules="[
                     {
                       required: true,

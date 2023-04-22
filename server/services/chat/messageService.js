@@ -49,6 +49,7 @@ var loadMessageService = async (req) => {
     const page = req.query.page;
     const pageSize = req.query.pageSize || 10;
     const skip = (page - 1) * pageSize;
+    
     console.log(page); 
     console.log(pageSize);   
     console.log(skip); 
@@ -57,9 +58,6 @@ var loadMessageService = async (req) => {
                                    .sort({ createdAt: -1 })
                                    .skip(skip)
                                    .limit(pageSize);
-
-    
-    
 
     if (!messages) throw new ClientError('No messages found', 404);
 

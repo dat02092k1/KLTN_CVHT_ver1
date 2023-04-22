@@ -9,13 +9,13 @@ const router = express.Router();
 // Students 
 router.get('/student/getAll/:class', userAuthenticate.isAdminAuthentication, studentController.getDataStudentControllerfn);
 // get all students
-router.post('/student/create', userAuthenticate.roleAuthentication, studentController.createStudentControllerfn);
+router.post('/student/create', userAuthenticate.isManagerAuth, studentController.createStudentControllerfn);
 // create student
-router.patch('/student/update/:id', userAuthenticate.isManagerAuth, studentController.updateStudentControllerfn);
+router.patch('/student/update/:id', userAuthenticate.roleAuthentication, studentController.updateStudentControllerfn);
 // edit student
-router.get('/student/details/:id', userAuthenticate.verifyToken, studentController.getDetailStudentfn);
+router.get('/student/details/:id', userAuthenticate.studentIdAuthentication, studentController.getDetailStudentfn);
 // details of student
-router.delete('/student/remove/:id', userAuthenticate.verifyToken, userAuthenticate.roleAuthentication ,studentController.deleteStudentControllerfn);
+router.delete('/student/remove/:id', userAuthenticate.isManagerAuth ,studentController.deleteStudentControllerfn);
 // delete student
 router.get('/student/names/:class', userAuthenticate.verifyToken, studentController.getNameStudentController);
 // get students by class

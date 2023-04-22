@@ -391,7 +391,7 @@ export default defineComponent({
 
     onMounted(async () => {
       const response = await useStudent.getStudentDetails(studentId);
-      formState.studentId = response.studentId;
+      formState.studentId = response.userId;
       formState.password = response.password;
       formState.name = response.name;
       formState.gender = response.gender;

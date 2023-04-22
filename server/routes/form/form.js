@@ -9,7 +9,7 @@ router.post('/form/add', userAuthenticate.verifyToken, formController.createForm
 // get list of forms submit by type
 router.get('/form/get/:class', userAuthenticate.isAdminAuthentication, formController.getFormsController);
 // delete form 
-router.delete('/form/delete/:id', userAuthenticate.verifyToken, formController.deleteFormController);
+router.delete('/form/delete/:id', userAuthenticate.onlyOwner, formController.deleteFormController);
 // edit form status
 router.put('/form/update/:id', userAuthenticate.verifyToken, formController.updateFormController);
 // get details form

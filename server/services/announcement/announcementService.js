@@ -1,5 +1,5 @@
 const announcementModel = require("../../models/announcements/announcement.js");
-const userModel = require("../../models/students/studentsModel.js");
+const userModel = require("../../models/students/userModel.js");
 
 const logger = require("../../logger/logger.js");
 const mongoose = require("mongoose");

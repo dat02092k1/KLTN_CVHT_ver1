@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 
 const schema = Joi.object().keys({
-    studentId: Joi.required(),
+    userId: Joi.required(),
     name: Joi.string().required(),
     password: Joi.string().min(6).max(20).required(),
     emailAddress: Joi.string().email().required(),

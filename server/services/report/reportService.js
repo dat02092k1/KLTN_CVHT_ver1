@@ -1,5 +1,5 @@
 const reportModel = require("../../models/reports/report.js");
-const userModel = require("../../models/students/studentsModel.js");
+const userModel = require("../../models/students/userModel.js");
 
 const { cloudinary } = require("../../uploads/cloudinary.js");
 const { ClientError } = require("../error/error.js");
@@ -16,7 +16,7 @@ var createReportService = async (req) => {
 
     const report = new reportModel({ 
         userId: userId, 
-        username: user.studentId, 
+        username: user.userId, 
         title, 
         content });
 
