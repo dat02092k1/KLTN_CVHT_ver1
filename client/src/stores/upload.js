@@ -60,6 +60,7 @@ export const useUploadStore = defineStore({
       } catch (error) {
           console.log(error);        
           this.loading = false; 
+          alert('Lỗi: ' + error.response.data.message);
       }
     },
     async uploadMultiDocs(data) {

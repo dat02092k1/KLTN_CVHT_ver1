@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="">
     <NavTitle :title="pageTitle" class="mb-1"/>
-    <div class="max-w-[80%]">
+    <div class="max-w-[80%] overflow-y-auto">
       <router-link class="mx-6 my-1"  :to="{ path: getPath()}" >
       <button class="bg-[#ef1419] rounded text-[#ffffff] p-2">Quay lại</button>
               </router-link>
@@ -241,5 +241,10 @@ export default {
   border: 1px solid #85bde5;
   padding: 5px 20px;
   border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 </style>

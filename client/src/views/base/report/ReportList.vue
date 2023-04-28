@@ -3,7 +3,7 @@
     <nav-title :title="pageTitle" class="p-4"/>
 
 
-    <div class="mx-auto w-[70%] h-[400px]">
+    <div class="mx-auto w-[70%] h-[400px] overflow-y-auto">
     <a-list item-layout="horizontal" size="small" :pagination="pagination" :data-source="listData">
       
       <template #renderItem="{ item }">

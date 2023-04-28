@@ -143,7 +143,7 @@ return normalizedWords.join(" ");
       const doc = new jsPDF();
 
       // Add table headers
-      const headers = [["STT", "MSSV", "Name", "CPA", "Class", "Status"]];
+      const headers = [["STT", "MSSV", "Ten", "CPA", "Lop", "Trang thai"]];
 
       // Add table data
       const data = students.value.map((item, index) => [

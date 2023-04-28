@@ -1,7 +1,8 @@
 <template>
+  <div>
+    <NavTitle :title="pageTitle" />
   <div class="mb-4 px-2 flex justify-center items-center">
-    <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> -->
-
+    <!-- <label class="block mb-2 text-sm" for="pretext-input">Học kỳ</label> --> 
     <form @submit.prevent="submitForm" class="add--course m-6 bg-[#fff] p-4">
       <div class="task-title text-center">
         <h2>Update Task</h2>
@@ -41,12 +42,13 @@
       </div>
 
       <div class="flex my-2 justify-center">
-        <button class="flex bg-[#645bf5] text-[#ffffff] rounded p-3" type="submit">Lưu</button>
+        <button class="flex bg-[#007aff] text-[#ffffff] rounded p-3" type="submit">Lưu</button>
       </div>
     </form>
 
     <a-alert v-show="useTask.successMsg === true" message="Cập nhật thành công" type="success" show-icon />
     <a-alert v-show="useTask.errorMsg === true" message="Cập nhật thất bại" type="error" show-icon />
+  </div>
   </div>
 </template>
 
@@ -54,6 +56,7 @@
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import { useTaskStore } from "../../../stores/task.js";
 import { getUsername, getId } from "../../../utils/getInfoUser.js";
+import NavTitle from "../NavBar/NavTitle.vue";
 
 export default {
   data() {
@@ -67,7 +70,7 @@ export default {
       studentId: getId(),
       username: getUsername(),
       status: null,
-
+      pageTitle: "Cập nhật trạng thái hoàn thành"
     };
   },
   async mounted() {
@@ -96,6 +99,8 @@ export default {
       console.log(isCompleted);
     },
   },
+  components: 
+  { NavTitle }
 };
 </script>
 

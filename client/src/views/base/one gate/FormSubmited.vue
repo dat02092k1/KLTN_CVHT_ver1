@@ -59,8 +59,8 @@
 
     <a-modal
             v-model:visible="visible"
-            title="Thêm bài đăng mới"
-            ok-text="Create"
+            title="Sửa biểu mẫu"
+            ok-text="Lưu"
             cancel-text="Cancel"
             @ok="onOk"
           >

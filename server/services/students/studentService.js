@@ -187,16 +187,20 @@ var uploadStudentsService = async (req) => {
     userModel.find({ userId: { $in: data.map(item => item.userId) } }, { userId: 1 }),
     userModel.find({ emailAddress: { $in: data.map(item => item.emailAddress) } }, { emailAddress: 1 })
   ]);
-   
+  console.log('users: ' + existingUsers);
+   console.log('[0] ' + existingUsers[0]);
+   console.log('[1] ' + existingUsers[1]);
   const duplicateEmails = data.filter(item => existingUsers[1].some(user => user.emailAddress === item.emailAddress));
-  const duplicateUserIds = data.filter(item => existingUsers[0].some(user => user.userId === item.userId));
+  const duplicateUserIds = data.filter(item => existingUsers[0].some(user => {
+    user.userId === item.userId.toString()
+  }));
 
   if (duplicateEmails.length > 0 || duplicateUserIds.length > 0) {
     const errors = {
       duplicateEmails,
       duplicateUserIds
     };
-
+    console.log(errors);
     throw new ClientError(`duplicate ${errors}`, 404); 
 }
 
@@ -220,7 +224,6 @@ var uploadStudentsService = async (req) => {
       };  
 
       const _class = row.class.split(',');
-      console.log(_class);
 
       if (row.role === 'student') {
         const student = new userModel({
@@ -229,7 +232,7 @@ var uploadStudentsService = async (req) => {
         });
 
         students.push(student);
-        console.log(students);
+         
       }
       else if (row.role === 'consultant') {
         const consultant = new userModel({

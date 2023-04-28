@@ -5,7 +5,7 @@
 
       <div class="flex my-3 rounded justify-end mx-6">
         <a-button type="primary" @click="showModal">Thêm báo cáo</a-button>
-        <a-modal v-model:visible="visible" title="Basic Modal" @ok="handleOk">
+        <a-modal v-model:visible="visible" title="Thêm báo cáo" @ok="handleOk">
           <a-form
             ref="formRef"
             :model="formState"

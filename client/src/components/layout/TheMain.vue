@@ -52,10 +52,12 @@
                 <th>STT</th>
                 <th>MSSV</th>
                 <th>Họ tên</th>
+                <th>Email</th>
                 <th>Số điện thoại</th>
                 <th>Ngày sinh</th>
 
                 <th>Trạng thái</th>
+                <th class="p-7"></th>
               </tr>
               <tr class="filter-course">
                 <th></th>
@@ -83,6 +85,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
 
@@ -95,13 +98,14 @@
                 <td class="text-center">{{ index + 1 }}</td>
                 <td>{{ item.userId }}</td>
                 <td>{{ item.name }}</td>
+                <td>{{ item.emailAddress }}</td>
                 <td>{{ item.phone }}</td>
                 <td>
                   {{ formatIsoDate(item.birthdate) }}
                 </td>
 
                 <td>{{ item.status }}</td>
-                <td class="flex flex-col md:grid grid-rows-2">
+                <td class="">
                   <!-- <div>
                     <RouterLink :to="{ path: '/student/details/' + item._id }">
                       <button>
@@ -116,18 +120,12 @@
                       ></i>
                     </button>
                   </div> -->
-                  <div>
                     <RouterLink :to="{ path: '/student/edit/' + item._id }">
-                      <button>
-                        <i class="fa-solid fa-pen-to-square text-[#ffc107]"></i>
+                      <button class="text-[#74c0fc] p-5">
+                        <i class="fa-solid fa-eye"></i>
                       </button>
                     </RouterLink>
-                  </div>
-                  <div>
-                    <a-button @click="showConfirm(item._id)">
-                      <i class="fa-solid fa-delete-left text-red-500"></i>
-                    </a-button>
-                  </div>
+                  
                 </td>
               </tr>
             </tbody>

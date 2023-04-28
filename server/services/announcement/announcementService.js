@@ -34,7 +34,7 @@ var createAnnouncementService = async (req) => {
  
 var getAnnouncementService = async () => {
     try {
-      const announcement = await announcementModel.find();
+      const announcement = await announcementModel.find().sort({ updatedAt: -1});
       
       if (!announcement) throw new ClientError('announcement not found', 404);
   

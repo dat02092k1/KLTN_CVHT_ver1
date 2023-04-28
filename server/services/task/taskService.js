@@ -53,15 +53,6 @@ var editTaskService = async (taskDetails, taskId) => {
   try {
     const { assignedStudents } = taskDetails;
     console.log(assignedStudents);
-
-     // Check for duplicate items in the assignedStudents array
-     const studentIds = new Set();
-     for (const item of assignedStudents) {
-       if (studentIds.has(item.student)) {
-         throw new ClientError("Duplicate student id " + item.student, 400);
-       }
-       studentIds.add(item.student);
-     }
  
     for (const item of assignedStudents) {
       const studentAssign = await userModel.findById(item.student);

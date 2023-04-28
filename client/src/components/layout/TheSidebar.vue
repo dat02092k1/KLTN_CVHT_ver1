@@ -127,7 +127,7 @@
           <a href="">
             <li>
               <router-link :to="getRole === 'student' ? '/student/onegate' : '/consultant/onegate'" class="px-5">
-                <i class="fa-solid fa-file-waveform mr-4"></i>  
+                <i class="fa-solid fa-file-waveform mr-5"></i>  
                 <span>Biểu mẫu</span>
               </router-link>
             </li>

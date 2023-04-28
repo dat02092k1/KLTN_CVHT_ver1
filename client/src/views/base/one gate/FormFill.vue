@@ -22,7 +22,7 @@
 
           <a-modal
             v-model:visible="visible"
-            title="Thêm bài đăng mới"
+            title="Thêm biểu mẫu mới"
             ok-text="Create"
             cancel-text="Cancel"
             @ok="onOk"

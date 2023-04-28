@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center gap-1">
-    <h2>Thông báo</h2>
+    <h2 class="text-lg">Thông báo</h2>
     <div>
       <div
         class="notification-icon"
@@ -8,7 +8,7 @@
         :class="{ active: displayNotifications }"
       >
         <i class="fa-solid fa-bell"></i>
-        <span v-if="notificationCount" class="badge">{{
+        <span v-if="notificationCount" class="badge bg-red-600">{{
           notificationCount
         }}</span>
       </div>
@@ -102,7 +102,6 @@ export default {
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  background-color: #007bff;
   border-radius: 10px;
 }
 </style>

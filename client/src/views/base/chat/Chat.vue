@@ -26,14 +26,19 @@
         </div>
 
         <div v-if="selectedOption === 1">
-          <div class="text-center"><h2 class="text-[#fff] text-xs">Trò chuyện gần đây</h2></div>
+          <div class="text-center">
+            <h2 class="text-[#fff] text-xs">Trò chuyện gần đây</h2>
+          </div>
 
           <ul v-for="(user, index) in useChat.conversation" :key="index">
             <li
               @click="getMessage(user._id, user.members)"
-              class="my-3 text-center p-1 cursor-pointer hover:bg-[#5b6ed8]"
+              class="my-3 text-center p-1 cursor-pointer hover:bg-[#007aff]"
             >
-              {{ this.userNames[filterDuplicate(user.members, getUsername)] }} ({{ filterDuplicate(user.members, getUsername)}} )
+              {{
+                this.userNames[filterDuplicate(user.members, getUsername)]
+              }}
+              ({{ filterDuplicate(user.members, getUsername) }} )
             </li>
           </ul>
         </div>
@@ -50,7 +55,11 @@
           </div>
         </div>
       </div>
-      <div ref="scrollArea" class="message-area col-span-8 rounded" @scroll="onScroll">
+      <div
+        ref="scrollArea"
+        class="message-area col-span-8 rounded"
+        @scroll="onScroll"
+      >
         <div class="text-center">
           <h2>{{ this.receiver }}</h2>
         </div>
@@ -65,9 +74,18 @@
               'receiver-message': message.sender !== getUsername,
             }"
           >
-            <div class="break-all max-w-[150px]">{{ message.content }}</div>
+            <div class="break-all max-w-[150px] relative">
+              <span
+                @mouseover="hoveredMessage = message"
+                @mouseout="hoveredMessage = null"
+              >
+                {{ message.content }}
+              </span>
+              <span class="date" v-show="message === hoveredMessage">
+                {{ formatDate(message.createdAt) }}
+              </span>
+            </div>
           </div>
-          
         </div>
         <div class="flex gap-1 mx-2">
           <textarea
@@ -81,16 +99,21 @@
             class="rounded p-1 w-full"
             required
           ></textarea>
-          <button @click="sendMessage"> <i class="fa-regular fa-paper-plane"></i> </button>
+          <button @click="sendMessage">
+            <i class="fa-regular fa-paper-plane"></i>
+          </button>
         </div>
       </div>
     </div>
-    <a-alert v-show="this.msgNoti === 'true'" message="Có tin nhắn mới" type="info" show-icon />
+    <a-alert
+      v-show="this.msgNoti === 'true'"
+      message="Có tin nhắn mới"
+      type="info"
+      show-icon
+    />
 
-    <Spinner v-show="this.isLoading"/>
+    <Spinner v-show="this.isLoading" />
   </div>
-  
-  
 </template>
 
 <script>
@@ -119,13 +142,15 @@ export default {
       users: [],
       currentPage: null,
       pageSize: 10,
-      isLoading: true,  
+      isLoading: true,
       msgNoti: false,
       currentUser: getUsername(),
       names: undefined,
       useStudent: useStudentStore(),
       userNames: {},
       isConnected: false,
+      showDate: false,
+      hoveredMessage: null
     };
   },
   async mounted() {
@@ -138,12 +163,12 @@ export default {
     this.isLoading = false;
 
     this.getConversations(this.getUsername);
-     
+
     getUsersOnl();
     console.log(this.members);
     // getMessages(() => this.members, this.getUsername, () => this.useChat.messages, data => this.popupMsg(data));
 
-    offlineUser((data) => console.log(data)); 
+    offlineUser((data) => console.log(data));
   },
   beforeUnmount() {
     this.isConnected = false;
@@ -214,7 +239,7 @@ export default {
     async handleConversation(receiver) {
       try {
         const conversation = await this.useChat.handleConversation(this.getUsername, receiver);
-         
+
         const conversationId = conversation._id;
         const conversationMembers = conversation.members;
 
@@ -239,7 +264,7 @@ export default {
         console.log(error);
       }
     },
-    onScroll() {       
+    onScroll() {
       const scrollArea = this.$refs.scrollArea;
         const isTop = scrollArea.scrollTop === 0;
       if (isTop && !this.isLoading) {
@@ -278,13 +303,13 @@ export default {
       const response = await axios.get(`http://localhost:8000/student/get-details/${username}`);
 
       const user = response.data.students;
-      
+
       this.userNames[user.userId] = user.name;
     } catch (error) {
       console.error(error);
     }
   }
-    
+
     },
     popupMsg(data) {
       notification.open({
@@ -294,7 +319,17 @@ export default {
           style: 'color: #108ee9',
         }),
       });
-    }
+    },
+    formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear().toString();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
   },
   components: {
     Spinner
@@ -336,6 +371,18 @@ export default {
   margin: 10px;
   max-width: 60%;
   align-self: flex-start;
+}
 
+.date {
+  font-size: 12px;
+  background-color: #4b4343;
+  color: #fff;
+  padding: 4px 8px;
+  position: absolute;
+  bottom: -50px;
+  width: 80px;
+  left: 0;
+  z-index: 1;
+  border-radius: 4px;
 }
 </style>

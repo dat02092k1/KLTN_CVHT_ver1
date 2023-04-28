@@ -172,7 +172,7 @@
           </div>
         </div>
 
-        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+        <a-form-item :wrapper-col="{ span: 14, offset: 4 }" v-show="userRole === 'manager'">
           <router-link class="" :to="{ path: '/manager'}" >
       <button class="bg-[#ef1419]  text-[#ffffff] mx-2 my-2 p-1">Quay lại</button>
               </router-link>
@@ -197,6 +197,7 @@ import {
   computed,
 } from "vue";
 import { useStudentStore } from "../../stores/student.js";
+import { getRole } from "../../utils/getInfoUser.js";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import { format, parseISO } from "date-fns";
 import dayjs from "dayjs";
@@ -220,7 +221,10 @@ export default defineComponent({
       _class: "",
       class: "", 
       address: "",
-    });
+    }); 
+
+    const userRole = getRole();
+    
     const rules = {
       studentId: [
         {
@@ -427,6 +431,7 @@ export default defineComponent({
       dynamicValidateForm,
       removeDomain,
       addDomain,
+      userRole
     };
   },
   components: { NavTitle, ChartCredits, MinusCircleOutlined, PlusOutlined },

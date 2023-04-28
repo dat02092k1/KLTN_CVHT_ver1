@@ -83,7 +83,7 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresManager: true },
     },
     {
-      path: "/student/import-courses/:id",
+      path: "/student/import-courses",
       name: "courses import",
       component: ImportCourses,
       meta: { requiresAuth: true, requiresManager: true },
