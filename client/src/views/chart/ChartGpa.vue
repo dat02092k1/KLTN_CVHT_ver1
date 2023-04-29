@@ -114,7 +114,7 @@
           datasets: [
           {
             label: `Thống kê điểm của sinh viên lớp ${this.selectedClass}`,
-            backgroundColor: '#f87979',
+            backgroundColor: '#1890ff',
             data: cpa
           }
           ]

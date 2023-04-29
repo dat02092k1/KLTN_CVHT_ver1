@@ -49,50 +49,13 @@ var loginService = async (req, res, next) => {
          
         const refreshToken = createRefreshToken(user);
         refreshTokens.push(refreshToken);
-         
+        console.log(refreshTokens);
 
         return res.status(200).json({ acessToken, refreshToken, user });   
         
     } catch (error) {
         return res.status(400).json({ msg: 'user not found' }); 
     }
-}
-
-var refreshTokenService = async (req, res) => {
-    const refreshToken = req.cookies.refreshToken;
-    console.log(refreshToken);
-    if (!refreshToken) return res.status(401).json("You're not authenticated");
-    
-    if (!refreshTokens.includes(refreshToken)) {
-        return res.status(403).json("Refresh token is not valid");
-      }
-
-    jwt.verify(refreshToken, process.env.JWT_REFRESH, (err, user) => {
-        if (err) {
-            console.log(err);
-        }
-
-        refreshTokens = refreshTokens.filter(token => token !== refreshToken);
-
-         
-        // create new accessToken, refreshToken and response to user
-        const newAccessToken = createAccessToken(user);
-        const newRefreshToken = createRefreshToken(user);
-
-        refreshTokens.push(newRefreshToken);
-
-        res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            path: '/',
-            samesite: "strict"
-        });
-
-        res.status(200).json({
-            accessToken: newAccessToken,
-            refreshToken: newRefreshToken
-        });  
-    })
-
 }
 
 var logoutService = async (req, res) => {
@@ -110,7 +73,7 @@ var refreshService = async (req, res) => {
         console.log('refresh flag'); 
     console.log(refreshToken);
     if (!refreshToken) return res.status(401).json("You're not authenticated");
-    
+    console.log(refreshTokens);
     if (!refreshTokens.includes(refreshToken)) {
         return res.status(403).json("Refresh token is not valid");
       }
@@ -140,6 +103,6 @@ var refreshService = async (req, res) => {
 }
 module.exports = {
     loginService, createAccessToken,
-    createRefreshToken, refreshTokenService, 
+    createRefreshToken, 
     logoutService, refreshService
 }
