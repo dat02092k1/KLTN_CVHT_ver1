@@ -116,7 +116,7 @@ export const useStudentStore = defineStore({
           config
         );
         this.studentDetails = response.data.details;
-        console.log(response.data.details._class);
+        
         return response.data.details;
          
       } catch (error) {
@@ -140,7 +140,7 @@ export const useStudentStore = defineStore({
         console.log(response);
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
-        this.getData();
+         
         return response;
       } catch (error) {
         console.log(error);

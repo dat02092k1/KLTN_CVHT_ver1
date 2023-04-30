@@ -6,7 +6,7 @@ import TheMain from './components/layout/TheMain.vue'
 import StudentDetails from './views/student/StudentDetails.vue'
 import { onBeforeUnmount, onMounted, onUpdated, onUnmounted } from 'vue'
 import axios from "axios";
-import { receiveNoti, getUsersOnl, joinRoom, addUser, getMessages } from "./socket/socket-client.js";
+import { receiveNoti, getUsersOnl, joinRoom, addUser, receiveMessage, removeListener } from "./socket/socket-client.js";
 import { getClass, getUsername } from "./utils/getInfoUser.js";
 import { notification } from 'ant-design-vue';
 import { h } from 'vue';
@@ -23,11 +23,12 @@ onMounted(() => {
     addUser(username);
   // receiveNoti(noti => alert('post new: ' + noti));
   receiveNoti(noti => openNotification(noti));
-  getMessages(() => members, username, () => msg, data => popupMsg(data));
+  receiveMessage(data => popupMsg(data.username));
   // getUsersOnl() 
     });
 
-    const openNotification = (data) => {
+
+const openNotification = (data) => {
       notification.open({
         message: 'Thông báo mới',
         description: data,
@@ -37,7 +38,7 @@ onMounted(() => {
       });
     };
 
-    function popupMsg(data) {
+function popupMsg(data) {
       notification.open({
         message: 'Tin nhắn mới',
         description: data,

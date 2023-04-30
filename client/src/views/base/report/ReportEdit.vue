@@ -60,6 +60,7 @@
   import { useUploadStore } from "../../../stores/upload.js";
   import { getId } from "../../../utils/getInfoUser.js";
   import Loading from "../Spinner/Loading.vue";
+  import { message } from "ant-design-vue";
 
   export default { 
     data() {
@@ -80,7 +81,7 @@
         this.report = await this.useReport.getDetailsReport(this.id);
     },
     methods: {
-        submit() {
+        async submit() {
             if (this.$refs.fileInput.files.length === 0 && this.report.fileUrl.length === 0) {
             alert("Please select at least one file to upload.");
             return;
@@ -88,7 +89,25 @@
 
           const reportId = this.id;
 
-          this.useReport.editReport(this.report, reportId);
+          const res = await this.useReport.editReport(this.report, reportId);
+          console.log(res);
+
+          if (res.status === 200) {
+          setTimeout(() => {
+          message.success({
+          content: 'Cập nhật thành công!',
+          duration: 2,
+          });
+          }, 1000);
+          }
+          else {
+            setTimeout(() => {
+          message.error({
+          content: 'Cập nhật thất bại!',
+          duration: 2,
+          });
+          }, 1000);
+          }
         },
         deleteFile(index) {
             this.report.fileUrl.splice(index, 1);

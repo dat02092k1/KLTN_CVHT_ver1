@@ -95,7 +95,7 @@ var updateStudentService = async (id, studentDetail, role) => {
      console.log('class flag')
     const student = await userModel.findByIdAndUpdate(
       objectId,
-      { ...studentDetail, _class: formattedClass },
+      { ...studentDetail, userId: studentId, _class: formattedClass },
       // { new: true }
     );
        

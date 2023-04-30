@@ -40,10 +40,10 @@ const getConversationService = async (req, res) => {
         const messages = await messageModel.find({ conversationId: conversation._id })
           .sort({ createdAt: 'desc' })
           .exec();
-
+         
         // Get the message with the closest createdAt time to the current time
         const latestMessage = messages.find(message => message.createdAt <= new Date());
-
+         
           // Return the conversation with the latest message as a new object
           return {
             ...conversation.toObject(),
@@ -51,7 +51,7 @@ const getConversationService = async (req, res) => {
           };
       })
     )
-
+    console.log(conversationsWithLatestMessages);
     // Sort conversations by latestMessageCreatedAt in descending order
     const sortedConversations = conversationsWithLatestMessages.sort((a, b) => b.latestMessageCreatedAt - a.latestMessageCreatedAt);
 

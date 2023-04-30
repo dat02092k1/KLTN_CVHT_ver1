@@ -9,8 +9,13 @@ var addCourseService = async (req, res) => {
   try {
     const { semester, semesterCode, studentId, subjects } = req.body;
     console.log(subjects); 
+
     const student = await userModel.findById(studentId);
     if (!student) throw new ClientError(`Student not found`, 404);
+
+    const getCourse = await courseModel.findOne({ semesterCode, student: studentId }); 
+
+    if (getCourse) throw new ClientError(`Course existed`, 400); 
 
     for (const subject of subjects) {
       subject.grade = grades.calculateGrade(subject.score);  
@@ -209,9 +214,9 @@ var deleteCourseService = async (courseId, studentId) => {
       
         }
     ]);
-
-    const cpaValue = result[0].CPA;
-    const totalCredits = result[0].total_credits;
+    console.log(result);
+    const cpaValue = result[0]?.CPA ?? 0;
+    const totalCredits = result[0]?.total_credits ?? 0;
     const status =
       cpaValue < 3.0
         ? "Cảnh báo học vụ"

@@ -100,8 +100,6 @@ export const useForumStore = defineStore({
           const postDetails = await axiosIns.get(`http://localhost:8000/comment/post/${id}`, config); 
           this.post = postDetails.data.commentAndPost.post;
           this.comments = postDetails.data.commentAndPost.comments;
-          console.log(this.post);
-          console.log(this.comments);
         } catch (error) {
             console.log(error); 
         }
@@ -143,15 +141,16 @@ export const useForumStore = defineStore({
         const config = getAccessToken();
 
         const edit = await axiosIns.put(`http://localhost:8000/post/comment/edit/${username}/${id}`, 
-        // {
-        //   content: comment
-        //  }
         comment
         , config);
 
+        this.successMsg = true;
+        setTimeout(() => (this.successMsg = false), 3000);
         console.log(edit);  
       } catch (error) {
         console.log(error);
+        this.errorMsg = true;
+        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
     async viewCommentById(commentId) {

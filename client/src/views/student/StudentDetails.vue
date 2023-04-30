@@ -16,31 +16,48 @@
           <div class="mx-auto">
             <a-form-item
               class="form-item block"
-              ref="studentId"
+              ref="userId"
               label="Tài khoản"
-              name="studentId"
+              name="userId"
             >
               <a-input
-                v-model:value="formState.studentId"
+                v-model:value="formState.userId"
                 placeholder="Nhập tài khoản"
-                disabled
+                :disabled="userRole !== 'manager'"
                 class="text-black"
               />
             </a-form-item>
 
-            <a-form-item
-              ref="_class"
-              label="Lớp"
-              name="_class"
-              class="form-item block"
-              v-show="userRole !== 'manager'"
-            >
-              <a-input
-                v-model:value="formState._class"
-                placeholder="Nhập lớp"
-                disabled
-              />
-            </a-form-item>
+            <a-form
+    ref="formRef"
+    name="dynamic_form_item"
+    :model="dynamicValidateForm"
+    v-bind="formItemLayoutWithOutLabel"
+    v-if="userRole !== 'manager'"
+  >
+    <a-form-item
+      v-for="(domain, index) in dynamicValidateForm.domains"
+      :key="domain.key"
+      v-bind="index === 0 ? formItemLayout : {}"
+      :label="index === 0 ? 'Lớp' : ''"
+      :name="['domains', index, 'name']"
+      :rules="{
+        required: true,
+        message: 'domain can not be null',
+        trigger: 'change',
+      }"
+    >
+      <a-input
+        v-model:value="domain.name"
+        placeholder="please input domain"
+        style="width: 60%; margin-right: 8px"
+        disabled
+      />
+       
+    </a-form-item>
+     
+    
+  </a-form>
 
             <a-form-item
               ref="emailAddress"
@@ -51,7 +68,7 @@
               <a-input
                 v-model:value="formState.emailAddress"
                 placeholder="Nhập email"
-                disabled
+                :disabled="userRole !== 'manager'"
               />
             </a-form-item>
 
@@ -74,6 +91,12 @@
                 label="Họ tên"
                 name="name"
                 class="form-item block"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'Chưa điền họ tên',
+                  },
+                ]"
               >
                 <a-input
                   v-model:value="formState.name"
@@ -152,13 +175,14 @@ import dayjs from "dayjs";
 import NavTitle from "../base/NavBar/NavTitle.vue";
 import ChartCredits from "../chart/ChartCredits.vue";
 import { getRole } from "../../utils/getInfoUser.js";
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
   setup() {
     const formRef = ref();
     const pageTitle = ref("Cập nhật thông tin Sinh viên");
     const formState = reactive({
-      studentId: "",
+      userId: "",
       name: "",
       gender: "",
       birthdate: undefined,
@@ -209,7 +233,7 @@ export default defineComponent({
       ],
     };
     const useStudent = useStudentStore();
-    const studentId = useRoute().params.id;
+    const userId = useRoute().params.id;
      
 
     const onSubmit = () => {
@@ -217,7 +241,8 @@ export default defineComponent({
         .validate()
         .then(() => {
           console.log("values", formState);
-          useStudent.updateStudent(studentId, formState);
+          formState._class = dynamicValidateForm.domains;
+          useStudent.updateStudent(userId, formState);
         })
         .catch((error) => {
           console.log("error", error);
@@ -229,17 +254,53 @@ export default defineComponent({
     // })
 
     onMounted(async () => {
-      const response = await useStudent.getStudentDetails(studentId);
-      formState.studentId = response.userId; 
+      const response = await useStudent.getStudentDetails(userId);
+      formState.userId = response.userId; 
       formState.name = response.name;
       formState.gender = response.gender;
       formState.role = response.role;
       formState.emailAddress = response.emailAddress;
       formState.phone = response.phone;
-      console.log(response._class.map(item => item.name).join(', '));
-      formState._class = response._class.map(item => item.name).join(', ');
+      const classData = response._class.map((c) => ({ name: c.name, key: c._id }));
+      dynamicValidateForm.domains.push(...classData);
+       console.log(classData);
       formState.address = response.address;
       formState.birthdate = dayjs(response.birthdate);
+    });
+
+    const formItemLayout = {
+      labelCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 4,
+        },
+      },
+      wrapperCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 20,
+        },
+      },
+    };
+    const formItemLayoutWithOutLabel = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 20,
+          offset: 4,
+        },
+      },
+    };
+
+    const dynamicValidateForm = reactive({
+      domains: [],
     });
 
     return {
@@ -255,10 +316,13 @@ export default defineComponent({
       rules,
       onSubmit,
       pageTitle,
-      userRole
+      userRole,
+      formItemLayout,
+      formItemLayoutWithOutLabel,
+      dynamicValidateForm,
     };
   },
-  components: { NavTitle, ChartCredits },
+  components: { NavTitle, ChartCredits, MinusCircleOutlined, PlusOutlined },
 });
 </script>
 

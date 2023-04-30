@@ -59,7 +59,7 @@ var forgetPassword = async (req) => {
       const subject = "Reset password request";
       
       const html = `<div>
-      your token: ${token}
+      Mã xác thực của bạn có thời hạn trong 1 giờ: ${token}
      <br>
      <a href="http://127.0.0.1:5173/reset-password/${user._id}">Nhấn vào đây để thiết lập mật khẩu mới</a>
      </div>`;

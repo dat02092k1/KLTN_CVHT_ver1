@@ -160,7 +160,7 @@ const getReportsService = async (userId) => {
   try {
     if (!userId) throw new ClientError(`User not found`, 404); 
 
-    const reports = await reportModel.find({ userId: userId}).sort({ updatedAt: -1 });
+    const reports = await reportModel.find({ userId: userId}).sort({ createdAt: -1 });
 
     if (!reports) {
       throw new ClientError("Report not found", 404);

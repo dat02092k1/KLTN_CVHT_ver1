@@ -35,8 +35,13 @@
 
             <div class="flex flex-col ">
               
-              <input type="file" @change="uploadImage">
+              <input type="file" @change="uploadImage" accept="image/*">
 
+            </div>
+
+            <div class="my-2 w-[50%]">
+              <a-alert v-show="useForum.successMsg === true" message="Cập nhật thành công" type="success" show-icon />
+          <a-alert v-show="useForum.errorMsg === true" message="Cập nhật thất bại" type="error" show-icon />
             </div>
             <Spinner v-show="useImg.loading" />
           </div>

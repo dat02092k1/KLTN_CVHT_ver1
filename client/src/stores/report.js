@@ -91,8 +91,9 @@ export const useReportStore = defineStore({
 
         const res = await axiosIns.put(API_ENDPOINTS.editReport + id, data, config);
 
-        console.log(res); 
         this.loading = false;
+
+        return res;
       } catch (error) {
         console.log(error);
         this.loading = false;

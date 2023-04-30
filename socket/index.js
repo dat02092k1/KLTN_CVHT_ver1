@@ -67,6 +67,10 @@ io.on("connection", (socket) => {
         username,
         content,
       });
+
+      io.to(user.socketId).emit("receive-message", {
+        username,
+      });
     } else {
       console.log('offline')
       socket.emit("offlineUser", "this user is offline");

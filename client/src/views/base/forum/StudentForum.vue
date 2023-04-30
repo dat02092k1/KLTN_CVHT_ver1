@@ -172,11 +172,11 @@
       const onOk = () => {
         formRef.value
           .validateFields()
-          .then((values) => {
+          .then(async (values) => {
             console.log("formState: ", toRaw(formState));
             const post = toRaw(formState);
             
-            useForum.addPost(post);
+            await useForum.addPost(post);
   
             const noti = {
             noti: post.title,

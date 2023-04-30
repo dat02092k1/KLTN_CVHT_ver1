@@ -52,8 +52,8 @@
                 :name="['domains', index, 'name']"
                 :rules="{
                   required: true,
-                  message: 'domain can not be null',
-                  trigger: 'change',
+                  message: 'Lớp không được để trống',
+                  trigger: 'blur',
                 }"
               >
                 <a-input
@@ -320,7 +320,7 @@ export default defineComponent({
           trigger: "blur",
           required: true,
         },
-      ],
+      ]
     };
     const useStudent = useStudentStore();
 

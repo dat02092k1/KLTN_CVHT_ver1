@@ -16,7 +16,11 @@
             </template>
             <template #avatar><a-avatar src="https://vnn-imgs-f.vgcloud.vn/2020/03/23/11/trend-avatar-1.jpg" /></template>
           </a-list-item-meta>
-          Nội dung: <textarea name="" id="" cols="30" rows="3" v-model="item.content"/>   
+          Nội dung: 
+          <span>
+            {{ item.content }}
+          </span>
+           
           <div>Files:</div>
           <div class="flex gap-2">
             <div v-for="(file, index) in item.fileUrl" :key="index">

@@ -48,7 +48,7 @@
 
 
               <a-form-item name="file" label="File">
-                <input type="file" @change="uploadDocs">
+                <input type="file" @change="uploadDocs" accept=".pdf,.docx">
               </a-form-item>
             </a-form>
             <Spinner v-show="useUpload.loading" />
@@ -56,19 +56,7 @@
         </div>
 
         <div class="flex justify-center my-4">
-          <a-alert
-            v-show="useForm.successMsg === true"
-            message="Thêm biểu mẫu thành công"
-            type="success"
-            show-icon
-          />
-          <a-alert
-            v-show="useForm.errorMsg === true"
-            message="Thêm biểu mẫu thất bại"
-            type="error"
-            show-icon
-          />
-
+          
           <a-menu
             v-model:selectedKeys="selectedKeys"
             style="width: 300px"
@@ -111,6 +99,20 @@
             </a-sub-menu>
           </a-menu>
         </div>
+        <div>
+            <a-alert
+            v-show="useForm.successMsg === true"
+            message="Thêm biểu mẫu thành công"
+            type="success"
+            show-icon
+          />
+            <a-alert
+            v-show="useForm.errorMsg === true"
+            message="Thêm biểu mẫu thất bại"
+            type="error"
+            show-icon
+          />
+          </div>
       </div>
     </div>
     

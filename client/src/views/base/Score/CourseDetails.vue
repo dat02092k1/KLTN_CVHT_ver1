@@ -177,7 +177,13 @@ export default {
   watch: {
     storeSuccessMsg(value) {
       if (value) {
-        this.openNotification();
+        setTimeout(() => {
+        notification.open({
+          key,
+          message: "New Title",
+          description: "New description.",
+        });
+      }, 1000);
       }
     },
   },

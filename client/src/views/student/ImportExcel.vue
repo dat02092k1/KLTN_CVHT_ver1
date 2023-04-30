@@ -21,8 +21,8 @@
         </div>
       </form>
       <Loading v-show="useUpload.loading" />
-      <a-alert v-show="useUpload.successMsg === true" message="Thêm mới sinh viên thành công" type="success" show-icon />
-          <a-alert v-show="useUpload.errorMsg === true" message="Thêm mới sinh viên thất bại" type="error" show-icon />
+      <a-alert v-show="useUpload.successMsg === true" message="Thêm mới thành công" type="success" show-icon />
+          <a-alert v-show="useUpload.errorMsg === true" message="Thêm mới thất bại" type="error" show-icon />
     </div>
   </template>
   
@@ -38,7 +38,7 @@
       return {
         selectedFile: null,
         useUpload: useUploadStore(),
-        pageTitle: 'Thêm nhiều sinh viên'
+        pageTitle: 'Thêm người dùng'
       }
     },
     methods: {

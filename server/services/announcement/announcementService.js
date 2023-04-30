@@ -18,6 +18,7 @@ var createAnnouncementService = async (req) => {
     console.log(getUser)
     if (!getUser) throw new ClientError('User not found', 404);
 
+    if (!fileUrl) throw new ClientError('File is required', 400);
     const announcement = new announcementModel({
       userId: user, 
       title,

@@ -44,7 +44,7 @@
                   label="File"
                 >
                
-        <input type="file" @change="uploadDocs">
+        <input type="file" @change="uploadDocs" accept=".pdf,.docx">
                 </a-form-item>
   
                 
@@ -54,8 +54,8 @@
           </div>
   
           <div>
-            <a-alert v-show="successMsg === true" message="Thêm thông báo thành công" type="success" show-icon />
-            <a-alert v-show="errorMsg === true" message="Thêm thông báo thất bại" type="error" show-icon />
+            <a-alert v-show="useAnnouncement.successMsg === true" message="Thêm thông báo thành công" type="success" show-icon />
+            <a-alert v-show="useAnnouncement.errorMsg === true" message="Thêm thông báo thất bại" type="error" show-icon />
              
             <hr style="border-top: 1px solid #ddd; margin-top: 8px;" /> 
             

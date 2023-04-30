@@ -1,17 +1,15 @@
 <template>
     <div class="p-3">
-      <router-link :to="{ path: '/student/forum/post/' + postId }" class="bg-orange-600 text-[#fff] rounded m-2 p-2" >Quay lại</router-link>
+      <router-link :to="{ path: '/student/forum/post/' + postId }" class="bg-red-600 text-[#fff] rounded m-2 p-2" >Quay lại</router-link>
       <a-form
         ref="formRef"
         :model="formState"
         :rules="rules"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
+        class="mt-4"
       >
-      <a-form-item label="Username" name="username">
-          <a-input disabled v-model:value="formState.username" />
-        </a-form-item>
-
+       
         <a-form-item label="Bình luận" name="content">
           <a-input v-model:value="formState.content" />
         </a-form-item>
@@ -24,8 +22,10 @@
         </a-form-item>
       </a-form>
 
-      <a-alert v-show="useForum.successMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
-    <a-alert v-show="useForum.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
+      <div>
+        <a-alert v-show="useForum.successMsg === true" message="Cập nhật thành công" type="success" show-icon />
+    <a-alert v-show="useForum.errorMsg === true" message="Cập nhật thất bại" type="error" show-icon />
+      </div>
     </div>
   </template>
   <script>
@@ -52,9 +52,7 @@ import { getUsername } from "../../../utils/getInfoUser.js";
   
       const postId = useRoute().params.postid;
        const commentId = useRoute().params.id; 
-       const useForum = useForumStore();
-         
-        
+       const useForum = useForumStore();        
         
       onMounted(async () => {
         await useForum.viewCommentById(commentId);
@@ -62,7 +60,8 @@ import { getUsername } from "../../../utils/getInfoUser.js";
         formState.content = useForum.getComment.data.comment.content;
         formState.username = useForum.getComment.data.comment.username;
         console.log(formState)
-      } ) 
+      } )  
+
       const onSubmit = () => {
         formRef.value
           .validate()

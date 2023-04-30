@@ -41,7 +41,6 @@
             > </textarea>
           </div>
         </div>
-        
   
         <a-form-item
                 name="assignedStudents"
@@ -72,6 +71,7 @@
         value-format="YYYY-MM-DD HH:mm:ss"
       />
         </div>
+
         <div class="flex flex-col items-center my-2">
         <button class="flex p-2 rounded text-[#fff] bg-[#324f90]" type="submit">Lưu</button>
         </div>
@@ -82,11 +82,7 @@
           Tỉ lệ sinh viên hoàn thành nhiệm vụ đề ra
          </h3>
         <Pie v-if="loaded" :data="chartData" :options="chartOptions"/>
-      
       </div>
-
-      <a-alert v-show="useTask.successMsg === true" message="Thêm sinh viên thành công" type="success" show-icon />
-    <a-alert v-show="useTask.errorMsg === true" message="Thêm sinh viên thất bại" type="error" show-icon />
     </div>
 
     
@@ -100,6 +96,7 @@
     import { getId } from "../../../utils/getInfoUser.js";
     import { Pie } from 'vue-chartjs'
     import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+    import { message } from "ant-design-vue";
 
   ChartJS.register(ArcElement, Tooltip, Legend)
     export default {
@@ -188,7 +185,13 @@
 
       console.log(taskDetails);
       this.useTask.editTask(this.taskId, taskDetails);
-       
+
+      setTimeout(() => {
+          message.success({
+          content: 'Cập nhật thành công!',
+          duration: 2,
+        });
+      }, 1000);
       },
       handleChange(value) {
         console.log(value);

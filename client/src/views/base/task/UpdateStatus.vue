@@ -44,10 +44,14 @@
       <div class="flex my-2 justify-center">
         <button class="flex bg-[#007aff] text-[#ffffff] rounded p-3" type="submit">Lưu</button>
       </div>
+
+      <div class="w-[200px]">
+        <a-alert v-show="useTask.successMsg === true" message="Cập nhật thành công" type="success" show-icon />
+    <a-alert v-show="useTask.errorMsg === true" message="Cập nhật thất bại" type="error" show-icon />
+      </div>
     </form>
 
-    <a-alert v-show="useTask.successMsg === true" message="Cập nhật thành công" type="success" show-icon />
-    <a-alert v-show="useTask.errorMsg === true" message="Cập nhật thất bại" type="error" show-icon />
+    
   </div>
   </div>
 </template>

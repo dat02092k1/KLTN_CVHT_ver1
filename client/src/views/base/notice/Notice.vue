@@ -168,7 +168,7 @@
           }
             sendNoti(noti);  
              
-            useNotice.addNotice(notice);
+            await useNotice.addNotice(notice);
             await useNotice.getListNotice(selectedOption.value);
             visible.value = false;
             formRef.value.resetFields();

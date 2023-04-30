@@ -45,7 +45,7 @@ const studentIdAuthentication = (req, res, next) => {
     
   verifyToken(req, res, () => {
      console.log(req.params);
-    if (req.user.id === req.params.studentId || req.user.id === req.params.id || req.user.role === "consultant" || req.user.role === "manager") {
+    if (req.user.id === req.params.studentId || req.user.id === req.body.student || req.user.id === req.params.id || req.user.role === "consultant" || req.user.role === "manager") {
       next();
     } else {
       res.status(403).json("You are not allowed to do this");

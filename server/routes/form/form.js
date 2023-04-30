@@ -11,11 +11,11 @@ router.get('/form/get/:class', userAuthenticate.isAdminAuthentication, formContr
 // delete form 
 router.delete('/form/delete/:id', userAuthenticate.onlyOwner, formController.deleteFormController);
 // edit form status
-router.put('/form/update/:id', userAuthenticate.verifyToken, formController.updateFormController);
+router.put('/form/update/:id', userAuthenticate.studentIdAuthentication, formController.updateFormController);
 // get details form
 router.get('/form/details/:id', userAuthenticate.verifyToken, formController.getDetailsFormController);
 // get forms of users
-router.get('/form/student/:id', userAuthenticate.verifyToken, formController.getFormsUserController);
+router.get('/form/student/:id', userAuthenticate.studentIdAuthentication, formController.getFormsUserController);
 // get forms by type
 router.get('/form/get-type/:id', userAuthenticate.roleAuthentication, formController.getFormsByType);
 // get forms rest

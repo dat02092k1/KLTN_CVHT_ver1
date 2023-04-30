@@ -123,7 +123,8 @@
           </div>
         </div>
       </form>
-
+    </div>
+    <div class="mx-6 flex justify-center">
       <a-alert v-show="useScore.successMsg === true" message="Cập nhật thành công" type="success" show-icon />
     <a-alert v-show="useScore.errorMsg === true" message="Cập nhật thất bại" type="error" show-icon />
     </div>

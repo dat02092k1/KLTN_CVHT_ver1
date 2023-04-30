@@ -39,7 +39,7 @@ export const welcome = () => {
 }
 
 // get messages from another user
-export const getMessages = (getMembers, username, getMsg, callback) => {
+export const getMessages = (getMembers, username, getMsg) => {
     // socket.off("getMessage");
     socket.on("getMessage", (data) => {
       const members = getMembers(); 
@@ -53,7 +53,6 @@ export const getMessages = (getMembers, username, getMsg, callback) => {
         else {
           console.log('off');
           console.log('msg from username: ' + data.username);
-          callback(data.username);
         }
       });
 }

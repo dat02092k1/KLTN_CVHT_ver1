@@ -183,9 +183,9 @@
       },
     },
     methods: {
-      async getDataStudent() {
+      async getDataStudent(_class) {
         try {
-          const response = await this.useStudent.getData();
+          const response = await this.useStudent.getData(_class);
           this.students = this.useStudent.data;
           console.log(this.students);
         } catch (error) {
@@ -221,7 +221,7 @@
             try {
               const result = await this.useStudent.deleteStudent(id);
               console.log(result);
-              await this.getDataStudent();
+              this.students = await this.useStudent.getUsersInClass(this.selectedClass);
   
               await new Promise((resolve, reject) => {
                 setTimeout(() => {

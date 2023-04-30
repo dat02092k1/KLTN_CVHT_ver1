@@ -24,7 +24,6 @@ export const useFormStore = defineStore({
  
         const res = await axiosIns.get(API_ENDPOINTS.getForm + _class, config);
 
-        console.log(res.data);
         this.listForms = res.data.forms;
         console.log(this.listForms); 
         return res.data;
@@ -47,7 +46,7 @@ export const useFormStore = defineStore({
         setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
-    async deleteForm(id, type) {
+    async deleteForm(id, _class) {
       try {
         const config = getAccessToken();
 
@@ -60,7 +59,7 @@ export const useFormStore = defineStore({
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
         if (this.userRole === 'consultant') {
-          this.getListForm(type); 
+          this.getListForm(_class); 
         }
       } catch (error) {
         console.log(error);
@@ -87,7 +86,7 @@ export const useFormStore = defineStore({
       try {
         const config = getAccessToken();
         
-        console.log(id, form);
+        console.log(form);
         const res = await axiosIns.put(
           API_ENDPOINTS.editForm + id,
           form,

@@ -57,6 +57,21 @@
       </tbody>
     </table>
 
+    <div>
+            <a-alert
+            v-show="useForm.successMsg === true"
+            message="Thao tác thành công"
+            type="success"
+            show-icon
+          />
+            <a-alert
+            v-show="useForm.errorMsg === true"
+            message="Thao tác thất bại"
+            type="error"
+            show-icon
+          />
+          </div>
+
     <a-modal
             v-model:visible="visible"
             title="Sửa biểu mẫu"
@@ -72,7 +87,7 @@
             >
               <a-form-item
                 name="type"
-                label="Type"
+                label="Biểu mẫu"
                 :rules="[
                   {
                     required: true,
@@ -87,7 +102,7 @@
               <a-form-item name="file" label="File"
               >
                 <a-input v-model:value="formState.fileUrl" class="my-1" />
-                <input class="mt-1" type="file" @change="uploadDocs">
+                <input class="mt-1" type="file" @change="uploadDocs" accept=".pdf,.docx">
               </a-form-item>
             </a-form>
             <Spinner v-show="useUpload.loading" />
@@ -107,7 +122,7 @@ import { RouterLink, RouterView, useRoute } from "vue-router";
 import {
   getStudentClass,
   getId,
-  getRole,
+  getUsername,
 } from "../../../utils/getInfoUser";
 import Spinner from "../Spinner/Spinner.vue";
 
@@ -164,7 +179,7 @@ export default {
           console.log("formState: ", toRaw(formState));
           const form = toRaw(formState);
 
-          useForm.editForm(formState.formId, form);
+          await useForm.editForm(formState.formId, form);
           forms.value = await useForm.getUserForms(studentId);
           visible.value = false;
           formRef.value.resetFields();
@@ -191,6 +206,7 @@ export default {
       formState.type = data.type;
       formState.fileUrl = data.fileUrl;
       formState.formId = data._id;
+      formState.username = data.username;
     }
 
     function formatDate(dateString) {

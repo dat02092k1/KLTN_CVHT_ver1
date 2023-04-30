@@ -241,13 +241,24 @@ export default defineComponent({
           const task = toRaw(formState);
           console.log(task);
           useTask.assignTasks(formState._class, task);
-
+          setTimeout(() => {
+          message.success({
+          content: 'Giao nhiệm vụ thành công!',
+          duration: 2,
+        });
+      }, 1000);
           checked.value = false;
           visible.value = false;
           formRef.value.resetFields();
         })
         .catch((info) => {
           console.log("Validate Failed:", info);
+          setTimeout(() => {
+          message.error({
+          content: 'Giao nhiệm vụ thất bại!',
+          duration: 2,
+        });
+      }, 1000);
         });
     };
 

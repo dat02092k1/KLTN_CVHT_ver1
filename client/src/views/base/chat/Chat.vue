@@ -44,13 +44,13 @@
         </div>
 
         <div v-show="selectedOption === 2">
-          Sinh viên trong lớp:
+          Danh mục người dùng:
           <div v-for="(user, index) in users" :key="index">
             <div
               @click="handleConversation(user.userId)"
               class="text-center my-2 cursor-pointer hover:bg-[#2064ad] p-1"
             >
-              {{ user.name }}
+              {{ user.name }} ({{ user.userId }})
             </div>
           </div>
         </div>
@@ -172,13 +172,13 @@ export default {
   },
   beforeUnmount() {
     this.isConnected = false;
-    removeListener();
+     removeListener(); 
   },
   watch: {
     isConnected(newVal) {
       if (newVal) {
         console.log(newVal);
-      getMessages(() => this.members, this.getUsername, () => this.useChat.messages, data => console.log(data));
+      getMessages(() => this.members, this.getUsername, () => this.useChat.messages);
     }
     }
   },

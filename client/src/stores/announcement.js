@@ -34,14 +34,8 @@ export const useAnnouncementStore = defineStore({
     },
     async addAnnouncement(announcement) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-        console.log(accessToken);
-        const config = {
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        };
-        console.log(announcement);
+        const config = getAccessToken(); 
+        
         const res = await axiosIns.post(
           API_ENDPOINTS.addAnnouncement,
           announcement,

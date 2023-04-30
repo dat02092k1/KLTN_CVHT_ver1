@@ -22,7 +22,7 @@
           <th>Hành động</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="bg-[#fff]">
         <tr v-for="(item, index) in useForm.listForms" :key="index">
             <td>{{ index + 1 }}</td>
           <td class="text-[#7bb2ff]">{{ item.username }}</td>
@@ -48,7 +48,7 @@
           </td>
           <td>
             <div class="flex justify-center gap-2">
-              <a-popconfirm title="Title" @confirm="confirm(item._id, item.type)" @cancel="cancel">
+              <a-popconfirm title="Title" @confirm="confirm(item._id, item._class)" @cancel="cancel">
     <button class="mr-1"><i class="fa-regular fa-trash-can"></i></button>
   </a-popconfirm>
             
@@ -117,9 +117,9 @@ export default {
     window.open(fileUrl, '_blank');
   }
 
-  const confirm = (id, type) => {
+  const confirm = (id, _class) => {
      
-        useForm.deleteForm(id, type); 
+        useForm.deleteForm(id, _class); 
     };
 
     const cancel = e => {
@@ -165,7 +165,8 @@ td {
 }
 
 th {
-  background-color: #fafafa;
+  background-color: #004b96;
+  color: #fff;
 }
  
 ::-webkit-scrollbar {

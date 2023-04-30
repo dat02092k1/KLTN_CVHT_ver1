@@ -48,7 +48,7 @@
       v-for="(domain, index) in dynamicValidateForm.domains"
       :key="domain.key"
       v-bind="index === 0 ? formItemLayout : {}"
-      :label="index === 0 ? 'Domains' : ''"
+      :label="index === 0 ? 'Lớp' : ''"
       :name="['domains', index, 'name']"
       :rules="{
         required: true,
@@ -71,7 +71,7 @@
     <a-form-item v-bind="formItemLayoutWithOutLabel">
       <a-button type="dashed" style="width: 60%" @click="addDomain">
         <PlusOutlined />
-        Add field
+        Thêm lớp
       </a-button>
     </a-form-item>
     
@@ -184,6 +184,21 @@
           >
         </a-form-item>
       </a-form>
+    </div>
+
+    <div class="w-[50%] mx-10 my-2">
+      <a-alert
+      v-show="useStudent.showSuccessMsg === true"
+      message="Cập nhật thành công"
+      type="success"
+      show-icon
+    />
+    <a-alert
+      v-show="useStudent.showErrorMsg === true"
+      message="Cập nhật thất bại"
+      type="error"
+      show-icon
+    />
     </div>
   </div>
 </template>
@@ -408,8 +423,6 @@ export default defineComponent({
       console.log(response._class);
       formState.address = response.address;
       formState.birthdate = dayjs(response.birthdate);
-       
-
     });
 
     return {
@@ -431,7 +444,8 @@ export default defineComponent({
       dynamicValidateForm,
       removeDomain,
       addDomain,
-      userRole
+      userRole,
+      useStudent
     };
   },
   components: { NavTitle, ChartCredits, MinusCircleOutlined, PlusOutlined },

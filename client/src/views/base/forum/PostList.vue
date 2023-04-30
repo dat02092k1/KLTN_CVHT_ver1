@@ -4,7 +4,7 @@
       <NavTitle :title="pageTitle" />
 
       <div class="forum-list bg-[#fff] px-[1.5rem] py-4 mx-6 rounded">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center my-2">
           <div>
             <label for=""> Lớp: </label>
             <a-select class="p-6" v-model:value="selectedOption" >
@@ -103,12 +103,12 @@
                     Xem
                   </router-link>
                 </div>
-                <div v-if="userRole === 'manager' || username === item.username" @click="handleOptionClick('edit')">
+                <div v-if="userRole === 'consultant' || username === item.username" @click="handleOptionClick('edit')">
                   <router-link :to="{ path: '/student/forum/edit/' + item._id }"
                     >Sửa</router-link
                   >
                 </div>
-                <div v-if="userRole === 'manager' || username === item.username" @click="deletePost(item._id)">Xóa</div>
+                <div v-if="userRole === 'consultant' || username === item.username" @click="deletePost(item._id)">Xóa</div>
               </div>
             </div>
             <div>

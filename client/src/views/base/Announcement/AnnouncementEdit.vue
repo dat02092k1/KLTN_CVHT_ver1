@@ -24,8 +24,13 @@
 
             <div class="flex flex-col ">
               
-              <input type="file" @change="uploadDocs">
+              <input type="file" @change="uploadDocs" accept=".pdf,.docx">
 
+            </div>
+
+            <div class="w-[50%]">
+              <a-alert v-show="useAnnouncement.successMsg === true" message="Thao tác thành công" type="success" show-icon />
+              <a-alert v-show="useAnnouncement.errorMsg === true" message="Thao tác thất bại" type="error" show-icon />
             </div>
             <Loading v-show="useUpload.loading" />
           </div>
