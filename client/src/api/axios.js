@@ -23,7 +23,6 @@ axiosIns.interceptors.response.use((response) => {
     return (response);
 }, async (err) => {
     const originalRequest = err.config;
-    console.log(originalRequest.headers.token);
 
     if (err.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;

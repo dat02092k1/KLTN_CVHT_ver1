@@ -187,19 +187,34 @@ var uploadStudentsService = async (req) => {
   try {
     const data = req.data;
     
+    const userIds = new Set();
+    const emailAddresses = new Set();
+
+    // Check for duplicates within the data being uploaded
+    for (const row of data) {
+      if (userIds.has(row.userId)) {
+        throw new ClientError(`Duplicate userId: ${row.userId}`, 400);
+      }
+      if (emailAddresses.has(row.emailAddress)) {
+        throw new ClientError(`Duplicate emailAddress: ${row.emailAddress}`, 400);
+      }
+      userIds.add(row.userId);
+      emailAddresses.add(row.emailAddress);
+    }
+
     // Kiểm tra xem email và tên người dùng đã tồn tại trong cơ sở dữ liệu hay chưa
    const existingUsers = await Promise.all([
-    userModel.find({ userId: { $in: data.map(item => item.userId) } }, { userId: 1 }),
-    userModel.find({ emailAddress: { $in: data.map(item => item.emailAddress) } }, { emailAddress: 1 })
+    userModel.find({ userId: { $in: Array.from(userIds) } }, { userId: 1 }),
+    userModel.find({ emailAddress: { $in: Array.from(emailAddresses) } }, { emailAddress: 1 })
   ]);
-  console.log('users: ' + existingUsers);
-   console.log('[0] ' + existingUsers[0]);
-   console.log('[1] ' + existingUsers[1]);
+    
+   
   const duplicateEmails = data.filter(item => existingUsers[1].some(user => user.emailAddress === item.emailAddress));
   const duplicateUserIds = data.filter(item => existingUsers[0].some(user => {
-    user.userId === item.userId.toString()
+    const isDuplicate = (user.userId === item.userId.toString());
+    return isDuplicate;
   }));
-
+  console.log('ids :' + duplicateUserIds);
   if (duplicateEmails.length > 0 || duplicateUserIds.length > 0) {
     const errors = {
       duplicateEmails,

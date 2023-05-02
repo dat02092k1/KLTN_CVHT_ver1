@@ -44,6 +44,7 @@ export const useUploadStore = defineStore({
         this.loading = false;
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);  
+        alert('Error: '+ error.response.data.message);
       }
     },
     async uploadDocs(data) {
