@@ -47,14 +47,18 @@ var createStudentService = async (studentDetail) => {
     } = studentDetail;
 
     console.log(_class); 
-    const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
+    if ((_class.length == 0) && (role === 'consultant' || role === 'student')) {
+      throw new ClientError('Class is required', 400);
+    }
+
+    const hashPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     // mã hóa password
     studentDetail.password = hashPassword;
  
     var checkExisting = await userModel.findOne({
       $or: [
-        { userId: studentDetail.studentId },
+        { userId: studentDetail.userId },
         { emailAddress: studentDetail.emailAddress },
         { phone: studentDetail.phone },
       ]
@@ -79,6 +83,7 @@ var updateStudentService = async (id, studentDetail, role) => {
     const objectId = mongoose.Types.ObjectId(id);
      
     const { studentId } = studentDetail;
+    console.log(studentId);
     console.log(studentDetail);
     
     const findUser = await userModel.findById(id);

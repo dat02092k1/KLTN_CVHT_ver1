@@ -34,15 +34,9 @@
             </div>
 
             <div class="flex flex-col ">
-              
               <input type="file" @change="uploadImage" accept="image/*">
-
             </div>
 
-            <div class="my-2 w-[50%]">
-              <a-alert v-show="useForum.successMsg === true" message="Cập nhật thành công" type="success" show-icon />
-          <a-alert v-show="useForum.errorMsg === true" message="Cập nhật thất bại" type="error" show-icon />
-            </div>
             <Spinner v-show="useImg.loading" />
           </div>
 
@@ -63,6 +57,7 @@
   import Spinner from '../Spinner/Spinner.vue';
   import { RouterLink, RouterView, useRoute } from "vue-router";
   import { getId, getUsername, getClass } from "../../../utils/getInfoUser";
+  import { message } from "ant-design-vue";
 
   export default {
     data() {
@@ -88,13 +83,30 @@
       // this.post._class = getClass(); 
      },
     methods: {
-      editPost() {
-        console.log(this.post);
+      async editPost() {
         if (this.post.content === "" || this.post.title === "") {
           alert("Chưa điền các trường yêu cầu");
           return;
         }
-        this.useForum.updatePost(this.id, this.post);
+
+        const res = await this.useForum.updatePost(this.id, this.post);
+        console.log(res);
+        if (res.status === 200) {
+          setTimeout(() => {
+          message.success({
+          content: 'Cập nhật thành công!',
+          duration: 2,
+          });
+          }, 1000);
+        }
+        else {
+          setTimeout(() => {
+          message.error({
+          content: 'Cập nhật thất bại!',
+          duration: 2,
+          });
+          }, 1000);
+        }
       },
       async uploadImage(event) {
       const file = event.target.files[0];

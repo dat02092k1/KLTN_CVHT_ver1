@@ -170,7 +170,7 @@
       }
     },
     methods: {
-      submitForm() {
+      async submitForm() {
         if (this.studentIds.length === 0) {
           alert("Chưa chọn sinh viên");
           return;
@@ -184,14 +184,24 @@
       };
 
       console.log(taskDetails);
-      this.useTask.editTask(this.taskId, taskDetails);
+      const res = await this.useTask.editTask(this.taskId, taskDetails);
 
-      setTimeout(() => {
+      if (res.status === 200) {
+        setTimeout(() => {
           message.success({
           content: 'Cập nhật thành công!',
           duration: 2,
         });
       }, 1000);
+      }
+      else {
+        setTimeout(() => {
+          message.error({
+          content: 'Cập nhật thất bại!',
+          duration: 2,
+        });
+      }, 1000);
+      }
       },
       handleChange(value) {
         console.log(value);

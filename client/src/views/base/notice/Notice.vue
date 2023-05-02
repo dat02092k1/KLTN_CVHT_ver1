@@ -59,12 +59,9 @@
                   ]"
                 >
                   <a-textarea v-model:value="formState.message" />
-                </a-form-item>
-  
-                
-  
-                
+                </a-form-item>              
               </a-form>
+              <Spinner v-show="showLoading" />
              </a-modal>
             
           </div>
@@ -110,7 +107,7 @@
           </div>
         </div>
       </div>
-      <Loading v-if="showLoading" />
+      <Loading v-show="showLoading" />
     </div>
   </template>
   
@@ -162,6 +159,7 @@
           .then(async (values) => {
             console.log("formState: ", toRaw(formState));
             const notice = toRaw(formState);
+            showLoading.value = true;
             const noti = {
             noti: notice.subject,
             room: notice._class
@@ -169,7 +167,9 @@
             sendNoti(noti);  
              
             await useNotice.addNotice(notice);
+            
             await useNotice.getListNotice(selectedOption.value);
+            showLoading.value = false;
             visible.value = false;
             formRef.value.resetFields();
             console.log("reset formState: ", toRaw(formState));
@@ -205,6 +205,22 @@
       function deleteNotice(id) {
         console.log(id);
          useNotice.deleteNotice(id, selectedOption.value);
+         if (useNotice.successMsg) {
+         setTimeout(() => {
+          message.success({
+          content: 'Xoá thành công!',
+          duration: 2,
+        });
+        }, 1000);
+        }
+        else if(useNotice.errorMsg){
+         setTimeout(() => {
+            message.error({
+            content: 'Xóa thất bại!',
+            duration: 2,
+          });
+        }, 1000);
+        }
       }
   
       const uploadImage = async (event) => {

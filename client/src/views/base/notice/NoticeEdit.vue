@@ -63,6 +63,7 @@
   import { getId, getClass } from "../../../utils/getInfoUser";
   import { useNoticeStore } from "../../../stores/notice.js";
   import { RouterLink, RouterView, useRoute } from "vue-router";
+  import { message } from "ant-design-vue";
 
   export default defineComponent({
     setup() {
@@ -92,9 +93,26 @@
       const onSubmit = () => {
       formRef.value
         .validate()
-        .then(() => {
+        .then(async () => {
           console.log("values", formState);
-        useNotice.editNotice(noticeId, formState);
+          const res = await useNotice.editNotice(noticeId, formState);
+
+          if (res.status === 200) {
+            setTimeout(() => {
+          message.success({
+          content: 'Cập nhật thành công!',
+          duration: 2,
+          });
+          }, 1000);
+          }
+          else {
+          setTimeout(() => {
+          message.error({
+          content: 'Cập nhật thất bại!',
+          duration: 2,
+        });
+      }, 1000);
+          }
         })
         .catch((error) => {
           console.log("error", error);

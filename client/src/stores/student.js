@@ -98,13 +98,10 @@ export const useStudentStore = defineStore({
           details,
           config
         );
-        console.log(response);
-        this.successMsg = true;
-        setTimeout(() => (this.successMsg = false), 3000);
+        
+        return response;
       } catch (error) {
         console.error(error);
-        this.errorMsg = true;
-        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
     async getStudentDetails(id) {

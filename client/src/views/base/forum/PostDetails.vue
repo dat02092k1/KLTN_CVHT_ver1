@@ -6,7 +6,7 @@
       <button class="bg-[#ef1419] rounded text-[#ffffff] p-2">Quay lại</button>
               </router-link>
       <div class="post flex mt-3" v-if="useForum.post">
-        <div class="forum-item max-w-[100%] rounded-md mx-auto">
+        <div class="forum-item max-w-[700px] rounded-md mx-auto">
           <div>
             <h2 class="font-bold text-2xl text-center">
               {{ useForum.post.title }}
@@ -38,7 +38,7 @@
             </div>
           </div>
 
-          <div v-if="useForum.post.imageUrl">
+          <div v-if="useForum.post.imageUrl" class="my-3">
             <img class="w-[400px]" :src="useForum.post.imageUrl" alt="post image">
           </div>
           <hr />

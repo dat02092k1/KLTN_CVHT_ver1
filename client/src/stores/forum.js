@@ -83,14 +83,9 @@ export const useForumStore = defineStore({
       try {
         const config = getAccessToken();
         const updatePost = await axiosIns.put(`http://localhost:8000/post/edit/${id}`, postDetails, config);
-
-        this.successMsg = true;
-        setTimeout(() => (this.successMsg = false), 3000);
-        console.log(updatePost);  
+        return updatePost;
       } catch (error) {
         console.log(error);
-        this.errorMsg = true;
-        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
     async getPostAndComment(id)  { 

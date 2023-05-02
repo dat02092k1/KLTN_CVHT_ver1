@@ -45,7 +45,6 @@ export const useTaskStore = defineStore({
           config
         );
 
-        console.log(task);
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
         const page = 1;
@@ -80,12 +79,9 @@ export const useTaskStore = defineStore({
           config
         );
 
-        this.successMsg = true;
-        setTimeout(() => (this.successMsg = false), 3000);
+        return task;
       } catch (error) {
         console.log(error);
-        this.errorMsg = true;
-        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
     async getTasksOfStudent(_id) {
@@ -131,11 +127,13 @@ export const useTaskStore = defineStore({
           API_ENDPOINTS.deleteTask + id,
           config
         );
+
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
+
         this.getTasksPerPage(_class, 1);          
       } catch (error) {
-        console.log(error);
+        console.log(error); 
         this.errorMsg = true;
         setTimeout(() => (this.errorMsg = false), 3000);
       }

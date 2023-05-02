@@ -16,12 +16,12 @@
           <div class="mx-auto">
             <a-form-item
               class="form-item block"
-              ref="userId"
+              ref="studentId"
               label="Tài khoản"
-              name="userId"
+              name="studentId"
             >
               <a-input
-                v-model:value="formState.userId"
+                v-model:value="formState.studentId"
                 placeholder="Nhập tài khoản"
                 :disabled="userRole !== 'manager'"
                 class="text-black"
@@ -176,13 +176,14 @@ import NavTitle from "../base/NavBar/NavTitle.vue";
 import ChartCredits from "../chart/ChartCredits.vue";
 import { getRole } from "../../utils/getInfoUser.js";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { message } from "ant-design-vue";
 
 export default defineComponent({
   setup() {
     const formRef = ref();
     const pageTitle = ref("Cập nhật thông tin Sinh viên");
     const formState = reactive({
-      userId: "",
+      studentId: "",
       name: "",
       gender: "",
       birthdate: undefined,
@@ -239,10 +240,27 @@ export default defineComponent({
     const onSubmit = () => {
       formRef.value
         .validate()
-        .then(() => {
+        .then(async () => {
           console.log("values", formState);
           formState._class = dynamicValidateForm.domains;
-          useStudent.updateStudent(userId, formState);
+          const res = await useStudent.updateStudent(userId, formState);
+
+          if (res.status === 200) {
+          setTimeout(() => {
+          message.success({
+          content: 'Cập nhật thành công!',
+          duration: 2,
+          });
+          }, 1000);
+          }
+          else {
+            setTimeout(() => {
+          message.error({
+          content: 'Cập nhật thất bại!',
+          duration: 2,
+          });
+          }, 1000);
+          }
         })
         .catch((error) => {
           console.log("error", error);
@@ -255,7 +273,7 @@ export default defineComponent({
 
     onMounted(async () => {
       const response = await useStudent.getStudentDetails(userId);
-      formState.userId = response.userId; 
+      formState.studentId = response.userId; 
       formState.name = response.name;
       formState.gender = response.gender;
       formState.role = response.role;

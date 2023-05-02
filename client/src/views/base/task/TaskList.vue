@@ -232,7 +232,7 @@ export default defineComponent({
     const onOk = () => {
       formRef.value
         .validateFields()
-        .then((values) => {
+        .then(async (values) => {
           formState.complete = checked.value;
 
           formState.assignedStudents = assignedStudents.value;
@@ -240,13 +240,25 @@ export default defineComponent({
           console.log("formState: ", toRaw(formState));
           const task = toRaw(formState);
           console.log(task);
-          useTask.assignTasks(formState._class, task);
-          setTimeout(() => {
+          const res = await useTask.assignTasks(formState._class, task);
+          
+          console.log(res);
+          if (useTask.successMsg) {
+            setTimeout(() => {
           message.success({
           content: 'Giao nhiệm vụ thành công!',
           duration: 2,
+          });
+          }, 1000);
+          }
+          else if(useTask.errorMsg) {
+          setTimeout(() => {
+          message.error({
+          content: 'Giao nhiệm vụ thất bại!',
+          duration: 2,
         });
-      }, 1000);
+        }, 1000);
+        }
           checked.value = false;
           visible.value = false;
           formRef.value.resetFields();
@@ -295,7 +307,24 @@ export default defineComponent({
     });
 
     async function deleteTask(id) {
-      await useTask.deleteTask(formState._class, id);
+      const res = await useTask.deleteTask(formState._class, id);
+      console.log(res);
+      if (useTask.successMsg) {
+        setTimeout(() => {
+          message.success({
+          content: 'Xoá thành công!',
+          duration: 2,
+        });
+      }, 1000);
+      }
+      else if(useTask.errorMsg){
+        setTimeout(() => {
+          message.error({
+          content: 'Xóa thất bại!',
+          duration: 2,
+        });
+      }, 1000);
+      }
     }
 
     function formatDate(dateString) {

@@ -67,13 +67,10 @@ export const useNoticeStore = defineStore({
         const res = await axiosIns.patch(API_ENDPOINTS.editNotice + id, notice, config);
 
         console.log(res); 
-        this.successMsg = true;
-        setTimeout(() => (this.successMsg = false), 3000);
-        console.log(updatePost);  
+        return res;
+           
       } catch (error) {
         console.log(error);
-        this.errorMsg = true;
-        setTimeout(() => (this.errorMsg = false), 3000);
       }
     },
     async getDetailsNotice(id)  { 
