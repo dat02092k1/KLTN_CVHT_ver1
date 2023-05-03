@@ -89,7 +89,7 @@ var updateStudentService = async (id, studentDetail, role) => {
     const findUser = await userModel.findById(id);
 
     if (findUser.role === 'manager') {
-      const user = await userModel.findByIdAndUpdate(objectId, studentDetail);
+      const user = await userModel.findByIdAndUpdate(objectId, {...studentDetail, userId: studentId});
 
       if (!user) throw new ClientError('cant find user with id ' + objectId, 404);
 

@@ -16,7 +16,7 @@
         </button>
       </router-link>
 
-      <router-link class="mr-6" :to="{ path: '/student/import-courses/' + id }" v-show="userRole === 'manager'">
+      <router-link class="mr-6" :to="{ path: '/student/import-courses/' }" v-show="userRole === 'manager'">
         <button class="bg-[#324f90] rounded text-[#ffffff] ml-6 my-2 p-2">
           Import excel
         </button>

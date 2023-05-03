@@ -37,7 +37,7 @@
                 <th>STT</th>
                 <th>MSSV</th>
                 <th>Họ tên</th>
-                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
                 <th>Ngày sinh</th>
 
                 <th>Vai trò</th>
@@ -81,7 +81,7 @@
                 <td class="text-center">{{ index + 1 }}</td>
                 <td>{{ item.userId }}</td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.phone }}</td>
+                <td>{{ item.emailAddress }}</td>
                 <td>
                   {{ formatIsoDate(item.birthdate) }}
                 </td>

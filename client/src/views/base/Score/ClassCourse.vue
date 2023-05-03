@@ -91,9 +91,7 @@
     },
     async mounted() {
         this.students = await this.useStudent.getData(this.className);  
-        console.log(this.students);
         this.isShowSpinner = false;
-      
     },
     methods: {
       roundToTwoDecimalPlaces(num) {

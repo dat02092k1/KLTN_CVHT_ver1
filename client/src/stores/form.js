@@ -25,7 +25,7 @@ export const useFormStore = defineStore({
         const res = await axiosIns.get(API_ENDPOINTS.getForm + _class, config);
 
         this.listForms = res.data.forms;
-        
+        console.log(this.listForms);
         return res.data;
       } catch (error) {
         console.log(error);

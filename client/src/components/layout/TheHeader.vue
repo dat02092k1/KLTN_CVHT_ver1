@@ -17,7 +17,7 @@
             <a-dropdown-button>
                 {{ this.username }}
       <template #overlay>
-        <a-menu @click="handleMenuClick">
+        <a-menu>
           <a-menu-item key="1">
             <UserOutlined />
             <RouterLink :to="{ path: '/student/details/' + userId }">
@@ -66,12 +66,6 @@ export default {
         this.userId = getId();
     },
     methods: {
-        handleButtonClick(e) {
-            console.log('click left button', e);
-        },
-        handleMenuClick(e) {
-      console.log('click', e);
-        },
         logout() {
             this.useAuth.logout();
         }

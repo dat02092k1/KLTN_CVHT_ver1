@@ -68,8 +68,8 @@
           </div>
   
           <div class="forum-table bg-[#fff]">
-            <a-alert v-show="useForum.successMsg === true" message="Thêm bài đăng thành công" type="success" show-icon />
-            <a-alert v-show="useForum.errorMsg === true" message="Thêm bài đăng thất bại" type="error" show-icon />
+            <a-alert v-show="useForum.successMsg === true" message="Thao tác thành công" type="success" show-icon />
+            <a-alert v-show="useForum.errorMsg === true" message="Thao tác thất bại" type="error" show-icon />
             <div
               v-for="(item, index) in useForum.listPost"
               :key="index"

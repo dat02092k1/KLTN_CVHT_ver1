@@ -25,8 +25,12 @@
     <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
       <a-button type="primary" html-type="submit">Submit</a-button>
     </a-form-item>
-  </a-form>
-       </div>
+        </a-form>
+            </div>
+            <div class="w-[400px]">
+        <a-alert v-show="useAuth.successMsg === true" message="Hệ thống đã gửi link reset mật khẩu kèm mã xác nhận đến mail của bạn" type="success" show-icon />
+    <a-alert v-show="useAuth.errorMsg === true" message="Gửi mã xác nhận thất bại" type="error" show-icon />
+      </div>
         </div>
 
         

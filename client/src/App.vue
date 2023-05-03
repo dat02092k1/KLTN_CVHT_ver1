@@ -30,7 +30,7 @@ onMounted(() => {
 
 const openNotification = (data) => {
       notification.open({
-        message: 'Thông báo mới',
+        message: 'Bài đăng mới từ diễn đàn',
         description: data,
         icon: () => h(SmileOutlined, {
           style: 'color: #108ee9',

@@ -53,7 +53,7 @@
                 <th>MSSV</th>
                 <th>Họ tên</th>
                 <th>Email</th>
-                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
                 <th>Ngày sinh</th>
 
                 <th>Trạng thái</th>
@@ -99,7 +99,7 @@
                 <td>{{ item.userId }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.emailAddress }}</td>
-                <td>{{ item.phone }}</td>
+                <td>{{ item.address }}</td>
                 <td>
                   {{ formatIsoDate(item.birthdate) }}
                 </td>

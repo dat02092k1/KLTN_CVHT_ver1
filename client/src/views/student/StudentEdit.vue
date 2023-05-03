@@ -324,8 +324,8 @@ export default defineComponent({
           trigger: "blur",
         },
         {
-          min: 10,
-          max: 10,
+          min: 9,
+          max: 9,
           message: "Chưa nhập đúng định dạng số điện thoại",
           trigger: "blur",
           required: true,
