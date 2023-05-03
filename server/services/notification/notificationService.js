@@ -26,7 +26,6 @@ var getNotificationsService = async (id) => {
 
 var readNotificationsService = async (id) => {
     try {
-        console.log('flag noti');
         const notification = await notificationModel.findByIdAndUpdate(
             id,
             { isRead: true },

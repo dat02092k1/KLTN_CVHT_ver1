@@ -8,7 +8,6 @@ const mongoose = require("mongoose");
 var addCourseService = async (req, res) => {
   try {
     const { semester, semesterCode, studentId, subjects } = req.body;
-    console.log(subjects); 
 
     const student = await userModel.findById(studentId);
     if (!student) throw new ClientError(`Student not found`, 404);
@@ -19,7 +18,6 @@ var addCourseService = async (req, res) => {
 
     for (const subject of subjects) {
       subject.grade = grades.calculateGrade(subject.score);  
-      console.log(subject.grade); 
     }
        
     const newCourse = new courseModel({
@@ -43,7 +41,7 @@ var addCourseService = async (req, res) => {
      
     const gpaRaw = totalScore / total_credits;
     const GPA = grades.roundToTwoDecimalPlaces(gpaRaw);
-    console.log(GPA);
+     
     await courseModel.findByIdAndUpdate(course._id, { GPA, total_credits });
 
     const result = await courseModel.aggregate([
@@ -107,7 +105,6 @@ var editCourseService = async (courseId, courseDetails) => {
 
     for (const subject of subjects) {
       subject.grade = grades.calculateGrade(subject.score);  
-      console.log(subject.grade); 
     }
      
     // const objectId = mongoose.Types.ObjectId(username);
@@ -122,7 +119,6 @@ var editCourseService = async (courseId, courseDetails) => {
      
     const gpaRaw = totalScore / total_credits;
     const GPA = grades.roundToTwoDecimalPlaces(gpaRaw);
-    console.log(GPA);
 
     const updateCourse = await courseModel.findByIdAndUpdate(
       courseId,
@@ -133,7 +129,7 @@ var editCourseService = async (courseId, courseDetails) => {
     if (!updateCourse) {
       throw new ClientError(`No course found with id: ${courseId}`, 404);
     }
-    console.log(updateCourse.student);
+     
     const student = await userModel.findById(updateCourse.student);  
 
     if (!student) throw new ClientError(`Student not found`, 404);
@@ -171,8 +167,6 @@ var editCourseService = async (courseId, courseDetails) => {
       student.status = status;
 
       student.total_credits = credits;
-
-    console.log(student);
     
     await student.save();
     return {
@@ -214,7 +208,7 @@ var deleteCourseService = async (courseId, studentId) => {
       
         }
     ]);
-    console.log(result);
+     
     const cpaValue = result[0]?.CPA ?? 0;
     const totalCredits = result[0]?.total_credits ?? 0;
     const status =
@@ -225,9 +219,7 @@ var deleteCourseService = async (courseId, studentId) => {
         : "Không"; 
 
       student.CPA = grades.roundToTwoDecimalPlaces(cpaValue);
-
       student.status = status;
-
       student.total_credits = totalCredits;
 
       await student.save();
@@ -261,7 +253,7 @@ var importCoursesExcel = async (req) => {
     const courses = [];
 
     for (let i = 0; i < data.length; i++) {
-      console.log('data[i] ' + data[i]);
+       
       const {
         semester, studentId, subjectName, subjectCode, subjectScore, subjectCredits, semesterCode 
       } = data[i];
@@ -270,32 +262,27 @@ var importCoursesExcel = async (req) => {
       if (!student) throw new ClientError(`Student not found`, 404); 
 
       const getCourse = await courseModel.findOne({ semesterCode, studentId }); 
-
+      console.log(getCourse);
       if (getCourse) throw new ClientError(`Course existed`, 400); 
       
       const Sid = student[0]._id;
-        console.log(typeof(Sid))
-      const subject = { name: subjectName, code: subjectCode, score: subjectScore, credits: subjectCredits };
-      console.log('courses ' + courses);
-      let course = courses.find(c => {
-        const isTrue = (c.semester === semester.toString());
-        console.log(isTrue);
          
+      const subject = { name: subjectName, code: subjectCode, score: subjectScore, credits: subjectCredits };
+       
+      let course = courses.find(c => {
         return c.semester === semester.toString() && c.student.toString() === Sid.toString();
       });
-      console.log(studentId);
+        
       if (!course) {
         course = new courseModel({ semester, student: Sid, studentId: studentId, semesterCode });
         courses.push(course);
       }
       course.subjects.push(subject);
-       console.log(course + 'flag 1st loop')
+       console.log('flag 1st loop')
     }
     
     for (const course of courses) {
-      console.log(courses.length);
       // Calculate GPA and total credits for course based on subjects
-      
       let totalScore = 0;
       let total_credits = 0;
    
@@ -307,15 +294,14 @@ var importCoursesExcel = async (req) => {
 
       const gpaRaw = totalScore / total_credits;
       const GPA = grades.roundToTwoDecimalPlaces(gpaRaw);
-      console.log(GPA);
 
       course.GPA = GPA;
       course.total_credits = total_credits;
       // Save course to database
       await course.save();
-      console.log(course.student);
+      
       const student = await userModel.findById(course.student);
-      console.log(student);
+       
       const result = await courseModel.aggregate([
         { $match: { student: student._id } },
         {
@@ -333,7 +319,7 @@ var importCoursesExcel = async (req) => {
           },
         },
       ]);
-  
+        
       const cpaValue = result[0].CPA;
       const credits = result[0].totalCredits;
   

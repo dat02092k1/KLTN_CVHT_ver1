@@ -67,8 +67,7 @@
           </div>
   
           <div>
-            <a-alert v-show="useNotice.successMsg === true" message="Thao tác thành công" type="success" show-icon />
-            <a-alert v-show="useNotice.errorMsg === true" message="Thao tác thất bại" type="error" show-icon />
+             
             <div
               v-for="(item, index) in useNotice.listNotice"
               :key="index"
@@ -173,13 +172,9 @@
             visible.value = false;
             formRef.value.resetFields();
             console.log("reset formState: ", toRaw(formState));
-            successMsg.value = true;
-            setTimeout(() => (successMsg.value = false), 3000); 
           })
           .catch((info) => {
             console.log("Validate Failed:", info);
-            errorMsg.value = true;
-            setTimeout(() => (errorMsg.value = false), 3000); 
           });
       };
   

@@ -17,7 +17,7 @@ var studentServiceGetAll = async (_class) => {
   try {
      
     const data = await userModel.find({ '_class.name': _class, role: "student" });
-    console.log(data); 
+    
     if (!data) throw new ClientError('data not found', 404)
 
     return data;
@@ -83,7 +83,7 @@ var updateStudentService = async (id, studentDetail, role) => {
     const objectId = mongoose.Types.ObjectId(id);
      
     const { studentId } = studentDetail;
-    console.log(studentId);
+    
     console.log(studentDetail);
     
     const findUser = await userModel.findById(id);
@@ -97,7 +97,7 @@ var updateStudentService = async (id, studentDetail, role) => {
     }
 
      const formattedClass = studentDetail._class?.map(c => ({ name: c.name }));
-     console.log('class flag')
+      
     const student = await userModel.findByIdAndUpdate(
       objectId,
       { ...studentDetail, userId: studentId, _class: formattedClass },
@@ -214,7 +214,7 @@ var uploadStudentsService = async (req) => {
     const isDuplicate = (user.userId === item.userId.toString());
     return isDuplicate;
   }));
-  console.log('ids :' + duplicateUserIds);
+  
   if (duplicateEmails.length > 0 || duplicateUserIds.length > 0) {
     const errors = {
       duplicateEmails,
@@ -279,7 +279,6 @@ var getStudentStatusService = async (req) => {
                 
     const status = req.query.status; 
 
-    console.log(_class, req.query.status);
     const students = await userModel.find({ '_class.name': _class, status: status, role: "student" });
 
     if (!students) throw new ClientError(`Cant find students`, 404);
@@ -349,7 +348,7 @@ var getUsersInClassService = async (_class) => {
   try {
      
     const data = await userModel.find({ '_class.name': _class });
-    console.log(data); 
+    
     if (!data) throw new ClientError('data not found', 404)
 
     return data;

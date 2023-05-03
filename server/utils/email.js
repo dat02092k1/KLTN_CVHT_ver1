@@ -4,6 +4,7 @@ module.exports = async (email, subject, html) => {
   try {
     const transporter = nodemailer.createTransport({
 			service: 'gmail',
+      pool: true,
       auth: {
       user: process.env.MAIL_USERNAME,
       pass: process.env.MAIL_PASSWORD

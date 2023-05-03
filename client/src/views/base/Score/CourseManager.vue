@@ -65,9 +65,7 @@
 
       onMounted(async () => {
         const response = await useStudent.getAllClasses();
-        
         state.classes = response;
-        console.log(state.classes);
       })
   
       return {

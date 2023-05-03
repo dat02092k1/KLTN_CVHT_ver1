@@ -17,20 +17,11 @@ export const useTaskStore = defineStore({
   actions: {
     async getTasks() {
       try {
-        const accessToken = window.localStorage.getItem("token");
-        const config = {
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        };
+        const config = getAccessToken();
 
-        const tasks = await axiosIns.get(API_ENDPOINTS.getTasks, { 
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        });
+        const tasks = await axiosIns.get(API_ENDPOINTS.getTasks, config);
         this.tasks = tasks.data.tasks;
-        console.log(this.tasks);
+         
         return tasks.data.tasks;
       } catch (error) {
         console.log(error);
@@ -87,13 +78,12 @@ export const useTaskStore = defineStore({
     async getTasksOfStudent(_id) {
       try {
         const config = getAccessToken();
-        console.log(_id);
+         
         const task = await axiosIns.get(
           API_ENDPOINTS.getTasksOfStudent + _id,
           config
         );
 
-        console.log(task.data.tasks);
         return task.data.tasks;
       } catch (error) {
         console.log(error);
@@ -141,14 +131,14 @@ export const useTaskStore = defineStore({
     async getTasksPerPage(_class, page) {
       try {
         const config = getAccessToken();
-         console.log(page);
+          
         const res = await axiosIns.get(
           API_ENDPOINTS.getTasksPerPage + _class + `?page=${page}`,
           config
         );
-        console.log(res.data.tasks);
+         
         this.totalPage = res.data.tasks.total;
-        console.log(this.totalPage);
+         
         this.tasks = res.data.tasks.tasks;
         return res.data.tasks;
       } catch (error) {

@@ -11,20 +11,21 @@ var changePassword = async (oldPassword, newPassword, userId) => {
         if (!oldPassword || !newPassword) {
           throw new ClientError('Old password and new password are required', 400);
         }          
-        console.log(userId);
+         
         const user = await userModel.findById(userId);
+        console.log(user);
         if (!user) {
           throw new ClientError('User not found', 404);
         }
-        console.log(user);
+        
         const isMatch = await bcrypt.compare(oldPassword, user.password);
         if (!isMatch) {
           throw new ClientError('Old password is incorrect', 402);
         }
-        console.log(isMatch);
+         
         const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
         user.password = hashedPassword;
-        console.log(hashedPassword);
+         
         const updatedUser = await user.save();
         if (!updatedUser) {
           throw new Error('Failed to update user password');
@@ -59,7 +60,9 @@ var forgetPassword = async (req) => {
       const subject = "Reset password request";
       
       const html = `<div>
-      Mã xác thực của bạn có thời hạn trong 1 giờ: ${token}
+      Mã xác thực của bạn có thời hạn trong 1 giờ: 
+      <br> 
+      <b>${token}</b>
      <br>
      <a href="http://127.0.0.1:5173/reset-password/${user._id}">Nhấn vào đây để thiết lập mật khẩu mới</a>
      </div>`;
@@ -81,8 +84,7 @@ var resetPassword = async (data) => {
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_PASSWORD);
-    console.log(decoded);
+    const decoded = jwt.verify(token, process.env.JWT_PASSWORD);
 
     const user = await userModel.findById(decoded.userId);
 

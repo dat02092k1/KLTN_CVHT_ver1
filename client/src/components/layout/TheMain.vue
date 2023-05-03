@@ -195,10 +195,7 @@ export default {
     console.log(this.selectedClass);
     await this.useStudent.getData(this.selectedClass);
     this.students = this.useStudent.data;
-     
     this.isShowSpinner = false;
-    console.log(this.students);
-     
   },
   watch: {
     async selectedClass(newVal) {
@@ -211,7 +208,6 @@ export default {
       try {
         const response = await this.useStudent.getData();
         this.students = this.useStudent.data;
-        console.log(this.students);
       } catch (error) {
         console.log(error);
       }

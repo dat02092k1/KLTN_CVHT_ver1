@@ -33,7 +33,6 @@ var createPostService = async (postDetails) => {
 
     const getUser = await userModel.findById(user);
 
-    console.log(getUser);
     const username = getUser.userId;
  
     const newPost = new postModel({
@@ -112,7 +111,7 @@ var deletePostService = async (id) => {
 var listPostsPerPageService = async (req) => {
   try {
     const _class = req.params.class; 
-     console.log(_class);
+      
     const page = req.query.page || 1;
     console.log(page);
     const perPage = 5;

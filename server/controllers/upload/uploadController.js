@@ -70,8 +70,6 @@ var uploadMultiDocs = async (req, res) => {
 
     const fileExtension = require("mime-types").extension(file.mimetype);
 
-        console.log("File extension:", fileExtension);
-
         const result = await cloudinary.uploader.upload(file.path, {
           folder: "Report files",
           resource_type: "raw",

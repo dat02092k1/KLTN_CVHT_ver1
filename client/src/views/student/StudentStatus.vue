@@ -29,9 +29,9 @@
             <th>STT</th>
             <th>MSSV</th>
             <th>Họ tên</th>
-            <th>GPA</th>
-            <th>Class</th>
-            <th>Status</th>
+            <th>Tong trung binh tich luy</th>
+            <th>Lop</th>
+            <th>Trang thai danh gia</th>
           </tr>
         </thead>
         <tbody>
@@ -143,7 +143,7 @@ return normalizedWords.join(" ");
       const doc = new jsPDF();
 
       // Add table headers
-      const headers = [["STT", "MSSV", "Ten", "CPA", "Lop", "Trang thai"]];
+      const headers = [["STT", "MSSV", "Ho ten", "Diem trung binh", "Lop", "Trang thai danh gia"]];
 
       // Add table data
       const data = students.value.map((item, index) => [

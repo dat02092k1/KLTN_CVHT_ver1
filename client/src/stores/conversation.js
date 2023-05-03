@@ -33,7 +33,7 @@ export const useChatStore = defineStore({
         config
       );
       this.conversation = conversations.data.conversations;      
-      // console.log(this.conversation) 
+       
       const membersArr = this.conversation.map((obj) => obj.members);
        
       const friends = membersArr
@@ -44,9 +44,9 @@ export const useChatStore = defineStore({
     async getMessages(conversationId) {
         try {
             const config = getAccessToken();
-            console.log(conversationId);
+             
             const messages = await axiosIns.get(`http://localhost:8000/api/message-limit/${conversationId}`, config);
-            console.log(messages);
+             
             this.messages = messages.data.messages;
         } catch (error) {
             console.log(error);   
@@ -88,7 +88,6 @@ export const useChatStore = defineStore({
         this.newConversation._id = conversation.data.conversation._id;
         this.newConversation.members = conversation.data.conversation.members;        
         
-        console.log(this.newConversation);
          return this.newConversation;
       } catch (error) {
         console.log(error.response.data.message);
@@ -121,7 +120,6 @@ export const useChatStore = defineStore({
         }
     
         const accessToken = window.localStorage.getItem("token");
-        console.log(accessToken);
 
         const msg = await axiosIns.get('http://localhost:8000/api/message-load',{
           headers: {
@@ -135,10 +133,8 @@ export const useChatStore = defineStore({
         });
     
         console.log(msg.data.messages);  
-        // this.messages =  this.messages.concat(msg.data.messages);
+         
         this.messages.unshift(...msg.data.messages);
-        // this.messages.push(msg.data.messages);   
-        // console.log(this.messages); 
       } catch (error) {
         console.log(error);
       }

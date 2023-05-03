@@ -51,7 +51,7 @@ export const useUploadStore = defineStore({
       try {
           this.loading = true;
           const config = getAccessToken(); 
-          console.log(data);
+           
           const docs = await axiosIns.post("http://localhost:8000/api/upload-doc", data, config); 
            
           console.log(docs)

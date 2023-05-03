@@ -4,9 +4,9 @@ const SALT_ROUNDS = 10;
 
 var createStudentAccount = async (req, res, next) => {
     const { userId, password, role } = req.body;
-    console.log(userId);
+     
     const hashPassword = await bcrypt.hashSync(password, SALT_ROUNDS);
-    console.log(hashPassword);
+     
   const user = new userModel({ 
     userId: userId,        
     password: hashPassword, 

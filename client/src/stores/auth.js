@@ -28,7 +28,7 @@ export const useAuthStore = defineStore({
   actions: {
     async login(userId, password) {
       try {
-        console.log(userId);
+         
         const user = await axiosIns.post("http://localhost:8000/api/user/login",
         {
           userId,
@@ -36,13 +36,13 @@ export const useAuthStore = defineStore({
         });
 
         this.user = user.data.user;
-        console.log(user.status);
+         
         localStorage.setItem("_id", this.user._id);
         localStorage.setItem("username", this.user.userId);
         localStorage.setItem("role", this.user.role);
-        console.log(this.user._class);
+         
         const classNames = this.user._class.map((c) => c.name); 
-        console.log(classNames);
+         
         localStorage.setItem("class", JSON.stringify(classNames));
         localStorage.setItem("refreshToken", user.data.refreshToken);
 
@@ -57,7 +57,6 @@ export const useAuthStore = defineStore({
           addUser(getUsername());
           router.push("/");
         } else {
-          console.log(this.errorMsg);
           this.errorMsg = true;
           this.isLoading = true;
           setTimeout(() => (
@@ -68,7 +67,6 @@ export const useAuthStore = defineStore({
       } catch (error) {
         this.errorMsg = true;
         console.log(error);
-        console.log(this.errorMsg);
         setTimeout(() => (this.errorMsg = false), 3000); 
         throw error;
       }
@@ -77,7 +75,6 @@ export const useAuthStore = defineStore({
       try {
         const config = getAccessToken();
 
-          console.log(config.headers)   
         const logout = await axiosIns.post(`http://localhost:8000/api/user/logout`, {}, config);
  
         const _class = getClass();
@@ -107,7 +104,6 @@ export const useAuthStore = defineStore({
     },
     async forgetPassword(email) {
       try {
-        console.log(email); 
         const res = await axiosIns.post(API_ENDPOINTS.forgetPassword, { emailAddress: email });
 
         console.log(res);

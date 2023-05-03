@@ -23,7 +23,7 @@ export const useForumStore = defineStore({
     async getListPosts (_class) {
         try {
             const config = getAccessToken();
-            console.log(_class);
+             
           const posts = await axiosIns.get(`http://localhost:8000/post/list/${_class}`, config); 
           this.listPost = posts.data.postList;
           console.log(this.listPost);
@@ -38,9 +38,10 @@ export const useForumStore = defineStore({
           const config = getAccessToken();
          const res = await axiosIns.get(`http://localhost:8000/posts/per-page/${_class}?page=${page}`, config); 
          console.log(res.data.list);
+
         this.listPost = res.data.list.posts;
         this.totalPages = res.data.list.totalPages;
-        console.log(this.listPost);
+    
         return res.data.list;
       } catch (error) {
           console.log(error);   
@@ -51,7 +52,7 @@ export const useForumStore = defineStore({
     async addPost(postContent) {
       try {
         const config = getAccessToken();
-          console.log(postContent);
+           
         const post = await axiosIns.post("http://localhost:8000/post/create", postContent, config)
          
         this.successMsg = true;
@@ -107,12 +108,10 @@ export const useForumStore = defineStore({
        {
         content: content
        }
-       ,config);
-       console.log(comment.data.comment); 
+       ,config); 
 
        this.comments.push(comment.data.comment);
        console.log(this.comments);
-      //  this.$forceUpdate();
       } catch (error) {
         console.log(error);
       }
@@ -154,7 +153,6 @@ export const useForumStore = defineStore({
 
         const comment = await axiosIns.get(`http://localhost:8000/post/comment/view/${commentId}`, config);
 
-        console.log(comment);
         this.getComment = comment;
       } catch (error) {
         console.log(error);

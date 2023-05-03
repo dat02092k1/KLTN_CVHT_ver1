@@ -165,7 +165,7 @@ export default {
     this.getConversations(this.getUsername);
 
     getUsersOnl();
-    console.log(this.members);
+     
     // getMessages(() => this.members, this.getUsername, () => this.useChat.messages, data => this.popupMsg(data));
 
     offlineUser((data) => console.log(data));
@@ -177,7 +177,6 @@ export default {
   watch: {
     isConnected(newVal) {
       if (newVal) {
-        console.log(newVal);
       getMessages(() => this.members, this.getUsername, () => this.useChat.messages);
     }
     }
@@ -190,12 +189,10 @@ export default {
     getMessage(id, mem) {
       this.conversationId = id;
       this.members = mem;
-      console.log(this.members);
+       
       this.currentPage = 2;
       this.receiver = this.filterDuplicate(mem, this.getUsername);
 
-      console.log(this.conversationId, this.receiver);
-      console.log(id);
       this.useChat.getMessages(id);
     },
     sendMessage() {
@@ -203,8 +200,7 @@ export default {
         alert('Chưa điền tin nhắn');
         return;
       }
-      console.log("flag");
-      console.log(this.conversationId);
+    
       const message = {
         conversationId: this.conversationId,
         sender: this.getUsername,
@@ -215,7 +211,7 @@ export default {
         (another) => another !== this.getUsername
       );
 
-      console.log(receiver);
+      console.log(receiver); 
       sendMessage(this.getUsername, receiver, this.content);
 
       try {
@@ -242,8 +238,6 @@ export default {
 
         const conversationId = conversation._id;
         const conversationMembers = conversation.members;
-
-      console.log(conversationId, conversationMembers);
 
       this.getMessage(conversationId, conversationMembers)
       } catch (error) {
@@ -281,7 +275,7 @@ export default {
       await this.useChat.getConversation(username);
       this.selectedOption = 1;
       this.names = await this.getUserNames(this.useChat.conversation, username);
-      console.log(this.names);
+       
     },
     // Function to get names for all unique usernames in an array of conversations
     async getUserNames(conversations, currentUser) {

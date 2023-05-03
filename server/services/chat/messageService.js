@@ -51,7 +51,6 @@ var loadMessageService = async (req) => {
     const skip = (page - 1) * pageSize;
     
     console.log(page); 
-    console.log(pageSize);   
     console.log(skip); 
 
     const messages = await messageModel.find({ conversationId: conversationId })

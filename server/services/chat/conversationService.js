@@ -14,8 +14,6 @@ var createConversationService = async (req, res) => {
       members: { $all: [req.body.senderId, req.body.receiverId] },
     });
 
-    console.log(checkExisted);
-
     if (checkExisted) throw new ClientError(checkExisted, 409);
 
     await newConversation.save();
@@ -51,7 +49,7 @@ const getConversationService = async (req, res) => {
           };
       })
     )
-    console.log(conversationsWithLatestMessages);
+     
     // Sort conversations by latestMessageCreatedAt in descending order
     const sortedConversations = conversationsWithLatestMessages.sort((a, b) => b.latestMessageCreatedAt - a.latestMessageCreatedAt);
 
@@ -66,8 +64,6 @@ var handleConversationService = async (req, res) => {
     const checkConversation = await conversationModel.findOne({
       members: { $all: [req.body.senderId, req.body.receiverId] },
     });
-    console.log('handle');
-    console.log(checkConversation);
 
     if (checkConversation) {
         return checkConversation;

@@ -13,7 +13,7 @@
       <div class="flex justify-center">
         <form @submit.prevent="submitForm" class="add--course m-6 bg-[#fff] p-4 w-[50%] rounded">
         <div class="task-title text-center my-2">
-          <h2>Update status</h2>
+          <h2>Cập nhật trạng thái</h2>
         </div>
   
         <div class="task-content my-2">
@@ -24,7 +24,7 @@
             </span>
           </div>   
               <div class="flex">
-                <h3>Status</h3>
+                <h3>Trạng thái</h3>
              
               <a-select class="px-6" v-model:value="selectedOption" @change="handleSelectChange">
     <a-select-option v-for="option in options" :key="option.value" :value="option.value">
@@ -82,7 +82,6 @@
     async mounted() {
       this.form = await this.useForm.getDetailsForm(this.formId);
       this.selectedOption = this.form.status;
-      console.log(this.form);
     },
     methods: {
       async submitForm() {

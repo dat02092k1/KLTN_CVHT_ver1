@@ -71,8 +71,7 @@
         
         const cpa = fetchData.map(number => number.CPA);
         const student = fetchData.map(number => number.userId);
-        console.log(cpa);
-        console.log(student);
+        
         this.chartData = {
           labels: student,
           datasets: [
@@ -101,14 +100,13 @@
         } 
 
         this.userlist  = await this.useStudent.getData(this.selectedClass); 
-        console.log(this.userlist);
+         
         const fetchData = this.userlist;
         this.isShowSpinner = false;
         
         const cpa = fetchData.map(number => number.CPA);
         const student = fetchData.map(number => number.userId);
-        console.log(cpa);
-        console.log(student);
+         
         this.chartData = {
           labels: student,
           datasets: [

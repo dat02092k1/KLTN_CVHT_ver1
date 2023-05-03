@@ -25,7 +25,7 @@ export const useFormStore = defineStore({
         const res = await axiosIns.get(API_ENDPOINTS.getForm + _class, config);
 
         this.listForms = res.data.forms;
-        console.log(this.listForms); 
+        
         return res.data;
       } catch (error) {
         console.log(error);
@@ -35,7 +35,6 @@ export const useFormStore = defineStore({
       try {
         const config = getAccessToken();
 
-        console.log(form);
         const res = await axiosIns.post(API_ENDPOINTS.addForm, form, config);
 
         this.successMsg = true;
@@ -76,7 +75,6 @@ export const useFormStore = defineStore({
           config
         );
 
-        console.log(res.data);
         return res.data.form;
       } catch (error) {
         console.log(error);
@@ -86,7 +84,6 @@ export const useFormStore = defineStore({
       try {
         const config = getAccessToken();
         
-        console.log(form);
         const res = await axiosIns.put(
           API_ENDPOINTS.editForm + id,
           form,
@@ -120,7 +117,6 @@ export const useFormStore = defineStore({
 
         const res = await axiosIns.get(API_ENDPOINTS.getFormsByType + id + `?type=${type}`, config);
 
-        console.log(res.data);
         return res.data.forms;
       } catch (error) {
         console.log(error);
@@ -132,7 +128,6 @@ export const useFormStore = defineStore({
 
         const res = await axiosIns.get(API_ENDPOINTS.getFormsRest + id, config);
 
-        console.log(res.data);
         return res.data.forms;
       } catch (error) {
         console.log(error);

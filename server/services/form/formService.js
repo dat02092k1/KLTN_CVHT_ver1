@@ -32,7 +32,6 @@ var getFormsService = async (req) => {
   try {
     const _class = req.params.class;
 
-    console.log(_class);
     const forms = await formModel.find({ _class });
 
     if (!forms) throw new ClientError("forms not found", 404);
@@ -59,12 +58,9 @@ var updateFormService = async (formId, formDetails) => {
   try {
     const { status } = formDetails;
 
-    console.log(formDetails);
     const formExist = await formModel.findByIdAndUpdate(formId, formDetails, { new: true});
 
     if (!formExist) throw new ClientError("cant find form", 404);
-
-    console.log(formExist);
 
     return formExist;
   } catch (error) {
@@ -86,9 +82,8 @@ var getDetailsFormService = async (formId) => {
 
 var getFormsOfUserService = async (studentId) => {
   try {
-    console.log(studentId); 
     const forms = await formModel.find({ student: studentId });
-    console.log(forms);   
+ 
     if (!forms) throw new ClientError("cant find student", 404);
 
     return forms;
@@ -102,7 +97,6 @@ var getFormsByTypeService = async (req) => {
     const type = req.query.type;
     const studentId = req.params.id;
 
-    console.log(type); 
     const forms = await formModel.find({ student: studentId, type: type });
     if (!forms) throw new ClientError("cant find forms", 404);
 

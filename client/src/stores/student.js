@@ -38,7 +38,6 @@ export const useStudentStore = defineStore({
   actions: {
     async getData(_class) {
       try {
-        console.log('class ' + _class)
         const config = getAccessToken();
 
         const response = await axiosIns.get(
@@ -122,13 +121,8 @@ export const useStudentStore = defineStore({
     },
     async deleteStudent(id) {
       try {
-        const accessToken = window.localStorage.getItem("token");
-        console.log(accessToken);
-        const config = {
-          headers: {
-            token: `Bearer ${accessToken}`,
-          },
-        };
+        const config = getAccessToken(); 
+
         const response = await axiosIns.delete(
           `http://localhost:8000/student/remove/${id}`,
           config
@@ -150,8 +144,6 @@ export const useStudentStore = defineStore({
         const config = getAccessToken();
         const res = await axiosIns.get(`http://localhost:8000/student/status/${_class}?status=${status}`, config);
 
-        console.log(res.data.students);
-
          return res.data.students;
       } catch (error) {
         console.log(error);
@@ -165,8 +157,6 @@ export const useStudentStore = defineStore({
         const id = getId();
         const res = await axiosIns.get(`http://localhost:8000/student/in-class/${id}`, config);
 
-        console.log(res.data.students);
-
          return res.data.students;
       } catch (error) {
         console.log(error);
@@ -177,8 +167,6 @@ export const useStudentStore = defineStore({
         const config = getAccessToken();
 
         const res = await axiosIns.get(`http://localhost:8000/student/all-class`, config);
-
-        console.log(res.data.classes);
 
          return res.data.classes;
       } catch (error) {

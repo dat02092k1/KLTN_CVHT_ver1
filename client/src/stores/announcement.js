@@ -61,8 +61,6 @@ export const useAnnouncementStore = defineStore({
           config
         );
 
-        console.log(deleteAnnouncement);
-
         this.getListAnnouncement();
         this.successMsg = true;
         setTimeout(() => (this.successMsg = false), 3000);
@@ -81,7 +79,6 @@ export const useAnnouncementStore = defineStore({
           config
         );
 
-        console.log(res.data.announcement);
         return res.data.announcement;
       } catch (error) {
         console.log(error);

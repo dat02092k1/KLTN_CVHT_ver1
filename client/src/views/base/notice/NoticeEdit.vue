@@ -83,7 +83,7 @@
  
       onMounted(async () => {
         const data = await useNotice.getDetailsNotice(noticeId);
-        console.log(data);
+         
         formState._class = data._class;
         formState.subject = data.subject;
         formState.message = data.message;

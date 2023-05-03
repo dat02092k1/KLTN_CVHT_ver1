@@ -236,8 +236,6 @@ export default defineComponent({
           formState.complete = checked.value;
 
           formState.assignedStudents = assignedStudents.value;
-          console.log(formState.assignedStudents);
-          console.log("formState: ", toRaw(formState));
           const task = toRaw(formState);
           console.log(task);
           const res = await useTask.assignTasks(formState._class, task);
@@ -277,7 +275,7 @@ export default defineComponent({
     const assignedStudents = ref([]);
     const handleChange = (value) => {
       formState.assignedStudents = value;
-      console.log(formState.assignedStudents);
+ 
       assignedStudents.value = formState.assignedStudents.map((studentId) => ({
         student: studentId,
       }));
@@ -298,12 +296,10 @@ export default defineComponent({
         userId,
         _id,
       }));
-      console.log(studentsId.value);
 
       tasks.value = await useTask.getTasksPerPage(selectedOption.value, currentPage.value);
       totalPages.value = tasks.value.total;
       isShowSpinner.value = false;
-      console.log(tasks.value);
     });
 
     async function deleteTask(id) {
@@ -348,12 +344,6 @@ export default defineComponent({
 
     const options = computed(() => {
       if (students.value.length > 0) {
-        console.log(
-          students.value.map((student) => ({
-            value: student._id,
-            label: student.userId,
-          }))
-        );
         return students.value.map((student) => ({
           value: student._id,
           label: student.userId,

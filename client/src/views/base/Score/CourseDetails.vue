@@ -119,12 +119,11 @@ export default {
   },
   async mounted() {
     this.courses = await this.useScore.getCourses(this.id);
-    console.log(this.courses);
+     
     this.student = await this.useStudent.getStudentDetails(this.id);
-    console.log(this.student);
+     
     this.studentCpa = this.student.CPA;
     this.studentClass = this.student._class[0].name;
-    console.log(this.studentClass);
   },
   methods: {
     roundToTwoDecimalPlaces(num) {
@@ -135,13 +134,6 @@ export default {
         return { path: "/manager/course/" + this.studentClass };
       } else if (this.userRole === "consultant") {
         return { path: "/student/course" };
-      }
-    },
-    editCourse(id) {
-      try {
-        console.log(id);
-      } catch (error) {
-        console.log(error);
       }
     },
     async confirm(courseId, studentId) {
@@ -155,14 +147,12 @@ export default {
     },
     openNotification() {
       notification.open({
-        key,
         message: "Notification Title",
         description: "description.",
       });
 
       setTimeout(() => {
         notification.open({
-          key,
           message: "New Title",
           description: "New description.",
         });
@@ -179,7 +169,6 @@ export default {
       if (value) {
         setTimeout(() => {
         notification.open({
-          key,
           message: "New Title",
           description: "New description.",
         });

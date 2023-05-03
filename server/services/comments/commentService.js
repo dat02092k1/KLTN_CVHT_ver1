@@ -11,8 +11,7 @@ var createCommentService = async (id, userId, commentDetails) => {
         const postId = id;
         const {
             content
-            } = commentDetails;
-        console.log(id, userId, commentDetails); 
+            } = commentDetails; 
 
         const getStudent = await userModel.findById(userId);
          
@@ -35,8 +34,6 @@ var createCommentService = async (id, userId, commentDetails) => {
 
 var getComments = async (username) => {
     try {
-        console.log(username);
-
         const listComments = await commentModel.find({ username: username}); 
 
         if (!listComments) throw new ClientError("There're no comments at all", 404); 
@@ -48,25 +45,6 @@ var getComments = async (username) => {
 }
 
 var getPostAndCommentService = async () => {
-    
-        // const list = {};
-        // postModel.find((err, posts) => {
-        //     if (err) throw new Error(err);
-        //     else {
-        //         commentModel.find({ postId: { $in: posts.map(post => post._id) }  })
-        //                 .populate('postId')
-        //                 .exec((err, comments) => {
-        //                     if (err) throw new Error(err);
-                            
-        //                     else{ 
-        //                          list.posts = posts;
-        //                          list.comments = comments; 
-        //                         console.log(list);
-        //                         return list;
-        //                     }
-        //                 })
-        //     }
-        // })
         try {
             const posts = await postModel.find();
             const postIds = posts.map(post => post._id);
@@ -109,12 +87,8 @@ var deleteCommentService = async (id) => {
 
 var editCommentService = async (id, commentDetails) => {
     try {
-        console.log('flag1')
-        console.log(commentDetails);
-        console.log('flag2')
-        // const objectId = mongoose.Types.ObjectId(username);
         const updateComment = await commentModel.findByIdAndUpdate(id, commentDetails, { new: true }); 
-        console.log(updateComment);
+         
         if (!updateComment) {
             throw new ClientError(`No post found with id: ${id}`, 404);  
         } 
@@ -142,7 +116,7 @@ var getCommentsMapPostIdService = async (id) => {
 var getCommentByIdService = async (id) => {
     try {
         const comment = await commentModel.findById(id);
-        console.log(comment);
+         
         if (!comment) throw new ClientError("Comment not found", 404);
 
         return comment; 

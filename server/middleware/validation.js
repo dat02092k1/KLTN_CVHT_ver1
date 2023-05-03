@@ -32,16 +32,10 @@ const validateFieldsMiddleware = (req, res, next) => {
   for (const item of data) {
     item.birthdate = formatBirthdate(item.birthdate)
      console.log((item.birthdate));
-    console.log(typeof(item.name));
-    console.log(typeof(item.password));
+
     if (isNaN(new Date(item.birthdate).getTime())) {
       validationErrors.push('invalid birthdate');
     }
-    // var date = new Date(1900, 0, item.birthdate)
-    // console.log(date);
-//     const [day, month, year] = item.birthdate.split('/');           
-// const birthdate = new Date(year, month - 1, day);
-// console.log(birthdate);
     
     const { error } = schema.schema.validate(item);
 
@@ -74,7 +68,7 @@ const validateCourse = (req, res, next) => {
   }
   
   const workbook = xlsx.readFile(req.file.path);
-  // , { cellDates: true }
+   
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
   const data = xlsx.utils.sheet_to_json(worksheet);

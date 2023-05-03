@@ -19,9 +19,6 @@ export const useReportStore = defineStore({
         const config = getAccessToken();
 
         const res = await axiosIns.get(API_ENDPOINTS.getListReports, config);
-
-        console.log(res.data.reports); 
-
         return res.data.reports; 
       } catch (error) {
         console.log(error);
@@ -35,7 +32,6 @@ export const useReportStore = defineStore({
 
             const res = await axiosIns.post(API_ENDPOINTS.createReport + id, reportDetails, config) 
 
-            console.log(res.data); 
             this.getReports();
             this.loading = false;
         } catch (error) {
@@ -50,7 +46,6 @@ export const useReportStore = defineStore({
         const res = await axiosIns.get(API_ENDPOINTS.getReportsOfUser + userId, config);
 
         this.reports = res.data.reports;
-        console.log(this.reports); 
 
         return res.data.reports; 
         } catch (error) {
@@ -78,7 +73,6 @@ export const useReportStore = defineStore({
 
         const res = await axiosIns.get(API_ENDPOINTS.getDetailsReport + id, config);
 
-        console.log(res.data);
         return res.data.report;
       } catch (error) {
         console.log(error);

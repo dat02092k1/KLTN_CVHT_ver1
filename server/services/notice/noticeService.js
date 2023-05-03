@@ -7,15 +7,12 @@ const { ClientError } = require("../error/error.js");
 
 const createNoticeService = async (req) => {
   try {
-     
-    console.log(req.query); 
-    const {
+      const {
         userId,
         subject,
         message,
         _class
     } = req.body;             
-    console.log(_class);
 
     const getUsers = await userModel.find({ '_class.name': _class, role: 'student' });
  
@@ -35,10 +32,11 @@ const createNoticeService = async (req) => {
     const html = `<div>
         ${message}
      </div>`; 
-    const sendEmails = getUsers.map(student => {
-        console.log(student.emailAddress);
-        return email(student.emailAddress, subject, html);
-    });
+  
+    const sendEmails = getUsers.forEach(function(student, index) {
+      setTimeout(() => {
+        return email(student.emailAddress, subject, html);     
+      }, 1000 * index)});
 
     await Promise.all(sendEmails);
     
@@ -57,8 +55,6 @@ const createNoticeService = async (req) => {
  
 const deleteNoticeService = async (id) => {
     try {
-        console.log(id);
-
         const notiRelated = await notiModel.deleteMany({ noticeId: id });
 
         if (!notiRelated) throw new ClientError(`cound not find notification related to this post`, 404);

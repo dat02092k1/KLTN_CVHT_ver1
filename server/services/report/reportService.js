@@ -6,10 +6,10 @@ const { ClientError } = require("../error/error.js");
 
 var createReportService = async (req) => {
     const { title, content } = req.body;
-    console.log(req.body); 
+     
     const userId = req.params.userId;
     const files = req.files;
-    console.log(req.files); 
+     
   try {
     const user = await userModel.findById(userId);
     if (!user) throw new ClientError("User not found", 404);
@@ -31,8 +31,6 @@ var createReportService = async (req) => {
               }
             
             const fileExtension = require('mime-types').extension(file.mimetype);
-
-            console.log('File extension:', fileExtension);
 
             const result = await cloudinary.uploader.upload(file.path, {
                 folder: "Report files",
@@ -69,12 +67,9 @@ const deleteReportService = async (reportId) => {
     if (report.fileUrl && report.fileUrl.length > 0) {
       for (const file of report.fileUrl) {
         try {
-          console.log(file.public_id);
           await cloudinary.uploader.destroy(file.public_id, { resource_type: 'raw' });
           console.log(`Deleted file with public_id ${file.public_id} from Cloudinary`);
           }
-          // await cloudinary.uploader.destroy(file.public_id, resource_type = 'raw');
-          // console.log(`Deleted file with public_id ${file.public_id} from Cloudinary`);
         
         catch (error) {
           console.error(`Error deleting file with public_id ${file.public_id} from Cloudinary: ${error.message}`);
@@ -126,24 +121,6 @@ const editReportService = async (req) => {
 
     const report = await reportModel.findById(reportId);
     if (!report) throw new ClientError("Report not found", 404);
-
-    console.log(reportDetails);
-
-    // if (report.fileUrl && report.fileUrl.length > 0) {
-    //   const oldFilePublicIds = report.fileUrl.map(file => file.public_id);
-    //   const newFilePublicIds = reportDetails.fileUrl ? reportDetails.fileUrl.map(file => file.public_id) : [];
-
-    // const filesToDestroy = oldFilePublicIds.filter(publicId => !newFilePublicIds.includes(publicId));
-     
-    //   for (const publicId of filesToDestroy) {       
-    //     try {
-    //       const res = await cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
-    //       console.log(res);
-    //     } catch (error) {
-    //       console.error(`Error deleting file with public_id ${file.public_id} from Cloudinary: ${error.message}`);
-    //     }
-    //   }
-    // }
 
     const updateReport = await reportModel.findByIdAndUpdate(reportId, reportDetails, { new: true });
 

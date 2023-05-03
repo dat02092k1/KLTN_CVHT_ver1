@@ -129,13 +129,11 @@ export default {
     if (this.userRole === 'student') {
     this.courses = await this.useScore.getCourses(this.studentId); 
     this.studentCpa = await this.useStudent.getStudentDetails(this.studentId);
-    console.log(this.studentCpa);
     this.isShowSpinner = false;
     }
     else {
       this.selectedClass = this.userClass[0];
       this.students = await this.useStudent.getData(this.selectedClass);  
-      console.log(this.students);
       this.isShowSpinner = false;
     }
   },
