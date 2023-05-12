@@ -102,7 +102,7 @@ var editCourseService = async (courseId, courseDetails) => {
      
     const subjects = courseDetails.subjects;
      
-
+    console.log(courseDetails);
     for (const subject of subjects) {
       subject.grade = grades.calculateGrade(subject.score);  
     }
@@ -266,7 +266,7 @@ var importCoursesExcel = async (req) => {
       if (getCourse) throw new ClientError(`Course existed`, 400); 
       
       const Sid = student[0]._id;
-         
+      console.log(student[0]);
       const subject = { name: subjectName, code: subjectCode, score: subjectScore, credits: subjectCredits };
        
       let course = courses.find(c => {

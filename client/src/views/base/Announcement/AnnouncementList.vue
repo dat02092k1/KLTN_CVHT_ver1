@@ -16,7 +16,7 @@
             <a-modal
               v-model:visible="visible"
               title="Thêm thông báo mới"
-              ok-text="Create"
+              ok-text="Thêm"
               cancel-text="Cancel"
               @ok="onOk"
             >

@@ -187,7 +187,7 @@ export default {
       rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
       openKeys: ['sub1'],
       selectedKeys: [],
-      route: useRoute()
+      route: useRoute() 
     }
     };
   },
@@ -207,15 +207,7 @@ export default {
     },
     changeColor(color) {
       this.activeColor = color === this.activeColor ? "" : color;
-    },
-    onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(key => state.openKeys.indexOf(key) === -1);
-      if (state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-        state.openKeys = openKeys;
-      } else {
-        state.openKeys = latestOpenKey ? [latestOpenKey] : [];
-      }
-    },
+    }, 
     getForumPath() {
       if (this.userRole === 'consultant') {
         return "/consultant/forum/posts"

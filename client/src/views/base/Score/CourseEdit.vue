@@ -102,7 +102,7 @@
               class="w-full border px-4 py-2 rounded-r focus:border-blue-500 focus:shadow-outline outline-none"
              
               placeholder="Số tín chỉ"
-              v-model.number="subject.credits" type="text"
+              v-model.number="subject.credits" type="number"
               required
             />
           </div>
@@ -170,7 +170,7 @@
         subjects: this.useScore.courseDetails.subjects,
         semesterCode: this.useScore.courseDetails.semesterCode
       };
-
+      console.log(course); 
       this.useScore.editCourse(this.courseId, course); 
       }
     },

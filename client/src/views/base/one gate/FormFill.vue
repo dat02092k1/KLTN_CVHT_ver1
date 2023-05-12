@@ -23,7 +23,7 @@
           <a-modal
             v-model:visible="visible"
             title="Thêm biểu mẫu mới"
-            ok-text="Create"
+            ok-text="Lưu"
             cancel-text="Cancel"
             @ok="onOk"
           >
@@ -35,7 +35,7 @@
             >
               <a-form-item
                 name="type"
-                label="Type"
+                label="Loại biểu mẫu"
                 :rules="[
                   {
                     required: true,

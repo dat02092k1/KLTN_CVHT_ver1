@@ -27,7 +27,7 @@
           <a-modal
             v-model:visible="visible"
             title="Thêm Task"
-            ok-text="Create"
+            ok-text="Thêm"
             cancel-text="Cancel"
             @ok="onOk"
           >

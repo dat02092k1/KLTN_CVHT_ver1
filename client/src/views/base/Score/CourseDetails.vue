@@ -138,7 +138,7 @@ export default {
     },
     async confirm(courseId, studentId) {
       console.log(courseId, studentId);
-      this.useScore.deleteCourse(courseId, studentId);
+      await this.useScore.deleteCourse(courseId, studentId);
       this.courses = await this.useScore.getCourses(studentId);
     },
     cancel(e) {
@@ -147,14 +147,12 @@ export default {
     },
     openNotification() {
       notification.open({
-        message: "Notification Title",
-        description: "description.",
+        message: "Xóa thành công",
       });
 
       setTimeout(() => {
         notification.open({
-          message: "New Title",
-          description: "New description.",
+          message: "Xóa thành công",
         });
       }, 1000);
     },
@@ -169,8 +167,7 @@ export default {
       if (value) {
         setTimeout(() => {
         notification.open({
-          message: "New Title",
-          description: "New description.",
+          message: "Xóa thành công",
         });
       }, 1000);
       }
