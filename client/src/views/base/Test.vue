@@ -1,54 +1,35 @@
 <template>
-    <div>
-      <h2>title</h2>
-      <p>content</p>
-      <div>
-        <h3>Comments</h3>
-        <ul>
-          <li>
-            <strong>comment-author</strong>
-            <p>commentcontent</p>
-          </li>
-        </ul>
-        <form @submit.prevent="addComment">
-          <div>
-            <label for="author">Author:</label>
-            <input id="author" type="text" v-model="newComment.author">
-          </div>
-          <div>
-            <label for="content">Content:</label>
-            <textarea id="content" v-model="newComment.content"></textarea>
-          </div>
-          <button type="submit">Add Comment</button>
-        </form>
-      </div>
+  <div class="w-full flex flex-col justify-center items-center">
+    <div @click="selectedId = 1" :class="{ selected: selectedId === 1 }">
+      1 aaaaaaaaaaaaaaaaaaaaaaaaaaaa
     </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      post: Object,
-    },
-    data() {
-      return {
-        newComment: {
-          author: "",
-          content: "",
-        },
-      };
-    },
-    methods: {
-      addComment() {
-        const comment = {
-          author: this.newComment.author,
-          content: this.newComment.content,
-        };
-        this.post.comments.push(comment);
-        this.newComment.author = "";
-        this.newComment.content = "";
-      },
-    },
-  };
-  </script>
-  
+    <div @click="selectedId = 2" :class="{ selected: selectedId === 2 }">
+      2 aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    </div>
+    <div @click="selectedId = 3" :class="{ selected: selectedId === 3 }">
+      3 aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    </div>
+    <div @click="selectedId = 4" :class="{ selected: selectedId === 4 }">
+      4 aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    </div>
+    <div @click="selectedId = 5" :class="{ selected: selectedId === 5 }">
+      5 aaaaaaaaaaaaaaaaaaaaaaaaaaaa 
+    </div>
+  </div>
+</template>
+
+<style>
+.selected {
+  background-color: red;
+}
+</style>
+
+<script>
+export default {
+  data() {
+    return {
+      selectedId: null, // to keep track of the selected div ID
+    };
+  },
+};
+</script>

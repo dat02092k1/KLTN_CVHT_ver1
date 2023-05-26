@@ -5,27 +5,50 @@
             <div class="pb-12">
                 <img src="../../assets/images/logo_banner.png" alt="">
             </div>
-            <div class="form-item mb-5 relative">
-                <div class="absolute top-3 left-2 text-[#889aa4]">
-                    <i class="fa-solid fa-circle-user "></i>
-                </div>
-                <div class="input__item rounded">
-                    <input class="pt-3 pb-3 pr-1 pl-8 h-12 w-full" type="text" tabindex="1" placeholder="Email" v-model="studentId" name="email">
-                </div>
-            </div>
-            <div class="form-item mb-5 rounded relative">
-                <div class="absolute top-3 left-2 text-[#889aa4]">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <div class="input__item rounded">
-                    <input class="pt-3 pb-3 pr-1 pl-8 h-12 w-full" type="text" tabindex="1" placeholder="Password" v-model="password" name="password">
-                </div>
-            </div>
             <div>
-                <button @click="loginHandle" class="h-12 w-full bg-[#409eff] text-white rounded">Đăng nhập</button>
+
+            <a-alert v-show="this.store.errorMsg" message="Sai thông tin tài khoản hoặc mật khẩu" type="error" show-icon />
+            <!--
+                // ANTD COMPONENTS
+            -->
+            <a-form
+    layout="inline"
+    :model="formState"
+    @finish="handleFinish"
+    @finishFailed="handleFinishFailed"
+    class="flex flex-col"
+  >
+    <a-form-item class="mb-5">
+      <a-input class="pt-3 pb-3 px-1 h-12 w-full" v-model:value="formState.userId" placeholder="Username">
+        <template #prefix><UserOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+      </a-input>
+    </a-form-item>
+    <a-form-item class="mb-5">
+      <a-input-password class="pt-3 pb-3 px-1 h-12 w-full" v-model:value="formState.password" type="password" placeholder="Password">
+        <template #prefix><LockOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+      </a-input-password>
+    </a-form-item>
+    <a-form-item>
+      <a-button
+        type="primary"
+        html-type="submit"
+        class="h-12 w-full bg-[#409eff] text-white rounded"
+        :disabled="formState.user === '' || formState.password === ''"
+      >
+        Đăng nhập
+      </a-button>
+    </a-form-item>
+  </a-form>
+  <!--
+    ANTD COMPONENTS
+  -->
             </div>
+             
             <div>
+              <router-link :to="{ path: '/forget-password' }">
                 <button class="h-12 w-full bg-[#fff] text-[#409eff] rounded underline">Quên mật khẩu</button>
+              </router-link>
+                 
             </div>
         </div>
     </div>
@@ -34,6 +57,8 @@
 
 <script>
 import { useAuthStore } from "../../stores/auth.js";
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { getClass } from "../../utils/getInfoUser.js";
 
 export default {
   data() {
@@ -41,17 +66,32 @@ export default {
       studentId: '',
       password: '',   
       store: useAuthStore(),
+      formState: {
+        userId: '',
+      password: '',
+      },
+      userClass: getClass()
     };
   },
   mounted() {
       
 },
   methods: {
+    handleFinish(values) {
+        console.log(values, this.formState);
+        this.store.login(this.formState.userId, this.formState.password);
+    },
+    handleFinishFailed(errors) {
+        console.log(errors);
+    },
     loginHandle() {
         console.log(this.studentId);
         this.store.login(this.studentId, this.password);  
     }
   },
+  components: {
+    UserOutlined, LockOutlined
+  }
 };
 </script>
 <style scoped>
@@ -67,4 +107,9 @@ export default {
     outline: none;
     border: 1px solid #409eff;
 }
+
+:deep(.ant-form-inline .ant-form-item) {
+    margin-bottom: 1.25rem;
+}
+ 
 </style>

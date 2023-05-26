@@ -4,9 +4,13 @@ const Schema = mongoose.Schema;
 
 const postSchema = new Schema(
     {
+        userId: {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'users' 
+        },
         username: {
             type: String,
-            required: true  
+                         
         },
         title: {
             type: String,
@@ -17,6 +21,9 @@ const postSchema = new Schema(
         },  
         _class: {
             type: String 
+        },
+        imageUrl: {
+            type: String, 
         }
     },
     { 

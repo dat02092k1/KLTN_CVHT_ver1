@@ -41,7 +41,7 @@
   </template>
   
   <script>
-  import NavTitle from '../NavTitle.vue';
+  import NavTitle from "../NavBar/NavTitle.vue";
 
   import { RouterLink, RouterView } from "vue-router";
   import { useForumStore } from '../../../stores/forum';

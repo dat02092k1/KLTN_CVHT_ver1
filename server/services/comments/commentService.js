@@ -1,19 +1,25 @@
 const commentModel = require('../../models/comments/comment.js');
 const postModel = require('../../models/posts/post.js');
+const userModel = require('../../models/students/userModel.js');
+
+const { ClientError } = require('../error/error.js');
 
 const mongoose = require('mongoose');
 
-var createCommentService = async (id, user, commentDetails) => {
+var createCommentService = async (id, userId, commentDetails) => {
     try {
         const postId = id;
-        const username = user;
         const {
             content
-            } = commentDetails;
-        console.log(id); 
+            } = commentDetails; 
+
+        const getStudent = await userModel.findById(userId);
+         
+        const username = getStudent.userId; 
 
         const newComment = new commentModel({
-            postId,
+            postId, 
+            userId, 
             username,
             content
         })
@@ -28,11 +34,9 @@ var createCommentService = async (id, user, commentDetails) => {
 
 var getComments = async (username) => {
     try {
-        console.log(username);
-
         const listComments = await commentModel.find({ username: username}); 
 
-        if (!listComments) throw new Error("There're no comments at all"); 
+        if (!listComments) throw new ClientError("There're no comments at all", 404); 
 
         else return listComments;  
     } catch (error) {
@@ -41,25 +45,6 @@ var getComments = async (username) => {
 }
 
 var getPostAndCommentService = async () => {
-    
-        // const list = {};
-        // postModel.find((err, posts) => {
-        //     if (err) throw new Error(err);
-        //     else {
-        //         commentModel.find({ postId: { $in: posts.map(post => post._id) }  })
-        //                 .populate('postId')
-        //                 .exec((err, comments) => {
-        //                     if (err) throw new Error(err);
-                            
-        //                     else{ 
-        //                          list.posts = posts;
-        //                          list.comments = comments; 
-        //                         console.log(list);
-        //                         return list;
-        //                     }
-        //                 })
-        //     }
-        // })
         try {
             const posts = await postModel.find();
             const postIds = posts.map(post => post._id);
@@ -93,7 +78,7 @@ var deleteCommentService = async (id) => {
         if (deleteComment) {
             return "Deleted successfully!";
         } else {
-            throw new Error('Comment is not found');
+            throw new ClientError('Comment is not found', 404);
           }
     } catch (error) {
         throw error;
@@ -102,12 +87,10 @@ var deleteCommentService = async (id) => {
 
 var editCommentService = async (id, commentDetails) => {
     try {
-        console.log(id, commentDetails);
-        // const objectId = mongoose.Types.ObjectId(username);
         const updateComment = await commentModel.findByIdAndUpdate(id, commentDetails, { new: true }); 
-
+         
         if (!updateComment) {
-            throw new Error(`No post found with id: ${id}`);  
+            throw new ClientError(`No post found with id: ${id}`, 404);  
         } 
 
         return updateComment;
@@ -120,7 +103,7 @@ var getCommentsMapPostIdService = async (id) => {
     try {
         const post = await postModel.findById(id); 
 
-        if (!post) throw new Error("Post not found"); 
+        if (!post) throw new ClientError("Post not found", 404); 
 
         const comments = await commentModel.find({ postId: id });
 
@@ -129,7 +112,19 @@ var getCommentsMapPostIdService = async (id) => {
         throw error;
     }
 }
+
+var getCommentByIdService = async (id) => {
+    try {
+        const comment = await commentModel.findById(id);
+         
+        if (!comment) throw new ClientError("Comment not found", 404);
+
+        return comment; 
+    } catch (error) {
+        throw error;
+    }
+}
 module.exports = { createCommentService, getComments, 
                     getPostAndCommentService, getPostAndCommentOfUserService,
                     deleteCommentService, editCommentService,
-                    getCommentsMapPostIdService } ;  
+                    getCommentsMapPostIdService, getCommentByIdService } ;  

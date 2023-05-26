@@ -1,150 +1,268 @@
 <template>
-  <div class="main">
+  <div class="main" v-if="userRole === 'consultant'">
     <div class="main-container pt-0 px-7 pb-7">
       <div class="nav-content bg-[#324f90] p-[1.5rem]">
         <div class="nav-title text-[#fbfbff] font-bold text-[15px]">
-          <div>KHUNG CHƯƠNG TRÌNH ĐÀO TẠO</div>
+          <div>DANH SÁCH SINH VIÊN</div>
         </div>
       </div>
       <div class="table-content bg-[#ffffff]">
         <div class="filter-container p-6">
-          <div class="row  font-bold">
+          <div class="row font-bold flex items-center">
             <label class="text-[14px] text-[#606266] leading-10" for=""
               >Lớp học:</label
             >
-            <label class="text-[14px] text-[#606266] ml-2 leading-10" for=""
-              >K64-C-CLC</label
-            >
+            <div>
+    <select v-model="selectedClass">
+      <option v-for="className in userClass" :value="className">{{ className }}</option>
+    </select>
+  </div> 
+
+            
           </div>
-          <RouterLink class="bg-[#324f90] text-[#fff] p-2 rounded " to="/student/form">
-                    Thêm sinh viên
-                  </RouterLink>
-      <RouterView />
+          <div class="flex justify-between">
+            <RouterLink
+              class="bg-[#324f90] text-[#fff] p-2 rounded"
+              to="/student/add"
+              v-show="userRole === 'manager'"
+            >
+              Thêm người dùng 
+            </RouterLink>
+
+            <RouterLink
+              class="bg-[#324f90] text-[#fff] p-2 rounded"
+              :to="{ path: '/student/status/' + selectedClass }"
+            >
+              Danh sách sinh viên theo trạng thái
+            </RouterLink>
+
+            <RouterLink
+              class="bg-[#324f90] text-[#fff] p-2 rounded"
+              to="/student/import-excel"
+              v-show="userRole === 'manager'"
+            >
+              Import excel 
+            </RouterLink>
+          </div>
         </div>
         <div class="content-container">
-           
-            <table id="table-course">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>MSSV</th>
-                  <th>Họ tên</th>
-                  <th>Số điện thoại</th>
-                  <th>Ngày sinh</th>
-                  <th>GPA</th>
-                  <th>Trạng thái</th>
-                  <th></th>
-                </tr>
-                <tr class="filter-course">
-                  <th></th>
-                  <th>
-                    <div>
-                      <input
+          <table id="table-course">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>MSSV</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Địa chỉ</th>
+                <th>Ngày sinh</th>
+
+                <th>Trạng thái</th>
+                <th class="p-7"></th>
+              </tr>
+              <tr class="filter-course">
+                <th></th>
+                <th>
+                  <div>
+                    <input
                       class="filter-input h-8 text-[14px] leading-1 font-normal"
-                        type="text"
-                        placeholder="MSSV"
-                      />
-                    </div>
-                  </th>
-                  <th>
-                    <div>
-                      <input
+                      type="text"
+                      placeholder="MSSV"
+                      v-model="this.filters.userId"
+                    />
+                  </div>
+                </th>
+                <th>
+                  <div>
+                    <input
                       class="filter-input h-8 text-[14px] leading-1 font-normal"
-                        type="text"
-                        placeholder="Họ tên"
-                      />
-                    </div>
-                  </th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th>
-                   
-                  </th>
-                
-                 
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  class="course-list"
-                  v-for="(item, index) in this.useStudent.data"
-                  :key="index"
-                >
-                  <td class="text-center">{{ index + 1 }}</td>
-                  <td>{{ item.studentId }}</td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.phone }}</td>
-                  <td>
-                    {{ formatDate(item.birthdate) }}
-                  </td>
-                  <td>{{ item.gpa }}</td>
-                  <td>{{ item.status }}</td>
-                  <td class="grid grid-cols-2">
-                    <div>
-                      <RouterLink :to="{ path: '/student/details/' + item._id }" >
-                        <button>
-                          <i class="fa-solid fa-circle-info text-yellow-400"></i>
-                        </button>                  
-                      </RouterLink>
-                      
-                    </div>
-                    <div>
-                        <button @click="useStudent.deleteStudent(item._id)">
-                          <i class="fa-sharp fa-solid fa-delete-left text-red-500"></i>
-                        </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-           
-           
-          </div>
+                      type="text"
+                      placeholder="Họ tên"
+                      v-model="this.searchName"
+                    />
+                  </div>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr
+                class="course-list"
+                v-for="(item, index) in this.filteredStudents"
+                :key="index"
+              >
+                <td class="text-center">{{ index + 1 }}</td>
+                <td>{{ item.userId }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.emailAddress }}</td>
+                <td>{{ item.address }}</td>
+                <td>
+                  {{ formatIsoDate(item.birthdate) }}
+                </td>
+
+                <td>{{ item.status }}</td>
+                <td class="">
+                  <!-- <div>
+                    <RouterLink :to="{ path: '/student/details/' + item._id }">
+                      <button>
+                        <i class="fa-solid fa-circle-info text-yellow-400"></i>
+                      </button>
+                    </RouterLink>
+                  </div>
+                  <div>
+                    <button @click="useStudent.deleteStudent(item._id)">
+                      <i
+                        class="fa-sharp fa-solid fa-delete-left text-red-500"
+                      ></i>
+                    </button>
+                  </div> -->
+                    <RouterLink :to="{ path: '/student/edit/' + item._id }">
+                      <button class="text-[#74c0fc] p-5">
+                        <i class="fa-solid fa-eye"></i>
+                      </button>
+                    </RouterLink>
+                  
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-  
+
+    <Spinner v-if="isShowSpinner" />
+  </div>
 </template>
 
 <script>
 import axios from "axios";
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
 import { useStudentStore } from "../../stores/student.js";
+import Spinner from "../../views/base/Spinner/Spinner.vue";
+import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
+import { createVNode, defineComponent } from "vue";
+import { Modal } from "ant-design-vue";
+import { getRole, getClass, getUsername } from "../../utils/getInfoUser.js";
 
+import {
+  format, parseISO
+} from "date-fns";
 export default {
   data() {
     return {
       data: [],
-      useStudent: useStudentStore(), 
+      useStudent: useStudentStore(),
+      filters: {
+        userId: "",
+        name: "",
+      },
+      filterText: "",
+      students: [],
+      showFilter: false,
+      searchName: "",
+      isShowSpinner: true,
+      userRole: getRole(),
+      userClass: getClass(),
+      selectedClass: ""
     };
   },
-  mounted() {
-      
-     this.useStudent.getData(); 
+  computed: {
+    filteredStudents() {
+      return this.students.filter((student) => {
+        const isMatchById = student.userId
+          .toString()
+          .includes(this.filters.userId);
+
+        const isMatchByName =
+          student.name && student.name.includes(this.searchName);
+
+        if (this.filters.userId && this.searchName) {
+          return isMatchById && isMatchByName;
+        } else if (this.filters.userId) {
+          return isMatchById;
+        } else if (this.searchName) {
+          return isMatchByName;
+        } else return true;
+      });
+    },
+  },
+  async mounted() {
+    this.selectedClass = this.userClass[0];
+    console.log(this.selectedClass);
+    await this.useStudent.getData(this.selectedClass);
+    this.students = this.useStudent.data;
+    this.isShowSpinner = false;
+  },
+  watch: {
+    async selectedClass(newVal) {
+      await this.useStudent.getData(newVal);
+      this.students = this.useStudent.data;
+    },
   },
   methods: {
-    async getData() {
+    async getDataStudent() {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/student/getAll/K64-C-CLC"
-        );
-        this.data = response.data.student;
-        // console.log(this.data);
+        const response = await this.useStudent.getData();
+        this.students = this.useStudent.data;
       } catch (error) {
         console.log(error);
       }
-
     },
-    formatDate(dateString) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("default", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
+    formatIsoDate(dtStr) {
+      const dtUtc = new Date(dtStr);
+       
+const tzOffset = -7; // UTC+7
+const dtVn = new Date(dtUtc.getTime() + tzOffset * 60 * 60 * 1000);
+
+ 
+return dtVn.toLocaleDateString('en-GB');
+},
+    formatDate(dateStr) {
+      if (!dateStr) {
+    console.error("birthdate is not provided");
+    return;
+  }
+  else {
+      const dateObj = parseISO(dateStr);
+const formattedDate = format(dateObj, 'dd/MM/yyyy');
+console.log(formattedDate);
+  }
+    },
+    showConfirm(id) {
+      Modal.confirm({
+        title: "Có chắc chắn muốn xóa sinh viên này ?",
+        icon: createVNode(ExclamationCircleOutlined),
+        content: "",
+        onOk: async () => {
+          try {
+            const result = await this.useStudent.deleteStudent(id);
+            console.log(result);
+            await this.getDataStudent();
+
+            await new Promise((resolve, reject) => {
+              setTimeout(() => {
+                if (Math.random() > 0.5) {
+                  resolve();
+                } else {
+                  reject(new Error("Oops errors!"));
+                }
+              }, 1000);
+            });
+          } catch (error) {
+            console.log(error.message);
+          }
+        },
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onCancel() {},
       });
     },
+  },
+  components: {
+    Spinner,
   },
 };
 </script>
@@ -166,11 +284,9 @@ export default {
 }
 /* TABLE CSS */
 .content-container {
-  height: 330px;
+  height: 290px;
   overflow-y: scroll;
 }
-
-
 
 #table-course {
   width: 100%;
@@ -185,8 +301,6 @@ export default {
   text-align: center;
 }
 
-
-
 .filter-course input[type="text"] {
   width: 100%;
   height: 100%;
@@ -197,7 +311,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 
 .filter-input {
   color: #606266;
@@ -214,6 +327,8 @@ input:focus {
   border: 1px solid #324f90;
   outline: none;
 }
+
+
 /* #table-course {
   border: 1px solid #dcdfe6;
   border-collapse: collapse;
@@ -246,6 +361,4 @@ table td {
 }
 
 table {  overflow: auto    } */
-
-
 </style>

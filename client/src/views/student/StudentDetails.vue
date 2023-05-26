@@ -1,291 +1,360 @@
 <template>
-  <div class="form-warpper pt-0 px-7 pb-7 flex-column">
-    <div class="nav-content bg-[#324f90] p-[1.5rem]">
-      <div class="nav-title text-[#fbfbff] font-bold text-[15px]">
-        <div>THÊM SINH VIÊN</div>
-      </div>
+  <div>
+    <div class="add-header">
+      <NavTitle :title="pageTitle" />
     </div>
+    <div class="add-form mx-10">
+      <a-form
+        ref="formRef"
+        :model="formState"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+        class="p-2 bg-[#fff]"
+      >
+        <div class="flex">
+          <div class="mx-auto">
+            <a-form-item
+              class="form-item block"
+              ref="studentId"
+              label="Tài khoản"
+              name="studentId"
+            >
+              <a-input
+                v-model:value="formState.studentId"
+                placeholder="Nhập tài khoản"
+                :disabled="userRole !== 'manager'"
+                class="text-black"
+              />
+            </a-form-item>
 
-    <div class="form-content">
-      <form class="bg-[#ffffff]">
-        <div class="form-column mx-3">
-          <div class="form-group">
-            <label>ID</label>
-            <input required type="text" v-model="this.useStudent.student.studentId"/>
-            <!-- <p v-if="this.useStudent.error" class="error">{{ usernameError  }}</p> -->
-          </div>
-          <div class="form-group">
-            <label>Ngày sinh</label>
-            <input type="text" v-model="this.useStudent.student.birthdate"/>
+            <a-form
+    ref="formRef"
+    name="dynamic_form_item"
+    :model="dynamicValidateForm"
+    v-bind="formItemLayoutWithOutLabel"
+    v-if="userRole !== 'manager'"
+  >
+    <a-form-item
+      v-for="(domain, index) in dynamicValidateForm.domains"
+      :key="domain.key"
+      v-bind="index === 0 ? formItemLayout : {}"
+      :label="index === 0 ? 'Lớp' : ''"
+      :name="['domains', index, 'name']"
+      :rules="{
+        required: true,
+        message: 'domain can not be null',
+        trigger: 'change',
+      }"
+    >
+      <a-input
+        v-model:value="domain.name"
+        placeholder="please input domain"
+        style="width: 60%; margin-right: 8px"
+        disabled
+      />
+       
+    </a-form-item>
+     
+    
+  </a-form>
+
+            <a-form-item
+              ref="emailAddress"
+              label="Email"
+              name="emailAddress"
+              class="form-item block"
+            >
+              <a-input
+                v-model:value="formState.emailAddress"
+                placeholder="Nhập email"
+                :disabled="userRole !== 'manager'"
+              />
+            </a-form-item>
+
+            <a-form-item
+                label="Giới tính"
+                name="gender"
+                class="form-item block"
+              >
+                <a-radio-group v-model:value="formState.gender" class="flex">
+                  <a-radio value="Nam">Nam</a-radio>
+                  <a-radio value="Nữ">Nữ</a-radio>
+                </a-radio-group>
+              </a-form-item>
           </div>
 
-          <div class="form-group">
-            <label>Giới tính</label>
-            <select name="gender" id="gender" v-model="this.useStudent.student.gender">
-              <option value="Nam">Nam</option>
-              <option value="Nữ">Nữ</option>
-            </select>
-          </div>
+          <div class="mx-auto">
+            <div>
+              <a-form-item
+                ref="name"
+                label="Họ tên"
+                name="name"
+                class="form-item block"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'Chưa điền họ tên',
+                  },
+                ]"
+              >
+                <a-input
+                  v-model:value="formState.name"
+                  placeholder="Nhập họ tên"
+                />
+              </a-form-item>
 
-          <div class="form-group">
-            <label>Học phí</label>
-            <select name="gender" id="gender" v-model="this.useStudent.student.paidFee">
-              <option value="true">Đã đóng</option>
-              <option value="false">Chưa</option>
-            </select>
-          </div>
-           
-        </div>
+              <a-form-item
+                ref="phone"
+                label="Số điện thoại"
+                name="phone"
+                class="form-item block"
+              >
+                <a-input
+                  v-model:value="formState.phone"
+                  placeholder="Nhập số điện thoại"
+                />
+              </a-form-item>
 
-        <div class="form-column mx-3">
-          <div class="form-group">
-            <label>Mật khẩu</label>
-            <input type="text" v-model="this.useStudent.student.password"/>
-          </div>
-          <div class="form-group">
-            <label>Vai trò</label>
-            <select name="gender" id="gender" v-model="this.useStudent.student.role">
-              <option value="student">Sinh viên</option>
-              <option value="manager">Cố vấn học tập</option>
-            </select>
-          </div>
-           
-        </div>
-        <div class="form-column">
-          <div class="form-group">
-            <label> Họ và Tên</label>
-            <input type="text" v-model="this.useStudent.student.name"/>
-          </div>
-          <div class="form-group">
-            <label>Số điện thoại</label>
-            <input type="text" v-model="this.useStudent.student.phone"/>
-          </div>
+              <a-form-item
+                label="Ngày sinh"
+                required
+                name="birthdate"
+                class="form-item block"
+              >
+                <a-date-picker
+                  v-model:value="formState.birthdate"
+                  type="date"
+                  placeholder="Pick a date"
+                  style="width: 100%"
+                  @change="(value) => (formState.birthdate = value)"
+                />
+              </a-form-item>
 
-          <div class="form-group">
-            <label>Địa chỉ</label>
-            <input type="text" v-model="this.useStudent.student.address"/>
-          </div>
-
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" v-model="this.useStudent.student.emailAddress"/>
-          </div>
-
-        </div>
-        <div class="form-column">
-          <div class="form-group">
-            <label>Lớp</label>
-            <input type="text" v-model="this.useStudent.student._class"/>
-          </div>
-          <div class="form-group">
-            <label>Tổng tín chỉ tích lũy</label>
-            <input type="text" v-model="this.useStudent.student.total_creadits"/>
-          </div>
-
-          <div class="form-group">
-            <label>Điểm trung bình tích lũy hệ 4</label>
-            <input type="text" v-model="this.useStudent.student.gpa"/>
-          </div>
-
-          <div class="form-group">
-            <label>Trạng Thái</label>
-            <select name="gender" id="gender" v-model="this.useStudent.student.status">
-              <option value="Không">Không</option>
-              <option value="Cảnh báo học vụ">Cảnh báo học vụ</option>
-              <option value="Thiếu tín chỉ">Thiếu tín chỉ</option>
-              <option value="Thiếu học phí">Thiếu học phí</option>
-              <option value="Khen thưởng">Khen thưởng</option>
-            </select>
+              <a-form-item
+                ref="address"
+                label="Địa chỉ"
+                name="address"
+                class="form-item block"
+              >
+                <a-input
+                  v-model:value="formState.address"
+                  placeholder="Nhập địa chỉ"
+                />
+              </a-form-item>
+            </div>
           </div>
 
           
+          
         </div>
 
-        
-        
-
-        
-      </form>
-    </div>
-
-    <div class="button--act flex my-2">
-      <RouterLink
-        to="/student/list"
-        class="bg-[#324f90] text-[#fff] p-3 rounded mx-2"
-      >
-        Quay lại
-      </RouterLink>
-      <RouterView />
-
-      <button @click="saveData" class="bg-[#324f90] text-[#fff] p-3 px-4 rounded mx-2">
-        Lưu
-      </button>
+        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+          <a-button type="primary" @click="onSubmit" class="bg-[#324f90]"
+            >Lưu</a-button
+          >
+          
+        </a-form-item>
+      </a-form>
     </div>
   </div>
 </template>
-
 <script>
-import { RouterLink, RouterView, useRoute } from "vue-router";
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  ref,
+  toRaw,
+  computed,
+} from "vue";
 import { useStudentStore } from "../../stores/student.js";
+import { RouterLink, RouterView, useRoute } from "vue-router";
+import { format, parseISO } from "date-fns";
+import dayjs from "dayjs";
+import NavTitle from "../base/NavBar/NavTitle.vue";
+import ChartCredits from "../chart/ChartCredits.vue";
+import { getRole } from "../../utils/getInfoUser.js";
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { message } from "ant-design-vue";
 
-export default {
-  data() {
-    return {
-      student: {
-        studentId: '',
-        name: '',
-        phone: ''
+export default defineComponent({
+  setup() {
+    const formRef = ref();
+    const pageTitle = ref("Cập nhật thông tin Sinh viên");
+    const formState = reactive({
+      studentId: "",
+      name: "",
+      gender: "",
+      birthdate: undefined,
+      emailAddress: "",
+      phone: "",
+      role: "",
+      _class: "",
+      address: "",
+    });
+
+    const userRole = getRole();
+    const rules = {
+      birthdate: [
+        {
+          required: true,
+          message: "Please pick a date",
+          trigger: "change",
+          type: "object",
+        },
+      ],
+      address: [
+        {
+          required: true,
+          message: "Chưa nhập địa chỉ",
+          trigger: "change",
+        },
+      ],
+      gender: [
+        {
+          required: true,
+          message: "Please select gender",
+          trigger: "change",
+        },
+      ],
+      phone: [
+        {
+          required: true,
+          message: "Chưa nhập số điện thoại",
+          trigger: "blur",
+        },
+        {
+          min: 9,
+          max: 9,
+          message: "Chưa nhập đúng định dạng số điện thoại",
+          trigger: "blur",
+          required: true,
+        },
+      ],
+    };
+    const useStudent = useStudentStore();
+    const userId = useRoute().params.id;
+     
+
+    const onSubmit = () => {
+      formRef.value
+        .validate()
+        .then(async () => {
+          console.log("values", formState);
+          formState._class = dynamicValidateForm.domains;
+          const res = await useStudent.updateStudent(userId, formState);
+
+          if (res.status === 200) {
+          setTimeout(() => {
+          message.success({
+          content: 'Cập nhật thành công!',
+          duration: 2,
+          });
+          }, 1000);
+          }
+          else {
+            setTimeout(() => {
+          message.error({
+          content: 'Cập nhật thất bại!',
+          duration: 2,
+          });
+          }, 1000);
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    };
+
+    // const formattedDob = computed(() => {
+    //     return format(formState.birthdate, 'yyyy-MM-dd');
+    // })
+
+    onMounted(async () => {
+      const response = await useStudent.getStudentDetails(userId);
+      formState.studentId = response.userId; 
+      formState.name = response.name;
+      formState.gender = response.gender;
+      formState.role = response.role;
+      formState.emailAddress = response.emailAddress;
+      formState.phone = response.phone;
+      const classData = response._class.map((c) => ({ name: c.name, key: c._id }));
+      dynamicValidateForm.domains.push(...classData);
+       console.log(classData);
+      formState.address = response.address;
+      formState.birthdate = dayjs(response.birthdate);
+    });
+
+    const formItemLayout = {
+      labelCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 4,
+        },
       },
-      useStudent: useStudentStore(),
-      usernameError: 'Không được để trống',
-      errors: [],
-    }
-  }, 
-  methods: {
-    saveData() {
-      
-      this.errors = [];
-      var isValid = this.isValidData();  
-      // validate data
-      if (isValid) {
-      this.useStudent.postData(); 
-      }
-      else {
-        alert('error');
-        console.log('error');   
-      }
-    }
-    ,
-    isValidData() { 
-      try {
-        if (!this.validateRequired(this.useStudent.student.studentId)) {
-          this.errors.push("Mã sinh viên không được phép trống");
-          console.log(this.errors);
-        }
+      wrapperCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 20,
+        },
+      },
+    };
+    const formItemLayoutWithOutLabel = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 20,
+          offset: 4,
+        },
+      },
+    };
 
-        if (!this.validateRequired(this.useStudent.student.password)) {
-          this.errors.push("MK không được phép trống");
-          console.log(this.errors);
-        }
+    const dynamicValidateForm = reactive({
+      domains: [],
+    });
 
-        if (!this.validateRequired(this.useStudent.student.name)) {
-          this.errors.push("Tên không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.role)) {
-          this.errors.push("Vai trò không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.birthdate)) {
-          this.errors.push("Ngày sinh không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.address)) {
-          this.errors.push("Địa chỉ không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.role)) {
-          this.errors.push("Vai trò không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.birthdate)) {
-          this.errors.push("Ngày sinh không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.address)) {
-          this.errors.push("Địa chỉ không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.emailAddress)) {
-          this.errors.push("Vai trò không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.phone)) {
-          this.errors.push("Ngày sinh không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.gender)) {
-          this.errors.push("Địa chỉ không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student.status)) {
-          this.errors.push("Ngày sinh không được phép trống");
-          console.log(this.errors);
-        }
-
-        if (!this.validateRequired(this.useStudent.student._class)) {
-          this.errors.push("Địa chỉ không được phép trống");
-          console.log(this.errors);
-        }
-
-
-        if (this.errors.length > 0) {
-          alert('loi')
-          return false;
-        }
-        return true;
-
-      } catch (error) {
-        console.log(error); 
-      }
-    },
-    validateRequired(value) {
-      try {
-        if (value == "" || value == null || value == undefined) {
-        return false;
-      }
-      return true;
-      } catch (error) {
-        console.log(error);
-      }
-    }, 
-  }
-}
+    return {
+      formRef,
+      labelCol: {
+        span: 4,
+      },
+      wrapperCol: {
+        span: 14,
+      },
+      other: "",
+      formState,
+      rules,
+      onSubmit,
+      pageTitle,
+      userRole,
+      formItemLayout,
+      formItemLayoutWithOutLabel,
+      dynamicValidateForm,
+    };
+  },
+  components: { NavTitle, ChartCredits, MinusCircleOutlined, PlusOutlined },
+});
 </script>
+
 <style scoped>
-form {
-  display: flex;
+.add-form {
+  height: 400px;
+  overflow-y: scroll;
 }
 
-.form-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.form-item :deep .ant-col-14 {
+  max-width: 100%;
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input[type="text"] {
-  width: 50%;
-  height: 40px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-input:hover {
-  border: 1px solid #324f90;
-}
-
-input:focus {
-  border: 1px solid #324f90;
-  outline: none;
+.form-item :deep .ant-col-4 {
+  max-width: 100% !important;
 }
 </style>

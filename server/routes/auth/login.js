@@ -15,5 +15,8 @@ router.post("/user/login", login.loginController)
 
 
 router.post("/token/refresh", login.refreshToken);
+// reffresh token with cookie
+router.post("/token-refresh", login.refreshTokenController);
+// refresh token from localStorage
 
 module.exports = router; 
