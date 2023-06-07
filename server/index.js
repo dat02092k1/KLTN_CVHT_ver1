@@ -35,7 +35,8 @@ var io = require("socket.io")(9000, {
 var cors = require("cors");
 
 const PORT = process.env.PORT || 8000;
-const dbUrl = "mongodb+srv://ngodat02092001:tE22bgOac34Z1u1j@cluster0.0i97txk.mongodb.net/test"; 
+process.env.MONGODB_URL
+const dbUrl = process.env.MONGODB_URL;
 // "mongodb://localhost:27017/CVHT_database";
 
 mongoose.connect(
